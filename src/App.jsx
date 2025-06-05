@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div>
-        <p>Hakob</p>
+        <p>Hakobos</p>
       </div>
     </>
   )
