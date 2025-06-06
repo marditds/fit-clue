@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Shopping Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .image-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .fashion-image {
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .fashion-image:hover {
+            transform: scale(1.02);
+        }
+
+        .links-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .shop-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+        }
+
+        .shop-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+        }
+
+        .shop-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .shop-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .shop-item {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .shop-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .add-link-section {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 2px dashed #27ae60;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .shop-link {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fashion Shopping Links</h1>
+            <p>Discover and shop the latest fashion trends</p>
+        </div>
+
+        <div class="main-content">
+            <div class="image-section">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=720&q=80" 
+                     alt="Fashion Model" class="fashion-image">
+            </div>
+
+            <div class="links-section">
+                <h2 class="section-title">Shop These Items</h2>
+                
+                <div id="shopping-links">
+                    <a href="https://www.zara.com" class="shop-link" target="_blank">
+                        <div class="shop-info">
+                            <div class="shop-name">Zara</div>
+                            <div class="shop-item">Black Leather Jacket</div>
+                        </div>
+                        <div class="shop-actions">
+                            <button class="action-btn" onclick="reportLink(event, 'Zara')">Report</button>
+                        </div>
+                    </a>
+
+                    <a href="https://www.hm.com" class="shop-link" target="_blank">
+                        <div class="shop-info">
+                            <div class="shop-name">H&M</div>
+                            <div class="shop-item">White Basic T-Shirt</div>
+                        </div>
+                        <div class="shop-actions">
+                            <button class="action-btn" onclick="reportLink(event, 'H&M')">Report</button>
+                        </div>
+                    </a>
+
+                    <a href="https://www.nike.com" class="shop-link" target="_blank">
+                        <div class="shop-info">
+                            <div class="shop-name">Nike</div>
+                            <div class="shop-item">White Sneakers</div>
+                        </div>
+                        <div class="shop-actions">
+                            <button class="action-btn" onclick="reportLink(event, 'Nike')">Report</button>
+                        </div>
+                    </a>
+
+                    <a href="https://www.levis.com" class="shop-link" target="_blank">
+                        <div class="shop-info">
+                            <div class="shop-name">Levi's</div>
+                            <div class="shop-item">Blue Denim Jeans</div>
+                        </div>
+                        <div class="shop-actions">
+                            <button class="action-btn" onclick="reportLink(event, 'Levi\'s')">Report</button>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="add-link-section">
+                    <h3 class="section-title">Add New Shopping Link</h3>
+                    <form id="add-link-form">
+                        <div class="form-group">
+                            <label for="shop-name">Shop Name:</label>
+                            <input type="text" id="shop-name" name="shop-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-name">Item Name:</label>
+                            <input type="text" id="item-name" name="item-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shop-url">Shop URL:</label>
+                            <input type="url" id="shop-url" name="shop-url" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Add Shopping Link</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Report Link</h2>
+            <p>Why are you reporting this link?</p>
+            <form id="report-form">
+                <div class="form-group">
+                    <label for="report-reason">Reason:</label>
+                    <select id="report-reason" name="report-reason" required>
+                        <option value="">Select a reason</option>
+                        <option value="broken-link">Broken Link</option>
+                        <option value="inappropriate">Inappropriate Content</option>
+                        <option value="spam">Spam</option>
+                        <option value="wrong-item">Wrong Item</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="report-details">Additional Details:</label>
+                    <input type="text" id="report-details" name="report-details" placeholder="Optional details...">
+                </div>
+                <button type="submit" class="submit-btn">Submit Report</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentReportShop = '';
+
+        // Add new shopping link
+        document.getElementById('add-link-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const shopName = document.getElementById('shop-name').value;
+            const itemName = document.getElementById('item-name').value;
+            const shopUrl = document.getElementById('shop-url').value;
+            
+            // Create new link element
+            const newLink = document.createElement('a');
+            newLink.href = shopUrl;
+            newLink.className = 'shop-link';
+            newLink.target = '_blank';
+            newLink.style.animation = 'slideIn 0.5s ease';
+            
+            newLink.innerHTML = `
+                <div class="shop-info">
+                    <div class="shop-name">${shopName}</div>
+                    <div class="shop-item">${itemName}</div>
+                </div>
+                <div class="shop-actions">
+                    <button class="action-btn" onclick="reportLink(event, '${shopName}')">Report</button>
+                </div>
+            `;
+            
+            // Add to the links container
+            document.getElementById('shopping-links').appendChild(newLink);
+            
+            // Clear form
+            this.reset();
+            
+            // Show success message
+            alert('Shopping link added successfully!');
+        });
+
+        // Report link functionality
+        function reportLink(event, shopName) {
+            event.preventDefault();
+            event.stopPropagation();
+            currentReportShop = shopName;
+            document.getElementById('reportModal').style.display = 'block';
+        }
+
+        // Close modal
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('reportModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Handle report submission
+        document.getElementById('report-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const reason = document.getElementById('report-reason').value;
+            const details = document.getElementById('report-details').value;
+            
+            // In a real app, this would send the report to a server
+            console.log('Report submitted:', {
+                shop: currentReportShop,
+                reason: reason,
+                details: details
+            });
+            
+            alert(`Report submitted for ${currentReportShop}. Thank you for your feedback!`);
+            
+            // Close modal and reset form
+            document.getElementById('reportModal').style.display = 'none';
+            this.reset();
+        });
+
+        // Add slide-in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

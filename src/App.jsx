@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import './App.css';
+import Grid from './components/Grid/Grid';
 
 function App() {
 
   return (
     <>
       <div>
-        <p>Hakobos</p>
+        <Grid />
       </div>
     </>
   )
