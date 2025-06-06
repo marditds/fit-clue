@@ -1,18 +1,24 @@
-import { fetchPosts as getPosts } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts } from '../context/dbhandler';
 
 export const usePosts = () => {
 
-    const fetchPosts = async () => {
+    const makePost = async (name, linksData, embed_code) => {
         try {
-            const res = await getPosts();
-
-            // console.log(res);
-
+            const res = await composePost(name, linksData, embed_code);
             return res;
         } catch (error) {
             console.error('Error fetching links:', error);
         }
     }
 
-    return { fetchPosts }
+    const fetchPosts = async () => {
+        try {
+            const res = await getPosts();
+            return res;
+        } catch (error) {
+            console.error('Error fetching links:', error);
+        }
+    }
+
+    return { makePost, fetchPosts }
 }

@@ -1,12 +1,13 @@
 import './App.css';
 import Grid from './components/Grid/Grid';
+import CreatePost from './pages/user/CreatePost';
 
 function App() {
 
   return (
     <>
       <div>
-        <Grid />
+        <CreatePost />
       </div>
     </>
   )
