@@ -60,7 +60,6 @@ const CreatePost = () => {
                             placeholder="Link URL"
                             value={link.href}
                             onChange={e => handleLinkChange(index, e)}
-                            required
                         />
                         <input
                             name="companyName"

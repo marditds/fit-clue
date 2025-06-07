@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import { makePost as composePost, fetchPosts as getPosts } from '../context/dbhandler';
 
 export const usePosts = () => {
+
+    useEffect(() => {
+        fetchPosts();
+    }, [])
 
     const makePost = async (name, linksData, embed_code) => {
         try {

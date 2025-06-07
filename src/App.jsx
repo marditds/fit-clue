@@ -7,7 +7,8 @@ function App() {
   return (
     <>
       <div>
-        <CreatePost />
+        {/* <CreatePost /> */}
+        <Grid />
       </div>
     </>
   )
