@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 
 const CreatePost = () => {
 
-    const { makePost } = usePosts();
+    const { makePost, fetchPosts } = usePosts();
 
     const [name, setName] = useState('');
     const [links, setLinks] = useState([{ href: '', companyName: '', item: '' }]);
     const [embedCode, setEmbedCode] = useState('');
+
+    useEffect(() => {
+        fetchPosts();
+    }, [])
 
     const handleLinkChange = (index, e) => {
         const { name, value } = e.target;

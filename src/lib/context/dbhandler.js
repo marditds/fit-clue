@@ -27,20 +27,20 @@ export const makePost = async (name, linksData, embed_code) => {
             )
         );
 
-        const res = await databases.createDocument(
+        const post = await databases.createDocument(
             dbEnv,
             postsCollEnv,
             ID.unique(),
             {
-                personality,
-                links,
-                embed_code
+                embed_code,
+                personality_id: personality.$id,
+                links: links.map(link => link.href)
             }
         );
 
-        console.log('Post created successfully:', res);
+        console.log('Post created successfully:', post);
 
-        return res ? res : null;
+        return post ? post : null;
 
     } catch (error) {
         console.error('Error creating post:', error);
@@ -49,8 +49,6 @@ export const makePost = async (name, linksData, embed_code) => {
 }
 
 export const createPersonality = async (name) => {
-
-    console.log('name in createPersonality:', name);
 
     try {
         const res = await databases.createDocument(
@@ -61,8 +59,6 @@ export const createPersonality = async (name) => {
                 name
             }
         )
-
-        console.log('Personality created successfully:', res);
 
         if (res) {
             return res;
@@ -83,12 +79,10 @@ export const createLink = async (href, companyName, item) => {
             ID.unique(),
             {
                 href,
-                companyName,
+                company_name: companyName,
                 item
             }
         )
-
-        console.log('Link created successfully:', res);
 
         if (res) {
             return res;
@@ -107,6 +101,9 @@ export const fetchPosts = async () => {
             dbEnv,
             postsCollEnv
         )
+
+        console.log('res in fethPosts:', res);
+
         if (res.total > 0) {
             return res;
         }
