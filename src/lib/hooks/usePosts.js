@@ -3,9 +3,9 @@ import { makePost as composePost, fetchPosts as getPosts } from '../context/dbha
 
 export const usePosts = () => {
 
-    useEffect(() => {
-        fetchPosts();
-    }, [])
+    // useEffect(() => {
+    //     fetchPosts();
+    // }, [])
 
     const makePost = async (name, linksData, embed_code) => {
         try {

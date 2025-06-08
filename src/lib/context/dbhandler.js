@@ -27,16 +27,14 @@ export const makePost = async (name, linksData, embed_code) => {
         }
 
         // console.log('personality:', personality);
-        const links = [];
-        if (linksData) {
-            await Promise.all(
+        var links = [];
+        if (linksData.length > 0) {
+            links = await Promise.all(
                 linksData.map(link =>
                     createLink(link.href, link.companyName, link.item)
                 )
             );
         }
-
-        // console.log('links:', links);
 
         // console.log({ embed_code, personality_id: personality.$id, links: links.map(link => link.$id) });
 
@@ -125,29 +123,41 @@ export const createLink = async (href, companyName, item) => {
 
 export const fetchPosts = async () => {
     try {
-        const postsRes = await databases.listDocuments(dbEnv, postsCollEnv);
+        const postsRes = await databases.listDocuments(
+            dbEnv,
+            postsCollEnv
+        );
 
-        if (postsRes.total === 0) return null;
+        if (postsRes.total === 0) {
+            console.log('No posts yet.');
+            return null
+        };
 
         const posts = postsRes.documents;
 
-        // Gather all personality and link IDs from posts
-        const personalityIds = posts.map(p => p.personality_id);
-        const linkIds = posts.flatMap(p => p.links);
+        // All personalities' IDs
+        const personalityIds = posts.map(post => post.personality_id);
 
-        // Fetch personalities in one batch
+        // All links' IDs
+        const linkIds = posts.flatMap(post => post.links);
+
+        // Fetch personalities
         const personalitiesRes = await fetchPersonalitiesByIds(personalityIds);
 
         const personalitiesMap = Object.fromEntries(
             personalitiesRes.documents.map(personality => [personality.$id, personality])
         );
 
-        // Fetch links in one batch
+        // console.log('personalitiesMap', personalitiesMap);
+
+        // Fetch links
         const linksRes = await fetchLinksByIds(linkIds);
 
         const linksMap = Object.fromEntries(
             linksRes.documents.map(link => [link.$id, link])
         );
+
+        // console.log('linksMap', linksMap);
 
         // Combine and return data for each post
         const results = posts.map(post => ({
@@ -158,7 +168,6 @@ export const fetchPosts = async () => {
 
         console.log('results', results);
 
-
         return results;
 
     } catch (error) {
@@ -166,7 +175,6 @@ export const fetchPosts = async () => {
         return null;
     }
 };
-
 
 export const fetchLinksByIds = async (linkId) => {
 

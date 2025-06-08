@@ -7,8 +7,8 @@ function App() {
   return (
     <>
       <div>
-        {/* <CreatePost /> */}
-        <Grid />
+        <CreatePost />
+        {/* <Grid /> */}
       </div>
     </>
   )
