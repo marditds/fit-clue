@@ -20,6 +20,9 @@ export default async ({ req, res, log, error }) => {
 
         log('response:', response);
 
+        const text = await response.text();
+        log('Raw response body:', text);
+
         if (!response.ok) {
             throw new Error(`Fetch failed with status ${response.status}`);
         }
