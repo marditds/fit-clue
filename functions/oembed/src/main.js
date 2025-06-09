@@ -6,7 +6,7 @@ export default async ({ req, res, log, error }) => {
 
         const url = `https://graph.facebook.com/v19.0/instagram_oembed?` +
             new URLSearchParams({
-                url: data.url,
+                url: data,
                 access_token: oembedToken,
                 omit_script: 'false'
             });
