@@ -4,7 +4,8 @@ export default async ({ req, res, log, error }) => {
     try {
         const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-        log(data);
+        log('data:', data);
+        log('data.data:', data.data);
 
         const url = `https://graph.facebook.com/v19.0/instagram_oembed?` +
             new URLSearchParams({
