@@ -14,7 +14,7 @@ export default async ({ req, res, log, error }) => {
                 omit_script: 'false'
             });
 
-        log(url);
+        log('url:', url);
 
         const response = await fetch(url);
 
