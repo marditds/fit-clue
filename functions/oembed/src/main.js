@@ -5,16 +5,21 @@ export default async ({ req, res, log, error }) => {
         const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
         log('data:', data);
-        log('data.hakobos:', data.data);
+        log('data.url:', data.url);
 
         const url = `https://graph.facebook.com/v19.0/instagram_oembed?` +
             new URLSearchParams({
-                url: data.data,
+                url: data.url,
                 access_token: oembedToken,
                 omit_script: 'false'
             });
 
+        log(url);
+
         const response = await fetch(url);
+
+        log(response);
+
         if (!response.ok) {
             throw new Error(`Fetch failed with status ${response.status}`);
         }
