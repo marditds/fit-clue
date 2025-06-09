@@ -1,5 +1,5 @@
 export default async ({ req, res, log, error }) => {
-    const oembedToken = process.env.META_IG_TOKEN;
+    const oembedToken = process.env.META_USER_TOKEN;
 
     try {
         const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
