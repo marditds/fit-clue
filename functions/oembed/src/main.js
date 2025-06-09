@@ -18,7 +18,7 @@ export default async ({ req, res, log, error }) => {
 
         const response = await fetch(url);
 
-        log(response);
+        log('response:', response);
 
         if (!response.ok) {
             throw new Error(`Fetch failed with status ${response.status}`);
@@ -26,7 +26,7 @@ export default async ({ req, res, log, error }) => {
 
         const result = await response.json();
 
-        log(result);
+        log('result:', result);
 
         return res.json(result);
 
