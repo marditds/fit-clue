@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { CardComponent } from './CardComponent';
 import { usePosts } from '../../lib/hooks/usePosts';
-import { testData } from './testData';
+import { testData } from '../../lib/data/testData';
 
 const Grid = () => {
 
