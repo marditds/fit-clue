@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query } from 'appwrite';
+import { Client, Databases, ID, Query, Functions } from 'appwrite';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -9,10 +9,13 @@ const client = new Client()
 
 const databases = new Databases(client);
 
+const functions = new Functions(client);
+
 const dbEnv = import.meta.env.VITE_DATABASE_ID;
 const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
+
 
 export const makePost = async (name, linksData, embed_code) => {
 
@@ -166,7 +169,7 @@ export const fetchPosts = async () => {
             links: (post.links || []).map(id => linksMap[id]).filter(Boolean)
         }));
 
-        console.log('results', results);
+        // console.log('results', results);
 
         return results;
 

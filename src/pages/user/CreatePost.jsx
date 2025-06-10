@@ -6,6 +6,7 @@ const CreatePost = () => {
 
     const [name, setName] = useState('');
     const [embedCode, setEmbedCode] = useState('');
+    const [photoLink, setPhotoLink] = useState('');
     const [showLinks, setShowLinks] = useState(false);
     const [links, setLinks] = useState([]);
 
@@ -46,7 +47,7 @@ const CreatePost = () => {
                 ? links.filter(link => link.href && link.companyName && link.item)
                 : [];
 
-            const response = await makePost(name, filteredLinks, embedCode);
+            const response = await makePost(name, filteredLinks, photoLink);
             if (response) {
                 console.log('Post created successfully!');
             } else {
@@ -64,9 +65,14 @@ const CreatePost = () => {
                 <input type="text" value={name} onChange={e => setName(e.target.value)} required />
             </div>
 
-            <div>
+            {/* <div>
                 <label>Embed Code:</label><br />
                 <textarea value={embedCode} onChange={e => setEmbedCode(e.target.value)} />
+            </div> */}
+
+            <div>
+                <label>Photo Link:</label><br />
+                <textarea value={photoLink} onChange={e => setPhotoLink(e.target.value)} />
             </div>
 
             <div>

@@ -1,76 +1,118 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from "react";
+import { usePosts } from "../../lib/hooks/usePosts";
 
 const Post = () => {
-    const [embedHtml, setEmbedHtml] = useState('');
-    const [postUrl, setPostUrl] = useState('');
-    const [submittedUrl, setSubmittedUrl] = useState('');
+
+    const { fetchPosts } = usePosts();
+
+    const [post, setPost] = useState([]);
 
     useEffect(() => {
-        const fetchEmbed = async () => {
-            if (!submittedUrl) {
-                return
-            }
+        const getPosts = async () => {
+            const p = await fetchPosts();
+            setPost(p[16]?.post?.embed_code);
+        }
+        getPosts();
+    }, [])
 
-            try {
+    useEffect(() => {
+        console.log('post:', post);
+    }, [post])
 
-                console.log('submittedUrl:', submittedUrl);
-
-                const response = await fetch(
-                    `https://graph.facebook.com/v19.0/instagram_oembed?url=${encodeURIComponent(submittedUrl)}&access_token=${import.meta.env.VITE_IG_TOKEN}`
-                );
-                console.log('response in Post.js:', response);
-
-                const data = await response.json();
-                console.log('data in Post.js:', data);
-
-                setEmbedHtml(data.html);
-
-                // Ensure embed script is loaded
-                if (window.instgrm) {
-                    window.instgrm.Embeds.process();
-                }
-            } catch (error) {
-                console.error('Failed to fetch Instagram embed:', error);
-                setEmbedHtml('<p>Failed to load post.</p>');
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://www.instagram.com/embed.js";
+        script.async = true;
+        script.onload = () => {
+            if (window.instgrm) {
+                window.instgrm.Embeds.process();
             }
         };
+        document.body.appendChild(script);
+    }, []);
 
-        fetchEmbed();
-    }, [submittedUrl]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setSubmittedUrl(postUrl);
-    };
-
-    useEffect(() => {
-        console.log('postUrl:', postUrl);
-    }, [postUrl])
 
     return (
         <div>
-            <h2>Embed Instagram Post</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Enter Instagram post URL"
-                    value={postUrl}
-                    onChange={(e) => {
-                        console.log(e.target.value);
-                        setPostUrl(e.target.value)
-                    }}
-                    style={{ width: '300px' }}
-                />
-                <button type="submit">Embed</button>
-            </form>
-
-            <div
-                className="instagram-embed"
-                dangerouslySetInnerHTML={{ __html: embedHtml }}
-                style={{ marginTop: '20px' }}
-            />
-
-            <script async src="//www.instagram.com/embed.js"></script>
+            <blockquote
+                className="instagram-media"
+                data-instgrm-permalink={post}
+                data-instgrm-version="14"
+                style={{
+                    background: "#FFF",
+                    border: 0,
+                    borderRadius: "3px",
+                    boxShadow: "0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)",
+                    margin: "1px",
+                    maxWidth: "540px",
+                    minWidth: "326px",
+                    padding: 0,
+                    width: "calc(100% - 2px)"
+                }}
+            >
+                <div style={{ padding: "16px" }}>
+                    <a
+                        href={post}
+                        style={{
+                            background: "#FFFFFF",
+                            lineHeight: 0,
+                            padding: "0 0",
+                            textAlign: "center",
+                            textDecoration: "none",
+                            width: "100%"
+                        }}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <div style={{ paddingTop: "8px" }}>
+                            <div
+                                style={{
+                                    color: "#3897f0",
+                                    fontFamily: "Arial,sans-serif",
+                                    fontSize: "14px",
+                                    fontStyle: "normal",
+                                    fontWeight: 550,
+                                    lineHeight: "18px"
+                                }}
+                            >
+                                View this post on Instagram
+                            </div>
+                        </div>
+                    </a>
+                    <p
+                        style={{
+                            color: "#c9c8cd",
+                            fontFamily: "Arial,sans-serif",
+                            fontSize: "14px",
+                            lineHeight: "17px",
+                            marginBottom: 0,
+                            marginTop: "8px",
+                            overflow: "hidden",
+                            padding: "8px 0 7px",
+                            textAlign: "center",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap"
+                        }}
+                    >
+                        <a
+                            href={post}
+                            style={{
+                                color: "#c9c8cd",
+                                fontFamily: "Arial,sans-serif",
+                                fontSize: "14px",
+                                fontStyle: "normal",
+                                fontWeight: "normal",
+                                lineHeight: "17px",
+                                textDecoration: "none"
+                            }}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            A post shared by 🌙 Ariana Madix 🌙 (@arianamadix)
+                        </a>
+                    </p>
+                </div>
+            </blockquote>
         </div>
     );
 };

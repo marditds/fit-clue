@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { makePost as composePost, fetchPosts as getPosts } from '../context/dbhandler';
 
 export const usePosts = () => {
