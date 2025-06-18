@@ -4,6 +4,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import './CardComponent';
 import './Grid.css';
 import { CardComponent } from './CardComponent';
+import { Link } from 'react-router-dom';
 
 const Grid = () => {
     const { fetchPosts } = usePosts();
@@ -57,6 +58,7 @@ const Grid = () => {
                 {posts.map((post, index) => {
                     const rawUrl = post?.post?.url;
                     const name = post?.personality?.name;
+                    const id = post?.post?.$id;
 
                     // Extract Instagram post URL
                     let embedUrl = null;
@@ -75,7 +77,10 @@ const Grid = () => {
 
                         <Col key={index} xs={12} md={6} xl={4} className="p-0 p-sm-2 d-flex justify-content-center">
                             <div style={{ width: '100%', maxWidth: '100%' }}>
-                                <h3 className='text-left latest__card-name'>{name}</h3>
+                                <Link to={`post/${id}`}><h3 className='text-left latest__card-name'>
+                                    {name}
+                                </h3>
+                                </Link>
                                 <blockquote
                                     className="instagram-media"
                                     data-instgrm-permalink={embedUrl}

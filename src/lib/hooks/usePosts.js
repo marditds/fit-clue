@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchPostById as getPostById } from '../context/dbhandler';
 
 export const usePosts = () => {
 
     // useEffect(() => {
-    //     fetchPosts();
+    //     getPosts();
     // }, [])
 
     const makePost = async (name, linksData, url) => {
@@ -12,7 +12,7 @@ export const usePosts = () => {
             const res = await composePost(name, linksData, url);
             return res;
         } catch (error) {
-            console.error('Error fetching links:', error);
+            console.error('Error making post:', error);
         }
     }
 
@@ -21,9 +21,18 @@ export const usePosts = () => {
             const res = await getPosts();
             return res;
         } catch (error) {
-            console.error('Error fetching links:', error);
+            console.error('Error fetching posts:', error);
         }
     }
 
-    return { makePost, fetchPosts }
+    const fetchPostById = async (postId) => {
+        try {
+            const res = await getPostById(postId);
+            return res;
+        } catch (error) {
+            console.error('Error fetching post by id:', error);
+        }
+    }
+
+    return { makePost, fetchPosts, fetchPostById }
 }

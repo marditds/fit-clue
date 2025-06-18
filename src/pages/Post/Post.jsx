@@ -1,14 +1,22 @@
 import { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts';
+import { useParams } from 'react-router-dom';
 
 const Post = () => {
-    const { fetchPosts } = usePosts();
+
+    let params = useParams()
+
+    const { fetchPosts, fetchPostById } = usePosts();
     const [postUrl, setPostUrl] = useState(null);
+    const [personalityName, setPersonalityName] = useState(null);
 
     useEffect(() => {
         const getPosts = async () => {
-            const posts = await fetchPosts();
-            const rawUrl = posts[1]?.post?.url;
+
+            const post = await fetchPostById(params.postId);
+
+            setPersonalityName(post?.personality?.name);
+            const rawUrl = post?.post?.url;
 
             if (rawUrl) {
                 try {
@@ -48,6 +56,9 @@ const Post = () => {
 
     return (
         <div>
+            <h2>
+                {personalityName}
+            </h2>
             <blockquote
                 className='instagram-media'
                 data-instgrm-permalink={postUrl}

@@ -167,9 +167,7 @@ export const fetchPosts = async () => {
             );
         }
 
-        // console.log('linksMap', linksMap);
-
-        // Combine and return data for each post
+        // All posts
         const results = posts.map(post => ({
             post,
             personality: personalitiesMap[post.personality_id] || null,
@@ -179,6 +177,70 @@ export const fetchPosts = async () => {
         // console.log('results', results);
 
         return results;
+
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return null;
+    }
+};
+
+export const fetchPostById = async (postId) => {
+
+    try {
+        const postRes = await databases.getDocument(
+            dbEnv,
+            postsCollEnv,
+            postId
+        );
+
+        console.log('postRes in fetchPostById:', postRes);
+
+        if (!postRes) {
+            console.log('No posts yet.');
+            return null
+        };
+
+        const post = postRes;
+
+        // console.log('post in fetchPostById:', post);
+
+        // Personality's ID
+        const personalityId = post.personality_id;
+
+        // console.log('personalityId in fetchPostById:', personalityId);
+
+        // All links' IDs
+        const productLinkIds = post.product_links;
+
+        // console.log('productLinkIds in fetchPostById:', productLinkIds);
+
+        // Fetch one personality
+        const personalityRes = await fetchPersonalityById(personalityId);
+
+        // console.log('personalitiesRes', personalityRes);
+
+        // Fetch links  
+        const productLinksRes = await fetchProductLinksByIds(productLinkIds);
+
+        // console.log('productLinksRes in fetchPosts:', productLinksRes);
+
+        const productLinksMap = {};
+        if (productLinksRes.length !== 0) {
+            productLinksMap = Object.fromEntries(
+                productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])
+            );
+        }
+
+        // One post
+        const result = {
+            post,
+            personality: personalityRes || null,
+            links: (post.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
+        };
+
+        console.log('result in fetchPostById:', result);
+
+        return result;
 
     } catch (error) {
         console.error('Error fetching posts:', error);
@@ -208,7 +270,6 @@ export const fetchProductLinksByIds = async (productLinkId) => {
         return [];
     } catch (error) {
         console.error('Error fetching links:', error);
-
     }
 }
 
@@ -220,6 +281,24 @@ export const fetchPersonalitiesByIds = async (personalityId) => {
             [Query.equal('$id', personalityId)]
         )
         if (res.total > 0) {
+            return res;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching links:', error);
+
+    }
+}
+
+export const fetchPersonalityById = async (personalityId) => {
+    try {
+        const res = await databases.getDocument(
+            dbEnv,
+            personalitiesCollEnv,
+            personalityId
+        )
+        if (res) {
             return res;
         }
 
