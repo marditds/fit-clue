@@ -7,9 +7,9 @@ export const usePosts = () => {
     //     fetchPosts();
     // }, [])
 
-    const makePost = async (name, linksData, embed_code) => {
+    const makePost = async (name, linksData, url) => {
         try {
-            const res = await composePost(name, linksData, embed_code);
+            const res = await composePost(name, linksData, url);
             return res;
         } catch (error) {
             console.error('Error fetching links:', error);

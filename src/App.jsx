@@ -9,8 +9,8 @@ function App() {
     <>
       <div>
         {/* <CreatePost /> */}
-        {/* <Grid /> */}
-        <Post />
+        <Grid />
+        {/* <Post /> */}
       </div>
     </>
   )

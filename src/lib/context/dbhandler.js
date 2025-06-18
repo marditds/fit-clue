@@ -17,9 +17,9 @@ const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
 
 
-export const makePost = async (name, linksData, embed_code) => {
+export const makePost = async (name, productLinksData, url) => {
 
-    console.log({ name, linksData, embed_code });
+    console.log({ name, productLinksData, url });
 
     try {
         const personality = await createPersonality(name);
@@ -30,25 +30,25 @@ export const makePost = async (name, linksData, embed_code) => {
         }
 
         // console.log('personality:', personality);
-        var links = [];
-        if (linksData.length > 0) {
-            links = await Promise.all(
-                linksData.map(link =>
+        var product_links = [];
+        if (productLinksData.length > 0) {
+            product_links = await Promise.all(
+                productLinksData.map(link =>
                     createLink(link.href, link.companyName, link.item)
                 )
             );
         }
 
-        // console.log({ embed_code, personality_id: personality.$id, links: links.map(link => link.$id) });
+        // console.log({ url, personality_id: personality.$id, links: links.map(link => link.$id) });
 
         const post = await databases.createDocument(
             dbEnv,
             postsCollEnv,
             ID.unique(),
             {
-                embed_code,
+                url,
                 personality_id: personality.$id,
-                links: links.map(link => link.$id)
+                product_links: product_links.map(product_link => product_link.$id)
             }
         );
 
@@ -142,7 +142,9 @@ export const fetchPosts = async () => {
         const personalityIds = posts.map(post => post.personality_id);
 
         // All links' IDs
-        const linkIds = posts.flatMap(post => post.links);
+        const productLinkIds = posts.flatMap(post => post.product_links);
+
+        console.log('productLinkIds in fetchPost:', productLinkIds);
 
         // Fetch personalities
         const personalitiesRes = await fetchPersonalitiesByIds(personalityIds);
@@ -153,12 +155,17 @@ export const fetchPosts = async () => {
 
         // console.log('personalitiesMap', personalitiesMap);
 
-        // Fetch links
-        const linksRes = await fetchLinksByIds(linkIds);
+        // Fetch links  
+        const productLinksRes = await fetchProductLinksByIds(productLinkIds);
 
-        const linksMap = Object.fromEntries(
-            linksRes.documents.map(link => [link.$id, link])
-        );
+        console.log('productLinksRes in fetchPosts:', productLinksRes);
+
+        const productLinksMap = {};
+        if (productLinksRes.length !== 0) {
+            productLinksMap = Object.fromEntries(
+                productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])
+            );
+        }
 
         // console.log('linksMap', linksMap);
 
@@ -166,7 +173,7 @@ export const fetchPosts = async () => {
         const results = posts.map(post => ({
             post,
             personality: personalitiesMap[post.personality_id] || null,
-            links: (post.links || []).map(id => linksMap[id]).filter(Boolean)
+            links: (post.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
         }));
 
         // console.log('results', results);
@@ -179,9 +186,12 @@ export const fetchPosts = async () => {
     }
 };
 
-export const fetchLinksByIds = async (linkId) => {
+export const fetchProductLinksByIds = async (productLinkId) => {
 
-    if (!linkId) {
+    console.log('linkId in fetchProductLinksByIds:', productLinkId);
+
+
+    if (productLinkId.length === 0) {
         return [];
     }
 
@@ -189,7 +199,7 @@ export const fetchLinksByIds = async (linkId) => {
         const res = await databases.listDocuments(
             dbEnv,
             linksCollEnv,
-            [Query.equal('$id', linkId)]
+            [Query.equal('$id', productLinkId)]
         )
         if (res.total > 0) {
             return res;

@@ -8,7 +8,7 @@ const Post = () => {
     useEffect(() => {
         const getPosts = async () => {
             const posts = await fetchPosts();
-            const rawUrl = posts[17]?.post?.embed_code;
+            const rawUrl = posts[1]?.post?.url;
 
             if (rawUrl) {
                 try {
@@ -59,7 +59,7 @@ const Post = () => {
                     boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
                     margin: '1px',
                     maxWidth: '540px',
-                    minWidth: '326px',
+                    minWidth: '100px',
                     padding: 0,
                     width: 'calc(100% - 2px)'
                 }}
