@@ -48,12 +48,12 @@ const Grid = () => {
         <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-center '>
             <Row className='w-100 justify-content-start'>
                 <Col className='p-0 p-sm-2'>
-                    <h2>
+                    <h2 className='latest__page-title'>
                         THE LATEST
                     </h2>
                 </Col>
             </Row>
-            <Row className='w-100'>
+            <Row className='w-100 hakop'>
                 {posts.map((post, index) => {
                     const rawUrl = post?.post?.url;
                     const name = post?.personality?.name;
@@ -75,7 +75,7 @@ const Grid = () => {
 
                         <Col key={index} xs={12} md={6} xl={4} className="p-0 p-sm-2 d-flex justify-content-center">
                             <div style={{ width: '100%', maxWidth: '100%' }}>
-                                <h3 className='text-left'>{name}</h3>
+                                <h3 className='text-left latest__card-name'>{name}</h3>
                                 <blockquote
                                     className="instagram-media"
                                     data-instgrm-permalink={embedUrl}

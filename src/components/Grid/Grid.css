@@ -1,5 +1,14 @@
 @media (max-width: 349px) {
     .container {
-        padding: 0 !important;
+        padding: 0px !important;
+    }
+
+    .latest__page-title {
+        margin-top: 10px;
+    }
+
+    .latest__page-title,
+    .latest__card-name {
+        padding-left: 10px;
     }
 }
