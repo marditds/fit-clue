@@ -1,45 +1,57 @@
 import { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useParams } from 'react-router-dom';
+import { Row } from 'react-bootstrap';
+import { Card } from '../../components/Grid/Card';
 
 const Post = () => {
 
     let params = useParams()
 
-    const { fetchPosts, fetchPostById } = usePosts();
-    const [postUrl, setPostUrl] = useState(null);
+    const { fetchPostById } = usePosts();
+    const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
+    const [isPostLoading, setIsPostLoading] = useState(false);
 
     useEffect(() => {
         const getPosts = async () => {
 
-            const post = await fetchPostById(params.postId);
+            setIsPostLoading(true);
 
-            setPersonalityName(post?.personality?.name);
-            const rawUrl = post?.post?.url;
+            try {
+                const post = await fetchPostById(params.postId);
 
-            if (rawUrl) {
-                try {
-                    const url = new URL(rawUrl);
-                    const parts = url.pathname.split('/').filter(Boolean);
+                setPersonalityName(post?.personality?.name);
+                const rawUrl = post?.content?.url;
 
-                    const postIndex = parts.indexOf('p');
-                    if (postIndex !== -1 && parts[postIndex + 1]) {
-                        const postId = parts[postIndex + 1];
-                        const cleanUrl = `https://www.instagram.com/p/${postId}/`;
-                        setPostUrl(cleanUrl);
+                if (rawUrl) {
+                    try {
+                        const url = new URL(rawUrl);
+                        const parts = url.pathname.split('/').filter(Boolean);
+
+                        const postIndex = parts.indexOf('p');
+                        if (postIndex !== -1 && parts[postIndex + 1]) {
+                            const postId = parts[postIndex + 1];
+                            const cleanUrl = `https://www.instagram.com/p/${postId}/`;
+                            setIUrl(cleanUrl);
+                        }
+                    } catch (error) {
+                        console.error('Invalid URL', error);
                     }
-                } catch (error) {
-                    console.error('Invalid URL', error);
                 }
+            } catch (error) {
+                console.error('Error getting posts:', error);
+            } finally {
+                setIsPostLoading(false);
             }
+
         };
 
         getPosts();
     }, []);
 
     useEffect(() => {
-        if (!postUrl) return;
+        if (!iUrl) return;
 
         const script = document.createElement('script');
         script.src = 'https://www.instagram.com/embed.js';
@@ -50,62 +62,19 @@ const Post = () => {
             }
         };
         document.body.appendChild(script);
-    }, [postUrl]);
+    }, [iUrl]);
 
-    if (!postUrl) return <div>Loading Instagram post…</div>;
+    if (isPostLoading) return <div>Loading Instagram post…</div>;
 
     return (
-        <div>
+        <Row>
             <h2>
                 {personalityName}
             </h2>
-            <blockquote
-                className='instagram-media'
-                data-instgrm-permalink={postUrl}
-                data-instgrm-version='14'
-                style={{
-                    background: '#FFF',
-                    border: 0,
-                    borderRadius: '3px',
-                    boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
-                    margin: '1px',
-                    maxWidth: '540px',
-                    minWidth: '100px',
-                    padding: 0,
-                    width: 'calc(100% - 2px)'
-                }}
-            >
-                <div style={{ padding: '16px' }}>
-                    <a
-                        href={postUrl}
-                        style={{
-                            background: '#FFFFFF',
-                            lineHeight: 0,
-                            padding: '0 0',
-                            textAlign: 'center',
-                            textDecoration: 'none',
-                            width: '100%'
-                        }}
-                        target='_blank'
-                        rel='noreferrer'
-                    >
-                        <div style={{ paddingTop: '8px' }}>
-                            <div
-                                style={{
-                                    color: '#3897f0',
-                                    fontFamily: 'Arial,sans-serif',
-                                    fontSize: '14px',
-                                    fontWeight: 550,
-                                    lineHeight: '18px'
-                                }}
-                            >
-                                View this post on Instagram
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </blockquote>
-        </div>
+            <Card
+                iUrl={iUrl}
+            />
+        </Row>
     );
 };
 

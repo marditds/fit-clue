@@ -136,13 +136,13 @@ export const fetchPosts = async () => {
             return null
         };
 
-        const posts = postsRes.documents;
+        const contents = postsRes.documents;
 
         // All personalities' IDs
-        const personalityIds = posts.map(post => post.personality_id);
+        const personalityIds = contents.map(post => post.personality_id);
 
         // All links' IDs
-        const productLinkIds = posts.flatMap(post => post.product_links);
+        const productLinkIds = contents.flatMap(post => post.product_links);
 
         console.log('productLinkIds in fetchPost:', productLinkIds);
 
@@ -168,10 +168,10 @@ export const fetchPosts = async () => {
         }
 
         // All posts
-        const results = posts.map(post => ({
-            post,
-            personality: personalitiesMap[post.personality_id] || null,
-            links: (post.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
+        const results = contents.map(content => ({
+            content,
+            personality: personalitiesMap[content.personality_id] || null,
+            links: (content.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
         }));
 
         // console.log('results', results);
@@ -200,17 +200,17 @@ export const fetchPostById = async (postId) => {
             return null
         };
 
-        const post = postRes;
+        const content = postRes;
 
         // console.log('post in fetchPostById:', post);
 
         // Personality's ID
-        const personalityId = post.personality_id;
+        const personalityId = content.personality_id;
 
         // console.log('personalityId in fetchPostById:', personalityId);
 
         // All links' IDs
-        const productLinkIds = post.product_links;
+        const productLinkIds = content.product_links;
 
         // console.log('productLinkIds in fetchPostById:', productLinkIds);
 
@@ -233,9 +233,9 @@ export const fetchPostById = async (postId) => {
 
         // One post
         const result = {
-            post,
+            content,
             personality: personalityRes || null,
-            links: (post.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
+            links: (content.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
         };
 
         console.log('result in fetchPostById:', result);

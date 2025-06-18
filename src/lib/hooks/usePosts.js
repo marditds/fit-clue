@@ -3,10 +3,6 @@ import { makePost as composePost, fetchPosts as getPosts, fetchPostById as getPo
 
 export const usePosts = () => {
 
-    // useEffect(() => {
-    //     getPosts();
-    // }, [])
-
     const makePost = async (name, linksData, url) => {
         try {
             const res = await composePost(name, linksData, url);

@@ -1,26 +1,31 @@
 import { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts';
-import { Col, Container, Row } from 'react-bootstrap';
-import './CardComponent';
+import { Container, Row, Col } from 'react-bootstrap';
+import './Card';
 import './Grid.css';
-import { CardComponent } from './CardComponent';
-import { Link } from 'react-router-dom';
+import { Card } from './Card';
 
 const Grid = () => {
     const { fetchPosts } = usePosts();
-    const [postUrls, setPostUrls] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [isGridLoading, setIsGridLoading] = useState(false);
+
 
     useEffect(() => {
         const getPosts = async () => {
-            const p = await fetchPosts();
+            setIsGridLoading(true);
+            try {
+                const p = await fetchPosts();
 
-            console.log('posts', p);
+                console.log('posts', p);
 
-            setPosts(p);
-
+                setPosts(p);
+            } catch (error) {
+                console.error('Error getting posts:', error);
+            } finally {
+                setIsGridLoading(false);
+            }
         };
-
         getPosts();
     }, []);
 
@@ -43,7 +48,7 @@ const Grid = () => {
     }, [posts]);
 
 
-    if (posts.length === 0) return <div>Loading Instagram posts…</div>;
+    if (isGridLoading) return <div>Loading Instagram posts…</div>;
 
     return (
         <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-center '>
@@ -54,81 +59,33 @@ const Grid = () => {
                     </h2>
                 </Col>
             </Row>
-            <Row className='w-100 hakop'>
-                {posts.map((post, index) => {
-                    const rawUrl = post?.post?.url;
-                    const name = post?.personality?.name;
-                    const id = post?.post?.$id;
+            <Row className='w-100'>
+                {posts.map((post) => {
+
+                    const id = post?.content?.$id;
+                    const rawUrl = post?.content?.url;
+                    const personality_name = post?.personality?.name;
 
                     // Extract Instagram post URL
-                    let embedUrl = null;
+                    let iUrl = null;
                     try {
                         const url = new URL(rawUrl);
                         const parts = url.pathname.split('/').filter(Boolean);
                         const postIndex = parts.indexOf('p') !== -1 ? parts.indexOf('p') : parts.indexOf('reel');
                         if (postIndex !== -1 && parts[postIndex + 1]) {
                             const postId = parts[postIndex + 1];
-                            embedUrl = `https://www.instagram.com/${parts[postIndex]}/${postId}/`;
+                            iUrl = `https://www.instagram.com/${parts[postIndex]}/${postId}/`;
                         }
                     } catch (e) {
                         console.error('Invalid URL:', rawUrl);
                     }
                     return (
-
-                        <Col key={index} xs={12} md={6} xl={4} className="p-0 p-sm-2 d-flex justify-content-center">
-                            <div style={{ width: '100%', maxWidth: '100%' }}>
-                                <Link to={`post/${id}`}><h3 className='text-left latest__card-name'>
-                                    {name}
-                                </h3>
-                                </Link>
-                                <blockquote
-                                    className="instagram-media"
-                                    data-instgrm-permalink={embedUrl}
-                                    data-instgrm-version="14"
-                                    style={{
-                                        background: '#FFF',
-                                        border: 0,
-                                        borderRadius: '3px',
-                                        boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
-                                        margin: '1rem 0',
-                                        maxWidth: '540px',
-                                        minWidth: '0',
-                                        width: '100%',
-                                        padding: 0,
-                                    }}
-                                >
-                                    <div style={{ padding: '16px' }}>
-                                        <a
-                                            href={embedUrl}
-                                            style={{
-                                                background: '#FFFFFF',
-                                                lineHeight: 0,
-                                                padding: '0 0',
-                                                textAlign: 'center',
-                                                textDecoration: 'none',
-                                                width: '100%',
-                                            }}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            <div style={{ paddingTop: '8px' }}>
-                                                <div
-                                                    style={{
-                                                        color: '#3897f0',
-                                                        fontFamily: 'Arial,sans-serif',
-                                                        fontSize: '14px',
-                                                        fontWeight: 550,
-                                                        lineHeight: '18px',
-                                                    }}
-                                                >
-                                                    View this post on Instagram
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </blockquote>
-                            </div>
-                        </Col>
+                        <Card
+                            key={id}
+                            id={id}
+                            personality_name={personality_name}
+                            iUrl={iUrl}
+                        />
                     );
                 })}
             </Row>
