@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { Container, Row, Col } from 'react-bootstrap';
-import './Card';
-import './Grid.css';
-import { Card } from './Card';
+import { Card } from '../../components/Grid/Card';
+import '../../components/Grid/Grid.css';
 
-const Grid = () => {
+const TheLatest = () => {
     const { fetchPosts } = usePosts();
     const [posts, setPosts] = useState([]);
     const [isGridLoading, setIsGridLoading] = useState(false);
@@ -48,25 +47,24 @@ const Grid = () => {
     }, [posts]);
 
 
-    if (isGridLoading) return <div>Loading Instagram posts…</div>;
+    if (isGridLoading) return <div>Loading the latest…</div>;
 
     return (
-        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-center '>
-            <Row className='w-100 justify-content-start'>
-                <Col className='p-0 p-sm-2'>
+        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch latest__container'>
+            <Row className='justify-content-start'>
+                <Col className=''>
                     <h2 className='latest__page-title'>
                         THE LATEST
                     </h2>
                 </Col>
             </Row>
-            <Row className='w-100'>
+            <Row>
                 {posts.map((post) => {
 
                     const id = post?.content?.$id;
                     const rawUrl = post?.content?.url;
                     const personality_name = post?.personality?.name;
 
-                    // Extract Instagram post URL
                     let iUrl = null;
                     try {
                         const url = new URL(rawUrl);
@@ -95,4 +93,4 @@ const Grid = () => {
     );
 };
 
-export default Grid;
+export default TheLatest;

@@ -68,10 +68,8 @@ const Post = () => {
 
     return (
         <Row>
-            <h2>
-                {personalityName}
-            </h2>
             <Card
+                personality_name={personalityName}
                 iUrl={iUrl}
             />
         </Row>
