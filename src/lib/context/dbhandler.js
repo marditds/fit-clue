@@ -62,6 +62,36 @@ export const makePost = async (name, productLinksData, url) => {
     }
 }
 
+export const updatePost = async (docId, newLinkId) => {
+    try {
+
+        const doc = await databases.getDocument(
+            dbEnv,
+            postsCollEnv,
+            docId
+        );
+
+        const existingLinks = doc.product_links || [];
+
+        const updatedLinks = [...existingLinks, newLinkId];
+
+        const res = await databases.updateDocument(
+            dbEnv,
+            postsCollEnv,
+            docId,
+            {
+                product_links: updatedLinks
+            }
+        )
+
+        console.log('Post updated successfully:', res);
+
+        return res;
+    } catch (error) {
+        console.error('Error updating post:', error);
+    }
+}
+
 export const createPersonality = async (name) => {
 
     try {

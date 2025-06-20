@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchPostById as getPostById } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchPostById as getPostById, updatePost as update } from '../context/dbhandler';
 
 export const usePosts = () => {
 
@@ -9,6 +9,17 @@ export const usePosts = () => {
             return res;
         } catch (error) {
             console.error('Error making post:', error);
+        }
+    }
+
+    const updatePost = async (docId, newLinkId) => {
+        try {
+            const res = await update(docId, newLinkId);
+
+            return res;
+
+        } catch (error) {
+            console.error('Error updating post:', error);
         }
     }
 
@@ -30,5 +41,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, fetchPosts, fetchPostById }
+    return { makePost, fetchPosts, fetchPostById, updatePost }
 }

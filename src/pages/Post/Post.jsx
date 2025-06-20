@@ -3,16 +3,25 @@ import { useParams } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
+import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 
 const Post = () => {
 
     let params = useParams()
 
-    const { fetchPostById } = usePosts();
+    const { fetchPostById, updatePost } = usePosts();
+    const { createLink } = useShoppingLinks();
+
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
+
+    // user added links
+    const [companyName, setCompanyName] = useState(null);
+    const [itemName, setItemName] = useState(null);
+    const [href, setHref] = useState(null);
+    const [isAddningLink, setIsAddingLink] = useState(false);
 
     useEffect(() => {
         const getPosts = async () => {
@@ -68,6 +77,42 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
+    const onCompanyNameCahnge = (e) => {
+        setCompanyName(e.target.value);
+    };
+
+    const onItemNameChange = (e) => {
+        setItemName(e.target.value);
+    };
+
+    const onUrlCahnge = (e) => {
+        setHref(e.target.value);
+    };
+
+    const onAddLinkSubmit = async (e) => {
+
+        e.preventDefault();
+
+        try {
+            setIsAddingLink(true);
+
+            const newLink = await createLink(href, companyName, itemName);
+
+            const updatedPost = await updatePost(params.postId, newLink.$id);
+
+            console.log('updatedPost in Post.jsx:', updatedPost);
+
+
+        } catch (error) {
+            console.error('Error onAddSubmitLink:', error);
+        } finally {
+            setIsAddingLink(false);
+            setCompanyName(null);
+            setItemName(null);
+            setHref(null);
+        }
+    }
+
     if (isPostLoading) return <div>Loading Instagram post…</div>;
 
     return (
@@ -106,25 +151,34 @@ const Post = () => {
                     </ul>
 
                     {/* Add items links */}
-                    <Form>
+                    <Form onSubmit={onAddLinkSubmit}>
                         <Form.Group className='mb-3' controlId='CompanyNameField'>
                             <Form.Label>Company Name:</Form.Label>
-                            <Form.Control type='text' placeholder='Enter Company Name' />
+                            <Form.Control
+                                type='text'
+                                onChange={onCompanyNameCahnge}
+                                placeholder='Enter Company Name' />
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ItemNameField'>
                             <Form.Label>Item Name</Form.Label>
-                            <Form.Control type='text' placeholder='Enter Item Name' />
+                            <Form.Control
+                                type='text'
+                                onChange={onItemNameChange}
+                                placeholder='Enter Item Name' />
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ItemUrlField'>
                             <Form.Label>URL:</Form.Label>
-                            <Form.Control type='text' placeholder='Enter Item URL' />
+                            <Form.Control
+                                type='text'
+                                onChange={onUrlCahnge}
+                                placeholder='Enter Item URL' />
                         </Form.Group>
 
 
                         <Button variant='primary' type='submit'>
-                            Add Item Link
+                            {isAddningLink ? 'Adding link...' : 'Add Item Link'}
                         </Button>
                     </Form>
 

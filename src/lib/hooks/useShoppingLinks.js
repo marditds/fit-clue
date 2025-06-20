@@ -1,12 +1,15 @@
-import { fetchLinks as getLinks } from '../context/dbhandler';
+import { createLink as makeLink } from '../context/dbhandler';
 
 export const useShoppingLinks = () => {
 
-  const fetchLinks = async () => {
-    try {
-      const res = await getLinks();
+  const createLink = async (href, companyName, item) => {
 
-      console.log(res);
+    console.log(href, companyName, item);
+
+    try {
+      const res = await makeLink(href, companyName, item);
+
+      console.log('Link created successfully:', res);
 
       return res;
     } catch (error) {
@@ -14,5 +17,5 @@ export const useShoppingLinks = () => {
     }
   }
 
-  return { fetchLinks }
+  return { createLink }
 }
