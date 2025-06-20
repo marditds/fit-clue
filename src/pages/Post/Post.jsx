@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
-import { Button, Form, Container, Row, Col } from 'react-bootstrap';
+import { Form, Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
+import { reportCategories } from '../../lib/data/reportCategories';
 
 const Post = () => {
 
     let params = useParams()
 
-    const { fetchPostById, updatePost } = usePosts();
+    const { fetchPostById, updatePost, createReport } = usePosts();
     const { createLink } = useShoppingLinks();
 
     const [iUrl, setIUrl] = useState(null);
@@ -22,6 +23,15 @@ const Post = () => {
     const [itemName, setItemName] = useState('');
     const [href, setHref] = useState('');
     const [isAddningLink, setIsAddingLink] = useState(false);
+
+    // Report user generated links
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItemLinkId, setSelectedItemLinkId] = useState(null);
+    const [selectedReason, setSelectedReason] = useState('');
+    const [isOtherSelected, setIsOtherSelected] = useState(false);
+    const [otherText, setOtherText] = useState('');
+    const [isReportSubmitted, setIsReportSubmitted] = useState(false);
 
     useEffect(() => {
         const getPosts = async () => {
@@ -114,6 +124,35 @@ const Post = () => {
         }
     }
 
+    const handleReportClick = (item) => {
+        console.log('item:', item);
+        setSelectedItem(item);
+        setSelectedItemLinkId(item.$id);
+        setShowModal(true);
+    };
+
+    const handleClose = () => {
+        setShowModal(false);
+        setSelectedItem(null);
+        setSelectedReason('');
+        setOtherText('');
+        setIsOtherSelected(false);
+        setIsReportSubmitted(false);
+    };
+
+    const onSubmitReportClick = async () => {
+        try {
+            await createReport(selectedItemLinkId, selectedReason);
+
+            setIsReportSubmitted(true);
+
+            setTimeout(() => handleClose(), 2000);
+
+        } catch (error) {
+            console.error('Error submitting report:', error);
+        }
+    }
+
     if (isPostLoading) return <div>Loading Instagram post…</div>;
 
     return (
@@ -136,7 +175,7 @@ const Post = () => {
                         {
                             itemsLinks?.map((itemLink) => {
                                 return (
-                                    <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1'>
+                                    <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex'>
                                         <a href={itemLink.href}>
                                             <div>
                                                 {itemLink.item}
@@ -145,6 +184,7 @@ const Post = () => {
                                                 {itemLink.company_name}
                                             </div>
                                         </a>
+                                        <Button onClick={() => handleReportClick(itemLink)}>Report</Button>
                                     </li>
                                 )
                             })
@@ -193,6 +233,85 @@ const Post = () => {
                 </Col>
 
             </Row>
+
+            {/* Report modal */}
+            <Modal show={showModal} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Report Item</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {isReportSubmitted ? (
+                        <div>
+                            <p>Your report has been submitted successfully.</p>
+                        </div>
+                    ) : (
+                        <>
+                            <p>
+                                Reporting: <strong>{selectedItem?.item} from {selectedItem?.company_name}</strong>
+                            </p>
+                            <Form>
+                                {reportCategories.map((category, index) => (
+                                    <Form.Check
+                                        type='radio'
+                                        id={`report-${index}`}
+                                        key={index}
+                                        name='reportReason'
+                                        label={<><strong>{category.label}</strong>: {category.description}</>}
+                                        value={category.short}
+                                        checked={selectedReason === category.short || (category.short === 'OTHER' && isOtherSelected)}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (value === 'OTHER') {
+                                                setIsOtherSelected(true);
+                                                setSelectedReason(otherText);
+                                            } else {
+                                                setIsOtherSelected(false);
+                                                setOtherText('');
+                                                setSelectedReason(value);
+                                            }
+                                        }}
+                                    />
+                                ))}
+
+                                {isOtherSelected && (
+                                    <div className='mt-3'>
+                                        <Form.Label>
+                                            Please describe the issue (max 300 characters)
+                                        </Form.Label>
+                                        <Form.Control
+                                            as='textarea'
+                                            rows={3}
+                                            maxLength={300}
+                                            value={otherText}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                setOtherText(value);
+                                                setSelectedReason(value);
+                                            }}
+                                        />
+                                        <div className='text-muted text-end'>
+                                            {otherText.length} / 300
+                                        </div>
+                                    </div>
+                                )}
+                            </Form>
+                        </>
+                    )}
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant='secondary' onClick={handleClose}>
+                        {isReportSubmitted ? 'Close' : 'Cancel'}
+                    </Button>
+                    {!isReportSubmitted && (
+                        <Button variant='primary' disabled={!selectedReason} onClick={onSubmitReportClick}>
+                            Submit
+                        </Button>
+                    )}
+                </Modal.Footer>
+
+            </Modal>
+
         </Container>
     );
 };

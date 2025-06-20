@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReport as makeReport } from '../context/dbhandler';
 
 export const usePosts = () => {
 
@@ -50,5 +50,15 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, fetchPosts, fetchTheLatestPosts, fetchPostById, updatePost }
+    const createReport = async (linkId, reason) => {
+        try {
+            const reportDoc = await makeReport(linkId, reason);
+
+            return reportDoc;
+        } catch (error) {
+            console.error('Error creating report:', error);
+        }
+    }
+
+    return { makePost, fetchPosts, fetchTheLatestPosts, fetchPostById, updatePost, createReport }
 }

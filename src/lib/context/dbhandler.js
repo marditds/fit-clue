@@ -15,7 +15,7 @@ const dbEnv = import.meta.env.VITE_DATABASE_ID;
 const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
-
+const reportsCollEnv = import.meta.env.VITE_REPORTS_COLLECTION;
 
 export const makePost = async (name, productLinksData, url) => {
 
@@ -434,6 +434,28 @@ export const fetchPersonalities = async () => {
     } catch (error) {
         console.error('Error fetching links:', error);
 
+    }
+}
+
+export const createReport = async (linkId, reason) => {
+    try {
+        const reportDoc = await databases.createDocument(
+            dbEnv,
+            reportsCollEnv,
+            ID.unique(),
+            {
+                link_id: linkId,
+                reason
+            }
+        )
+
+        if (reportDoc) {
+            console.log('Report created successfully:', reportDoc);
+            return reportDoc;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error creating report:', error);
     }
 }
 
