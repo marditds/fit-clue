@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchPostById as getPostById, updatePost as update } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update } from '../context/dbhandler';
 
 export const usePosts = () => {
 
@@ -32,6 +32,15 @@ export const usePosts = () => {
         }
     }
 
+    const fetchTheLatestPosts = async () => {
+        try {
+            const res = await getTheLatestPosts();
+            return res;
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    }
+
     const fetchPostById = async (postId) => {
         try {
             const res = await getPostById(postId);
@@ -41,5 +50,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, fetchPosts, fetchPostById, updatePost }
+    return { makePost, fetchPosts, fetchTheLatestPosts, fetchPostById, updatePost }
 }

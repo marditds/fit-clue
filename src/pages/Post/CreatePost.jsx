@@ -1,0 +1,156 @@
+import { useState, useEffect } from 'react';
+import { usePosts } from '../../lib/hooks/usePosts.js';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+
+const CreatePost = () => {
+    const { makePost, fetchPosts } = usePosts();
+
+    const [name, setName] = useState('');
+    const [photoLink, setPhotoLink] = useState('');
+    const [showLinks, setShowLinks] = useState(false);
+    const [links, setLinks] = useState([]);
+
+    // useEffect(() => {
+    //     fetchPosts();
+    // }, []);
+
+    const handleLinkChange = (index, e) => {
+        const { name, value } = e.target;
+        const updatedLinks = [...links];
+        updatedLinks[index][name] = value;
+        setLinks(updatedLinks);
+    };
+
+    const addLinkField = () => {
+        setLinks([...links, { href: '', companyName: '', item: '' }]);
+    };
+
+    const removeLinkField = (indexToRemove) => {
+        const updatedLinks = links.filter((_, index) => index !== indexToRemove);
+        setLinks(updatedLinks);
+    };
+
+    const handleCheckboxChange = (e) => {
+        const checked = e.target.checked;
+        setShowLinks(checked);
+        if (checked && links.length === 0) {
+            addLinkField();
+        } else if (!checked) {
+            setLinks([]);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const filteredLinks = showLinks
+                ? links.filter(link => link.href && link.companyName && link.item)
+                : [];
+
+            const response = await makePost(name, filteredLinks, photoLink);
+            if (response) {
+                console.log('Post created successfully!');
+            } else {
+                console.error('Post creation failed.');
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    return (
+        <Container>
+            <Row>
+                <Col>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="formName">
+                            <Form.Label>Name:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formPhotoLink">
+                            <Form.Label>Photo Link:</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={photoLink}
+                                onChange={e => setPhotoLink(e.target.value)}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formShowLinks">
+                            <Form.Check
+                                type="checkbox"
+                                label="Add Links"
+                                checked={showLinks}
+                                onChange={handleCheckboxChange}
+                            />
+                        </Form.Group>
+
+                        {showLinks && (
+                            <div>
+                                <Form.Label>Links:</Form.Label>
+                                {links.map((link, index) => (
+                                    <Row key={index} className="mb-2">
+                                        <Col>
+                                            <Form.Control
+                                                name="href"
+                                                placeholder="Link URL"
+                                                value={link.href}
+                                                onChange={e => handleLinkChange(index, e)}
+                                                required
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                name="companyName"
+                                                placeholder="Company Name"
+                                                value={link.companyName}
+                                                onChange={e => handleLinkChange(index, e)}
+                                                required
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <Form.Control
+                                                name="item"
+                                                placeholder="Item"
+                                                value={link.item}
+                                                onChange={e => handleLinkChange(index, e)}
+                                                required
+                                            />
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Button variant="danger" onClick={() => removeLinkField(index)}>
+                                                Remove
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                ))}
+                                <Button variant="secondary" type="button" onClick={addLinkField}>
+                                    + Add Another Link
+                                </Button>
+                            </div>
+                        )}
+
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className="mt-3"
+                            disabled={!name || !photoLink}
+                        >
+                            Create Post
+                        </Button>
+                    </Form>
+
+                </Col>
+            </Row>
+        </Container>
+    );
+};
+
+export default CreatePost;

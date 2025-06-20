@@ -214,6 +214,70 @@ export const fetchPosts = async () => {
     }
 };
 
+export const fetchTheLatestPosts = async () => {
+    try {
+        const postsRes = await databases.listDocuments(
+            dbEnv,
+            postsCollEnv,
+            [
+                Query.orderDesc('$createdAt'),
+                Query.limit(3)
+            ]
+        );
+
+        if (postsRes.total === 0) {
+            console.log('No posts yet.');
+            return null
+        };
+
+        const contents = postsRes.documents;
+
+        // All personalities' IDs
+        const personalityIds = contents.map(post => post.personality_id);
+
+        // All links' IDs
+        const productLinkIds = contents.flatMap(post => post.product_links);
+
+        console.log('productLinkIds in fetchPost:', productLinkIds);
+
+        // Fetch personalities
+        const personalitiesRes = await fetchPersonalitiesByIds(personalityIds);
+
+        const personalitiesMap = Object.fromEntries(
+            personalitiesRes.documents.map(personality => [personality.$id, personality])
+        );
+
+        // console.log('personalitiesMap', personalitiesMap);
+
+        // Fetch links  
+        const productLinksRes = await fetchProductLinksByIds(productLinkIds);
+
+        console.log('productLinksRes in fetchPosts:', productLinksRes);
+
+        let productLinksMap = {};
+        if (productLinksRes.length !== 0) {
+            productLinksMap = Object.fromEntries(
+                productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])
+            );
+        }
+
+        // All posts
+        const results = contents.map(content => ({
+            content,
+            personality: personalitiesMap[content.personality_id] || null,
+            links: (content.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
+        }));
+
+        // console.log('results', results);
+
+        return results;
+
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return null;
+    }
+};
+
 export const fetchPostById = async (postId) => {
 
     try {

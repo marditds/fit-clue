@@ -5,7 +5,7 @@ import { Card } from '../../components/Grid/Card';
 import '../../components/Grid/Grid.css';
 
 const TheLatest = () => {
-    const { fetchPosts } = usePosts();
+    const { fetchTheLatestPosts } = usePosts();
     const [posts, setPosts] = useState([]);
     const [isGridLoading, setIsGridLoading] = useState(false);
 
@@ -14,7 +14,7 @@ const TheLatest = () => {
         const getPosts = async () => {
             setIsGridLoading(true);
             try {
-                const p = await fetchPosts();
+                const p = await fetchTheLatestPosts();
 
                 console.log('posts', p);
 
