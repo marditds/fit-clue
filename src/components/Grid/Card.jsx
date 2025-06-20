@@ -1,7 +1,7 @@
 import { Col } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 
-export const Card = ({ id, personality_name, iUrl }) => {
+export const Card = ({ id, personalityName, iUrl }) => {
 
     const location = useLocation();
 
@@ -13,16 +13,16 @@ export const Card = ({ id, personality_name, iUrl }) => {
                     !location.pathname.startsWith('/post') &&
                     <Link to={`post/${id}`}>
                         <h3 className='text-left latest__card-name'>
-                            {personality_name}
+                            {personalityName}
                         </h3>
                     </Link>
                 }
-                {
+                {/* {
                     location.pathname.startsWith('/post') &&
                     <h3 className='text-left latest__card-name'>
-                        {personality_name}
+                        {personalityName}
                     </h3>
-                }
+                } */}
                 <blockquote
                     className='instagram-media'
                     data-instgrm-permalink={iUrl}
@@ -69,12 +69,15 @@ export const Card = ({ id, personality_name, iUrl }) => {
                         </a>
                     </div>
                 </blockquote>
-                {/* <div className=''> */}
-                <Link to={`post/${id}`} className='w-100 d-flex align-items-center'>
-                    <span className='me-auto'>View details</span>
-                    <i className='bi bi-arrow-right ms-auto fs-4' />
-                </Link>
-                {/* </div> */}
+
+                {
+                    !location.pathname.startsWith('/post') &&
+                    <Link to={`post/${id}`} className='w-100 d-flex align-items-center'>
+                        <span className='me-auto'>View details</span>
+                        <i className='bi bi-arrow-right ms-auto fs-4' />
+                    </Link>
+                }
+
             </div>
             {/* </div> */}
         </Col>

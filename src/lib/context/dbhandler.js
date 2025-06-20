@@ -160,7 +160,7 @@ export const fetchPosts = async () => {
 
         console.log('productLinksRes in fetchPosts:', productLinksRes);
 
-        const productLinksMap = {};
+        let productLinksMap = {};
         if (productLinksRes.length !== 0) {
             productLinksMap = Object.fromEntries(
                 productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])
@@ -224,7 +224,7 @@ export const fetchPostById = async (postId) => {
 
         // console.log('productLinksRes in fetchPosts:', productLinksRes);
 
-        const productLinksMap = {};
+        let productLinksMap = {};
         if (productLinksRes.length !== 0) {
             productLinksMap = Object.fromEntries(
                 productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])

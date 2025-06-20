@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { usePosts } from '../../lib/hooks/usePosts';
 import { useParams } from 'react-router-dom';
-import { Row } from 'react-bootstrap';
+import { usePosts } from '../../lib/hooks/usePosts';
+import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 
 const Post = () => {
@@ -11,6 +11,7 @@ const Post = () => {
     const { fetchPostById } = usePosts();
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
+    const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
 
     useEffect(() => {
@@ -21,7 +22,10 @@ const Post = () => {
             try {
                 const post = await fetchPostById(params.postId);
 
+                console.log('post in Post.jsx:', post);
+
                 setPersonalityName(post?.personality?.name);
+                setItemsLinks(post?.links);
                 const rawUrl = post?.content?.url;
 
                 if (rawUrl) {
@@ -67,12 +71,67 @@ const Post = () => {
     if (isPostLoading) return <div>Loading Instagram post…</div>;
 
     return (
-        <Row>
-            <Card
-                personality_name={personalityName}
-                iUrl={iUrl}
-            />
-        </Row>
+        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch'>
+            <Row>
+                <h3 className='text-left'>
+                    {personalityName}
+                </h3>
+            </Row>
+            <Row>
+                {/* image */}
+                <Card
+                    personalityName={personalityName}
+                    iUrl={iUrl}
+                />
+
+                <Col>
+                    {/* Items lists */}
+                    <ul className='list-unstyled'>
+                        {
+                            itemsLinks?.map((itemLink) => {
+                                return (
+                                    <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1'>
+                                        <a href={itemLink.href}>
+                                            <div>
+                                                {itemLink.item}
+                                            </div>
+                                            <div>
+                                                {itemLink.company_name}
+                                            </div>
+                                        </a>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+
+                    {/* Add items links */}
+                    <Form>
+                        <Form.Group className='mb-3' controlId='CompanyNameField'>
+                            <Form.Label>Company Name:</Form.Label>
+                            <Form.Control type='text' placeholder='Enter Company Name' />
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='ItemNameField'>
+                            <Form.Label>Item Name</Form.Label>
+                            <Form.Control type='text' placeholder='Enter Item Name' />
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='ItemUrlField'>
+                            <Form.Label>URL:</Form.Label>
+                            <Form.Control type='text' placeholder='Enter Item URL' />
+                        </Form.Group>
+
+
+                        <Button variant='primary' type='submit'>
+                            Add Item Link
+                        </Button>
+                    </Form>
+
+                </Col>
+
+            </Row>
+        </Container>
     );
 };
 

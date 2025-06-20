@@ -63,7 +63,7 @@ const TheLatest = () => {
 
                     const id = post?.content?.$id;
                     const rawUrl = post?.content?.url;
-                    const personality_name = post?.personality?.name;
+                    const personalityName = post?.personality?.name;
 
                     let iUrl = null;
                     try {
@@ -81,7 +81,7 @@ const TheLatest = () => {
                         <Card
                             key={id}
                             id={id}
-                            personality_name={personality_name}
+                            personalityName={personalityName}
                             iUrl={iUrl}
                         />
                     );
