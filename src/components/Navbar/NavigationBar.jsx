@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 const NavigationBar = () => {
@@ -9,9 +10,8 @@ const NavigationBar = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
-                        <Nav.Link href='/post/create'>
+                        <Nav.Link as={Link} to='/' href="#home">Home</Nav.Link>
+                        <Nav.Link as={Link} to='/post/create'>
                             Create <i className='bi bi-plus-circle' />
                         </Nav.Link>
                         {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">

@@ -18,9 +18,9 @@ const Post = () => {
     const [isPostLoading, setIsPostLoading] = useState(false);
 
     // user added links
-    const [companyName, setCompanyName] = useState(null);
-    const [itemName, setItemName] = useState(null);
-    const [href, setHref] = useState(null);
+    const [companyName, setCompanyName] = useState('');
+    const [itemName, setItemName] = useState('');
+    const [href, setHref] = useState('');
     const [isAddningLink, setIsAddingLink] = useState(false);
 
     useEffect(() => {
@@ -102,14 +102,15 @@ const Post = () => {
 
             console.log('updatedPost in Post.jsx:', updatedPost);
 
+            setItemsLinks((prevLinks) => [...(prevLinks || []), newLink]);
 
         } catch (error) {
             console.error('Error onAddSubmitLink:', error);
         } finally {
             setIsAddingLink(false);
-            setCompanyName(null);
-            setItemName(null);
-            setHref(null);
+            setCompanyName('');
+            setItemName('');
+            setHref('');
         }
     }
 
@@ -156,6 +157,7 @@ const Post = () => {
                             <Form.Label>Company Name:</Form.Label>
                             <Form.Control
                                 type='text'
+                                value={companyName}
                                 onChange={onCompanyNameCahnge}
                                 placeholder='Enter Company Name' />
                         </Form.Group>
@@ -164,6 +166,7 @@ const Post = () => {
                             <Form.Label>Item Name</Form.Label>
                             <Form.Control
                                 type='text'
+                                value={itemName}
                                 onChange={onItemNameChange}
                                 placeholder='Enter Item Name' />
                         </Form.Group>
@@ -172,12 +175,17 @@ const Post = () => {
                             <Form.Label>URL:</Form.Label>
                             <Form.Control
                                 type='text'
+                                value={href}
                                 onChange={onUrlCahnge}
                                 placeholder='Enter Item URL' />
                         </Form.Group>
 
 
-                        <Button variant='primary' type='submit'>
+                        <Button
+                            variant='primary'
+                            type='submit'
+                            disabled={!companyName || !itemName || !href}
+                        >
                             {isAddningLink ? 'Adding link...' : 'Add Item Link'}
                         </Button>
                     </Form>

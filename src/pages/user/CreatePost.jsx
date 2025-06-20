@@ -9,9 +9,9 @@ const CreatePost = () => {
     const [showLinks, setShowLinks] = useState(false);
     const [links, setLinks] = useState([]);
 
-    useEffect(() => {
-        fetchPosts();
-    }, []);
+    // useEffect(() => {
+    //     fetchPosts();
+    // }, []);
 
     const handleLinkChange = (index, e) => {
         const { name, value } = e.target;
