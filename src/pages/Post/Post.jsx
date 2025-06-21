@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useOutletContext } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
+import { useUser } from '../../lib/hooks/useUser';
 import { Form, Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { reportCategories } from '../../lib/data/reportCategories';
 
 const Post = () => {
+
+    const { userId } = useOutletContext();
 
     let params = useParams()
 
@@ -33,6 +36,10 @@ const Post = () => {
     const [otherText, setOtherText] = useState('');
     const [isReportSubmitted, setIsReportSubmitted] = useState(false);
     const [isReportGettingSubmitted, setIsReportGettingSubmitted] = useState(false);
+
+    useEffect(() => {
+        console.log('userId:', userId);
+    }, [userId])
 
     useEffect(() => {
         const getPosts = async () => {
@@ -107,7 +114,7 @@ const Post = () => {
         try {
             setIsAddingLink(true);
 
-            const newLink = await createLink(href, companyName, itemName);
+            const newLink = await createLink(href, companyName, itemName, userId);
 
             const updatedPost = await updatePost(params.postId, newLink.$id);
 

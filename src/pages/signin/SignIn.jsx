@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useUser } from '../../lib/hooks/useUser';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 export const SignIn = () => {
 
+    const navigate = useNavigate();
+
+    const { userId, sessionId, setSessionId, setUserId, setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
+
     const { signInUser } = useUser();
 
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSigningInInProgress, setIsSigningInInProgress] = useState(false);
@@ -22,28 +26,43 @@ export const SignIn = () => {
                 setErrorMsg(user);
                 return;
             }
+
+            if (typeof user === null) {
+                setErrorMsg('Something went wrong. Please try again later.');
+                return;
+            }
+
+            console.log('user in SignIn.jsx:', user);
+
+            localStorage.setItem('authUserId', user.userId);
+
+            setSessionId(user.$id);
+            setUserId(user.userId);
+            setIsLoggedIn(true);
+            setIsSessionInProgress(true);
+
+            navigate('/');
+
         } catch (error) {
             console.error('Error signing in user:', error);
         } finally {
             setIsSigningInInProgress(false);
         }
-
     }
+
+    useEffect(() => {
+        console.log('userId:', userId);
+    }, [userId])
+
+    useEffect(() => {
+        console.log('sessionId:', sessionId);
+    }, [sessionId])
 
     return (
         <Container>
             <Row>
                 <Col>
                     <Form>
-                        <Form.Group className='mb-3' controlId='nameFormField'>
-                            <Form.Label>Full name:</Form.Label>
-                            <Form.Control
-                                type='name'
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder='Enter name'
-                            />
-                        </Form.Group>
 
                         <Form.Group className='mb-3' controlId='emailFormField'>
                             <Form.Label>Email address</Form.Label>

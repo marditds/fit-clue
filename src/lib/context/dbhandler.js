@@ -45,7 +45,7 @@ export const createUser = async (email, password, name) => {
 
 export const signInUser = async (email, password) => {
     try {
-        const user = account.createEmailPasswordSession(
+        const user = await account.createEmailPasswordSession(
             email,
             password
         )
@@ -57,8 +57,23 @@ export const signInUser = async (email, password) => {
 
         return null;
     } catch (error) {
-        // if(error.code )
+        if (error.code === 401) {
+            return 'Invalid credentials. Please check the email and password.';
+        } else {
+            return 'Something went wrong. Please try again.'
+        }
         console.error('Error signing in user:', error);
+    }
+}
+
+export const getUserSession = async () => {
+    try {
+        const sessionDets = await account.getSession('current');
+
+        console.log('sessionDets:', sessionDets);
+
+    } catch (error) {
+        console.error('Error getting session details:', error);
     }
 }
 
@@ -170,7 +185,7 @@ export const createPersonality = async (name) => {
     }
 }
 
-export const createLink = async (href, companyName, item) => {
+export const createLink = async (href, companyName, item, userId) => {
 
     if (!href) {
         return;
@@ -184,7 +199,8 @@ export const createLink = async (href, companyName, item) => {
             {
                 href,
                 company_name: companyName,
-                item
+                item,
+                user_id: userId
             }
         )
 

@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession } from '../context/dbhandler';
 
 export const useUser = () => {
 
@@ -20,5 +20,14 @@ export const useUser = () => {
         }
     }
 
-    return { createUser, signInUser };
+    const getUserSession = async () => {
+        try {
+            const session = await fetchUserSession();
+            return session;
+        } catch (error) {
+            console.error('Error getting user session details:', error);
+        }
+    }
+
+    return { createUser, signInUser, getUserSession };
 }

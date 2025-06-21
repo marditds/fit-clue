@@ -3,12 +3,19 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import '../../components/Grid/Grid.css';
+import { useUser } from '../../lib/hooks/useUser';
 
 const TheLatest = () => {
+
+    // const { getUserSession } = useUser();
+
     const { fetchTheLatestPosts } = usePosts();
     const [posts, setPosts] = useState([]);
     const [isGridLoading, setIsGridLoading] = useState(false);
 
+    // useEffect(() => {
+    //     getUserSession();
+    // }, [])
 
     useEffect(() => {
         const getPosts = async () => {

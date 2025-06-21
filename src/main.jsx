@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
 import './index.css'
 import App from './App.jsx'
 import Post from './pages/Post/Post.jsx';
@@ -12,11 +13,14 @@ import { SignUp } from './pages/signup/SignUp.jsx';
 import { SignIn } from './pages/signin/SignIn.jsx';
 
 const MainLayout = () => {
+
+  const { userId, sessionId, isLoggedIn, setSessionId, setUserId, setIsLoggedIn, setIsSessionInProgress } = useUserContext();
+
   return (
     <>
       <NavigationBar />
       <main>
-        <Outlet />
+        <Outlet context={{ userId, sessionId, isLoggedIn, setSessionId, setUserId, setIsLoggedIn, setIsSessionInProgress }} />
       </main>
     </>
   )
@@ -38,7 +42,7 @@ const router = createBrowserRouter([
           {
             path: 'create',
             element: <CreatePost />
-          }
+          },
         ]
       },
       {
@@ -48,7 +52,7 @@ const router = createBrowserRouter([
       {
         path: 'sign-in',
         element: <SignIn />
-      }
+      },
     ]
   },
 
@@ -56,6 +60,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </StrictMode>,
 )
