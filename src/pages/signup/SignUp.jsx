@@ -1,0 +1,86 @@
+import { useState } from 'react';
+import { useUser } from '../../lib/hooks/useUser';
+import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+
+export const SignUp = () => {
+
+    const { createUser } = useUser();
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isAccoutBeingCreated, setIsAccountBeingCreated] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    const onCreateUserClick = async () => {
+        setIsAccountBeingCreated(true);
+        try {
+            const user = await createUser(email, password, name);
+
+            if (typeof user === 'string') {
+                setErrorMsg(user);
+                return;
+            }
+
+        } catch (error) {
+            console.error('Error creating user:', error);
+        } finally {
+            setIsAccountBeingCreated(false);
+        }
+    }
+
+    return (
+        <Container>
+            <Row>
+                <Col>
+                    <Form>
+                        <Form.Group className='mb-3' controlId='nameFormField'>
+                            <Form.Label>Full name:</Form.Label>
+                            <Form.Control
+                                type='name'
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder='Enter name'
+                            />
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='emailFormField'>
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type='email'
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder='Enter email'
+                            />
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='passwordFormField'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type='password'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder='Password'
+                            />
+                        </Form.Group>
+
+                        <Button
+                            variant='primary'
+                            type='button'
+                            onClick={onCreateUserClick}
+                            disabled={isAccoutBeingCreated}
+                        >
+                            {!isAccoutBeingCreated ? 'Sign up' : 'Loading...'}
+                        </Button>
+
+                        {errorMsg &&
+                            <Form.Text>
+                                {errorMsg}
+                            </Form.Text>
+                        }
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
+    )
+}

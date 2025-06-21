@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query, Functions } from 'appwrite';
+import { Client, Databases, ID, Query, Functions, Account } from 'appwrite';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -6,6 +6,8 @@ export const projectEnv = import.meta.env.VITE_PROJECT_ID;
 const client = new Client()
     .setEndpoint(endpointEnv)
     .setProject(projectEnv);
+
+const account = new Account(client);
 
 const databases = new Databases(client);
 
@@ -16,6 +18,49 @@ const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
 const reportsCollEnv = import.meta.env.VITE_REPORTS_COLLECTION;
+
+export const createUser = async (email, password, name) => {
+    try {
+        const user = await account.create(
+            ID.unique(),
+            email,
+            password,
+            name
+        );
+
+        if (user) {
+            console.log('User was created successfully:', user);
+            return user;
+        }
+
+        return null;
+    } catch (error) {
+        if (error.code === 409) {
+            return 'A user with the same email already exists.'
+        } else {
+            console.error('Error creating user:', error);
+        }
+    }
+}
+
+export const signInUser = async (email, password) => {
+    try {
+        const user = account.createEmailPasswordSession(
+            email,
+            password
+        )
+
+        if (user) {
+            console.log('User signed in successfully:', user);
+            return user;
+        }
+
+        return null;
+    } catch (error) {
+        // if(error.code )
+        console.error('Error signing in user:', error);
+    }
+}
 
 export const makePost = async (name, productLinksData, url) => {
 
@@ -458,6 +503,3 @@ export const createReport = async (linkId, reason) => {
         console.error('Error creating report:', error);
     }
 }
-
-
-

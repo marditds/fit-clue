@@ -32,6 +32,7 @@ const Post = () => {
     const [isOtherSelected, setIsOtherSelected] = useState(false);
     const [otherText, setOtherText] = useState('');
     const [isReportSubmitted, setIsReportSubmitted] = useState(false);
+    const [isReportGettingSubmitted, setIsReportGettingSubmitted] = useState(false);
 
     useEffect(() => {
         const getPosts = async () => {
@@ -141,6 +142,7 @@ const Post = () => {
     };
 
     const onSubmitReportClick = async () => {
+        setIsReportGettingSubmitted(true);
         try {
             await createReport(selectedItemLinkId, selectedReason);
 
@@ -150,6 +152,8 @@ const Post = () => {
 
         } catch (error) {
             console.error('Error submitting report:', error);
+        } finally {
+            setIsReportGettingSubmitted(false);
         }
     }
 
@@ -304,12 +308,11 @@ const Post = () => {
                         {isReportSubmitted ? 'Close' : 'Cancel'}
                     </Button>
                     {!isReportSubmitted && (
-                        <Button variant='primary' disabled={!selectedReason} onClick={onSubmitReportClick}>
-                            Submit
+                        <Button variant='primary' disabled={!selectedReason || isReportGettingSubmitted} onClick={onSubmitReportClick}>
+                            {!isReportGettingSubmitted ? 'Submit' : 'Submitting Report'}
                         </Button>
                     )}
                 </Modal.Footer>
-
             </Modal>
 
         </Container>

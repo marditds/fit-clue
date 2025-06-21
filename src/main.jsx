@@ -8,6 +8,8 @@ import NavigationBar from './components/Navbar/NavigationBar.jsx';
 import CreatePost from './pages/Post/CreatePost.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { SignUp } from './pages/signup/SignUp.jsx';
+import { SignIn } from './pages/signin/SignIn.jsx';
 
 const MainLayout = () => {
   return (
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
           }
         ]
       },
+      {
+        path: 'sign-up',
+        element: <SignUp />
+      },
+      {
+        path: 'sign-in',
+        element: <SignIn />
+      }
     ]
   },
 
