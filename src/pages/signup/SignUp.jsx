@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useUser } from '../../lib/hooks/useUser';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 export const SignUp = () => {
+
+    const navigate = useNavigate();
 
     const { createUser } = useUser();
 
@@ -21,6 +24,8 @@ export const SignUp = () => {
                 setErrorMsg(user);
                 return;
             }
+
+            navigate('/sign-in');
 
         } catch (error) {
             console.error('Error creating user:', error);

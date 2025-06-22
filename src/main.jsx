@@ -11,16 +11,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { SignUp } from './pages/signup/SignUp.jsx';
 import { SignIn } from './pages/signin/SignIn.jsx';
+import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
 
 const MainLayout = () => {
 
-  const { userId, sessionId, isLoggedIn, setSessionId, setUserId, setIsLoggedIn, setIsSessionInProgress } = useUserContext();
+  const {
+    userId, setUserId,
+    sessionId, setSessionId,
+    username, setUsername,
+    isLoggedIn, setIsLoggedIn,
+    setIsSessionInProgress, setIsSignOutInProgress
+  } = useUserContext();
 
   return (
     <>
       <NavigationBar />
       <main>
-        <Outlet context={{ userId, sessionId, isLoggedIn, setSessionId, setUserId, setIsLoggedIn, setIsSessionInProgress }} />
+        <Outlet context={{
+          userId, setUserId,
+          sessionId, setSessionId,
+          username, setUsername,
+          isLoggedIn, setIsLoggedIn,
+          setIsSessionInProgress, setIsSignOutInProgress
+        }} />
       </main>
     </>
   )
@@ -44,6 +57,10 @@ const router = createBrowserRouter([
             element: <CreatePost />
           },
         ]
+      },
+      {
+        path: 'dashboard',
+        element: <Dashboard />
       },
       {
         path: 'sign-up',

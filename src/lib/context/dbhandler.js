@@ -35,10 +35,13 @@ export const createUser = async (email, password, name) => {
 
         return null;
     } catch (error) {
+
+        console.error('Error creating user:', error);
+
         if (error.code === 409) {
             return 'A user with the same email already exists.'
         } else {
-            console.error('Error creating user:', error);
+            return ('Something went wrong. Please refresh the page, and try again.');
         }
     }
 }
@@ -57,12 +60,14 @@ export const signInUser = async (email, password) => {
 
         return null;
     } catch (error) {
+
+        console.error('Error signing in user:', error);
+
         if (error.code === 401) {
             return 'Invalid credentials. Please check the email and password.';
         } else {
             return 'Something went wrong. Please try again.'
         }
-        console.error('Error signing in user:', error);
     }
 }
 
@@ -77,7 +82,47 @@ export const getUserSession = async () => {
     }
 }
 
-export const makePost = async (name, productLinksData, url) => {
+export const getUserAccount = async () => {
+    try {
+        const user = await account.get();
+
+        return user;
+
+    } catch (error) {
+        console.error('Error getting user account:', error);
+    }
+}
+
+export const updateUserPassword = async (newPassword, oldPassword) => {
+    try {
+        const res = await account.updatePassword(
+            newPassword,
+            oldPassword
+        )
+
+        console.log(res);
+        return res;
+    } catch (error) {
+        console.error('Error updating user password:', error);
+        if (error.code === 400) {
+            return 'Password must be between 8 and 265 characters long.'
+        } else if (error.code === 401) {
+            return 'Please check your old passowrd.'
+        } else {
+            return 'Something went wrong. Please try again later.'
+        }
+    }
+}
+
+export const deleteUserSession = async () => {
+    try {
+        await account.deleteSession('current');
+    } catch (error) {
+        console.error('Error removing session:', error);
+    }
+}
+
+export const makePost = async (name, productLinksData, url, userId) => {
 
     console.log({ name, productLinksData, url });
 
@@ -108,7 +153,8 @@ export const makePost = async (name, productLinksData, url) => {
             {
                 url,
                 personality_id: personality.$id,
-                product_links: product_links.map(product_link => product_link.$id)
+                product_links: product_links.map(product_link => product_link.$id),
+                user_id: userId
             }
         );
 

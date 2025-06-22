@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react';
 import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReport as makeReport } from '../context/dbhandler';
+import { useUserContext } from '../context/UserContext';
+
 
 export const usePosts = () => {
 
+    const { userId } = useUserContext();
+
+    useEffect(() => {
+        console.log('user id in usePosts.jsx:', userId);
+    }, [userId])
+
     const makePost = async (name, linksData, url) => {
         try {
-            const res = await composePost(name, linksData, url);
+            const res = await composePost(name, linksData, url, userId);
             return res;
         } catch (error) {
             console.error('Error making post:', error);

@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword } from '../context/dbhandler';
 
 export const useUser = () => {
 
@@ -29,5 +29,31 @@ export const useUser = () => {
         }
     }
 
-    return { createUser, signInUser, getUserSession };
+    const updateUserPassword = async (newPassword, oldPassword) => {
+        try {
+            const user = await changeUserPassword(newPassword, oldPassword);
+            return user;
+        } catch (error) {
+            console.error('Error updating user password:', error);
+        }
+    }
+
+    const getUserAccount = async () => {
+        try {
+            const user = await fetchUserAccount();
+            return user;
+        } catch (error) {
+            console.error('Error getting user session details:', error);
+        }
+    }
+
+    const deleteUserSession = async () => {
+        try {
+            await removeUserSession();
+        } catch (error) {
+            console.error('Error getting user session details:', error);
+        }
+    }
+
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword };
 }

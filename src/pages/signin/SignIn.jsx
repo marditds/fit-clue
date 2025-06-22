@@ -7,7 +7,12 @@ export const SignIn = () => {
 
     const navigate = useNavigate();
 
-    const { userId, sessionId, setSessionId, setUserId, setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
+    const {
+        userId, setUserId,
+        sessionId, setSessionId,
+        setUsername,
+        setIsLoggedIn, setIsSessionInProgress
+    } = useOutletContext();
 
     const { signInUser } = useUser();
 
@@ -38,6 +43,7 @@ export const SignIn = () => {
 
             setSessionId(user.$id);
             setUserId(user.userId);
+            // setUsername(user.);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);
 
