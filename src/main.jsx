@@ -12,6 +12,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { SignUp } from './pages/signup/SignUp.jsx';
 import { SignIn } from './pages/signin/SignIn.jsx';
 import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
+import { ForgotPassword } from './pages/forgotPassword/ForgotPassword.jsx';
+import { ResetPassword } from './pages/resetPassword/ResetPassword';
 
 const MainLayout = () => {
 
@@ -69,6 +71,14 @@ const router = createBrowserRouter([
       {
         path: 'sign-in',
         element: <SignIn />
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPassword />
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPassword />
       },
     ]
   },

@@ -114,6 +114,49 @@ export const updateUserPassword = async (newPassword, oldPassword) => {
     }
 }
 
+export const createPasswordRecoveryEmail = async (email) => {
+    try {
+        const res = await account.createRecovery(
+            email,
+            'http://localhost:5173/reset-password'
+        )
+        console.log('Success creating recovery:', result);
+
+        return res;
+    } catch (error) {
+        console.error('Error creating password recovery email:', error);
+        if (error.code === 400) {
+            return 'Invalid email address.';
+        } else if (error.code === 404) {
+            return 'No account is associated with this email address. Please check the email entered or sign up for a new account.';
+        } else {
+            return 'Error creating password recovery link. Please try again later.'
+        }
+    }
+}
+
+export const updatePasswordFromRecoveryEmail = async (userId, secret, newPassword) => {
+    try {
+        const result = await account.updateRecovery(
+            userId,
+            secret,
+            newPassword
+        );
+
+        console.log('Sccess updating recovery:', result);
+
+        return result;
+
+    } catch (error) {
+        console.error('Error updating user password via recovery email:', error);
+        if (error.code === 401) {
+            return 'This link has expired. Request a new recovery email.';
+        } else {
+            return 'Error updating your password. Please try again later.'
+        }
+    }
+}
+
 export const deleteUserSession = async () => {
     try {
         await account.deleteSession('current');

@@ -13,7 +13,7 @@ export const Dashboard = () => {
 
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [newPasswordRentered, setNewPasswordRentered] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [successMsg, setSuccessMsg] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
@@ -38,10 +38,10 @@ export const Dashboard = () => {
 
     const onUpdateUserPasswordClick = async () => {
 
-        if (newPassword !== newPasswordRentered) {
+        if (newPassword !== confirmNewPassword) {
             setErrorMsg('Your passwords do not match. Re-enter your new password.');
             setNewPassword('');
-            setNewPasswordRentered('');
+            setConfirmNewPassword('');
             return;
         }
 
@@ -100,8 +100,8 @@ export const Dashboard = () => {
                             <Form.Control
                                 type="password"
                                 placeholder="Password"
-                                value={newPasswordRentered}
-                                onChange={(e) => setNewPasswordRentered(e.target.value)}
+                                value={confirmNewPassword}
+                                onChange={(e) => setConfirmNewPassword(e.target.value)}
                             />
                         </Form.Group>
 
@@ -109,7 +109,7 @@ export const Dashboard = () => {
                             variant="primary"
                             type="button"
                             onClick={onUpdateUserPasswordClick}
-                            disabled={!oldPassword || !newPassword || !newPasswordRentered}
+                            disabled={!oldPassword || !newPassword || !confirmNewPassword}
                         >
                             Update
                         </Button>

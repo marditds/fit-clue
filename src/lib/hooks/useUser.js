@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail } from '../context/dbhandler';
 
 export const useUser = () => {
 
@@ -29,6 +29,26 @@ export const useUser = () => {
         }
     }
 
+    const createPasswordRecoveryEmail = async (email) => {
+        try {
+            const res = await makePasswordRecoveryEmail(email);
+
+            return res;
+        } catch (error) {
+            console.error('Error creating passowrd recovery email:', error);
+        }
+    }
+
+    const updatePasswordFromRecoveryEmail = async (userId, secret, newPassword) => {
+        try {
+            const res = await restorePasswordFromRecoveryEmail(userId, secret, newPassword);
+
+            return res;
+        } catch (error) {
+            console.error('Error updating user password via recovery email:', error);
+        }
+    }
+
     const updateUserPassword = async (newPassword, oldPassword) => {
         try {
             const user = await changeUserPassword(newPassword, oldPassword);
@@ -55,5 +75,5 @@ export const useUser = () => {
         }
     }
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail };
 }
