@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Col, Container, Form, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../../lib/hooks/useUser';
 
 export const ResetPassword = () => {
@@ -13,6 +13,7 @@ export const ResetPassword = () => {
     const [secret, setSecret] = useState(null);
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [hasRecoveryLinkExpired, setHasRecoveryLinkExpired] = useState(false);
     const [isResetPasswordLoading, setIsResetPasswordLoading] = useState(false);
     const [resetPsswdSuccessMsg, setResetPsswdSuccessMsg] = useState(null);
     const [resetPsswdErrorMsg, setResetPsswdErrorMsg] = useState(null);
@@ -69,12 +70,22 @@ export const ResetPassword = () => {
                 setResetPsswdErrorMsg(res);
                 setResetPsswdSuccessMsg(null);
                 return;
+            } else if (res === 400) {
+                setResetPsswdErrorMsg('Your password must be between 8 and 265 characters.');
+                setResetPsswdSuccessMsg(null);
+                return;
+            } else if (res === 401) {
+                setResetPsswdErrorMsg('This link has expired. Request a new recovery email.');
+                setResetPsswdSuccessMsg(null);
+                setHasRecoveryLinkExpired(true);
+                return;
             }
-
-            console.log('res in onPasswrodChange', res);
 
             setResetPsswdSuccessMsg('Your password was changed successfully.')
             setResetPsswdErrorMsg('');
+
+            setNewPassword('');
+            setConfirmNewPassword('');
 
         } catch (error) {
             console.error('Error resetting passowrd:', error);
@@ -110,8 +121,13 @@ export const ResetPassword = () => {
                         </Form.Group>
 
                         <Button onClick={onPasswrodChangeClick}>
-                            Reset Password
+                            {!isResetPasswordLoading ? 'Reset Password' : 'Loading...'}
                         </Button>
+
+                        {
+                            hasRecoveryLinkExpired && <Link to='/forgot-password'>Get Recovery Email</Link>
+                        }
+
 
                         <Form.Text>
                             {resetPsswdSuccessMsg || resetPsswdErrorMsg}

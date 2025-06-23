@@ -63,9 +63,30 @@ export const ForgotPassword = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </Form.Group>
-                        <Button onClick={onForgotPasswordClick}>
-                            Get Recovery Email
+
+                        <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                            <Form.Control
+                                type='text'
+                                id='thanksgivingWish'
+                                name='thanksgivingWish'
+                                value={thanksgivingWish}
+                                onChange={(e) => setThanksgivingWish(e.target.value)}
+                                autoComplete='off'
+                                tabIndex='-1'
+                                aria-hidden='true'
+                            />
+                        </Form.Group>
+
+                        <Button
+                            onClick={onForgotPasswordClick}
+                            disabled={isForgotPasswordLoading || !!thanksgivingWish}
+                        >
+                            {!isForgotPasswordLoading ? 'Get Recovery Email' : 'Loading...'}
                         </Button>
+
+                        <Form.Text>
+                            {forgotPsswdSuccessMsg || forgotPsswdErrorMsg}
+                        </Form.Text>
                     </Form>
                 </Col>
             </Row>

@@ -12,10 +12,23 @@ export const SignUp = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [easterWish, setEasterWish] = useState('');
     const [isAccoutBeingCreated, setIsAccountBeingCreated] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
     const onCreateUserClick = async () => {
+
+        if (easterWish) {
+            setErrorMsg('Something went wrong.');
+            return;
+        };
+
+        if (password !== confirmPassword) {
+            setErrorMsg('Your password\s do not match. Please try again.')
+            return;
+        }
+
         setIsAccountBeingCreated(true);
         try {
             const user = await createUser(email, password, name);
@@ -69,11 +82,33 @@ export const SignUp = () => {
                             />
                         </Form.Group>
 
+                        <Form.Group className='mb-3' controlId='confirmPasswordFormField'>
+                            <Form.Label>Re-enter password</Form.Label>
+                            <Form.Control
+                                type='password'
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder='Password'
+                            />
+                        </Form.Group>
+
+                        <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                            <Form.Control
+                                type='text'
+                                id='easterWish'
+                                name='easterWish'
+                                value={easterWish}
+                                onChange={(e) => setEasterWish(e.target.value)}
+                                autoComplete='off'
+                                tabIndex='-1'
+                                aria-hidden='true'
+                            />
+                        </Form.Group>
+
                         <Button
-                            variant='primary'
                             type='button'
                             onClick={onCreateUserClick}
-                            disabled={isAccoutBeingCreated}
+                            disabled={isAccoutBeingCreated || !!easterWish}
                         >
                             {!isAccoutBeingCreated ? 'Sign up' : 'Loading...'}
                         </Button>

@@ -10,7 +10,6 @@ export const SignIn = () => {
     const {
         userId, setUserId,
         sessionId, setSessionId,
-        setUsername,
         setIsLoggedIn, setIsSessionInProgress
     } = useOutletContext();
 
@@ -18,10 +17,16 @@ export const SignIn = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [christmasWish, setChristmasWish] = useState('');
     const [isSigningInInProgress, setIsSigningInInProgress] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
     const onSignInUserClick = async () => {
+
+        if (christmasWish) {
+            setErrorMsg('Something went wrong.');
+            return;
+        };
 
         setIsSigningInInProgress(true);
         try {
@@ -43,7 +48,6 @@ export const SignIn = () => {
 
             setSessionId(user.$id);
             setUserId(user.userId);
-            // setUsername(user.);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);
 
@@ -90,11 +94,23 @@ export const SignIn = () => {
                             />
                         </Form.Group>
 
+                        <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                            <Form.Control
+                                type='text'
+                                id='christmasWish'
+                                name='christmasWish'
+                                value={christmasWish}
+                                onChange={(e) => setChristmasWish(e.target.value)}
+                                autoComplete='off'
+                                tabIndex='-1'
+                                aria-hidden='true'
+                            />
+                        </Form.Group>
+
                         <Button
-                            variant='primary'
                             type='button'
                             onClick={onSignInUserClick}
-                            disabled={isSigningInInProgress}
+                            disabled={isSigningInInProgress || !!christmasWish}
                         >
                             {!isSigningInInProgress ? 'Sign in' : 'Loading...'}
                         </Button>

@@ -120,7 +120,7 @@ export const createPasswordRecoveryEmail = async (email) => {
             email,
             'http://localhost:5173/reset-password'
         )
-        console.log('Success creating recovery:', result);
+        console.log('Success creating recovery:', res);
 
         return res;
     } catch (error) {
@@ -143,14 +143,18 @@ export const updatePasswordFromRecoveryEmail = async (userId, secret, newPasswor
             newPassword
         );
 
-        console.log('Sccess updating recovery:', result);
+        console.log('Sccess updating passsword via recovery email.');
 
         return result;
 
     } catch (error) {
         console.error('Error updating user password via recovery email:', error);
-        if (error.code === 401) {
-            return 'This link has expired. Request a new recovery email.';
+        if (error.code === 400) {
+            // return 'Your password must be between 8 and 265 characters.';
+            return 400;
+        } else if (error.code === 401) {
+            // return 'This link has expired. Request a new recovery email.';
+            return 401;
         } else {
             return 'Error updating your password. Please try again later.'
         }
