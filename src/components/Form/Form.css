@@ -42,7 +42,7 @@
     border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
     background-image: url('../../../src/assets/forgot-password.jpg');
     background-size: cover;
-    background-position: top;
+    background-position: center;
     background-repeat: no-repeat;
 }
 

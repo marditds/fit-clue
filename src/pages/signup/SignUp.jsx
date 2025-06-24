@@ -54,7 +54,7 @@ export const SignUp = () => {
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='form__row w-100'>
-                <Col className={`form__col-signup-img ${(isXs || isSm) && 'd-none'}`}>
+                <Col xs={5} className={`form__col-signup-img ${(isXs || isSm) && 'd-none'}`}>
                 </Col>
                 <Col className='form__col d-flex justify-content-center align-items-center w-100'>
                     <Form className={(isXs) ? 'w-100' : 'w-75'}>
