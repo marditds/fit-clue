@@ -6,9 +6,13 @@ export const Card = ({ id, personalityName, iUrl }) => {
     const location = useLocation();
 
     return (
-        <Col xs={12} md={6} xl={4} className='d-flex flex-column justify-content-center card__col'>
+        <Col
+            xs={12}
+            md={6}
+            xl={!location.pathname.startsWith('/post') ? 4 : 6}
+            className='d-flex flex-column justify-content-center card__col'>
             {/* <div style={{ width: '100%', maxWidth: '100%' }}> */}
-            <div className='card__div'>
+            <div className={`card__div ${!location.pathname.startsWith('/post') ? '' : 'd-flex justify-content-center align-items-center'}`}>
                 {
                     !location.pathname.startsWith('/post') &&
                     <Link to={`post/${id}`}>

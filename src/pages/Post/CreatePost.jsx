@@ -59,8 +59,14 @@ const CreatePost = () => {
     };
 
     return (
-        <Container>
-            <Row>
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <Row className='w-100'>
+                <Col xs={5}>
+                    <h3>Preview</h3>
+
+
+                </Col>
+
                 <Col>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formName">
@@ -79,7 +85,11 @@ const CreatePost = () => {
                                 as="textarea"
                                 rows={3}
                                 value={photoLink}
-                                onChange={e => setPhotoLink(e.target.value)}
+                                onChange={e => {
+                                    console.log('photoLink:', e.target.value);
+
+                                    setPhotoLink(e.target.value)
+                                }}
                             />
                         </Form.Group>
 

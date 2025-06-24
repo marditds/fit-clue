@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import '../../components/Grid/Grid.css';
 import { useUser } from '../../lib/hooks/useUser';
+import { theLatestData } from '../../lib/data/testData';
 
 const TheLatest = () => {
 
@@ -21,7 +22,8 @@ const TheLatest = () => {
         const getPosts = async () => {
             setIsGridLoading(true);
             try {
-                const p = await fetchTheLatestPosts();
+                // const p = await fetchTheLatestPosts();
+                const p = theLatestData;
 
                 console.log('posts', p);
 

@@ -6,6 +6,7 @@ import { Form, Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { reportCategories } from '../../lib/data/reportCategories';
+import { onePostData } from '../../lib/data/testData';
 
 const Post = () => {
 
@@ -47,7 +48,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                const post = await fetchPostById(params.postId);
+                // const post = await fetchPostById(params.postId);
+                const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 
@@ -175,7 +177,7 @@ const Post = () => {
             </Row>
             <Row>
                 {/* image */}
-                <Card
+                <Card xs={5}
                     personalityName={personalityName}
                     iUrl={iUrl}
                 />
