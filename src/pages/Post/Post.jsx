@@ -7,6 +7,7 @@ import { Card } from '../../components/Grid/Card';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { reportCategories } from '../../lib/data/reportCategories';
 import { onePostData } from '../../lib/data/testData';
+import '../../components/Post/Post.css';
 
 const Post = () => {
 
@@ -177,72 +178,77 @@ const Post = () => {
             </Row>
             <Row>
                 {/* image */}
-                <Card xs={5}
+                <Card
                     personalityName={personalityName}
                     iUrl={iUrl}
                 />
 
-                <Col>
-                    {/* Items lists */}
-                    <ul className='list-unstyled'>
-                        {
-                            itemsLinks?.map((itemLink) => {
-                                return (
-                                    <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex'>
-                                        <a href={itemLink.href}>
-                                            <div>
-                                                {itemLink.item}
-                                            </div>
-                                            <div>
-                                                {itemLink.company_name}
-                                            </div>
-                                        </a>
-                                        <Button onClick={() => handleReportClick(itemLink)}>Report</Button>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
+                <Col className='post__col'>
+                    <div className='post__div-links mx-auto h-100'>
+                        {/* Items lists */}
+                        <div className='d-flex flex-column justify-content-between h-100' style={{ height: '879px' }}>
+                            {itemsLinks &&
+                                <ul className='list-unstyled'>
+                                    {
+                                        itemsLinks?.map((itemLink) => {
+                                            return (
+                                                <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex'>
+                                                    <a href={itemLink.href}>
+                                                        <div>
+                                                            {itemLink.item}
+                                                        </div>
+                                                        <div>
+                                                            {itemLink.company_name}
+                                                        </div>
+                                                    </a>
+                                                    <Button onClick={() => handleReportClick(itemLink)}>Report</Button>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            }
 
-                    {/* Add items links */}
-                    <Form onSubmit={onAddLinkSubmit}>
-                        <Form.Group className='mb-3' controlId='CompanyNameField'>
-                            <Form.Label>Company Name:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                value={companyName}
-                                onChange={onCompanyNameCahnge}
-                                placeholder='Enter Company Name' />
-                        </Form.Group>
+                            {/* Add items links */}
+                            <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
+                                <Form.Group className='mb-3' controlId='CompanyNameField'>
+                                    <Form.Label>Company Name:</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        value={companyName}
+                                        onChange={onCompanyNameCahnge}
+                                        placeholder='Enter Company Name' />
+                                </Form.Group>
 
-                        <Form.Group className='mb-3' controlId='ItemNameField'>
-                            <Form.Label>Item Name</Form.Label>
-                            <Form.Control
-                                type='text'
-                                value={itemName}
-                                onChange={onItemNameChange}
-                                placeholder='Enter Item Name' />
-                        </Form.Group>
+                                <Form.Group className='mb-3' controlId='ItemNameField'>
+                                    <Form.Label>Item Name</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        value={itemName}
+                                        onChange={onItemNameChange}
+                                        placeholder='Enter Item Name' />
+                                </Form.Group>
 
-                        <Form.Group className='mb-3' controlId='ItemUrlField'>
-                            <Form.Label>URL:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                value={href}
-                                onChange={onUrlCahnge}
-                                placeholder='Enter Item URL' />
-                        </Form.Group>
+                                <Form.Group className='mb-3' controlId='ItemUrlField'>
+                                    <Form.Label>URL:</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        value={href}
+                                        onChange={onUrlCahnge}
+                                        placeholder='Enter Item URL' />
+                                </Form.Group>
 
 
-                        <Button
-                            variant='primary'
-                            type='submit'
-                            disabled={!companyName || !itemName || !href}
-                        >
-                            {isAddningLink ? 'Adding link...' : 'Add Item Link'}
-                        </Button>
-                    </Form>
-
+                                <Button
+                                    variant='primary'
+                                    type='submit'
+                                    disabled={!companyName || !itemName || !href}
+                                >
+                                    {isAddningLink ? 'Adding link...' : 'Add Item Link'}
+                                </Button>
+                            </Form>
+                        </div>
+                    </div>
                 </Col>
 
             </Row>

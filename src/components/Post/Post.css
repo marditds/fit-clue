@@ -1,0 +1,25 @@
+.post__col {
+    border-top: 1px;
+    border-bottom: 1px;
+    border-style: solid !important;
+    border-color: var(--card-border-color) !important;
+    padding-block: 12px;
+}
+
+.post__col:nth-child(1) {
+    border-right: none !important;
+    border-left: 1px;
+    border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
+}
+
+.post__col:nth-child(2) {
+    border-right: 1px;
+    border-left: none !important;
+    border-radius: 0px var(--main-border-radius) var(--main-border-radius) 0px;
+    width: 100%;
+}
+
+.post__div-links {
+    padding: 10px;
+    max-width: 538px;
+}

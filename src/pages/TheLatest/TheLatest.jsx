@@ -3,6 +3,7 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import '../../components/Grid/Grid.css';
+import '../../components/Card/Card.css';
 import { useUser } from '../../lib/hooks/useUser';
 import { theLatestData } from '../../lib/data/testData';
 
