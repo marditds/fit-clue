@@ -14,6 +14,7 @@ import { SignIn } from './pages/signin/SignIn.jsx';
 import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
 import { ForgotPassword } from './pages/forgotPassword/ForgotPassword.jsx';
 import { ResetPassword } from './pages/resetPassword/ResetPassword';
+import Footer from './components/Footer/Footer.jsx';
 
 const MainLayout = () => {
 
@@ -28,7 +29,7 @@ const MainLayout = () => {
   return (
     <>
       <NavigationBar />
-      <main>
+      <main className='min-vh-100'>
         <Outlet context={{
           userId, setUserId,
           sessionId, setSessionId,
@@ -37,6 +38,7 @@ const MainLayout = () => {
           setIsSessionInProgress, setIsSignOutInProgress
         }} />
       </main>
+      <Footer />
     </>
   )
 }
@@ -79,6 +81,18 @@ const router = createBrowserRouter([
       {
         path: 'reset-password',
         element: <ResetPassword />
+      },
+      {
+        path: 'tos',
+        element: <SignIn />
+      },
+      {
+        path: 'help',
+        element: <SignIn />
+      },
+      {
+        path: 'stuff',
+        element: <SignIn />
       },
     ]
   },

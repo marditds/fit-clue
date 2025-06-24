@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, Link } from 'react-router-dom';
 import { useUser } from '../../lib/hooks/useUser';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import '../../components/Form/Form.css';
 
 export const SignIn = () => {
 
@@ -14,6 +16,8 @@ export const SignIn = () => {
     } = useOutletContext();
 
     const { signInUser } = useUser();
+
+    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -69,10 +73,17 @@ export const SignIn = () => {
     }, [sessionId])
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Form>
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <Row className='form__row w-100'>
+                <Col className={`form__col-signin-img ${(isXs || isSm) && 'd-none'}`}>
+                </Col>
+                <Col className='form__col d-flex justify-content-center align-items-center w-100'>
+                    <Form className={(isXs) ? 'w-100' : 'w-75'}>
+
+                        <div className='text-center mb-4'>
+                            <h3 className='mb-2'>Welcome</h3>
+                            <p className='text-muted'>Sign in to your account</p>
+                        </div>
 
                         <Form.Group className='mb-3' controlId='emailFormField'>
                             <Form.Label>Email address</Form.Label>
@@ -92,6 +103,12 @@ export const SignIn = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder='Password'
                             />
+
+                            <div className='text-end mt-1'>
+                                <Link to='/forgot-password' className='text-decoration-none small'>
+                                    Forgot password?
+                                </Link>
+                            </div>
                         </Form.Group>
 
                         <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
@@ -110,16 +127,24 @@ export const SignIn = () => {
                         <Button
                             type='button'
                             onClick={onSignInUserClick}
-                            disabled={isSigningInInProgress || !!christmasWish}
+                            disabled={isSigningInInProgress || !!christmasWish || !email || !password}
+                            className='w-100 mb-3'
                         >
                             {!isSigningInInProgress ? 'Sign in' : 'Loading...'}
                         </Button>
 
                         {errorMsg &&
-                            <Form.Text>
+                            <Form.Text className='text-danger d-block mb-3'>
                                 {errorMsg}
                             </Form.Text>
                         }
+
+                        <div className='text-center'>
+                            <span className='text-muted'>Don't have an account? </span>
+                            <Link to='/sign-up' className='text-decoration-none fw-medium'>
+                                Sign up
+                            </Link>
+                        </div>
                     </Form>
                 </Col>
             </Row>

@@ -1,0 +1,67 @@
+.form__col {
+    border-color: var(--main-border-color) !important;
+    height: 750px;
+}
+
+.form__col:nth-child(1) {
+    border-top: 1px;
+    border-right: none !important;
+    border-bottom: 1px;
+    border-left: 1px;
+    border-style: solid;
+    border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
+}
+
+.form__col:nth-child(2) {
+    border-top: 1px;
+    border-right: 1px;
+    border-bottom: 1px;
+    border-left: none !important;
+    border-style: solid;
+    border-radius: 0px var(--main-border-radius) var(--main-border-radius) 0px;
+    width: 100%;
+}
+
+.form__col-signup-img {
+    border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
+    background-image: url('../../../src/assets/sign-up.jpg');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.form__col-signin-img {
+    border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
+    background-image: url('../../../src/assets/sign-in.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form__col-forgot-img {
+    border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
+    background-image: url('../../../src/assets/forgot-password.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.form__col-reset-img {
+    border-radius: var(--main-border-radius) 0px 0px var(--main-border-radius);
+    background-image: url('../../../src/assets/reset-password.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 767px) {
+
+    .form__col {
+        height: 600px;
+    }
+
+    .form__col:nth-child(2) {
+        border: 1px solid var(--main-border-color) !important;
+        border-radius: var(--main-border-radius);
+    }
+}

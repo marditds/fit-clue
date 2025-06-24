@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useUser } from '../../lib/hooks/useUser';
-
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import '../../components/Form/Form.css';
+import { Link } from 'react-router-dom';
 
 export const ForgotPassword = () => {
 
     const { createPasswordRecoveryEmail } = useUser();
+
+    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
+
 
     const [email, setEmail] = useState('');
     const [thanksgivingWish, setThanksgivingWish] = useState('');
@@ -34,9 +39,11 @@ export const ForgotPassword = () => {
                 setForgotPsswdSuccessMsg(null);
                 setEmail('');
                 return;
+            } else if (res === 404) {
+                setForgotPsswdErrorMsg('No account is associated with this email address. Please check the email or sign up for a new account.');
+                setForgotPsswdSuccessMsg(null);
+                return;
             }
-
-            console.log(res);
 
             setEmail('');
             setForgotPsswdSuccessMsg('A recovery link from Appwrite has been sent to your email. Please check your inbox.');
@@ -50,15 +57,22 @@ export const ForgotPassword = () => {
     }
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Form>
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <Row className='form__row w-100'>
+                <Col className={`form__col-forgot-img ${(isXs || isSm) && 'd-none'}`} />
+                <Col className='form__col d-flex justify-content-center align-items-center w-100'>
+                    <Form className={(isXs) ? 'w-100' : 'w-75'}>
+                        {/* Form header for better context */}
+                        <div className='text-center mb-4'>
+                            <h3 className='mb-2'>Reset Your Password</h3>
+                            <p className='text-muted'>Enter your email address and we'll send you a link to reset your password.</p>
+                        </div>
+
                         <Form.Group className='mb-3' controlId='emailField'>
-                            <Form.Label>Email:</Form.Label>
+                            <Form.Label>Email address</Form.Label>
                             <Form.Control
                                 type='email'
-                                placeholder='Email'
+                                placeholder='Enter your email address'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -79,14 +93,38 @@ export const ForgotPassword = () => {
 
                         <Button
                             onClick={onForgotPasswordClick}
-                            disabled={isForgotPasswordLoading || !!thanksgivingWish}
+                            disabled={isForgotPasswordLoading || !!thanksgivingWish || !email}
+                            className='w-100 mb-3'
                         >
-                            {!isForgotPasswordLoading ? 'Get Recovery Email' : 'Loading...'}
+                            {!isForgotPasswordLoading ? 'Send Reset Link' : 'Sending...'}
                         </Button>
 
-                        <Form.Text>
-                            {forgotPsswdSuccessMsg || forgotPsswdErrorMsg}
-                        </Form.Text>
+                        {forgotPsswdSuccessMsg && (
+                            <div className='text-center mb-3'>
+                                {forgotPsswdSuccessMsg}
+                            </div>
+                        )}
+
+                        {forgotPsswdErrorMsg && (
+                            <div className='text-center mb-3'>
+                                {forgotPsswdErrorMsg}
+                            </div>
+                        )}
+
+                        <div className='text-center'>
+                            <div className='mb-2'>
+                                <span className='text-muted'>Remember your password? </span>
+                                <Link to='/sign-in' className='text-decoration-none fw-medium'>
+                                    Sign in
+                                </Link>
+                            </div>
+                            <div>
+                                <span className='text-muted'>Don't have an account? </span>
+                                <Link to='/sign-up' className='text-decoration-none fw-medium'>
+                                    Sign up
+                                </Link>
+                            </div>
+                        </div>
                     </Form>
                 </Col>
             </Row>

@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../../lib/hooks/useUser';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import '../../components/Form/Form.css';
 
 export const ResetPassword = () => {
 
     const navigate = useNavigate();
 
     const { updatePasswordFromRecoveryEmail } = useUser();
+
+    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
     const [userId, setUserId] = useState(null);
     const [secret, setSecret] = useState(null);
@@ -26,9 +30,9 @@ export const ResetPassword = () => {
 
         console.log('THESE ARE THE PARAMS:', params);
 
-        if (params.size === 0) {
-            navigate('/');
-        }
+        // if (params.size === 0) {
+        //     navigate('/');
+        // }
 
         const functionInResetPasswrodComponent = async () => {
             try {
@@ -96,42 +100,87 @@ export const ResetPassword = () => {
     }
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Form>
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <Row className='form__row w-100'>
+                <Col className={`form__col-reset-img ${(isXs || isSm) && 'd-none'}`}>
+                </Col>
+                <Col className='form__col d-flex justify-content-center align-items-center w-100'>
+                    <Form className={(isXs) ? 'w-100' : 'w-75'}>
+                        {/* Form header */}
+                        <div className='text-center mb-4'>
+                            <h3 className='mb-2'>Reset Your Password</h3>
+                            <p className='text-muted'>Enter your new password below</p>
+                        </div>
+
                         <Form.Group className='mb-3' controlId='newPasswordField'>
-                            <Form.Label>New password:</Form.Label>
+                            <Form.Label>New password</Form.Label>
                             <Form.Control
                                 type='password'
-                                placeholder='Password'
+                                placeholder='Enter your new password'
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='newPasswordRenterField'>
-                            <Form.Label>Re-enter new password:</Form.Label>
+                            <Form.Label>Confirm new password</Form.Label>
                             <Form.Control
                                 type='password'
-                                placeholder='Password'
+                                placeholder='Re-enter your new password'
                                 value={confirmNewPassword}
                                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                             />
                         </Form.Group>
 
-                        <Button onClick={onPasswrodChangeClick}>
-                            {!isResetPasswordLoading ? 'Reset Password' : 'Loading...'}
+                        <Button
+                            onClick={onPasswrodChangeClick}
+                            disabled={isResetPasswordLoading || !newPassword || !confirmNewPassword}
+                            className='w-100 mb-3'
+                        >
+                            {!isResetPasswordLoading ? 'Update Password' : 'Updating...'}
                         </Button>
 
-                        {
-                            hasRecoveryLinkExpired && <Link to='/forgot-password'>Get Recovery Email</Link>
-                        }
+                        {resetPsswdSuccessMsg && (
+                            <div className='text-center mb-3'>
+                                {resetPsswdSuccessMsg}
+                            </div>
+                        )}
 
+                        {resetPsswdErrorMsg && (
+                            <div className='text-center mb-3'>
+                                {resetPsswdErrorMsg}
+                            </div>
+                        )}
 
-                        <Form.Text>
-                            {resetPsswdSuccessMsg || resetPsswdErrorMsg}
-                        </Form.Text>
+                        {hasRecoveryLinkExpired && (
+                            <div className='text-center mb-3'>
+                                <div className=''>
+                                    <strong>Link Expired</strong><br />
+                                    Your recovery link has expired. Please request a new one.
+                                </div>
+                                <Link
+                                    to='/forgot-password'
+                                    className='btn btn-outline-primary'
+                                >
+                                    Get New Recovery Link
+                                </Link>
+                            </div>
+                        )}
+
+                        {/* <div className='text-center'>
+                            <div className='mb-2'>
+                                <span className='text-muted'>Remember your password? </span>
+                                <Link to='/sign-in' className='text-decoration-none fw-medium'>
+                                    Sign in
+                                </Link>
+                            </div>
+                            <div>
+                                <span className='text-muted'>Need help? </span>
+                                <Link to='/forgot-password' className='text-decoration-none fw-medium'>
+                                    Get recovery email
+                                </Link>
+                            </div>
+                        </div> */}
                     </Form>
                 </Col>
             </Row>

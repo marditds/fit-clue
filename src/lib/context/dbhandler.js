@@ -120,7 +120,7 @@ export const createPasswordRecoveryEmail = async (email) => {
             email,
             'http://localhost:5173/reset-password'
         )
-        console.log('Success creating recovery:', res);
+        console.log('Success creating recovery.');
 
         return res;
     } catch (error) {
@@ -128,7 +128,8 @@ export const createPasswordRecoveryEmail = async (email) => {
         if (error.code === 400) {
             return 'Invalid email address.';
         } else if (error.code === 404) {
-            return 'No account is associated with this email address. Please check the email entered or sign up for a new account.';
+            return 404;
+            // return 'No account is associated with this email address. Please check the email or sign up for a new account.';
         } else {
             return 'Error creating password recovery link. Please try again later.'
         }
