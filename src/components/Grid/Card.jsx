@@ -10,10 +10,10 @@ export const Card = ({ id, personalityName, iUrl }) => {
             xs={12}
             md={6}
             xl={!location.pathname.startsWith('/post') ? 4 : 6}
-            className={`d-flex flex-column justify-content-center card__col ${!location.pathname.startsWith('/post') ? 'card__col-latest' : 'post__col'}`}
+            className={`d-flex flex-column ${!location.pathname.startsWith('/post') ? 'card__col justify-content-center' : 'post__col'}`}
         >
             {/* <div style={{ width: '100%', maxWidth: '100%' }}> */}
-            <div className={`card__div ${!location.pathname.startsWith('/post') ? 'card__div-latest' : 'd-flex justify-content-center align-items-center post__div'}`}>
+            <div className={`card__div ${!location.pathname.startsWith('/post') ? 'card__div-latest' : 'd-flex justify-content-center align-items-start post__div sticky-top'}`}>
                 {
                     !location.pathname.startsWith('/post') &&
                     <Link to={`post/${id}`}>

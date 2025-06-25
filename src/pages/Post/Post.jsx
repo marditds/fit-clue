@@ -176,79 +176,105 @@ const Post = () => {
                     {personalityName}
                 </h3>
             </Row>
-            <Row>
+            <Row className=''>
                 {/* image */}
                 <Card
                     personalityName={personalityName}
                     iUrl={iUrl}
                 />
 
-                <Col className='post__col'>
-                    <div className='post__div-links mx-auto h-100'>
+                <Col className='post__col d-flex justify-content-center w-100'>
+                    <div className='post__div-links w-100 h-100'>
+
                         {/* Items lists */}
-                        <div className='d-flex flex-column justify-content-between h-100' style={{ height: '879px' }}>
-                            {itemsLinks &&
-                                <ul className='list-unstyled'>
-                                    {
-                                        itemsLinks?.map((itemLink) => {
-                                            return (
-                                                <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex'>
-                                                    <a href={itemLink.href}>
-                                                        <div>
-                                                            {itemLink.item}
-                                                        </div>
-                                                        <div>
+                        {itemsLinks &&
+                            <ul className='list-unstyled'>
+                                <Row className='sticky-top' style={{ paddingInline: '12px' }}>
+                                    <Col className='d-flex justify-content-center'>
+                                        Item
+                                    </Col>
+                                    <Col className='d-flex justify-content-center'>
+                                        Brand
+                                    </Col>
+                                    <Col className='d-flex justify-content-center'>
+                                        Report
+                                    </Col>
+                                </Row>
+                                {
+                                    itemsLinks?.map((itemLink) => {
+                                        return (
+                                            <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex justify-content-center align-items-center w-100'>
+
+                                                <Row className='w-100 justify-content-center align-items-center py-3'>
+                                                    <Col className='d-flex justify-content-center'>
+                                                        <a href={itemLink.href}>
+                                                            <div>
+                                                                {itemLink.item}
+                                                            </div>
+                                                        </a>
+                                                    </Col>
+                                                    <Col className='d-flex justify-content-center'>
+                                                        <a href={itemLink.href}>
                                                             {itemLink.company_name}
-                                                        </div>
-                                                    </a>
-                                                    <Button onClick={() => handleReportClick(itemLink)}>Report</Button>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
-                            }
+                                                        </a>
+                                                    </Col>
+                                                    <Col className='d-flex justify-content-center'>
+                                                        <Button onClick={() => handleReportClick(itemLink)}
+                                                            className='my-auto'
+                                                        >
+                                                            <i className='bi bi-flag' />
+                                                            {/* Report */}
+                                                        </Button>
+                                                    </Col>
+                                                </Row>
 
-                            {/* Add items links */}
-                            <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
-                                <Form.Group className='mb-3' controlId='CompanyNameField'>
-                                    <Form.Label>Company Name:</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        value={companyName}
-                                        onChange={onCompanyNameCahnge}
-                                        placeholder='Enter Company Name' />
-                                </Form.Group>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        }
 
-                                <Form.Group className='mb-3' controlId='ItemNameField'>
-                                    <Form.Label>Item Name</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        value={itemName}
-                                        onChange={onItemNameChange}
-                                        placeholder='Enter Item Name' />
-                                </Form.Group>
+                        {/* Add items links */}
+                        <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
+                            <Form.Group className='mb-3' controlId='CompanyNameField'>
+                                <Form.Label>Company Name:</Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    value={companyName}
+                                    onChange={onCompanyNameCahnge}
+                                    placeholder='Enter Company Name' />
+                            </Form.Group>
 
-                                <Form.Group className='mb-3' controlId='ItemUrlField'>
-                                    <Form.Label>URL:</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        value={href}
-                                        onChange={onUrlCahnge}
-                                        placeholder='Enter Item URL' />
-                                </Form.Group>
+                            <Form.Group className='mb-3' controlId='ItemNameField'>
+                                <Form.Label>Item Name</Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    value={itemName}
+                                    onChange={onItemNameChange}
+                                    placeholder='Enter Item Name' />
+                            </Form.Group>
+
+                            <Form.Group className='mb-3' controlId='ItemUrlField'>
+                                <Form.Label>URL:</Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    value={href}
+                                    onChange={onUrlCahnge}
+                                    placeholder='Enter Item URL' />
+                            </Form.Group>
 
 
-                                <Button
-                                    variant='primary'
-                                    type='submit'
-                                    disabled={!companyName || !itemName || !href}
-                                >
-                                    {isAddningLink ? 'Adding link...' : 'Add Item Link'}
-                                </Button>
-                            </Form>
-                        </div>
+                            <Button
+                                variant='primary'
+                                type='submit'
+                                disabled={!companyName || !itemName || !href}
+                            >
+                                {isAddningLink ? 'Adding link...' : 'Add Item Link'}
+                            </Button>
+                        </Form>
                     </div>
+
                 </Col>
 
             </Row>
@@ -330,7 +356,7 @@ const Post = () => {
                 </Modal.Footer>
             </Modal>
 
-        </Container>
+        </Container >
     );
 };
 

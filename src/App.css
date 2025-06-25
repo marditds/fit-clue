@@ -7,13 +7,98 @@
   --main-title-color-hover: rgb(119, 119, 119);
   --main-border-radius: 3px;
   --main-border-color: rgb(219, 219, 219);
+  --main-accent-color: rgb(219, 219, 219);
+  --main-accent-color-hover: rgb(119, 119, 119);
+  --main-accent-color-rgb-vals: 219, 219, 219;
+  --main-text-color: rgb(0, 0, 0);
+  --main-text-color-hover: rgb(219, 219, 219);
+  --main-text-color-rgb-vals: 0, 0, 0;
+  --main-font-size: 16pt;
   --main-transition-speed: 0.3s;
 }
 
 #root {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+*::selection {
+  background-color: var(--main-accent-color-hover) !important;
+  color: var(--main-accent-color) !important;
+}
+
+body {
+  scroll-behavior: smooth;
+}
+
+a {
+  color: var(--main-text-color) !important;
+  transition: var(--main-transition-speed);
+}
+
+a:hover {
+  color: var(--main-accent-color-hover) !important;
 }
 
 input, textarea, button {
   border-radius: var(--main-border-radius) !important;
+}
+
+input {
+  transition: var(--main-transition-speed) !important;
+}
+
+input:focus {
+  box-shadow: none !important;
+  border-color: var(--main-accent-color-hover) !important;
+}
+
+button {
+  background-color: var(--main-accent-color) !important;
+  color: var(--main-text-color) !important;
+  border: 1px solid transparent !important;
+  /* border-top: 1px solid var(--main-accent-color) !important;
+  border-right: 1px solid var(--main-accent-color) !important;
+  border-bottom: 1px solid var(--main-accent-color) !important;
+  border-left: 1px solid var(--main-accent-color) !important; */
+  height: fit-content;
+  transition: var(--main-transition-speed) !important;
+}
+
+button:hover {
+  background-color: var(--main-accent-color-hover) !important;
+  color: var(--main-text-color-hover) !important;
+}
+
+button:focus {
+  box-shadow: 0px 0px 0px 0.1rem rgba(var(--main-text-color-rgb-vals), 1) !important;
+}
+
+button:active {
+  box-shadow: none !important;
+}
+
+.loading__i {
+  animation: loadingDots 1.2s infinite ease-in-out;
+}
+
+.loading__i:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading__i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading__i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingDots {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }

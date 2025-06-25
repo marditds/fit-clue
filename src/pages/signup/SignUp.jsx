@@ -4,6 +4,7 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import '../../components/Form/Form.css'
+import { LoadingComponent } from '../../components/Loading/LoadingComponent';
 
 export const SignUp = () => {
 
@@ -18,7 +19,7 @@ export const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [easterWish, setEasterWish] = useState('');
-    const [isAccoutBeingCreated, setIsAccountBeingCreated] = useState(false);
+    const [isAccountBeingCreated, setIsAccountBeingCreated] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
     const onCreateUserClick = async () => {
@@ -120,10 +121,13 @@ export const SignUp = () => {
                         <Button
                             type='button'
                             onClick={onCreateUserClick}
-                            disabled={isAccoutBeingCreated || !!easterWish || !name || !email || !password || !confirmPassword}
-                            className='w-100 mb-3'
+                            disabled={isAccountBeingCreated || !!easterWish || !name || !email || !password || !confirmPassword}
+                            className='w-100 mb-3 position-relative'
                         >
-                            {!isAccoutBeingCreated ? 'Create Account' : 'Creating Account...'}
+                            {isAccountBeingCreated ?
+                                'Create Account' :
+                                <LoadingComponent />
+                            }
                         </Button>
 
                         {errorMsg &&
