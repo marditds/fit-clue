@@ -16,6 +16,7 @@ const Post = () => {
     let params = useParams()
 
     const { fetchPostById, updatePost, createReport } = usePosts();
+
     const { createLink } = useShoppingLinks();
 
     const [iUrl, setIUrl] = useState(null);
@@ -27,6 +28,7 @@ const Post = () => {
     const [companyName, setCompanyName] = useState('');
     const [itemName, setItemName] = useState('');
     const [href, setHref] = useState('');
+    const [similarityLevel, setSimilarityLevel] = useState('');
     const [isAddningLink, setIsAddingLink] = useState(false);
 
     // Report user generated links
@@ -117,7 +119,7 @@ const Post = () => {
         try {
             setIsAddingLink(true);
 
-            const newLink = await createLink(href, companyName, itemName, userId);
+            const newLink = await createLink(href, companyName, itemName, userId, similarityLevel);
 
             const updatedPost = await updatePost(params.postId, newLink.$id);
 

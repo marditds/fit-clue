@@ -127,7 +127,7 @@ export const SignIn = () => {
                         <Button
                             type='button'
                             onClick={onSignInUserClick}
-                            disabled={isSigningInInProgress || !!christmasWish || !email || !password}
+                            disabled={isSigningInInProgress || !!christmasWish || !email || password.length < 8}
                             className='w-100 mb-3'
                         >
                             {!isSigningInInProgress ? 'Sign in' : 'Loading...'}

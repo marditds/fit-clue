@@ -187,10 +187,13 @@ export const makePost = async (name, productLinksData, url, userId) => {
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
                 productLinksData.map(link =>
-                    createLink(link.href, link.companyName, link.item)
+                    createLink(link.href, link.companyName, link.item, userId, link.similarityLevel)
                 )
             );
         }
+
+        console.log();
+
 
         // console.log({ url, personality_id: personality.$id, links: links.map(link => link.$id) });
 
@@ -279,7 +282,10 @@ export const createPersonality = async (name) => {
     }
 }
 
-export const createLink = async (href, companyName, item, userId) => {
+export const createLink = async (href, companyName, item, userId, similarityLevel) => {
+
+    console.log({ href, companyName, item, userId, similarityLevel });
+
 
     if (!href) {
         return;
@@ -294,7 +300,8 @@ export const createLink = async (href, companyName, item, userId) => {
                 href,
                 company_name: companyName,
                 item,
-                user_id: userId
+                user_id: userId,
+                similarity_level: similarityLevel
             }
         )
 

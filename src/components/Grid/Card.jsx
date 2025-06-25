@@ -12,7 +12,6 @@ export const Card = ({ id, personalityName, iUrl }) => {
             xl={!location.pathname.startsWith('/post') ? 4 : 6}
             className={`d-flex flex-column ${!location.pathname.startsWith('/post') ? 'card__col justify-content-center' : 'post__col'}`}
         >
-            {/* <div style={{ width: '100%', maxWidth: '100%' }}> */}
             <div className={` ${!location.pathname.startsWith('/post') ? 'card__div card__div-latest' : 'd-flex justify-content-center align-items-start post__div sticky-top'}`}>
                 {
                     !location.pathname.startsWith('/post') &&
@@ -22,12 +21,6 @@ export const Card = ({ id, personalityName, iUrl }) => {
                         </h3>
                     </Link>
                 }
-                {/* {
-                    location.pathname.startsWith('/post') &&
-                    <h3 className='text-left latest__card-name'>
-                        {personalityName}
-                    </h3>
-                } */}
 
                 <blockquote
                     className='instagram-media'
@@ -75,14 +68,17 @@ export const Card = ({ id, personalityName, iUrl }) => {
                         </a>
                     </div>
                 </blockquote>
+
+                {
+                    !location.pathname.startsWith('/post') &&
+                    <Link to={`post/${id}`} className='w-100 d-flex align-items-center card__div-details-link'>
+                        <span className='me-auto'>View details</span>
+                        <i className='bi bi-arrow-right ms-auto fs-4' />
+                    </Link>
+                }
+
             </div>
-            {
-                !location.pathname.startsWith('/post') &&
-                <Link to={`post/${id}`} className='w-100 d-flex align-items-center'>
-                    <span className='me-auto'>View details</span>
-                    <i className='bi bi-arrow-right ms-auto fs-4' />
-                </Link>
-            }
+
 
             {/* </div> */}
         </Col>

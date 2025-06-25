@@ -11,9 +11,9 @@ export const usePosts = () => {
         console.log('user id in usePosts.jsx:', userId);
     }, [userId])
 
-    const makePost = async (name, linksData, url) => {
+    const makePost = async (name, productLinksData, url, userId) => {
         try {
-            const res = await composePost(name, linksData, url, userId);
+            const res = await composePost(name, productLinksData, url, userId);
             return res;
         } catch (error) {
             console.error('Error making post:', error);

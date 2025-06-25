@@ -1,5 +1,5 @@
 .card__div {
-    padding: 10px 10px 0px 10px;
+    padding: 10px;
     border-radius: var(--main-border-radius);
     transition: var(--main-transition-speed);
     box-shadow: 0px 0px 0px white;
@@ -39,11 +39,12 @@
     min-width: 0px !important;
     width: 100% !important;
     transition: var(--main-transition-speed);
+    margin-bottom: 0px !important;
 }
 
-/* .card__div:hover>iframe {
-    transform: scale(1.02); 
-} */
+.card__div-details-link {
+    padding-top: 10px;
+}
 
 @media (max-width: 1199px) {
     .card__col-latest {

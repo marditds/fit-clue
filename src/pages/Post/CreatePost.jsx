@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { useOutletContext } from 'react-router-dom';
+import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions.js';
 
 const CreatePost = () => {
+
+    const { userId } = useOutletContext();
+
     const { makePost, fetchPosts } = usePosts();
 
     const [name, setName] = useState('');
     const [photoLink, setPhotoLink] = useState('');
+    const [similarityLevel, setSimilarityLevel] = useState('');
     const [showLinks, setShowLinks] = useState(false);
     const [links, setLinks] = useState([]);
 
@@ -22,7 +28,7 @@ const CreatePost = () => {
     };
 
     const addLinkField = () => {
-        setLinks([...links, { href: '', companyName: '', item: '' }]);
+        setLinks([...links, { href: '', companyName: '', item: '', similarityLevel: '' }]);
     };
 
     const removeLinkField = (indexToRemove) => {
@@ -43,11 +49,14 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const filteredLinks = showLinks
-                ? links.filter(link => link.href && link.companyName && link.item)
-                : [];
+            // const filteredLinks = showLinks
+            //     ? links.filter(link => link.href && link.companyName && link.item && link.userId && link.similarityLevel)
+            //     : [];
 
-            const response = await makePost(name, filteredLinks, photoLink);
+            console.log('filteredLinks', links);
+
+
+            const response = await makePost(name, links, photoLink, userId);
             if (response) {
                 console.log('Post created successfully!');
             } else {
@@ -61,11 +70,11 @@ const CreatePost = () => {
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='w-100'>
-                <Col xs={5}>
+                {/* <Col xs={5}>
                     <h3>Preview</h3>
 
 
-                </Col>
+                </Col> */}
 
                 <Col>
                     <Form onSubmit={handleSubmit}>
@@ -107,6 +116,7 @@ const CreatePost = () => {
                                 <Form.Label>Links:</Form.Label>
                                 {links.map((link, index) => (
                                     <Row key={index} className="mb-2">
+
                                         <Col>
                                             <Form.Control
                                                 name="href"
@@ -116,6 +126,7 @@ const CreatePost = () => {
                                                 required
                                             />
                                         </Col>
+
                                         <Col>
                                             <Form.Control
                                                 name="companyName"
@@ -125,6 +136,7 @@ const CreatePost = () => {
                                                 required
                                             />
                                         </Col>
+
                                         <Col>
                                             <Form.Control
                                                 name="item"
@@ -134,6 +146,23 @@ const CreatePost = () => {
                                                 required
                                             />
                                         </Col>
+
+                                        <Col>
+                                            <Form.Select
+                                                aria-label="Select similarity level"
+                                                name="similarityLevel"
+                                                id={`similarityLevelSelect-${index}`}
+                                                value={link.similarityLevel}
+                                                onChange={e => handleLinkChange(index, e)}
+                                                required
+                                            >
+                                                <option value="" disabled>Select similarity level</option>
+                                                {similarityLevelOptions.map((option, idx) => (
+                                                    <option key={idx} value={option}>{option}</option>
+                                                ))}
+                                            </Form.Select>
+                                        </Col>
+
                                         <Col xs="auto">
                                             <Button variant="danger" onClick={() => removeLinkField(index)}>
                                                 Remove
