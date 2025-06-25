@@ -177,6 +177,7 @@ const Post = () => {
                 </h3>
             </Row>
             <Row className=''>
+
                 {/* image */}
                 <Card
                     personalityName={personalityName}
@@ -189,21 +190,21 @@ const Post = () => {
                         {/* Items lists */}
                         {itemsLinks &&
                             <ul className='list-unstyled'>
-                                <Row className='sticky-top' style={{ paddingInline: '12px' }}>
-                                    <Col className='d-flex justify-content-center'>
+                                <Row className='sticky-top mx-auto post__div-links-row'>
+                                    <Col className='d-flex justify-content-center align-items-center'>
                                         Item
                                     </Col>
-                                    <Col className='d-flex justify-content-center'>
+                                    <Col className='d-flex justify-content-center align-items-center'>
                                         Brand
                                     </Col>
-                                    <Col className='d-flex justify-content-center'>
+                                    <Col className='d-flex justify-content-center align-items-center'>
                                         Report
                                     </Col>
                                 </Row>
                                 {
                                     itemsLinks?.map((itemLink) => {
                                         return (
-                                            <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex justify-content-center align-items-center w-100'>
+                                            <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex justify-content-center align-items-center w-100 post__div-link-item'>
 
                                                 <Row className='w-100 justify-content-center align-items-center py-3'>
                                                     <Col className='d-flex justify-content-center'>
@@ -220,10 +221,9 @@ const Post = () => {
                                                     </Col>
                                                     <Col className='d-flex justify-content-center'>
                                                         <Button onClick={() => handleReportClick(itemLink)}
-                                                            className='my-auto'
+                                                            className='post__report-btn'
                                                         >
                                                             <i className='bi bi-flag' />
-                                                            {/* Report */}
                                                         </Button>
                                                     </Col>
                                                 </Row>
@@ -238,7 +238,7 @@ const Post = () => {
                         {/* Add items links */}
                         <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
                             <Form.Group className='mb-3' controlId='CompanyNameField'>
-                                <Form.Label>Company Name:</Form.Label>
+                                <Form.Label>Brand:</Form.Label>
                                 <Form.Control
                                     type='text'
                                     value={companyName}
@@ -247,12 +247,12 @@ const Post = () => {
                             </Form.Group>
 
                             <Form.Group className='mb-3' controlId='ItemNameField'>
-                                <Form.Label>Item Name</Form.Label>
+                                <Form.Label>Item:</Form.Label>
                                 <Form.Control
                                     type='text'
                                     value={itemName}
                                     onChange={onItemNameChange}
-                                    placeholder='Enter Item Name' />
+                                    placeholder='Enter Brand Name' />
                             </Form.Group>
 
                             <Form.Group className='mb-3' controlId='ItemUrlField'>

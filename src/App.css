@@ -31,6 +31,7 @@ body {
 }
 
 a {
+  /* text-decoration: none !important; */
   color: var(--main-text-color) !important;
   transition: var(--main-transition-speed);
 }
