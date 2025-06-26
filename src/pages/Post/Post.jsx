@@ -10,14 +10,15 @@ import { reportCategories } from '../../lib/data/reportCategories';
 import { onePostData } from '../../lib/data/testData';
 import '../../components/Post/Post.css';
 import { SimilarityLevelToolTip } from '../../components/ToolTip/SimilarityLevelToolTip';
+import { LoadingComponent } from '../../components/Loading/LoadingComponent';
 
 const Post = () => {
 
-    const { userId } = useOutletContext();
+    const { userId, username } = useOutletContext();
 
     let params = useParams()
 
-    const { fetchPostById, updatePost, createReportPost } = usePosts();
+    const { fetchPostById, fetchCommentsByPostId, createComment, updatePost, createReportPost } = usePosts();
 
     const { createLink } = useShoppingLinks();
 
@@ -34,6 +35,14 @@ const Post = () => {
     const [similarityLevelDesc, setSimilarityLevelDesc] = useState('');
     const [isAddningLink, setIsAddingLink] = useState(false);
 
+    // Users' comment
+    const [commentText, setCommentText] = useState('');
+    const [commentsList, setCommentsList] = useState([]);
+    const [isAddningComment, setIsAddingComment] = useState(false);
+    const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
+
+
+
     // Report user generated links
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -46,6 +55,10 @@ const Post = () => {
 
     useEffect(() => {
         console.log('userId:', userId);
+    }, [userId])
+
+    useEffect(() => {
+        console.log('username:', username);
     }, [userId])
 
     // Get the post
@@ -89,6 +102,23 @@ const Post = () => {
 
         getPosts();
     }, []);
+
+    // Get the comments for post
+    useEffect(() => {
+        const getCommentsByPostId = async () => {
+
+            if (!isViewCommentsClicked) {
+                return;
+            }
+
+            const comments = await fetchCommentsByPostId(params.postId);
+
+            console.log('comments:', comments);
+
+            setCommentsList(comments);
+        }
+        getCommentsByPostId();
+    }, [isViewCommentsClicked])
 
     // The code for enabling insta view
     useEffect(() => {
@@ -152,6 +182,31 @@ const Post = () => {
             setItemName('');
             setHref('');
         }
+    }
+
+    const onCreateCommentSubmit = async (e) => {
+
+        e.preventDefault();
+
+        try {
+            setIsAddingComment(true);
+
+            const newComment = await createComment(params.postId, commentText, userId);
+
+            console.log('comment in Post.jsx:', newComment);
+
+            setCommentsList((prevComments) => [newComment, ...(prevComments || [])]);
+
+        } catch (error) {
+            console.error('Error onAddSubmitLink:', error);
+        } finally {
+            setIsAddingComment(false);
+            setCommentText('');
+        }
+    }
+
+    const onViewCommentsClick = () => {
+        setIsViewCommentsClicked(true)
     }
 
     const handleReportClick = (item) => {
@@ -344,6 +399,45 @@ const Post = () => {
 
             </Row>
 
+            <Row>
+                <Col>
+                    <h3>Comment section</h3>
+
+                    <Form onSubmit={onCreateCommentSubmit}>
+
+                        <Form.Group className='mb-3' controlId='userCommentEntryField'>
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control
+                                type='text'
+                                placeholder='Enter comment'
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
+                            />
+                            <Form.Text className='text-muted'>
+                                FitClue utilizes AI to ensure a safe and respectful environment for all users and visitos.
+                            </Form.Text>
+                        </Form.Group>
+
+                        <Button type='submit'>
+                            {!isAddningComment ? 'Submit' : <LoadingComponent />}
+                        </Button>
+                    </Form>
+                </Col>
+                <Col>
+                    <Button onClick={onViewCommentsClick}>View Comments</Button>
+                    {
+                        isViewCommentsClicked && <ul>
+                            {
+                                commentsList && commentsList?.map((comment, idx) => (
+                                    <li key={idx}>{comment.comment_text}</li>
+                                ))
+                            }
+                        </ul>
+                    }
+
+                </Col>
+            </Row>
+
             {/* Report modal */}
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -414,7 +508,7 @@ const Post = () => {
                         {isReportSubmitted ? 'Close' : 'Cancel'}
                     </Button>
                     {!isReportSubmitted && (
-                        <Button variant='primary' disabled={!selectedReason || isReportGettingSubmitted} onClick={onSubmitReportClick}>
+                        <Button variant='primary' disabled={!selectedReason || isReportGettingSubmitted} onClick={onSubmitReportPostClick}>
                             {!isReportGettingSubmitted ? 'Submit' : 'Submitting Report'}
                         </Button>
                     )}

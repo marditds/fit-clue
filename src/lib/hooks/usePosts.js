@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsByPostId as getCommentsByPostId } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 
@@ -20,9 +20,9 @@ export const usePosts = () => {
         }
     }
 
-    const createComment = async (postId, commentText) => {
+    const createComment = async (postId, commentText, userId) => {
         try {
-            const res = await composeComment(postId, commentText);
+            const res = await composeComment(postId, commentText, userId);
             return res;
         } catch (error) {
             console.error('Error making comment:', error);
@@ -43,6 +43,15 @@ export const usePosts = () => {
     const fetchPosts = async () => {
         try {
             const res = await getPosts();
+            return res;
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    }
+
+    const fetchCommentsByPostId = async (postId) => {
+        try {
+            const res = await getCommentsByPostId(postId);
             return res;
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -77,5 +86,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost }
+    return { makePost, createComment, fetchPosts, fetchCommentsByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost }
 }

@@ -14,6 +14,7 @@ const databases = new Databases(client);
 const functions = new Functions(client);
 
 const dbEnv = import.meta.env.VITE_DATABASE_ID;
+const usernamesCollEnv = import.meta.env.VITE_USERNAMES_COLLECTION;
 const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
@@ -645,7 +646,7 @@ export const createReportComment = async (commentId, userId) => {
     }
 }
 
-export const createComment = async (postId, commentText) => {
+export const createComment = async (postId, commentText, userId) => {
     try {
         const doc = await databases.createDocument(
             dbEnv,
@@ -653,7 +654,8 @@ export const createComment = async (postId, commentText) => {
             ID.unique(),
             {
                 post_id: postId,
-                comment_text: commentText
+                comment_text: commentText,
+                user_id: userId
             }
         )
 
@@ -664,5 +666,48 @@ export const createComment = async (postId, commentText) => {
         return null;
     } catch (error) {
         console.error('Error creating comment:', error);
+    }
+}
+
+export const fetchUserById = async (userId) => {
+    try {
+        const user = await databases.getDocument(
+            dbEnv,
+            usernamesCollEnv,
+            userId
+        )
+
+        if (user) {
+            return user;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+    }
+}
+
+export const fetchCommentsByPostId = async (postId) => {
+    try {
+        const doc = await databases.listDocuments(
+            dbEnv,
+            commentsCollEnv,
+            [
+                Query.equal('post_id', postId),
+                Query.orderDesc('$createdAt')
+            ]
+        )
+
+        if (doc.total > 0) {
+            console.log('Comments fetched successfully:', doc.documents);
+            return doc.documents;
+        }
+        if (doc.total === 0) {
+            return 'No comments for this post yet.'
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching comment:', error);
     }
 }

@@ -14,7 +14,7 @@ export const SignUp = () => {
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,7 +36,7 @@ export const SignUp = () => {
 
         setIsAccountBeingCreated(true);
         try {
-            const user = await createUser(email, password, name);
+            const user = await createUser(email, password, username);
 
             if (typeof user === 'string') {
                 setErrorMsg(user);
@@ -65,13 +65,13 @@ export const SignUp = () => {
                             <p className='text-muted'>Join us today and get started</p>
                         </div>
 
-                        <Form.Group className='mb-3' controlId='nameFormField'>
-                            <Form.Label>Full name</Form.Label>
+                        <Form.Group className='mb-3' controlId='usersnameFormField'>
+                            <Form.Label>Username</Form.Label>
                             <Form.Control
                                 type='text'
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder='Enter your full name'
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder='Enter your Username'
                             />
                         </Form.Group>
 
@@ -121,7 +121,7 @@ export const SignUp = () => {
                         <Button
                             type='button'
                             onClick={onCreateUserClick}
-                            disabled={isAccountBeingCreated || !!easterWish || !name || !email || !password || !confirmPassword}
+                            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword}
                             className='w-100 mb-3 position-relative'
                         >
                             {isAccountBeingCreated ?
