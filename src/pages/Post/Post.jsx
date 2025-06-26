@@ -18,7 +18,7 @@ const Post = () => {
 
     let params = useParams()
 
-    const { fetchPostById, fetchCommentsByPostId, createComment, updatePost, createReportPost } = usePosts();
+    const { fetchPostById, fetchCommentsByPostId, createComment, updatePost, createReportPost, fetchFullComments } = usePosts();
 
     const { createLink } = useShoppingLinks();
 
@@ -37,11 +37,10 @@ const Post = () => {
 
     // Users' comment
     const [commentText, setCommentText] = useState('');
-    const [commentsList, setCommentsList] = useState([]);
+    // const [commentsList, setCommentsList] = useState([]);
     const [isAddningComment, setIsAddingComment] = useState(false);
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
-
-
+    const [comments, setComments] = useState({});
 
     // Report user generated links
     const [showModal, setShowModal] = useState(false);
@@ -110,13 +109,12 @@ const Post = () => {
             if (!isViewCommentsClicked) {
                 return;
             }
-
-            const comments = await fetchCommentsByPostId(params.postId);
+            const comments = await fetchFullComments(params.postId, setComments)
+            // const comments = await fetchCommentsByPostId(params.postId);
 
             console.log('comments:', comments);
 
-            setCommentsList(comments);
-
+            // setCommentsList(comments);
 
         }
         getCommentsByPostId();
@@ -197,7 +195,7 @@ const Post = () => {
 
             console.log('comment in Post.jsx:', newComment);
 
-            setCommentsList((prevComments) => [newComment, ...(prevComments || [])]);
+            // setCommentsList((prevComments) => [newComment, ...(prevComments || [])]);
 
         } catch (error) {
             console.error('Error onAddSubmitLink:', error);
@@ -427,7 +425,7 @@ const Post = () => {
                 </Col>
                 <Col>
                     <Button onClick={onViewCommentsClick}>View Comments</Button>
-                    {
+                    {/* {
                         isViewCommentsClicked && <ul>
                             {
                                 commentsList.length > 0 ? commentsList?.map((comment, idx) => (
@@ -435,7 +433,7 @@ const Post = () => {
                                 )) : <li>No comments yet</li>
                             }
                         </ul>
-                    }
+                    } */}
 
                 </Col>
             </Row>

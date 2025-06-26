@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsByPostId as getCommentsByPostId } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsByPostId as getCommentsByPostId, fetchUsersByIds } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 
@@ -58,6 +58,58 @@ export const usePosts = () => {
         }
     }
 
+    const fetchFullComments = async (postId, setComments) => {
+
+        if (!postId) {
+            return;
+        }
+
+        try {
+            const commentsTexts = await fetchCommentsByPostId(postId);
+
+            console.log('commentsTexts:', commentsTexts);
+
+
+            const userIds = [...new Set(commentsTexts.map(comment => comment.user_id).filter(Boolean))];
+            // const commentIds = comments.map(comment => comment.$id);
+
+            console.log('userIds:', userIds);
+
+
+            const [allUsersData] = await Promise.all([
+                fetchUsersByIds(userIds)
+            ]);
+
+            console.log('allUsersData:', allUsersData);
+
+
+            const userMap = new Map(allUsersData.documents.map(user => [user.$id, user]));
+
+            console.log('userMap:', userMap);
+
+            const fullComments = commentsTexts.map(comment => {
+                const user = userMap.get(comment.userId);
+
+                return {
+                    ...comment,
+                    username: user?.username || 'Unknown User'
+                };
+            });
+
+            console.log('fullComments:', fullComments);
+
+            setComments(prevComments => {
+                const nonDuplicateComments = fullComments.filter(newComment =>
+                    !prevComments.some(existingComment => existingComment.$id === newComment.$id)
+                );
+                return [...prevComments, ...nonDuplicateComments];
+            })
+
+        } catch (error) {
+            console.error('Error fetching comments by id:', error);
+        }
+    }
+
     const fetchTheLatestPosts = async () => {
         try {
             const res = await getTheLatestPosts();
@@ -86,5 +138,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchCommentsByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost }
+    return { makePost, createComment, fetchPosts, fetchCommentsByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost, fetchFullComments }
 }
