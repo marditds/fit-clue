@@ -33,7 +33,20 @@ export const createUser = async (email, password, name) => {
 
         if (user) {
             console.log('User was created successfully:', user);
-            return user;
+
+            const session = await account.createEmailPasswordSession(email, password);
+
+            let userInColl = {};
+
+            if (session) {
+                userInColl = await createUserInCollection(name);
+
+                await account.updatePrefs({
+                    profile_id: userInColl.$id,
+                });
+            }
+
+            return userInColl;
         }
 
         return null;
@@ -46,6 +59,62 @@ export const createUser = async (email, password, name) => {
         } else {
             return ('Something went wrong. Please refresh the page, and try again.');
         }
+    }
+}
+
+export const createUserInCollection = async (username) => {
+    try {
+        const user = await databases.createDocument(
+            dbEnv,
+            usernamesCollEnv,
+            ID.unique(),
+            {
+                username
+            }
+        )
+
+        if (user) {
+            console.log('User in collection created successfully.');
+            return user;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error creating user in collection:', error);
+    }
+}
+
+export const getUserPreferences = async () => {
+    try {
+        const userPreferences = await account.getPrefs();
+
+        console.log('perfs:', userPreferences);
+
+        return userPreferences;
+
+    } catch (error) {
+        console.error('Error getting user prferences:', error);
+    }
+}
+
+export const getUserFromCollectionById = async (userId) => {
+
+    console.log('userId in getUserFromCollectionById:', userId);
+
+    try {
+        const user = await databases.getDocument(
+            dbEnv,
+            usernamesCollEnv,
+            userId
+        )
+
+        if (user) {
+            return user;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error getting user from collection:', error);
     }
 }
 
@@ -288,7 +357,6 @@ export const createPersonality = async (name) => {
 export const createLink = async (href, companyName, item, userId, similarityLevel) => {
 
     console.log({ href, companyName, item, userId, similarityLevel });
-
 
     if (!href) {
         return;
@@ -703,7 +771,7 @@ export const fetchCommentsByPostId = async (postId) => {
             return doc.documents;
         }
         if (doc.total === 0) {
-            return 'No comments for this post yet.'
+            return [];
         }
 
         return null;

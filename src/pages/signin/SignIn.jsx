@@ -11,11 +11,10 @@ export const SignIn = () => {
 
     const {
         userId, setUserId,
-        sessionId, setSessionId,
         setIsLoggedIn, setIsSessionInProgress
     } = useOutletContext();
 
-    const { signInUser } = useUser();
+    const { signInUser, getUserPreferences } = useUser();
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
@@ -48,10 +47,11 @@ export const SignIn = () => {
 
             console.log('user in SignIn.jsx:', user);
 
-            localStorage.setItem('authUserId', user.userId);
+            const userPerfs = await getUserPreferences();
 
-            setSessionId(user.$id);
-            setUserId(user.userId);
+            localStorage.setItem('authUserId', userPerfs.profile_id);
+
+            setUserId(userPerfs.profile_id);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);
 
@@ -68,9 +68,7 @@ export const SignIn = () => {
         console.log('userId:', userId);
     }, [userId])
 
-    useEffect(() => {
-        console.log('sessionId:', sessionId);
-    }, [sessionId])
+
 
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>

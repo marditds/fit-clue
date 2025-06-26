@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById } from '../context/dbhandler';
 
 export const useUser = () => {
 
@@ -11,12 +11,33 @@ export const useUser = () => {
         }
     }
 
+    const getUserPreferences = async () => {
+        try {
+            const userPreferences = await fetchUserPreferences();
+
+            return userPreferences;
+
+        } catch (error) {
+            console.error('Error fetching user prferences:', error);
+        }
+    }
+
     const signInUser = async (email, password) => {
         try {
             const user = await loginUser(email, password);
             return user;
         } catch (error) {
             console.error('Error signing in user:', error);
+        }
+    }
+
+    const getUserFromCollectionById = async (userId) => {
+        try {
+            const user = await fetchUserFromCollectionById(userId);
+
+            return user;
+        } catch (error) {
+            console.error('Error getting user from collection:', error);
         }
     }
 
@@ -75,5 +96,5 @@ export const useUser = () => {
         }
     }
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById };
 }

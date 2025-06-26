@@ -116,6 +116,8 @@ const Post = () => {
             console.log('comments:', comments);
 
             setCommentsList(comments);
+
+
         }
         getCommentsByPostId();
     }, [isViewCommentsClicked])
@@ -428,9 +430,9 @@ const Post = () => {
                     {
                         isViewCommentsClicked && <ul>
                             {
-                                commentsList && commentsList?.map((comment, idx) => (
+                                commentsList.length > 0 ? commentsList?.map((comment, idx) => (
                                     <li key={idx}>{comment.comment_text}</li>
-                                ))
+                                )) : <li>No comments yet</li>
                             }
                         </ul>
                     }

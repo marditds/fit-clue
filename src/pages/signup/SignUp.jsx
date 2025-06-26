@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useUser } from '../../lib/hooks/useUser';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import '../../components/Form/Form.css'
 import { LoadingComponent } from '../../components/Loading/LoadingComponent';
 
 export const SignUp = () => {
+
+    const { setUserId, setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
 
     const navigate = useNavigate();
 
@@ -43,7 +45,13 @@ export const SignUp = () => {
                 return;
             }
 
-            navigate('/sign-in');
+            localStorage.setItem('authUserId', user.$id);
+
+            setUserId(user.$id);
+            setIsLoggedIn(true);
+            setIsSessionInProgress(true);
+
+            navigate('/');
 
         } catch (error) {
             console.error('Error creating user:', error);

@@ -5,9 +5,9 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 export const Dashboard = () => {
 
-    const { getUserAccount, updateUserPassword } = useUser();
+    const { getUserFromCollectionById, updateUserPassword, getUserPreferences } = useUser();
 
-    const { userId, userEmail, username, isLoggedIn, setUsername } = useOutletContext();
+    const { userId, userEmail, username, isLoggedIn, setUserId, setUsername } = useOutletContext();
 
     const [isDashboardLoading, setIsDashboardLoading] = useState(false);
 
@@ -18,14 +18,30 @@ export const Dashboard = () => {
     const [errorMsg, setErrorMsg] = useState(null);
 
     useEffect(() => {
+        const fetchUserPrefs = async () => {
+            const prefs = await getUserPreferences();
+
+            console.log('prefs in dashboard:', prefs);
+
+            setUserId(prefs.prfile_id)
+        }
+        fetchUserPrefs();
+    }, [])
+
+    useEffect(() => {
         const fetchUserAccount = async () => {
+
+            if (!userId) {
+                return;
+            }
+
             setIsDashboardLoading(true);
             try {
-                const userAccount = await getUserAccount();
+                const user = await getUserFromCollectionById(userId);
 
-                console.log('userAccount:', userAccount);
+                console.log('userAccount:', user);
 
-                setUsername(userAccount.name);
+                setUsername(user.username);
 
             } catch (error) {
                 console.error('Error fetching user account:', error);
@@ -34,7 +50,7 @@ export const Dashboard = () => {
             }
         }
         fetchUserAccount();
-    }, [])
+    }, [userId])
 
     const onUpdateUserPasswordClick = async () => {
 
