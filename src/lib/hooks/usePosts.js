@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReport as makeReport } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 
@@ -17,6 +17,15 @@ export const usePosts = () => {
             return res;
         } catch (error) {
             console.error('Error making post:', error);
+        }
+    }
+
+    const createComment = async (postId, commentText) => {
+        try {
+            const res = await composeComment(postId, commentText);
+            return res;
+        } catch (error) {
+            console.error('Error making comment:', error);
         }
     }
 
@@ -58,9 +67,9 @@ export const usePosts = () => {
         }
     }
 
-    const createReport = async (linkId, reason) => {
+    const createReportPost = async (linkId, reason) => {
         try {
-            const reportDoc = await makeReport(linkId, reason);
+            const reportDoc = await makeReportPost(linkId, reason);
 
             return reportDoc;
         } catch (error) {
@@ -68,5 +77,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, fetchPosts, fetchTheLatestPosts, fetchPostById, updatePost, createReport }
+    return { makePost, createComment, fetchPosts, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost }
 }

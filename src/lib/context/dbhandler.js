@@ -17,7 +17,9 @@ const dbEnv = import.meta.env.VITE_DATABASE_ID;
 const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
-const reportsCollEnv = import.meta.env.VITE_REPORTS_COLLECTION;
+const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
+const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
+const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 
 export const createUser = async (email, password, name) => {
     try {
@@ -599,11 +601,11 @@ export const fetchPersonalities = async () => {
     }
 }
 
-export const createReport = async (linkId, reason) => {
+export const createReportPost = async (linkId, reason) => {
     try {
         const reportDoc = await databases.createDocument(
             dbEnv,
-            reportsCollEnv,
+            reportsPostsCollEnv,
             ID.unique(),
             {
                 link_id: linkId,
@@ -612,11 +614,55 @@ export const createReport = async (linkId, reason) => {
         )
 
         if (reportDoc) {
-            console.log('Report created successfully:', reportDoc);
+            console.log('Post report created successfully.');
+            return reportDoc;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error creating post report:', error);
+    }
+}
+
+export const createReportComment = async (commentId, userId) => {
+    try {
+        const reportDoc = await databases.createDocument(
+            dbEnv,
+            reportsCommentsCollEnv,
+            ID.unique(),
+            {
+                comment_id: commentId,
+                user_id: userId
+            }
+        )
+
+        if (reportDoc) {
+            console.log('Comment report created successfully.');
             return reportDoc;
         }
         return null;
     } catch (error) {
         console.error('Error creating report:', error);
+    }
+}
+
+export const createComment = async (postId, commentText) => {
+    try {
+        const doc = await databases.createDocument(
+            dbEnv,
+            commentsCollEnv,
+            ID.unique(),
+            {
+                post_id: postId,
+                comment_text: commentText
+            }
+        )
+
+        if (doc) {
+            console.log('Comment created successfully:', doc);
+            return doc;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error creating comment:', error);
     }
 }

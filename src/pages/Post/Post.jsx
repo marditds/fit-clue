@@ -17,7 +17,7 @@ const Post = () => {
 
     let params = useParams()
 
-    const { fetchPostById, updatePost, createReport } = usePosts();
+    const { fetchPostById, updatePost, createReportPost } = usePosts();
 
     const { createLink } = useShoppingLinks();
 
@@ -170,10 +170,10 @@ const Post = () => {
         setIsReportSubmitted(false);
     };
 
-    const onSubmitReportClick = async () => {
+    const onSubmitReportPostClick = async () => {
         setIsReportGettingSubmitted(true);
         try {
-            await createReport(selectedItemLinkId, selectedReason);
+            await createReportPost(selectedItemLinkId, selectedReason);
 
             setIsReportSubmitted(true);
 
