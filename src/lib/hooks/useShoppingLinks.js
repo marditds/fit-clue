@@ -2,12 +2,12 @@ import { createLink as makeLink } from '../context/dbhandler';
 
 export const useShoppingLinks = () => {
 
-  const createLink = async (href, companyName, item, userId) => {
+  const createLink = async (href, companyName, item, userId, similarityLevel) => {
 
-    console.log(href, companyName, item, userId);
+    console.log(href, companyName, item, userId, similarityLevel);
 
     try {
-      const res = await makeLink(href, companyName, item, userId);
+      const res = await makeLink(href, companyName, item, userId, similarityLevel);
 
       console.log('Link created successfully:', res);
 

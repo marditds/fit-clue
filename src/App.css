@@ -38,17 +38,19 @@ a {
 
 a:hover {
   color: var(--main-accent-color-hover) !important;
+  text-decoration: none;
 }
 
-input, textarea, button {
+input, textarea, button, select {
   border-radius: var(--main-border-radius) !important;
 }
 
-input {
+input, select {
   transition: var(--main-transition-speed) !important;
 }
 
-input:focus {
+input:focus,
+select:focus {
   box-shadow: none !important;
   border-color: var(--main-accent-color-hover) !important;
 }

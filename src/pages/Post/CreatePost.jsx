@@ -3,6 +3,7 @@ import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions.js';
+import { SimilarityLevelToolTip } from '../../components/ToolTip/SimilarityLevelToolTip.jsx';
 
 const CreatePost = () => {
 
@@ -12,7 +13,6 @@ const CreatePost = () => {
 
     const [name, setName] = useState('');
     const [photoLink, setPhotoLink] = useState('');
-    const [similarityLevel, setSimilarityLevel] = useState('');
     const [showLinks, setShowLinks] = useState(false);
     const [links, setLinks] = useState([]);
 
@@ -78,20 +78,20 @@ const CreatePost = () => {
 
                 <Col>
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3" controlId="formName">
+                        <Form.Group className='mb-3' controlId='formName'>
                             <Form.Label>Name:</Form.Label>
                             <Form.Control
-                                type="text"
+                                type='text'
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                                 required
                             />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formPhotoLink">
+                        <Form.Group className='mb-3' controlId='formPhotoLink'>
                             <Form.Label>Photo Link:</Form.Label>
                             <Form.Control
-                                as="textarea"
+                                as='textarea'
                                 rows={3}
                                 value={photoLink}
                                 onChange={e => {
@@ -102,10 +102,10 @@ const CreatePost = () => {
                             />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formShowLinks">
+                        <Form.Group className='mb-3' controlId='formShowLinks'>
                             <Form.Check
-                                type="checkbox"
-                                label="Add Links"
+                                type='checkbox'
+                                label='Add Links'
                                 checked={showLinks}
                                 onChange={handleCheckboxChange}
                             />
@@ -115,12 +115,12 @@ const CreatePost = () => {
                             <div>
                                 <Form.Label>Links:</Form.Label>
                                 {links.map((link, index) => (
-                                    <Row key={index} className="mb-2">
+                                    <Row key={index} className='mb-2'>
 
                                         <Col>
                                             <Form.Control
-                                                name="href"
-                                                placeholder="Link URL"
+                                                name='href'
+                                                placeholder='Link URL'
                                                 value={link.href}
                                                 onChange={e => handleLinkChange(index, e)}
                                                 required
@@ -129,8 +129,8 @@ const CreatePost = () => {
 
                                         <Col>
                                             <Form.Control
-                                                name="companyName"
-                                                placeholder="Company Name"
+                                                name='companyName'
+                                                placeholder='Company Name'
                                                 value={link.companyName}
                                                 onChange={e => handleLinkChange(index, e)}
                                                 required
@@ -139,8 +139,8 @@ const CreatePost = () => {
 
                                         <Col>
                                             <Form.Control
-                                                name="item"
-                                                placeholder="Item"
+                                                name='item'
+                                                placeholder='Item'
                                                 value={link.item}
                                                 onChange={e => handleLinkChange(index, e)}
                                                 required
@@ -148,38 +148,49 @@ const CreatePost = () => {
                                         </Col>
 
                                         <Col>
+                                            <SimilarityLevelToolTip>
+                                                <ul className='text-start list-unstyled'>
+                                                    {similarityLevelOptions.map((option, idx) => (
+                                                        <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
+                                                    ))}
+                                                </ul>
+                                            </SimilarityLevelToolTip>
                                             <Form.Select
-                                                aria-label="Select similarity level"
-                                                name="similarityLevel"
+                                                aria-label='Select similarity level'
+                                                name='similarityLevel'
                                                 id={`similarityLevelSelect-${index}`}
                                                 value={link.similarityLevel}
                                                 onChange={e => handleLinkChange(index, e)}
                                                 required
                                             >
-                                                <option value="" disabled>Select similarity level</option>
+                                                <option value='' disabled>
+                                                    Select similarity level
+                                                </option>
                                                 {similarityLevelOptions.map((option, idx) => (
-                                                    <option key={idx} value={option}>{option}</option>
+                                                    <option key={idx} value={option.label}>
+                                                        {option.label}
+                                                    </option>
                                                 ))}
                                             </Form.Select>
                                         </Col>
 
-                                        <Col xs="auto">
-                                            <Button variant="danger" onClick={() => removeLinkField(index)}>
+                                        <Col xs='auto'>
+                                            <Button variant='danger' onClick={() => removeLinkField(index)}>
                                                 Remove
                                             </Button>
                                         </Col>
                                     </Row>
                                 ))}
-                                <Button variant="secondary" type="button" onClick={addLinkField}>
+                                <Button variant='secondary' type='button' onClick={addLinkField}>
                                     + Add Another Link
                                 </Button>
                             </div>
                         )}
 
                         <Button
-                            variant="primary"
-                            type="submit"
-                            className="mt-3"
+                            variant='primary'
+                            type='submit'
+                            className='mt-3'
                             disabled={!name || !photoLink}
                         >
                             Create Post

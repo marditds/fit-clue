@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useUser } from '../../lib/hooks/useUser';
-import { Form, Container, Row, Col, Modal, Button } from 'react-bootstrap';
+import { Form, Container, Row, Col, Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
+import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { reportCategories } from '../../lib/data/reportCategories';
 import { onePostData } from '../../lib/data/testData';
 import '../../components/Post/Post.css';
+import { SimilarityLevelToolTip } from '../../components/ToolTip/SimilarityLevelToolTip';
 
 const Post = () => {
 
@@ -29,6 +31,7 @@ const Post = () => {
     const [itemName, setItemName] = useState('');
     const [href, setHref] = useState('');
     const [similarityLevel, setSimilarityLevel] = useState('');
+    const [similarityLevelDesc, setSimilarityLevelDesc] = useState('');
     const [isAddningLink, setIsAddingLink] = useState(false);
 
     // Report user generated links
@@ -45,6 +48,7 @@ const Post = () => {
         console.log('userId:', userId);
     }, [userId])
 
+    // Get the post
     useEffect(() => {
         const getPosts = async () => {
 
@@ -86,6 +90,7 @@ const Post = () => {
         getPosts();
     }, []);
 
+    // The code for enabling insta view
     useEffect(() => {
         if (!iUrl) return;
 
@@ -100,6 +105,14 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
+    // Display the description for each similarity level
+    useEffect(() => {
+        let optionDesc = similarityLevelOptions.find(l => l.label === similarityLevel)
+
+        setSimilarityLevelDesc(optionDesc?.description || '');
+
+    }, [similarityLevel])
+
     const onCompanyNameCahnge = (e) => {
         setCompanyName(e.target.value);
     };
@@ -110,6 +123,10 @@ const Post = () => {
 
     const onUrlCahnge = (e) => {
         setHref(e.target.value);
+    };
+
+    const onSimilarityLevelChange = (e) => {
+        setSimilarityLevel(e.target.value);
     };
 
     const onAddLinkSubmit = async (e) => {
@@ -200,34 +217,48 @@ const Post = () => {
                                         Brand
                                     </Col>
                                     <Col className='d-flex justify-content-center align-items-center'>
-                                        Report
+                                        Similarity
                                     </Col>
+                                    {/* <Col className='d-flex justify-content-center align-items-center'>
+                                        Report
+                                    </Col> */}
                                 </Row>
+
                                 {
                                     itemsLinks?.map((itemLink) => {
                                         return (
                                             <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex justify-content-center align-items-center w-100 post__div-link-item'>
 
-                                                <Row className='w-100 justify-content-center align-items-center py-3'>
-                                                    <Col className='d-flex justify-content-center'>
-                                                        <a href={itemLink.href}>
+                                                <Row className='w-100 d-flex justify-content-center align-items-center py-3'>
+                                                    <a href={itemLink.href} target='_blank' className='d-flex align-items-center justify-content-center'>
+                                                        <Col className='d-flex justify-content-center align-items-center'>
+                                                            {/* <a href={itemLink.href} > */}
                                                             <div>
                                                                 {itemLink.item}
                                                             </div>
-                                                        </a>
-                                                    </Col>
-                                                    <Col className='d-flex justify-content-center'>
-                                                        <a href={itemLink.href}>
+                                                            {/* </a> */}
+                                                        </Col>
+
+                                                        <Col className='d-flex justify-content-center'>
+                                                            {/* <a href={itemLink.href}> */}
                                                             {itemLink.company_name}
-                                                        </a>
-                                                    </Col>
-                                                    <Col className='d-flex justify-content-center'>
+                                                            {/* </a> */}
+                                                        </Col>
+                                                        <Col className='d-flex justify-content-center text-center'>
+                                                            {/* <a href={itemLink.href}> */}
+                                                            {itemLink.similarity_level}
+                                                            {/* </a> */}
+                                                        </Col>
+                                                    </a>
+
+                                                    {/* <Col className='d-flex justify-content-center' style={{ maxWidth: 'fit-content' }}>
                                                         <Button onClick={() => handleReportClick(itemLink)}
                                                             className='post__report-btn'
                                                         >
                                                             <i className='bi bi-flag' />
                                                         </Button>
-                                                    </Col>
+                                                    </Col> */}
+
                                                 </Row>
 
                                             </li>
@@ -239,6 +270,7 @@ const Post = () => {
 
                         {/* Add items links */}
                         <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
+                            <h3>Add a linkcxsd</h3>
                             <Form.Group className='mb-3' controlId='CompanyNameField'>
                                 <Form.Label>Brand:</Form.Label>
                                 <Form.Control
@@ -266,11 +298,42 @@ const Post = () => {
                                     placeholder='Enter Item URL' />
                             </Form.Group>
 
+                            <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
+
+                                <Form.Label className='w-100'>
+                                    Similarity Level:
+                                    <SimilarityLevelToolTip>
+                                        <ul className='text-start list-unstyled'>
+                                            {similarityLevelOptions.map((option, idx) => (
+                                                <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
+                                            ))}
+                                        </ul>
+                                    </SimilarityLevelToolTip>
+                                </Form.Label>
+
+                                <Form.Select
+                                    aria-label='Select similarity level'
+                                    name='similarityLevel'
+                                    value={similarityLevel}
+                                    onChange={onSimilarityLevelChange}
+                                    required
+                                >
+                                    <option value='' disabled>Select similarity level</option>
+                                    {similarityLevelOptions.map((option, idx) => (
+                                        <option key={idx} value={option.label}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                                <Form.Text>{similarityLevelDesc}</Form.Text>
+                            </Form.Group>
+
 
                             <Button
                                 variant='primary'
                                 type='submit'
                                 disabled={!companyName || !itemName || !href}
+                                className='mt-1'
                             >
                                 {isAddningLink ? 'Adding link...' : 'Add Item Link'}
                             </Button>
