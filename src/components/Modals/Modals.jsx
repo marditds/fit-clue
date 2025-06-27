@@ -1,75 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { commentReportCategories } from '../../lib/data/reportCategories';
-import { usePosts } from '../../lib/hooks/usePosts';
 
-export const Modals = () => {
-
-    const { createReportComment } = usePosts();
-
+export const ReportModal = ({
+    show,
+    onClose,
+    item,
+    reportCategories,
+    onSubmitReport
+}) => {
     const [otherText, setOtherText] = useState('');
     const [selectedReason, setSelectedReason] = useState('');
-    const [showReportCommentModal, setShowReportCommentModal] = useState(false);
-    const [isCommentReportSubmitted, setIsCommentReportSubmitted] = useState(false);
-    const [isCommentReportGettingSubmitted, setIsCommentReportGettingSubmitted] = useState(false);
     const [isOtherSelected, setIsOtherSelected] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedItemId, setSelectedItemId] = useState(null);
-    const [isReportSubmitted, setIsReportSubmitted] = useState(null);
+    const [isReportSubmitted, setIsReportSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleCloseReportCommentModal = () => {
-        setShowReportCommentModal(false);
-    }
+    useEffect(() => {
+        if (!show) {
+            setSelectedReason('');
+            setOtherText('');
+            setIsOtherSelected(false);
+            setIsReportSubmitted(false);
+        }
+    }, [show]);
 
-    const handleReportCommentClick = (item) => {
-        console.log('item:', item);
-        setSelectedItem(item);
-        setSelectedItemId(item.$id);
-        setShowReportCommentModal(true);
-    };
-
-    const handleClose = () => {
-        setShowReportCommentModal(false);
-        setSelectedItem(null);
-        setSelectedReason('');
-        setOtherText('');
-        setIsOtherSelected(false);
-        setIsCommentReportSubmitted(false);
-    };
-
-    const onSubmitReportCommentClick = async () => {
-        setIsCommentReportGettingSubmitted(true);
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
         try {
-            await createReportComment(selectedItemId, selectedReason);
-
-            setIsCommentReportSubmitted(true);
-
-            setTimeout(() => handleClose(), 2000);
-
+            await onSubmitReport(item?.$id, selectedReason);
+            setIsReportSubmitted(true);
+            setTimeout(onClose, 2000);
         } catch (error) {
             console.error('Error submitting report:', error);
         } finally {
-            setIsCommentReportGettingSubmitted(false);
+            setIsSubmitting(false);
         }
-    }
+    };
 
     return (
-        <Modal show={showReportCommentModal} onHide={handleCloseReportCommentModal}>
+        <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Report Item</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {isCommentReportSubmitted ? (
-                    <div>
-                        <p>Your report has been submitted successfully.</p>
-                    </div>
+                {isReportSubmitted ? (
+                    <p>Your report has been submitted successfully.</p>
                 ) : (
                     <>
                         <p>
-                            Reporting: <strong>{selectedItem?.item} from {selectedItem?.company_name}</strong>
+                            Reporting: <strong>{item?.item} from {item?.company_name}</strong>
                         </p>
                         <Form>
-                            {commentReportCategories.map((category, index) => (
+                            {reportCategories.map((category, index) => (
                                 <Form.Check
                                     type='radio'
                                     id={`report-${index}`}
@@ -119,20 +100,18 @@ export const Modals = () => {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button onClick={handleCloseReportCommentModal}>
-                    {isCommentReportSubmitted ? 'Close' : 'Cancel'}
+                <Button onClick={onClose}>
+                    {isReportSubmitted ? 'Close' : 'Cancel'}
                 </Button>
-                {!isCommentReportSubmitted && (
+                {!isReportSubmitted && (
                     <Button
-                        disabled={!selectedReason || isCommentReportGettingSubmitted}
-                        onClick={onSubmitReportCommentClick}
+                        disabled={!selectedReason || isSubmitting}
+                        onClick={handleSubmit}
                     >
-                        {!isCommentReportGettingSubmitted ?
-                            'Submit' :
-                            'Submitting Report'}
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
                     </Button>
                 )}
             </Modal.Footer>
         </Modal>
-    )
-}
+    );
+};

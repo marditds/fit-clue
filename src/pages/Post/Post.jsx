@@ -174,7 +174,7 @@ const Post = () => {
                 username={username}
             />
 
-            {/* Report modal */}
+            {/* Report Link modal */}
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Report Item</Modal.Title>
@@ -240,11 +240,11 @@ const Post = () => {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant='secondary' onClick={handleClose}>
+                    <Button onClick={handleClose}>
                         {isReportSubmitted ? 'Close' : 'Cancel'}
                     </Button>
                     {!isReportSubmitted && (
-                        <Button variant='primary' disabled={!selectedReason || isReportGettingSubmitted} onClick={onSubmitReportPostClick}>
+                        <Button disabled={!selectedReason || isReportGettingSubmitted} onClick={onSubmitReportPostClick}>
                             {!isReportGettingSubmitted ? 'Submit' : 'Submitting Report'}
                         </Button>
                     )}

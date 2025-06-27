@@ -4,16 +4,24 @@ import { LoadingComponent } from '../Loading/LoadingComponent';
 import { dateTimeFormatter } from '../../lib/utils/dateTimeFormatter';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { onePostComments } from '../../lib/data/testData';
-
+import { ReportModal } from '../Modals/Modals';
+import { commentReportCategories } from '../../lib/data/reportCategories';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 export const CommentSection = ({ postId, username, userId }) => {
 
-    const { comments, setComments, createComment, fetchComments } = usePosts();
+    const { comments, setComments, createComment, fetchComments, createReportComment } = usePosts();
+
+    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
     const [commentText, setCommentText] = useState('');
     const [isAddningComment, setIsAddingComment] = useState(false);
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
     const [isCommentsLoading, setICommentsLoading] = useState(false);
+
+    // Report Comment 
+    const [selectedComment, setSelectedComment] = useState(null);
+    const [show, setShow] = useState(false);
 
     // Get the comments for post
     useEffect(() => {
@@ -69,9 +77,24 @@ export const CommentSection = ({ postId, username, userId }) => {
         setIsViewCommentsClicked(preVal => !preVal)
     }
 
+    const handleReportClick = (item) => {
+        setSelectedComment(item);
+        setShow(true);
+    };
+
+    const handleClose = () => {
+        setShow(false);
+        setSelectedComment(null);
+    };
+
+    const handleSubmitReport = async (commentId, reason) => {
+        await createReportComment(commentId, reason);
+    };
+
+
     return (
         <Row style={{ marginTop: '24px' }}>
-            <Col>
+            <Col xs={12} lg={6}>
                 <div className='sticky-top'>
                     <h3>
                         Leave a comment
@@ -130,9 +153,15 @@ export const CommentSection = ({ postId, username, userId }) => {
                                                         {comment.comment_text}
                                                     </Col>
                                                     <Col xs={1} className='p-0 d-flex justify-content-center align-items-center'>
-                                                        <Button className=''>
-                                                            <i className='bi bi-flag' />
-                                                        </Button>
+                                                        {(isXs || isSm || isMd) ?
+                                                            <Button className=' bg-transparent p-0'>
+                                                                <i className='bi bi-three-dots-vertical' />
+                                                            </Button>
+                                                            :
+                                                            <Button onClick={() => handleReportClick(comment)} className=''>
+                                                                <i className='bi bi-flag' />
+                                                            </Button>
+                                                        }
                                                     </Col>
                                                 </Row>
                                                 <hr />
@@ -148,6 +177,15 @@ export const CommentSection = ({ postId, username, userId }) => {
 
                 </Row>
             </Col>
+
+            <ReportModal
+                show={show}
+                onClose={handleClose}
+                item={selectedComment}
+                reportCategories={commentReportCategories}
+                onSubmitReport={handleSubmitReport}
+            />
+
         </Row>
     )
 }

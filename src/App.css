@@ -97,6 +97,10 @@ button:active {
   animation-delay: 0.4s;
 }
 
+div, p, button {
+  font-size: 1rem !important;
+}
+
 @keyframes loadingDots {
   0%, 100% {
     transform: translateY(0);
@@ -104,5 +108,11 @@ button:active {
 
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 767px) {
+  div, p, button {
+    font-size: 0.875rem !important;
   }
 }

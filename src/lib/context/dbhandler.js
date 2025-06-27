@@ -710,7 +710,7 @@ export const createReportPost = async (linkId, reason) => {
     }
 }
 
-export const createReportComment = async (commentId, userId) => {
+export const createReportComment = async (commentId, reason) => {
     try {
         const reportDoc = await databases.createDocument(
             dbEnv,
@@ -718,7 +718,7 @@ export const createReportComment = async (commentId, userId) => {
             ID.unique(),
             {
                 comment_id: commentId,
-                user_id: userId
+                reason
             }
         )
 
