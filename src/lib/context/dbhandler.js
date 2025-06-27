@@ -118,6 +118,24 @@ export const getUserFromCollectionById = async (userId) => {
     }
 }
 
+export const fetchUsersByIds = async (userIds) => {
+    try {
+        const users = await databases.listDocuments(
+            dbEnv,
+            usernamesCollEnv,
+            [Query.equal('$id', userIds)]
+        )
+
+        if (users) {
+            return users;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+}
+
 export const signInUser = async (email, password) => {
     try {
         const user = await account.createEmailPasswordSession(
@@ -737,43 +755,7 @@ export const createComment = async (postId, commentText, userId) => {
     }
 }
 
-export const fetchUserById = async (userId) => {
-    try {
-        const user = await databases.getDocument(
-            dbEnv,
-            usernamesCollEnv,
-            userId
-        )
-
-        if (user) {
-            return user;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error fetching user:', error);
-    }
-}
-
-export const fetchUsersByIds = async (userIds) => {
-    try {
-        const users = await databases.listDocuments(
-            dbEnv,
-            usernamesCollEnv,
-            [Query.equal('$id', userIds)]
-        )
-
-        if (users) {
-            return users;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-    }
-}
-
-export const fetchCommentsByPostId = async (postId) => {
+export const fetchCommentsTextByPostId = async (postId) => {
     try {
         const doc = await databases.listDocuments(
             dbEnv,
@@ -795,14 +777,5 @@ export const fetchCommentsByPostId = async (postId) => {
         return null;
     } catch (error) {
         console.error('Error fetching comment:', error);
-    }
-}
-
-export const fetchFullComment = async (postId) => {
-    try {
-        const comment = await fetchCommentsByPostId(postId);
-
-    } catch (error) {
-        console.error('Error fetching full comment:', error);
     }
 }

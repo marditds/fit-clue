@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
-import { usePosts } from '../../lib/hooks/usePosts';
-import { useUser } from '../../lib/hooks/useUser';
-import { Form, Container, Row, Col, Modal, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Form, Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
-import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
-import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { reportCategories } from '../../lib/data/reportCategories';
 import { onePostData } from '../../lib/data/testData';
 import '../../components/Post/Post.css';
-import { SimilarityLevelToolTip } from '../../components/ToolTip/SimilarityLevelToolTip';
-import { LoadingComponent } from '../../components/Loading/LoadingComponent';
+import { CommentSection } from '../../components/Post/CommentSection';
+import { AddItemsLinks } from '../../components/Post/AddItemsLinks';
 
 const Post = () => {
 
@@ -18,29 +14,10 @@ const Post = () => {
 
     let params = useParams()
 
-    const { fetchPostById, fetchCommentsByPostId, createComment, updatePost, createReportPost, fetchFullComments } = usePosts();
-
-    const { createLink } = useShoppingLinks();
-
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
-
-    // user added links
-    const [companyName, setCompanyName] = useState('');
-    const [itemName, setItemName] = useState('');
-    const [href, setHref] = useState('');
-    const [similarityLevel, setSimilarityLevel] = useState('');
-    const [similarityLevelDesc, setSimilarityLevelDesc] = useState('');
-    const [isAddningLink, setIsAddingLink] = useState(false);
-
-    // Users' comment
-    const [commentText, setCommentText] = useState('');
-    // const [commentsList, setCommentsList] = useState([]);
-    const [isAddningComment, setIsAddingComment] = useState(false);
-    const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
-    const [comments, setComments] = useState({});
 
     // Report user generated links
     const [showModal, setShowModal] = useState(false);
@@ -102,25 +79,6 @@ const Post = () => {
         getPosts();
     }, []);
 
-    // Get the comments for post
-    useEffect(() => {
-        const getCommentsByPostId = async () => {
-
-            if (!isViewCommentsClicked) {
-                return;
-            }
-            const comments = await fetchFullComments(params.postId, setComments)
-            // const comments = await fetchCommentsByPostId(params.postId);
-
-            console.log('comments:', comments);
-
-            // setCommentsList(comments);
-
-        }
-        getCommentsByPostId();
-    }, [isViewCommentsClicked])
-
-    // The code for enabling insta view
     useEffect(() => {
         if (!iUrl) return;
 
@@ -134,80 +92,6 @@ const Post = () => {
         };
         document.body.appendChild(script);
     }, [iUrl]);
-
-    // Display the description for each similarity level
-    useEffect(() => {
-        let optionDesc = similarityLevelOptions.find(l => l.label === similarityLevel)
-
-        setSimilarityLevelDesc(optionDesc?.description || '');
-
-    }, [similarityLevel])
-
-    const onCompanyNameCahnge = (e) => {
-        setCompanyName(e.target.value);
-    };
-
-    const onItemNameChange = (e) => {
-        setItemName(e.target.value);
-    };
-
-    const onUrlCahnge = (e) => {
-        setHref(e.target.value);
-    };
-
-    const onSimilarityLevelChange = (e) => {
-        setSimilarityLevel(e.target.value);
-    };
-
-    const onAddLinkSubmit = async (e) => {
-
-        e.preventDefault();
-
-        try {
-            setIsAddingLink(true);
-
-            const newLink = await createLink(href, companyName, itemName, userId, similarityLevel);
-
-            const updatedPost = await updatePost(params.postId, newLink.$id);
-
-            console.log('updatedPost in Post.jsx:', updatedPost);
-
-            setItemsLinks((prevLinks) => [...(prevLinks || []), newLink]);
-
-        } catch (error) {
-            console.error('Error onAddSubmitLink:', error);
-        } finally {
-            setIsAddingLink(false);
-            setCompanyName('');
-            setItemName('');
-            setHref('');
-        }
-    }
-
-    const onCreateCommentSubmit = async (e) => {
-
-        e.preventDefault();
-
-        try {
-            setIsAddingComment(true);
-
-            const newComment = await createComment(params.postId, commentText, userId);
-
-            console.log('comment in Post.jsx:', newComment);
-
-            // setCommentsList((prevComments) => [newComment, ...(prevComments || [])]);
-
-        } catch (error) {
-            console.error('Error onAddSubmitLink:', error);
-        } finally {
-            setIsAddingComment(false);
-            setCommentText('');
-        }
-    }
-
-    const onViewCommentsClick = () => {
-        setIsViewCommentsClicked(true)
-    }
 
     const handleReportClick = (item) => {
         console.log('item:', item);
@@ -324,119 +208,24 @@ const Post = () => {
                         }
 
                         {/* Add items links */}
-                        <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
-                            <h3>Add a linkcxsd</h3>
-                            <Form.Group className='mb-3' controlId='CompanyNameField'>
-                                <Form.Label>Brand:</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    value={companyName}
-                                    onChange={onCompanyNameCahnge}
-                                    placeholder='Enter Company Name' />
-                            </Form.Group>
+                        <AddItemsLinks
+                            postId={params.postId}
+                            userId={userId}
+                            setItemsLinks={setItemsLinks}
+                        />
 
-                            <Form.Group className='mb-3' controlId='ItemNameField'>
-                                <Form.Label>Item:</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    value={itemName}
-                                    onChange={onItemNameChange}
-                                    placeholder='Enter Brand Name' />
-                            </Form.Group>
-
-                            <Form.Group className='mb-3' controlId='ItemUrlField'>
-                                <Form.Label>URL:</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    value={href}
-                                    onChange={onUrlCahnge}
-                                    placeholder='Enter Item URL' />
-                            </Form.Group>
-
-                            <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
-
-                                <Form.Label className='w-100'>
-                                    Similarity Level:
-                                    <SimilarityLevelToolTip>
-                                        <ul className='text-start list-unstyled'>
-                                            {similarityLevelOptions.map((option, idx) => (
-                                                <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
-                                            ))}
-                                        </ul>
-                                    </SimilarityLevelToolTip>
-                                </Form.Label>
-
-                                <Form.Select
-                                    aria-label='Select similarity level'
-                                    name='similarityLevel'
-                                    value={similarityLevel}
-                                    onChange={onSimilarityLevelChange}
-                                    required
-                                >
-                                    <option value='' disabled>Select similarity level</option>
-                                    {similarityLevelOptions.map((option, idx) => (
-                                        <option key={idx} value={option.label}>
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </Form.Select>
-                                <Form.Text>{similarityLevelDesc}</Form.Text>
-                            </Form.Group>
-
-
-                            <Button
-                                variant='primary'
-                                type='submit'
-                                disabled={!companyName || !itemName || !href}
-                                className='mt-1'
-                            >
-                                {isAddningLink ? 'Adding link...' : 'Add Item Link'}
-                            </Button>
-                        </Form>
                     </div>
 
                 </Col>
 
             </Row>
 
-            <Row>
-                <Col>
-                    <h3>Comment section</h3>
-
-                    <Form onSubmit={onCreateCommentSubmit}>
-
-                        <Form.Group className='mb-3' controlId='userCommentEntryField'>
-                            <Form.Label>Comment</Form.Label>
-                            <Form.Control
-                                type='text'
-                                placeholder='Enter comment'
-                                value={commentText}
-                                onChange={(e) => setCommentText(e.target.value)}
-                            />
-                            <Form.Text className='text-muted'>
-                                FitClue utilizes AI to ensure a safe and respectful environment for all users and visitos.
-                            </Form.Text>
-                        </Form.Group>
-
-                        <Button type='submit'>
-                            {!isAddningComment ? 'Submit' : <LoadingComponent />}
-                        </Button>
-                    </Form>
-                </Col>
-                <Col>
-                    <Button onClick={onViewCommentsClick}>View Comments</Button>
-                    {/* {
-                        isViewCommentsClicked && <ul>
-                            {
-                                commentsList.length > 0 ? commentsList?.map((comment, idx) => (
-                                    <li key={idx}>{comment.comment_text}</li>
-                                )) : <li>No comments yet</li>
-                            }
-                        </ul>
-                    } */}
-
-                </Col>
-            </Row>
+            {/* Comment section */}
+            <CommentSection
+                postId={params.postId}
+                userId={userId}
+                username={username}
+            />
 
             {/* Report modal */}
             <Modal show={showModal} onHide={handleClose}>

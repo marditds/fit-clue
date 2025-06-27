@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsByPostId as getCommentsByPostId, fetchUsersByIds } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
-
 
 export const usePosts = () => {
 
     const { userId } = useUserContext();
+
+    const [comments, setComments] = useState();
 
     useEffect(() => {
         console.log('user id in usePosts.jsx:', userId);
@@ -49,46 +50,41 @@ export const usePosts = () => {
         }
     }
 
-    const fetchCommentsByPostId = async (postId) => {
+    const fetchCommentsTextByPostId = async (postId) => {
         try {
-            const res = await getCommentsByPostId(postId);
+            const res = await getCommentsTextByPostId(postId);
             return res;
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     }
 
-    const fetchFullComments = async (postId, setComments) => {
+    const fetchComments = async (postId) => {
 
         if (!postId) {
             return;
         }
 
         try {
-            const commentsTexts = await fetchCommentsByPostId(postId);
+            const commentsTexts = await fetchCommentsTextByPostId(postId);
 
-            console.log('commentsTexts:', commentsTexts);
+            console.log('commentsTexts', commentsTexts);
 
+            if (commentsTexts.length === 0) {
+                return;
+            }
 
             const userIds = [...new Set(commentsTexts.map(comment => comment.user_id).filter(Boolean))];
-            // const commentIds = comments.map(comment => comment.$id);
-
-            console.log('userIds:', userIds);
-
 
             const [allUsersData] = await Promise.all([
                 fetchUsersByIds(userIds)
             ]);
 
-            console.log('allUsersData:', allUsersData);
-
-
             const userMap = new Map(allUsersData.documents.map(user => [user.$id, user]));
 
-            console.log('userMap:', userMap);
-
             const fullComments = commentsTexts.map(comment => {
-                const user = userMap.get(comment.userId);
+
+                const user = userMap.get(comment.user_id);
 
                 return {
                     ...comment,
@@ -96,14 +92,15 @@ export const usePosts = () => {
                 };
             });
 
-            console.log('fullComments:', fullComments);
+            setComments((prevComments) => [...(fullComments || []), ...(prevComments || [])].flat());
 
-            setComments(prevComments => {
-                const nonDuplicateComments = fullComments.filter(newComment =>
-                    !prevComments.some(existingComment => existingComment.$id === newComment.$id)
-                );
-                return [...prevComments, ...nonDuplicateComments];
-            })
+
+            // setComments(prevComments => {
+            //     const nonDuplicateComments = fullComments.filter(newComment =>
+            //         !prevComments?.some(existingComment => existingComment.$id === newComment.$id)
+            //     );
+            //     return [...prevComments, ...nonDuplicateComments];
+            // })
 
         } catch (error) {
             console.error('Error fetching comments by id:', error);
@@ -138,5 +135,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchCommentsByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost, fetchFullComments }
+    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost, fetchComments, comments, setComments }
 }

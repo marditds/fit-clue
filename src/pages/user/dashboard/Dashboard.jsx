@@ -17,6 +17,7 @@ export const Dashboard = () => {
     const [successMsg, setSuccessMsg] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
+    // Fetch user id
     useEffect(() => {
         const fetchUserPrefs = async () => {
             const prefs = await getUserPreferences();
@@ -28,6 +29,7 @@ export const Dashboard = () => {
         fetchUserPrefs();
     }, [])
 
+    // Fetch username
     useEffect(() => {
         const fetchUserAccount = async () => {
 

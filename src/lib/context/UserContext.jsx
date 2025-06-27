@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { getUserFromCollectionById } from './dbhandler';
+
 // import { getUserById } from './dbhandler';
 // import { useLocation } from 'react-router-dom';
 
@@ -55,9 +57,12 @@ export const UserProvider = ({ children }) => {
                 console.log('userIdInSession', userIdInSession);
                 // console.log('userEmailInSession', userEmailInSession);
 
+                const user = await getUserFromCollectionById(userIdInSession);
+
                 setIsSessionInProgress(true);
                 // setUserEmail(userEmailInSession);
-                setUserId(userIdInSession);
+                setUserId(user.$id);
+                setUsername(user.username);
                 setIsLoggedIn(true);
 
             } catch (error) {
