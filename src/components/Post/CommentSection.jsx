@@ -66,40 +66,49 @@ export const CommentSection = ({ postId, username, userId }) => {
     }
 
     const onViewCommentsClick = () => {
-        setIsViewCommentsClicked(true)
+        setIsViewCommentsClicked(preVal => !preVal)
     }
 
     return (
-        <Row>
+        <Row style={{ marginTop: '24px' }}>
             <Col>
-                <h3>Comment section</h3>
+                <div className='sticky-top'>
+                    <h3>
+                        Leave a comment
+                    </h3>
 
-                <Form onSubmit={onCreateCommentSubmit}>
+                    <Form onSubmit={onCreateCommentSubmit} >
 
-                    <Form.Group className='mb-3' controlId='userCommentEntryField'>
-                        <Form.Label>Comment</Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='Enter comment'
-                            value={commentText}
-                            onChange={(e) => setCommentText(e.target.value)}
-                        />
-                        <Form.Text className='text-muted'>
-                            FitClue utilizes AI to ensure a safe and respectful environment for all users and visitos.
-                        </Form.Text>
-                    </Form.Group>
+                        <Form.Group className='mb-3' controlId='userCommentEntryField'>
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control
+                                as='textarea'
+                                name='userComment'
+                                rows={3}
+                                aria-describedby='commentHelpText'
+                                placeholder='Enter comment'
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
+                            />
+                            <Form.Text id='commentHelpText' className='text-muted'>
+                                FitClue utilizes AI to ensure a safe and respectful environment for all users and visitors.
+                            </Form.Text>
+                        </Form.Group>
 
-                    <Button type='submit'>
-                        {!isAddningComment ? 'Submit' : <LoadingComponent />}
-                    </Button>
-                </Form>
+                        <Button type='submit'>
+                            {!isAddningComment ? 'Submit' : <LoadingComponent />}
+                        </Button>
+                    </Form>
+                </div>
             </Col>
             <Col>
-                <Row className='d-flex flex-column justify-content-center mx-auto'
-                    style={{ maxWidth: '538px' }}
-                >
-                    <Button onClick={onViewCommentsClick}>
-                        View Comments
+                <Row className='d-flex flex-column justify-content-center mx-auto'>
+
+                    <Button
+                        onClick={onViewCommentsClick}
+                        className='sticky-top'
+                    >
+                        {isViewCommentsClicked ? 'Hide' : 'View'} Comments
                     </Button>
 
                     {isViewCommentsClicked ? (
@@ -109,7 +118,7 @@ export const CommentSection = ({ postId, username, userId }) => {
                                     comments?.length > 0
                                         ? comments.map((comment, idx) => (
                                             <div key={idx}>
-                                                <Row className='my-4'>
+                                                <Row className='my-4 justify-content-center'>
                                                     <Col xs={2} className=''>
                                                         <strong>
                                                             {comment.username}
@@ -117,8 +126,13 @@ export const CommentSection = ({ postId, username, userId }) => {
                                                         <br />
                                                         <sub>{dateTimeFormatter(comment.$createdAt)}</sub>
                                                     </Col>
-                                                    <Col className='text-wrap text-break'>
+                                                    <Col xs={8} className='text-wrap text-break'>
                                                         {comment.comment_text}
+                                                    </Col>
+                                                    <Col xs={1} className='p-0 d-flex justify-content-center align-items-center'>
+                                                        <Button className=''>
+                                                            <i className='bi bi-flag' />
+                                                        </Button>
                                                     </Col>
                                                 </Row>
                                                 <hr />

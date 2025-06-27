@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportPost as makeReportPost, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 export const usePosts = () => {
@@ -135,5 +135,15 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost, fetchComments, comments, setComments }
+    const createReportComment = async (commentId, reason) => {
+        try {
+            const reportDoc = await makeReportComment(commentId, reason);
+
+            return reportDoc;
+        } catch (error) {
+            console.error('Error creating report:', error);
+        }
+    }
+
+    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportPost, fetchComments, comments, setComments, createReportComment }
 }

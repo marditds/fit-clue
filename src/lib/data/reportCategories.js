@@ -54,4 +54,37 @@ export const reportCategories = [
         short: "OTHER",
         description: "Something else not listed here; please provide details."
     }
-];  
+];
+
+export const commentReportCategories = [
+    {
+        label: "Spam or Scam",
+        short: "SPAM",
+        description: "Unrelated promotional content, scams, or deceptive links."
+    },
+    {
+        label: "Harassment or Bullying",
+        short: "HARASSMENT",
+        description: "Targeted abuse, threats, or personal attacks."
+    },
+    {
+        label: "Hate Speech",
+        short: "HATE",
+        description: "Content promoting violence or discrimination against individuals or groups."
+    },
+    {
+        label: "Sexually Explicit Content",
+        short: "SEXUAL",
+        description: "Inappropriate sexual language or imagery."
+    },
+    {
+        label: "False Information",
+        short: "FALSE_INFO",
+        description: "Spreading misleading or false claims."
+    },
+    {
+        label: "Other",
+        short: "OTHER",
+        description: "None of the above — let us know why."
+    }
+];

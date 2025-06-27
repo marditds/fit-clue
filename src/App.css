@@ -50,6 +50,7 @@ input, select {
 }
 
 input:focus,
+textarea:focus,
 select:focus {
   box-shadow: none !important;
   border-color: var(--main-accent-color-hover) !important;
