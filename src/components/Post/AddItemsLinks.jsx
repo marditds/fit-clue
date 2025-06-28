@@ -5,6 +5,7 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { CustomTooltip } from '../ToolTip/CustomTooltip';
 
+
 export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
 
     const { createLink } = useShoppingLinks();
@@ -105,18 +106,6 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                         iconClassName={'bi bi-question-square'}
                         tooltipText={similarityLevelOptions}
                     />
-                    {/* <CustomTooltip iconClassName={'bi bi-question-square'} >
-                        <ul className='text-start list-unstyled'>
-                            {similarityLevelOptions.map((option, idx) => (
-                                <li key={idx}>
-                                    <strong>
-                                        {option.label}
-                                    </strong>
-                                    - {option.description}
-                                </li>
-                            ))}
-                        </ul>
-                    </CustomTooltip> */}
                 </Form.Label>
 
                 <Form.Select

@@ -95,7 +95,7 @@ export const CommentSection = ({ postId, username, userId }) => {
 
     return (
         <Row style={{ marginTop: '24px' }}>
-            <Col xs={12} lg={6}>
+            <Col xs={12} lg={5}>
                 <div className='sticky-top'>
                     <h3>
                         Leave a comment

@@ -26,9 +26,31 @@ export const CustomTooltip = ({ iconClassName, tooltipText }) => {
 
                 </Tooltip>
             }>
-            <Button className='p-0'>
-                <i className={iconClassName} />
+            <Button className='p-2 ms-2'>
+                <i className={`d-flex justify-content-center align-items-center ${iconClassName}`} />
             </Button>
         </OverlayTrigger>
     )
 }
+
+export const TextTooltip = ({ tooltipText, children }) => {
+    return (
+        <OverlayTrigger
+            placement='top'
+            overlay={
+                <Tooltip className='tool-tip__custom'>
+
+                    {
+                        tooltipText
+                    }
+
+                </Tooltip>
+            }>
+            {
+                children
+            }
+        </OverlayTrigger>
+    )
+}
+
+

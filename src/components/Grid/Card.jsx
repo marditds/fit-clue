@@ -9,7 +9,7 @@ export const Card = ({ id, personalityName, iUrl }) => {
         <Col
             xs={12}
             md={6}
-            xl={!location.pathname.startsWith('/post') ? 4 : 6}
+            xl={!location.pathname.startsWith('/post') ? 4 : 5}
             className={`d-flex flex-column ${!location.pathname.startsWith('/post') ? 'card__col justify-content-center' : 'post__col'}`}
         >
             <div className={` ${!location.pathname.startsWith('/post') ? 'card__div card__div-latest' : 'd-flex justify-content-center align-items-start post__div sticky-top'}`}>
