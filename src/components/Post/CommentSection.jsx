@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/LoadingComponent';
 import { dateTimeFormatter } from '../../lib/utils/dateTimeFormatter';
 import { usePosts } from '../../lib/hooks/usePosts';
@@ -7,6 +7,7 @@ import { onePostComments } from '../../lib/data/testData';
 import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { CustomTooltip } from '../ToolTip/CustomTooltip';
 
 export const CommentSection = ({ postId, username, userId }) => {
 
@@ -129,7 +130,7 @@ export const CommentSection = ({ postId, username, userId }) => {
 
                     <Button
                         onClick={onViewCommentsClick}
-                        className='sticky-top'
+                        className='sticky-top mb-3'
                     >
                         {isViewCommentsClicked ? 'Hide' : 'View'} Comments
                     </Button>
@@ -141,30 +142,34 @@ export const CommentSection = ({ postId, username, userId }) => {
                                     comments?.length > 0
                                         ? comments.map((comment, idx) => (
                                             <div key={idx}>
-                                                <Row className='my-4 justify-content-center'>
-                                                    <Col xs={2} className=''>
-                                                        <strong>
+
+                                                <Row className='justify-content-center align-items-center'>
+                                                    <Col className='d-flex justify-content-start align-items-baseline'>
+                                                        <strong className='me-2'>
                                                             {comment.username}
                                                         </strong>
-                                                        <br />
-                                                        <sub>{dateTimeFormatter(comment.$createdAt)}</sub>
+
+                                                        <small>{dateTimeFormatter(comment.$createdAt)}</small>
                                                     </Col>
-                                                    <Col xs={8} className='text-wrap text-break'>
-                                                        {comment.comment_text}
-                                                    </Col>
-                                                    <Col xs={1} className='p-0 d-flex justify-content-center align-items-center'>
-                                                        {(isXs || isSm || isMd) ?
-                                                            <Button className=' bg-transparent p-0'>
-                                                                <i className='bi bi-three-dots-vertical' />
-                                                            </Button>
-                                                            :
-                                                            <Button onClick={() => handleReportClick(comment)} className=''>
-                                                                <i className='bi bi-flag' />
-                                                            </Button>
-                                                        }
+                                                    <Col className='d-flex justify-content-end'>
+                                                        <Button
+                                                            onClick={() => handleReportClick(comment)}
+                                                            className='py-1 px-2 bg-transparent text-muted'
+                                                        >
+                                                            <small>
+                                                                <i className='bi bi-flag' /> Report
+                                                            </small>
+                                                        </Button>
                                                     </Col>
                                                 </Row>
+                                                <Row>
+                                                    <Col className='text-wrap text-break'>
+                                                        {comment.comment_text}
+                                                    </Col>
+                                                </Row>
+
                                                 <hr />
+
                                             </div>
                                         ))
                                         : <li>No comments yet</li>

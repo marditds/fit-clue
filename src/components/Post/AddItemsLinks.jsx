@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
-import { SimilarityLevelToolTip } from '../ToolTip/SimilarityLevelToolTip';
+import { CustomTooltip } from '../ToolTip/CustomTooltip';
 
 export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
 
@@ -101,13 +101,22 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
 
                 <Form.Label className='w-100'>
                     Similarity Level:
-                    <SimilarityLevelToolTip>
+                    <CustomTooltip
+                        iconClassName={'bi bi-question-square'}
+                        tooltipText={similarityLevelOptions}
+                    />
+                    {/* <CustomTooltip iconClassName={'bi bi-question-square'} >
                         <ul className='text-start list-unstyled'>
                             {similarityLevelOptions.map((option, idx) => (
-                                <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
+                                <li key={idx}>
+                                    <strong>
+                                        {option.label}
+                                    </strong>
+                                    - {option.description}
+                                </li>
                             ))}
                         </ul>
-                    </SimilarityLevelToolTip>
+                    </CustomTooltip> */}
                 </Form.Label>
 
                 <Form.Select

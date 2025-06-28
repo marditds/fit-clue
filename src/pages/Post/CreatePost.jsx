@@ -3,7 +3,7 @@ import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions.js';
-import { SimilarityLevelToolTip } from '../../components/ToolTip/SimilarityLevelToolTip.jsx';
+import { CustomTooltip } from '../../components/ToolTip/CustomTooltip.jsx';
 
 const CreatePost = () => {
 
@@ -148,13 +148,13 @@ const CreatePost = () => {
                                         </Col>
 
                                         <Col>
-                                            <SimilarityLevelToolTip>
+                                            <CustomTooltip>
                                                 <ul className='text-start list-unstyled'>
                                                     {similarityLevelOptions.map((option, idx) => (
                                                         <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
                                                     ))}
                                                 </ul>
-                                            </SimilarityLevelToolTip>
+                                            </CustomTooltip>
                                             <Form.Select
                                                 aria-label='Select similarity level'
                                                 name='similarityLevel'
