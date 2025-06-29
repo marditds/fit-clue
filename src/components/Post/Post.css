@@ -52,13 +52,17 @@
     background-color: var(--main-accent-color);
 }
 
-.post__report-btn {
-    border: 1px solid white !important;
-}
-
-.post__div-link-item:hover .post__report-btn {
+.post__div-link-item:hover .link__report-btn {
     border: 1px solid var(--main-text-color) !important;
     /* border: 1px solid white !important; */
+}
+
+.link__report-btn:hover {
+    border-color: var(--main-text-color-hover) !important;
+}
+
+.post__comment-section-row {
+    padding-top: 22px;
 }
 
 @media (max-width: 767px) {
@@ -67,7 +71,7 @@
         border-top: 0px !important;
         border-left: 0px !important;
         border-right: 0px !important;
-        border-bottom: 0px !important;
+        /* border-bottom: 0px !important; */
     }
 
     .post__div-links-row,

@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Row, Button } from 'react-bootstrap'
 import { truncateString } from '../../lib/utils/truncateStrings'
 import { TextTooltip } from '../ToolTip/CustomTooltip'
 import { ItemLinkCol } from './ItemLinkCol'
+import { ReportModal } from '../Modals/Modals'
+import { reportCategories } from '../../lib/data/reportCategories'
+import { usePosts } from '../../lib/hooks/usePosts'
 
-export const ItemsLinks = ({ itemsLinks, handleReportClick }) => {
+export const ItemsLinks = ({ itemsLinks }) => {
+
+    const { createReportLink } = usePosts();
+
+    // Report user generated links
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleReportClick = (item) => {
+        setSelectedItem(item);
+        setShowModal(true);
+    };
+
+    const handleClose = () => {
+        setShowModal(false);
+        setSelectedItem(null);
+    };
+
+    const onSubmitReportLinkClick = async (selectedItemLinkId, reason) => {
+        await createReportLink(selectedItemLinkId, reason);
+    }
+
     return (
         <ul className='list-unstyled'>
             <Row className='sticky-top mx-auto post__div-links-row'>
@@ -52,13 +76,12 @@ export const ItemsLinks = ({ itemsLinks, handleReportClick }) => {
                                     />
 
                                 </a>
-                                <Col xs={3} className='d-flex justify-content-center align-items-center'>
+                                <Col xs={3} className='d-flex justify-content-center align-items-center link__report-btn-col'>
                                     <Button
-                                        variant="outline-secondary"
-                                        size="sm"
+                                        className='px-2 py-1 link__report-btn'
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleReportClick(itemLink.$id);
+                                            handleReportClick(itemLink);
                                         }}
                                     >
                                         Report <i className='bi bi-flag' />
@@ -69,6 +92,15 @@ export const ItemsLinks = ({ itemsLinks, handleReportClick }) => {
                     )
                 })
             }
+
+            {/* Report Link modal */}
+            <ReportModal
+                item={selectedItem}
+                onClose={handleClose}
+                reportCategories={reportCategories}
+                show={showModal}
+                onSubmitReport={onSubmitReportLinkClick}
+            />
         </ul>
     )
 }

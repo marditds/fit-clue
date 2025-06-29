@@ -39,16 +39,16 @@ export const ReportModal = ({
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Report Item</Modal.Title>
+                <Modal.Title>Report</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {isReportSubmitted ? (
                     <p>Your report has been submitted successfully.</p>
                 ) : (
                     <>
-                        <p>
+                        {/* <p>
                             Reporting: <strong>{item?.item} from {item?.company_name}</strong>
-                        </p>
+                        </p> */}
                         <Form>
                             {reportCategories.map((category, index) => (
                                 <Form.Check

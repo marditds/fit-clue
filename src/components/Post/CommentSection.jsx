@@ -94,7 +94,7 @@ export const CommentSection = ({ postId, username, userId }) => {
 
 
     return (
-        <Row style={{ marginTop: '24px' }}>
+        <Row className='post__comment-section-row'>
             <Col xs={12} lg={5}>
                 <div className='sticky-top'>
                     <h3>
@@ -119,7 +119,7 @@ export const CommentSection = ({ postId, username, userId }) => {
                             </Form.Text>
                         </Form.Group>
 
-                        <Button type='submit'>
+                        <Button type='submit' className='mb-3'>
                             {!isAddningComment ? 'Submit' : <LoadingComponent />}
                         </Button>
                     </Form>

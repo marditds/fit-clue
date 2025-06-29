@@ -19,7 +19,7 @@ const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
 const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
-const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
+const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 
 export const createUser = async (email, password, name) => {
@@ -688,11 +688,11 @@ export const fetchPersonalities = async () => {
     }
 }
 
-export const createReportPost = async (linkId, reason) => {
+export const createReportLink = async (linkId, reason) => {
     try {
         const reportDoc = await databases.createDocument(
             dbEnv,
-            reportsPostsCollEnv,
+            reportsLinksCollEnv,
             ID.unique(),
             {
                 link_id: linkId,

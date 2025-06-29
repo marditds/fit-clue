@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
-import { Form, Container, Row, Col, Modal, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Grid/Card';
-import { reportCategories } from '../../lib/data/reportCategories';
 import { onePostData } from '../../lib/data/testData';
 import '../../components/Post/Post.css';
 import { CommentSection } from '../../components/Post/CommentSection';
 import { AddItemsLinks } from '../../components/Post/AddItemsLinks';
 import { ItemsLinks } from '../../components/Post/ItemsLinks';
+import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 
 const Post = () => {
 
@@ -19,16 +19,6 @@ const Post = () => {
     const [personalityName, setPersonalityName] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
-
-    // Report user generated links
-    const [showModal, setShowModal] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedItemLinkId, setSelectedItemLinkId] = useState(null);
-    const [selectedReason, setSelectedReason] = useState('');
-    const [isOtherSelected, setIsOtherSelected] = useState(false);
-    const [otherText, setOtherText] = useState('');
-    const [isReportSubmitted, setIsReportSubmitted] = useState(false);
-    const [isReportGettingSubmitted, setIsReportGettingSubmitted] = useState(false);
 
     useEffect(() => {
         console.log('userId:', userId);
@@ -94,38 +84,6 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
-    const handleReportClick = (item) => {
-        console.log('item:', item);
-        setSelectedItem(item);
-        setSelectedItemLinkId(item.$id);
-        setShowModal(true);
-    };
-
-    const handleClose = () => {
-        setShowModal(false);
-        setSelectedItem(null);
-        setSelectedReason('');
-        setOtherText('');
-        setIsOtherSelected(false);
-        setIsReportSubmitted(false);
-    };
-
-    const onSubmitReportPostClick = async () => {
-        setIsReportGettingSubmitted(true);
-        try {
-            await createReportPost(selectedItemLinkId, selectedReason);
-
-            setIsReportSubmitted(true);
-
-            setTimeout(() => handleClose(), 2000);
-
-        } catch (error) {
-            console.error('Error submitting report:', error);
-        } finally {
-            setIsReportGettingSubmitted(false);
-        }
-    }
-
     if (isPostLoading) return <Container>Loading post…</Container>;
 
     return (
@@ -135,6 +93,8 @@ const Post = () => {
                     {personalityName}
                 </h3>
             </Row>
+
+            {/* Image and links */}
             <Row>
 
                 {/* image */}
@@ -150,7 +110,6 @@ const Post = () => {
                         {itemsLinks &&
                             <ItemsLinks
                                 itemsLinks={itemsLinks}
-                                handleReportClick={handleReportClick}
                             />
                         }
 
@@ -162,7 +121,6 @@ const Post = () => {
                         />
 
                     </div>
-
                 </Col>
 
             </Row>
@@ -174,82 +132,7 @@ const Post = () => {
                 username={username}
             />
 
-            {/* Report Link modal */}
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Report Item</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {isReportSubmitted ? (
-                        <div>
-                            <p>Your report has been submitted successfully.</p>
-                        </div>
-                    ) : (
-                        <>
-                            <p>
-                                Reporting: <strong>{selectedItem?.item} from {selectedItem?.company_name}</strong>
-                            </p>
-                            <Form>
-                                {reportCategories.map((category, index) => (
-                                    <Form.Check
-                                        type='radio'
-                                        id={`report-${index}`}
-                                        key={index}
-                                        name='reportReason'
-                                        label={<><strong>{category.label}</strong>: {category.description}</>}
-                                        value={category.short}
-                                        checked={selectedReason === category.short || (category.short === 'OTHER' && isOtherSelected)}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            if (value === 'OTHER') {
-                                                setIsOtherSelected(true);
-                                                setSelectedReason(otherText);
-                                            } else {
-                                                setIsOtherSelected(false);
-                                                setOtherText('');
-                                                setSelectedReason(value);
-                                            }
-                                        }}
-                                    />
-                                ))}
-
-                                {isOtherSelected && (
-                                    <div className='mt-3'>
-                                        <Form.Label>
-                                            Please describe the issue (max 300 characters)
-                                        </Form.Label>
-                                        <Form.Control
-                                            as='textarea'
-                                            rows={3}
-                                            maxLength={300}
-                                            value={otherText}
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                setOtherText(value);
-                                                setSelectedReason(value);
-                                            }}
-                                        />
-                                        <div className='text-muted text-end'>
-                                            {otherText.length} / 300
-                                        </div>
-                                    </div>
-                                )}
-                            </Form>
-                        </>
-                    )}
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button onClick={handleClose}>
-                        {isReportSubmitted ? 'Close' : 'Cancel'}
-                    </Button>
-                    {!isReportSubmitted && (
-                        <Button disabled={!selectedReason || isReportGettingSubmitted} onClick={onSubmitReportPostClick}>
-                            {!isReportGettingSubmitted ? 'Submit' : 'Submitting Report'}
-                        </Button>
-                    )}
-                </Modal.Footer>
-            </Modal>
+            <ScrollToTop />
 
         </Container >
     );
