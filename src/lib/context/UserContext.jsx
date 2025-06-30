@@ -11,7 +11,6 @@ export const UserProvider = ({ children }) => {
     // const location = useLocation();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [sessionId, setSessionId] = useState(null);
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
     const [userEmail, setUserEmail] = useState(null);
@@ -115,7 +114,6 @@ export const UserProvider = ({ children }) => {
         <UserContext.Provider
             value={{
                 isLoggedIn, setIsLoggedIn,
-                sessionId, setSessionId,
                 userId, setUserId,
                 userEmail, setUserEmail,
                 username, setUsername,

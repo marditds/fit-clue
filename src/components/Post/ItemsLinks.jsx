@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Col, Row, Button } from 'react-bootstrap'
-import { truncateString } from '../../lib/utils/truncateStrings'
-import { TextTooltip } from '../ToolTip/CustomTooltip'
 import { ItemLinkCol } from './ItemLinkCol'
 import { ReportModal } from '../Modals/Modals'
 import { reportCategories } from '../../lib/data/reportCategories'

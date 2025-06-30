@@ -15,6 +15,12 @@ export const CommentSection = ({ postId, username, userId }) => {
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
+    //Fetching comments 
+    const [lastComment, setLastComment] = useState(null);
+    const [hasMore, setHasMore] = useState(true);
+
+
+    // Leaving a comment
     const [commentText, setCommentText] = useState('');
     const [isAddningComment, setIsAddingComment] = useState(false);
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
@@ -34,9 +40,11 @@ export const CommentSection = ({ postId, username, userId }) => {
             try {
                 setICommentsLoading(true);
 
-                // await fetchComments(postId);
+                const res = await fetchComments(postId, lastComment?.$id || null);
 
-                setComments(onePostComments);
+                setComments(prev => [...prev, ...res.documents]);
+                setLastComment(res.documents[res.documents.length - 1] || null);
+                setHasMore(res.length === 5);
 
             } catch (error) {
 
@@ -104,15 +112,28 @@ export const CommentSection = ({ postId, username, userId }) => {
                     <Form onSubmit={onCreateCommentSubmit} >
 
                         <Form.Group className='mb-3' controlId='userCommentEntryField'>
-                            <Form.Label>Comment</Form.Label>
+                            <span className='d-flex justify-content-between align-items-center mb-2'>
+                                <Form.Label className='mb-0'>
+                                    Comment
+                                </Form.Label>
+
+                                <Form.Text id='commentHelpText' className='mt-0'>
+                                    {commentText.length}/300 characters
+                                </Form.Text>
+                            </span>
                             <Form.Control
                                 as='textarea'
                                 name='userComment'
-                                rows={3}
+                                rows={5}
                                 aria-describedby='commentHelpText'
                                 placeholder='Enter comment'
                                 value={commentText}
-                                onChange={(e) => setCommentText(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value.length <= 300) {
+                                        setCommentText(value);
+                                    }
+                                }}
                             />
                             <Form.Text id='commentHelpText' className='text-muted'>
                                 FitClue utilizes AI to ensure a safe and respectful environment for all users and visitors.

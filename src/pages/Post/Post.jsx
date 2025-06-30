@@ -8,12 +8,15 @@ import { CommentSection } from '../../components/Post/CommentSection';
 import { AddItemsLinks } from '../../components/Post/AddItemsLinks';
 import { ItemsLinks } from '../../components/Post/ItemsLinks';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
+import { usePosts } from '../../lib/hooks/usePosts';
 
 const Post = () => {
 
     const { userId, username } = useOutletContext();
 
     let params = useParams()
+
+    const { fetchPostById } = usePosts();
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
@@ -35,8 +38,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                // const post = await fetchPostById(params.postId);
-                const post = onePostData;
+                const post = await fetchPostById(params.postId);
+                // const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 

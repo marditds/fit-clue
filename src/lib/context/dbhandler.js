@@ -755,15 +755,23 @@ export const createComment = async (postId, commentText, userId) => {
     }
 }
 
-export const fetchCommentsTextByPostId = async (postId) => {
+export const fetchCommentsTextByPostId = async (postId, lastCursor = null) => {
     try {
+
+        const queries = [
+            Query.equal('post_id', postId),
+            Query.limit(5),
+            Query.orderAsc('$createdAt')
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        }
+
         const doc = await databases.listDocuments(
             dbEnv,
             commentsCollEnv,
-            [
-                Query.equal('post_id', postId),
-                Query.orderDesc('$createdAt')
-            ]
+            queries
         )
 
         if (doc.total > 0) {

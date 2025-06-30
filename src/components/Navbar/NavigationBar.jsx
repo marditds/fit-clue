@@ -10,7 +10,6 @@ const NavigationBar = () => {
 
     const {
         setUserId,
-        setSessionId,
         isLoggedIn, setIsLoggedIn,
         setIsSessionInProgress,
         setIsSignOutInProgress
@@ -24,7 +23,6 @@ const NavigationBar = () => {
 
         try {
 
-            setSessionId(null);
             setUserId(null);
             setIsLoggedIn(false);
             setIsSessionInProgress(false);

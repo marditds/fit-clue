@@ -20,7 +20,6 @@ const MainLayout = () => {
 
   const {
     userId, setUserId,
-    sessionId, setSessionId,
     username, setUsername,
     isLoggedIn, setIsLoggedIn,
     setIsSessionInProgress, setIsSignOutInProgress
@@ -32,7 +31,6 @@ const MainLayout = () => {
       <main className='min-vh-100'>
         <Outlet context={{
           userId, setUserId,
-          sessionId, setSessionId,
           username, setUsername,
           isLoggedIn, setIsLoggedIn,
           setIsSessionInProgress, setIsSignOutInProgress

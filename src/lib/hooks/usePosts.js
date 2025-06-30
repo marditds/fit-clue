@@ -50,23 +50,31 @@ export const usePosts = () => {
         }
     }
 
-    const fetchCommentsTextByPostId = async (postId) => {
+    const fetchCommentsTextByPostId = async (postId, lastCursor) => {
+
+        console.log({ postId: postId, lastCursor: lastCursor });
+
         try {
-            const res = await getCommentsTextByPostId(postId);
+            const res = await getCommentsTextByPostId(postId, lastCursor);
+            console.log('fetchCommentsTextByPostId;', res);
+
             return res;
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     }
 
-    const fetchComments = async (postId) => {
+    const fetchComments = async (postId, lastCursor) => {
+
+        console.log({ postId: postId, lastCursor: lastCursor });
+
 
         if (!postId) {
             return;
         }
 
         try {
-            const commentsTexts = await fetchCommentsTextByPostId(postId);
+            const commentsTexts = await fetchCommentsTextByPostId(postId, lastCursor);
 
             console.log('commentsTexts', commentsTexts);
 
@@ -91,6 +99,9 @@ export const usePosts = () => {
                     username: user?.username || 'Unknown User'
                 };
             });
+
+            console.log('fullComments:', fullComments);
+
 
             setComments((prevComments) => [...(fullComments || []), ...(prevComments || [])].flat());
 
