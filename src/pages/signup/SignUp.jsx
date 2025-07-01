@@ -136,7 +136,7 @@ export const SignUp = () => {
                             type='button'
                             onClick={onCreateUserClick}
                             disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword}
-                            className='w-100 mb-3 position-relative'
+                            className='w-100 mb-3 position-relative form__btn'
                         >
                             {!isAccountBeingCreated ?
                                 'Create Account' :

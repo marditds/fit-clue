@@ -4,6 +4,7 @@ import { useUser } from '../../lib/hooks/useUser';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import '../../components/Form/Form.css';
+import signInImg from '../../assets/sign-in.jpg'
 
 export const SignIn = () => {
 
@@ -75,7 +76,11 @@ export const SignIn = () => {
             <Row className='form__row w-100'>
                 <Col xs={5} className={`form__col-signin-img ${(isXs || isSm) ? 'd-none' : ''}`}>
                 </Col>
-                <Col className='form__col d-flex justify-content-center align-items-center w-100'>
+                <Col
+                    style={{
+                        backgroundImage: (isXs || isSm) ? `url(${signInImg})` : ''
+                    }}
+                    className='form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100'>
                     <Form className={(isXs) ? 'w-100' : 'w-75'}>
 
                         <div className='text-center mb-4'>
@@ -126,7 +131,7 @@ export const SignIn = () => {
                             type='button'
                             onClick={onSignInUserClick}
                             disabled={isSigningInInProgress || !!christmasWish || !email || password.length < 8}
-                            className='w-100 mb-3'
+                            className='w-100 mb-3 form__btn'
                         >
                             {!isSigningInInProgress ? 'Sign in' : 'Loading...'}
                         </Button>
