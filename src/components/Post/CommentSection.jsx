@@ -137,7 +137,11 @@ export const CommentSection = ({ postId, username, userId }) => {
                         Leave a comment
                     </h3>
 
-                    <Form onSubmit={onCreateCommentSubmit} >
+                    <Form
+                        onSubmit={onCreateCommentSubmit}
+                        style={{ maxWidth: (!isXs && !isSm && !isMd) ? '503px' : '100%' }}
+                        className='mx-auto'
+                    >
 
                         <Form.Group className='mb-3' controlId='userCommentEntryField'>
                             <span className='d-flex justify-content-between align-items-center mb-2'>
@@ -178,16 +182,17 @@ export const CommentSection = ({ postId, username, userId }) => {
             {/* Comments */}
             <Col>
                 <Row className='d-flex flex-column justify-content-center mx-auto'>
-
-                    <Button
-                        onClick={onViewCommentsClick}
-                        className='sticky-top mb-3'
-                    >
-                        {isViewCommentsClicked ? 'Hide' : 'View'} Comments
-                    </Button>
+                    <Col className='sticky-top px-0'>
+                        <Button
+                            onClick={onViewCommentsClick}
+                            className='sticky-top mb-3 w-100'
+                        >
+                            {isViewCommentsClicked ? 'Hide' : 'View'} Comments
+                        </Button>
+                    </Col>
 
                     {isViewCommentsClicked && (
-                        <Col>
+                        <Col className='px-0'>
                             {isCommentsFirstBatchLoading ? (
                                 <LoadingComponent />
                             ) : (
@@ -220,7 +225,7 @@ export const CommentSection = ({ postId, username, userId }) => {
                                             </div>
                                         ))
                                     ) : (
-                                        <li>No comments yet</li>
+                                        <p>No comments yet</p>
                                     )}
 
                                     <Button
