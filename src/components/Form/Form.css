@@ -60,6 +60,31 @@
         height: 600px;
     }
 
+
+    .form__col-background-overlay {
+        position: relative;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .form__col-background-overlay::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(var(--main-white-shade-vals), 0.8);
+        z-index: 1;
+    }
+
+    .form__col-background-overlay form {
+        position: relative;
+        z-index: 2;
+    }
+
     .form__col:nth-child(2) {
         border: 1px solid var(--main-border-color) !important;
         border-radius: var(--main-border-radius);

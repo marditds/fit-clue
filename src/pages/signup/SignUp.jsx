@@ -5,6 +5,7 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import '../../components/Form/Form.css'
 import { LoadingComponent } from '../../components/Loading/LoadingComponent';
+import signUpImg from '../../assets/sign-up.jpg'
 
 export const SignUp = () => {
 
@@ -63,9 +64,14 @@ export const SignUp = () => {
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='form__row w-100'>
-                <Col xs={5} className={`form__col-signup-img ${(isXs || isSm) && 'd-none'}`}>
+                <Col xs={5} className={`form__col-signup-img ${(isXs || isSm) ? 'd-none' : ''}`}>
                 </Col>
-                <Col className='form__col d-flex justify-content-center align-items-center w-100'>
+                <Col
+                    style={{
+                        backgroundImage: (isXs || isSm) ? `url(${signUpImg})` : ''
+                    }}
+                    className='form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100'
+                >
                     <Form className={(isXs) ? 'w-100' : 'w-75'}>
 
                         <div className='text-center mb-4'>
@@ -132,7 +138,7 @@ export const SignUp = () => {
                             disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword}
                             className='w-100 mb-3 position-relative'
                         >
-                            {isAccountBeingCreated ?
+                            {!isAccountBeingCreated ?
                                 'Create Account' :
                                 <LoadingComponent />
                             }

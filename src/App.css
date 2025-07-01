@@ -15,7 +15,8 @@
   --main-text-color-rgb-vals: 0, 0, 0;
   --main-font-size: 16pt;
   --main-transition-speed: 0.3s;
-  --white: rgb(255, 255, 255);
+  --main-white-shade: rgb(255, 255, 255);
+  --main-white-shade-vals: 255, 255, 255;
 }
 
 #root {

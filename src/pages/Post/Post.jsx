@@ -38,8 +38,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                const post = await fetchPostById(params.postId);
-                // const post = onePostData;
+                // const post = await fetchPostById(params.postId);
+                const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 

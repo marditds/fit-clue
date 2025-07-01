@@ -39,18 +39,20 @@ export const CommentSection = ({ postId, username, userId }) => {
         try {
             setIsCommentsLoading(true);
 
-            const res = await fetchComments(postId, lastComment?.$id || null);
+            // To be commented out when testing real data
+            setComments(onePostComments);
 
-            console.log('res:', res);
+            // const res = await fetchComments(postId, lastComment?.$id || null);
+            // console.log('res:', res);
 
-            setLastComment(res[res.length - 1] || null);
-            setHasMore(res.length === commentsLoadLimit);
+            // setLastComment(res[res.length - 1] || null);
+            // setHasMore(res.length === commentsLoadLimit);
 
-            if (res.length < commentsLoadLimit) {
-                {
-                    setHasMore(false);
-                }
-            }
+            // if (res.length < commentsLoadLimit) {
+            // {
+            // setHasMore(false);
+            // }
+            // }
 
         } catch (error) {
             console.error('Error getting comments:', error);

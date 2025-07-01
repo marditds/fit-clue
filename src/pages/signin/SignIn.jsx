@@ -73,7 +73,7 @@ export const SignIn = () => {
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='form__row w-100'>
-                <Col xs={5} className={`form__col-signin-img ${(isXs || isSm) && 'd-none'}`}>
+                <Col xs={5} className={`form__col-signin-img ${(isXs || isSm) ? 'd-none' : ''}`}>
                 </Col>
                 <Col className='form__col d-flex justify-content-center align-items-center w-100'>
                     <Form className={(isXs) ? 'w-100' : 'w-75'}>
