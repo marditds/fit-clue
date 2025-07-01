@@ -53,8 +53,9 @@ export const createUser = async (email, password, name) => {
     } catch (error) {
 
         console.error('Error creating user:', error);
-
-        if (error.code === 409) {
+        if (error.code === 400) {
+            return 'Password must be between 8 and 265 characters long.'
+        } else if (error.code === 409) {
             return 'A user with the same email already exists.'
         } else {
             return ('Something went wrong. Please refresh the page, and try again.');

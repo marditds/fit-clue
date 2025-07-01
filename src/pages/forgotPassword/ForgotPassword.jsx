@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useUser } from '../../lib/hooks/useUser';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import '../../components/Form/Form.css';
-import { Link } from 'react-router-dom';
+import { Form } from 'react-bootstrap';
+import { PasswordForm } from '../../components/Form/PasswordForm';
+import forgotImg from '../../assets/forgot-password.jpg';
 
 export const ForgotPassword = () => {
 
     const { createPasswordRecoveryEmail } = useUser();
 
-    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
-
+    const { isXs, isSm } = useBreakpoints();
 
     const [email, setEmail] = useState('');
     const [thanksgivingWish, setThanksgivingWish] = useState('');
@@ -57,77 +57,58 @@ export const ForgotPassword = () => {
     }
 
     return (
-        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
-            <Row className='form__row w-100'>
-                <Col xs={5} className={`form__col-forgot-img ${(isXs || isSm) && 'd-none'}`}></Col>
-                <Col className='form__col d-flex justify-content-center align-items-center w-100'>
-                    <Form className={(isXs) ? 'w-100' : 'w-75'}>
-                        {/* Form header for better context */}
-                        <div className='text-center mb-4'>
-                            <h3 className='mb-2'>Reset Your Password</h3>
-                            <p className='text-muted'>Enter your email address and we'll send you a link to reset your password.</p>
-                        </div>
+        <PasswordForm
+            isXs={isXs}
+            isSm={isSm}
+            imgSrc={forgotImg}
+            leftColClass='form__col-forgot-img'
+            headerTitle='Reset Your Password'
+            headerSubtitle="Enter your email address and we'll send you a link to reset your password."
+            onSubmit={onForgotPasswordClick}
+            isLoading={isForgotPasswordLoading}
+            buttonText='Send Reset Link'
+            buttonDisabled={!!thanksgivingWish || !email}
+            successMsg={forgotPsswdSuccessMsg}
+            errorMsg={forgotPsswdErrorMsg}
+            extraLinks={
+                <>
+                    <div className='mb-2'>
+                        <span className='text-muted'>Remember your password? </span>
+                        <Link to='/sign-in' className='text-decoration-none fw-medium'>
+                            Sign in
+                        </Link>
+                    </div>
+                    <div>
+                        <span className='text-muted'>Don't have an account? </span>
+                        <Link to='/sign-up' className='text-decoration-none fw-medium'>
+                            Sign up
+                        </Link>
+                    </div>
+                </>
+            }
+        >
+            <Form.Group className='mb-3' controlId='emailField'>
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                    type='email'
+                    placeholder='Enter your email address'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </Form.Group>
 
-                        <Form.Group className='mb-3' controlId='emailField'>
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control
-                                type='email'
-                                placeholder='Enter your email address'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </Form.Group>
-
-                        <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
-                            <Form.Control
-                                type='text'
-                                id='thanksgivingWish'
-                                name='thanksgivingWish'
-                                value={thanksgivingWish}
-                                onChange={(e) => setThanksgivingWish(e.target.value)}
-                                autoComplete='off'
-                                tabIndex='-1'
-                                aria-hidden='true'
-                            />
-                        </Form.Group>
-
-                        <Button
-                            onClick={onForgotPasswordClick}
-                            disabled={isForgotPasswordLoading || !!thanksgivingWish || !email}
-                            className='w-100 mb-3'
-                        >
-                            {!isForgotPasswordLoading ? 'Send Reset Link' : 'Sending...'}
-                        </Button>
-
-                        {forgotPsswdSuccessMsg && (
-                            <div className='text-center mb-3'>
-                                {forgotPsswdSuccessMsg}
-                            </div>
-                        )}
-
-                        {forgotPsswdErrorMsg && (
-                            <div className='text-center mb-3'>
-                                {forgotPsswdErrorMsg}
-                            </div>
-                        )}
-
-                        <div className='text-center'>
-                            <div className='mb-2'>
-                                <span className='text-muted'>Remember your password? </span>
-                                <Link to='/sign-in' className='text-decoration-none fw-medium'>
-                                    Sign in
-                                </Link>
-                            </div>
-                            <div>
-                                <span className='text-muted'>Don't have an account? </span>
-                                <Link to='/sign-up' className='text-decoration-none fw-medium'>
-                                    Sign up
-                                </Link>
-                            </div>
-                        </div>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
+            <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                <Form.Control
+                    type='text'
+                    id='thanksgivingWish'
+                    name='thanksgivingWish'
+                    value={thanksgivingWish}
+                    onChange={(e) => setThanksgivingWish(e.target.value)}
+                    autoComplete='off'
+                    tabIndex='-1'
+                    aria-hidden='true'
+                />
+            </Form.Group>
+        </PasswordForm>
     )
-}
+} 

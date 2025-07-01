@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useUser } from '../../lib/hooks/useUser';
-import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import '../../components/Form/Form.css'
-import { LoadingComponent } from '../../components/Loading/LoadingComponent';
 import signUpImg from '../../assets/sign-up.jpg'
+import { SignForm } from '../../components/Form/SignForm';
 
 export const SignUp = () => {
 
@@ -15,7 +13,7 @@ export const SignUp = () => {
 
     const { createUser } = useUser();
 
-    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
+    const { isXs, isSm } = useBreakpoints();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -61,104 +59,68 @@ export const SignUp = () => {
         }
     }
 
+    const fields = [
+        {
+            id: 'usernameField',
+            label: 'Username',
+            type: 'text',
+            value: username,
+            onChange: (e) => setUsername(e.target.value),
+            placeholder: 'Enter your Username'
+        },
+        {
+            id: 'emailField',
+            label: 'Email address',
+            type: 'email',
+            value: email,
+            onChange: (e) => setEmail(e.target.value),
+            placeholder: 'Enter your email'
+        },
+        {
+            id: 'passwordField',
+            label: 'Password',
+            type: 'password',
+            value: password,
+            onChange: (e) => setPassword(e.target.value),
+            placeholder: 'Create a password'
+        },
+        {
+            id: 'confirmPasswordField',
+            label: 'Confirm password',
+            type: 'password',
+            value: confirmPassword,
+            onChange: (e) => setConfirmPassword(e.target.value),
+            placeholder: 'Re-enter your password'
+        }
+    ];
+
     return (
-        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
-            <Row className='form__row w-100'>
-                <Col xs={5} className={`form__col-signup-img ${(isXs || isSm) ? 'd-none' : ''}`}>
-                </Col>
-                <Col
-                    style={{
-                        backgroundImage: (isXs || isSm) ? `url(${signUpImg})` : ''
-                    }}
-                    className='form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100'
-                >
-                    <Form className={(isXs) ? 'w-100' : 'w-75'}>
-
-                        <div className='text-center mb-4'>
-                            <h3 className='mb-2'>Create Your Account</h3>
-                            <p className='text-muted'>Join us today and get started</p>
-                        </div>
-
-                        <Form.Group className='mb-3' controlId='usersnameFormField'>
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control
-                                type='text'
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder='Enter your Username'
-                            />
-                        </Form.Group>
-
-                        <Form.Group className='mb-3' controlId='emailFormField'>
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control
-                                type='email'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder='Enter your email'
-                            />
-                        </Form.Group>
-
-                        <Form.Group className='mb-3' controlId='passwordFormField'>
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                type='password'
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder='Create a password'
-                            />
-                        </Form.Group>
-
-                        <Form.Group className='mb-3' controlId='confirmPasswordFormField'>
-                            <Form.Label>Confirm password</Form.Label>
-                            <Form.Control
-                                type='password'
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder='Re-enter your password'
-                            />
-                        </Form.Group>
-
-                        <Form.Group style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
-                            <Form.Control
-                                type='text'
-                                id='easterWish'
-                                name='easterWish'
-                                value={easterWish}
-                                onChange={(e) => setEasterWish(e.target.value)}
-                                autoComplete='off'
-                                tabIndex='-1'
-                                aria-hidden='true'
-                            />
-                        </Form.Group>
-
-                        <Button
-                            type='button'
-                            onClick={onCreateUserClick}
-                            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword}
-                            className='w-100 mb-3 position-relative form__btn'
-                        >
-                            {!isAccountBeingCreated ?
-                                'Create Account' :
-                                <LoadingComponent />
-                            }
-                        </Button>
-
-                        {errorMsg &&
-                            <Form.Text className='text-danger d-block mb-3'>
-                                {errorMsg}
-                            </Form.Text>
-                        }
-
-                        <div className='text-center'>
-                            <span className='text-muted'>Already have an account? </span>
-                            <Link to='/sign-in' className='text-decoration-none fw-medium'>
-                                Sign in
-                            </Link>
-                        </div>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
+        <SignForm
+            title="Create Your Account"
+            subtitle="Join us today and get started"
+            fields={fields}
+            onSubmit={onCreateUserClick}
+            submitText="Create Account"
+            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword}
+            loading={isAccountBeingCreated}
+            error={errorMsg}
+            hiddenField={{
+                id: 'easterWish',
+                name: 'easterWish',
+                value: easterWish,
+                onChange: (e) => setEasterWish(e.target.value)
+            }}
+            backgroundImage={signUpImg}
+            colImgClass="form__col-signup-img"
+            isXs={isXs}
+            isSm={isSm}
+            links={[
+                {
+                    text: 'Already have an account?',
+                    linkText: 'Sign in',
+                    href: '/sign-in'
+                }
+            ]}
+        />
     )
 }
