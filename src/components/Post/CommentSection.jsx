@@ -11,7 +11,7 @@ import { CustomTooltip } from '../ToolTip/CustomTooltip';
 
 export const CommentSection = ({ postId, username, userId }) => {
 
-    const { comments, setComments, createComment, fetchComments, createReportComment } = usePosts();
+    const { comments, commentsLoadLimit, setComments, createComment, fetchComments, createReportComment } = usePosts();
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
@@ -19,40 +19,62 @@ export const CommentSection = ({ postId, username, userId }) => {
     const [lastComment, setLastComment] = useState(null);
     const [hasMore, setHasMore] = useState(true);
 
-
     // Leaving a comment
     const [commentText, setCommentText] = useState('');
     const [isAddningComment, setIsAddingComment] = useState(false);
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
-    const [isCommentsLoading, setICommentsLoading] = useState(false);
+    const [isCommentsLoading, setIsCommentsLoading] = useState(false);
+    const [isCommentsFirstBatchLoading, setIsCommentsFirstBatchLoading] = useState(false);
 
     // Report Comment 
     const [selectedComment, setSelectedComment] = useState(null);
     const [show, setShow] = useState(false);
 
     // Get the comments for post
-    useEffect(() => {
-        const getCommentsByPostId = async () => {
+    const getCommentsByPostId = async () => {
 
-            if (!isViewCommentsClicked) {
-                return;
+        if (!isViewCommentsClicked) {
+            return;
+        }
+        try {
+            setIsCommentsLoading(true);
+
+            const res = await fetchComments(postId, lastComment?.$id || null);
+
+            console.log('res:', res);
+
+            setLastComment(res[res.length - 1] || null);
+            setHasMore(res.length === commentsLoadLimit);
+
+            if (res.length < commentsLoadLimit) {
+                {
+                    setHasMore(false);
+                }
             }
+
+        } catch (error) {
+            console.error('Error getting comments:', error);
+        } finally {
+            setIsCommentsLoading(false);
+        }
+    }
+
+    // Load the comments on isViewCommentsClicked
+    useEffect(() => {
+        const loadingCommentsFirstBatch = async () => {
+            setIsCommentsFirstBatchLoading(true);
+
             try {
-                setICommentsLoading(true);
-
-                const res = await fetchComments(postId, lastComment?.$id || null);
-
-                setComments(prev => [...prev, ...res.documents]);
-                setLastComment(res.documents[res.documents.length - 1] || null);
-                setHasMore(res.length === 5);
-
+                await getCommentsByPostId();
             } catch (error) {
-
+                console.error('Error loading comments.');
             } finally {
-                setICommentsLoading(false);
+                setIsCommentsFirstBatchLoading(false);
             }
         }
-        getCommentsByPostId();
+
+        loadingCommentsFirstBatch();
+
     }, [isViewCommentsClicked])
 
 
@@ -86,6 +108,10 @@ export const CommentSection = ({ postId, username, userId }) => {
         setIsViewCommentsClicked(preVal => !preVal)
     }
 
+    const onLoadMoreCommentsClick = async () => {
+        await getCommentsByPostId();
+    }
+
     const handleReportClick = (item) => {
         setSelectedComment(item);
         setShow(true);
@@ -103,6 +129,8 @@ export const CommentSection = ({ postId, username, userId }) => {
 
     return (
         <Row className='post__comment-section-row'>
+
+            {/* Leave a comment */}
             <Col xs={12} lg={5}>
                 <div className='sticky-top'>
                     <h3>
@@ -146,6 +174,8 @@ export const CommentSection = ({ postId, username, userId }) => {
                     </Form>
                 </div>
             </Col>
+
+            {/* Comments */}
             <Col>
                 <Row className='d-flex flex-column justify-content-center mx-auto'>
 
@@ -156,20 +186,18 @@ export const CommentSection = ({ postId, username, userId }) => {
                         {isViewCommentsClicked ? 'Hide' : 'View'} Comments
                     </Button>
 
-                    {isViewCommentsClicked ? (
-                        !isCommentsLoading ? (
-                            <Col>
-                                {
-                                    comments?.length > 0
-                                        ? comments.map((comment, idx) => (
+                    {isViewCommentsClicked && (
+                        <Col>
+                            {isCommentsFirstBatchLoading ? (
+                                <LoadingComponent />
+                            ) : (
+                                <>
+                                    {comments?.length > 0 ? (
+                                        comments.map((comment, idx) => (
                                             <div key={idx}>
-
                                                 <Row className='justify-content-center align-items-center'>
                                                     <Col className='d-flex justify-content-start align-items-baseline'>
-                                                        <strong className='me-2'>
-                                                            {comment.username}
-                                                        </strong>
-
+                                                        <strong className='me-2'>{comment.username}</strong>
                                                         <small>{dateTimeFormatter(comment.$createdAt)}</small>
                                                     </Col>
                                                     <Col className='d-flex justify-content-end'>
@@ -188,18 +216,29 @@ export const CommentSection = ({ postId, username, userId }) => {
                                                         {comment.comment_text}
                                                     </Col>
                                                 </Row>
-
                                                 <hr />
-
                                             </div>
                                         ))
-                                        : <li>No comments yet</li>
-                                }
-                            </Col>
-                        ) : (
-                            <LoadingComponent />
-                        )
-                    ) : null}
+                                    ) : (
+                                        <li>No comments yet</li>
+                                    )}
+
+                                    <Button
+                                        className='w-100'
+                                        onClick={onLoadMoreCommentsClick}
+                                        disabled={!hasMore}
+                                    >
+                                        {hasMore ? (
+                                            !isCommentsLoading ? 'Load more comments' : <LoadingComponent />
+                                        ) : (
+                                            'No more comments'
+                                        )}
+                                    </Button>
+                                </>
+                            )}
+                        </Col>
+                    )}
+
 
                 </Row>
             </Col>

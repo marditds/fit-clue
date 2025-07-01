@@ -82,7 +82,7 @@ export const ItemsLinks = ({ itemsLinks }) => {
                                             handleReportClick(itemLink);
                                         }}
                                     >
-                                        Report <i className='bi bi-flag' />
+                                        <i className='bi bi-flag' /> Report
                                     </Button>
                                 </Col>
                             </Row>

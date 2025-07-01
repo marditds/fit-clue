@@ -6,6 +6,7 @@ export const usePosts = () => {
 
     const { userId } = useUserContext();
 
+    const commentsLoadLimit = 5;
     const [comments, setComments] = useState();
 
     useEffect(() => {
@@ -55,7 +56,7 @@ export const usePosts = () => {
         console.log({ postId: postId, lastCursor: lastCursor });
 
         try {
-            const res = await getCommentsTextByPostId(postId, lastCursor);
+            const res = await getCommentsTextByPostId(postId, commentsLoadLimit, lastCursor);
             console.log('fetchCommentsTextByPostId;', res);
 
             return res;
@@ -68,7 +69,6 @@ export const usePosts = () => {
 
         console.log({ postId: postId, lastCursor: lastCursor });
 
-
         if (!postId) {
             return;
         }
@@ -79,7 +79,7 @@ export const usePosts = () => {
             console.log('commentsTexts', commentsTexts);
 
             if (commentsTexts.length === 0) {
-                return;
+                return [];
             }
 
             const userIds = [...new Set(commentsTexts.map(comment => comment.user_id).filter(Boolean))];
@@ -103,9 +103,9 @@ export const usePosts = () => {
             console.log('fullComments:', fullComments);
 
 
-            setComments((prevComments) => [...(fullComments || []), ...(prevComments || [])].flat());
+            setComments((prevComments) => [...(prevComments || []), ...(fullComments || [])].flat());
 
-
+            return fullComments;
             // setComments(prevComments => {
             //     const nonDuplicateComments = fullComments.filter(newComment =>
             //         !prevComments?.some(existingComment => existingComment.$id === newComment.$id)
@@ -156,5 +156,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportLink, fetchComments, comments, setComments, createReportComment }
+    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment }
 }

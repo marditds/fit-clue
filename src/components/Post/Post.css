@@ -62,7 +62,7 @@
 }
 
 .post__comment-section-row {
-    padding-top: 22px;
+    padding-block: 22px;
 }
 
 @media (max-width: 767px) {

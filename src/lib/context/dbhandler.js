@@ -755,13 +755,13 @@ export const createComment = async (postId, commentText, userId) => {
     }
 }
 
-export const fetchCommentsTextByPostId = async (postId, lastCursor = null) => {
+export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastCursor = null) => {
     try {
 
         const queries = [
             Query.equal('post_id', postId),
-            Query.limit(5),
-            Query.orderAsc('$createdAt')
+            Query.limit(commentsLoadLimit),
+            Query.orderDesc('$createdAt')
         ];
 
         if (lastCursor) {
