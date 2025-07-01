@@ -103,7 +103,7 @@ export const ResetPassword = () => {
             isXs={isXs}
             isSm={isSm}
             imgSrc={resetImg}
-            leftColClass='form__col-reset-img'
+            leftColClassName='form__col-reset-img'
             headerTitle='Reset Your Password'
             headerSubtitle='Enter your new password below'
             onSubmit={onPasswrodChangeClick}

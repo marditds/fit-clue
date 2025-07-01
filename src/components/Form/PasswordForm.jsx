@@ -5,7 +5,7 @@ export const PasswordForm = ({
     isXs,
     isSm,
     imgSrc,
-    leftColClass,
+    leftColClassName,
     headerTitle,
     headerSubtitle,
     children,
@@ -21,7 +21,7 @@ export const PasswordForm = ({
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='form__row w-100'>
-                <Col xs={5} className={`${leftColClass} ${(isXs || isSm) && 'd-none'}`}></Col>
+                <Col xs={5} className={`${leftColClassName} ${(isXs || isSm) && 'd-none'}`}></Col>
                 <Col
                     style={{
                         backgroundImage: (isXs || isSm) ? `url(${imgSrc})` : ''

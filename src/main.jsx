@@ -12,8 +12,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { SignUp } from './pages/signup/SignUp.jsx';
 import { SignIn } from './pages/signin/SignIn.jsx';
 import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
-import { ForgotPassword } from './pages/forgotPassword/ForgotPassword.jsx';
-import { ResetPassword } from './pages/resetPassword/ResetPassword';
+import { ForgotPassword } from './pages/forgot-password/ForgotPassword.jsx';
+import { ResetPassword } from './pages/reset-password/ResetPassword';
 import Footer from './components/Footer/Footer.jsx';
 
 const MainLayout = () => {

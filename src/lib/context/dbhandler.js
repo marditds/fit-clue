@@ -85,6 +85,43 @@ export const createUserInCollection = async (username) => {
     }
 }
 
+export const updateUsername = async (username) => {
+    try {
+        const res = await account.updateName(username);
+
+        if (res) {
+            console.log('Username updated successfully.');
+            return res;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error updating username:', error);
+    }
+}
+
+export const updateUsernameInCollection = async (userId, username) => {
+
+    console.log({ userId, username });
+
+    try {
+        const res = await databases.updateDocument(
+            dbEnv,
+            usernamesCollEnv,
+            userId,
+            {
+                username
+            }
+        )
+        if (res) {
+            await updateUsername(username);
+            console.log('Username in collection updated successfully.');
+            return res;
+        }
+    } catch (error) {
+        console.error('Error updating username in collection:', error);
+    }
+}
+
 export const getUserPreferences = async () => {
     try {
         const userPreferences = await account.getPrefs();
