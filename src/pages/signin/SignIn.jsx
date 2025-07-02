@@ -11,14 +11,15 @@ export const SignIn = () => {
 
     const {
         userId, setUserId,
+        setUsername, setEmail,
         setIsLoggedIn, setIsSessionInProgress
     } = useOutletContext();
 
-    const { signInUser, getUserPreferences } = useUser();
+    const { signInUser, getUserPreferences, getUserFromCollectionById } = useUser();
 
     const { isXs, isSm } = useBreakpoints();
 
-    const [email, setEmail] = useState('');
+    const [emailInSignInForm, setEmailInSignInForm] = useState('');
     const [password, setPassword] = useState('');
     const [christmasWish, setChristmasWish] = useState('');
     const [isSigningInInProgress, setIsSigningInInProgress] = useState(false);
@@ -33,7 +34,7 @@ export const SignIn = () => {
 
         setIsSigningInInProgress(true);
         try {
-            const user = await signInUser(email, password);
+            const user = await signInUser(emailInSignInForm, password);
 
             if (typeof user === 'string') {
                 setErrorMsg(user);
@@ -49,9 +50,13 @@ export const SignIn = () => {
 
             const userPerfs = await getUserPreferences();
 
-            localStorage.setItem('authUserId', userPerfs.profile_id);
+            const userInColl = await getUserFromCollectionById(userPerfs.profile_id);
 
-            setUserId(userPerfs.profile_id);
+            localStorage.setItem('authUserId', userInColl.$id);
+
+            setUserId(userInColl.$id);
+            setUsername(userInColl.username);
+            setEmail(userInColl.email);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);
 
@@ -71,10 +76,10 @@ export const SignIn = () => {
     const fields = [
         {
             id: 'emailField',
-            label: 'Email address',
+            label: 'Email',
             type: 'email',
-            value: email,
-            onChange: (e) => setEmail(e.target.value),
+            value: emailInSignInForm,
+            onChange: (e) => setEmailInSignInForm(e.target.value),
             placeholder: 'Enter email'
         },
         {
@@ -83,7 +88,7 @@ export const SignIn = () => {
             type: 'password',
             value: password,
             onChange: (e) => setPassword(e.target.value),
-            placeholder: 'Password',
+            placeholder: 'Enter password',
             afterElement: (
                 <div className='text-end mt-1'>
                     <Link to='/forgot-password' className='text-decoration-none small'>
@@ -101,7 +106,7 @@ export const SignIn = () => {
             fields={fields}
             onSubmit={onSignInUserClick}
             submitText="Sign in"
-            disabled={isSigningInInProgress || !!christmasWish || !email || password.length < 8}
+            disabled={isSigningInInProgress || !!christmasWish || !emailInSignInForm || password.length < 8}
             loading={isSigningInInProgress}
             error={errorMsg}
             hiddenField={{

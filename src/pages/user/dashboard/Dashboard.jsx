@@ -1,16 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useUser } from '../../../lib/hooks/useUser';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import { DashboardForm } from '../../../components/Form/DashboardForm';
 import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
 
 export const Dashboard = () => {
 
-    const { getUserFromCollectionById, updateUserPassword, updateUsernameInCollection, getUserPreferences } = useUser();
+    const { updateUserPassword, updateUsernameInCollection } = useUser();
 
-    const { userId, email, username, isLoggedIn, setUserId, setUsername } = useOutletContext();
+    const { userId, email, username, setUsername } = useOutletContext();
 
     const [isDashboardLoading, setIsDashboardLoading] = useState(false);
+
+    // Username
+    const [newUsername, setNewUsername] = useState(username);
+    const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
+    const [usrnmSuccessMsg, setUsrnmSuccessMsg] = useState(null);
+    const [usrnmErrorMsg, setUsrnmErrorMsg] = useState(null);
 
     // Passwprd
     const [currentPassword, setCurrentPassword] = useState('');
@@ -20,56 +27,37 @@ export const Dashboard = () => {
     const [psswdErrorMsg, setPsswdErrorMsg] = useState(null);
     const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
-    // Username
-    const [newUsername, setNewUsername] = useState(username);
-    const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
-    const [usrnmSuccessMsg, setUsrnmSuccessMsg] = useState(null);
-    const [usrnmErrorMsg, setUsrnmErrorMsg] = useState(null);
-
     useEffect(() => {
         console.log({ userId, username });
     }, [userId, username])
 
-    // Fetch user id
-    useEffect(() => {
-        const fetchUserPrefs = async () => {
-            const prefs = await getUserPreferences();
+    const onUpdateUsernameClick = async () => {
 
-            console.log('prefs in dashboard:', prefs);
+        try {
+            setIsUpdatingUsername(true);
 
-            setUserId(prefs.prfile_id)
-        }
-        fetchUserPrefs();
-    }, [])
+            const res = await updateUsernameInCollection(userId, newUsername);
 
-    // Fetch username
-    useEffect(() => {
-        const fetchUserAccount = async () => {
+            console.log(res);
 
-            if (!userId) {
+            if (typeof res === 'string') {
+                setUsrnmErrorMsg(res);
+                setUsrnmSuccessMsg('');
                 return;
             }
 
-            setIsDashboardLoading(true);
-            try {
-                const user = await getUserFromCollectionById(userId);
+            setUsername(res.username);
+            setUsrnmErrorMsg('');
+            setUsrnmSuccessMsg('Username updated successfully.');
 
-                console.log('userAccount:', user);
-
-                setUsername(user.username);
-
-            } catch (error) {
-                console.error('Error fetching user account:', error);
-            } finally {
-                setIsDashboardLoading(false);
-            }
+        } catch (error) {
+            console.error('Error updating username:', error);
+        } finally {
+            setIsUpdatingUsername(false);
         }
-        fetchUserAccount();
-    }, [userId])
+    }
 
-    const onUpdateUserPasswordClick = async (e) => {
-
-        e.preventDefault();
+    const onUpdateUserPasswordClick = async () => {
 
         if (newPassword !== confirmNewPassword) {
             setPsswdErrorMsg('Your passwords do not match. Re-enter your new password.');
@@ -90,6 +78,9 @@ export const Dashboard = () => {
 
             setPsswdErrorMsg('');
             setPsswdSuccessMsg('Password updated successfully.');
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmNewPassword('');
 
         } catch (error) {
             console.error('Error updating user password:', error);
@@ -98,23 +89,43 @@ export const Dashboard = () => {
         }
     }
 
-    const onUpdateUsernameClick = async (e) => {
+    const updateUsernameFields = [
+        {
+            id: 'newUsernameField',
+            label: 'Username',
+            type: 'text',
+            placeholder: 'Enter your new username',
+            value: newUsername,
+            onChange: (e) => setNewUsername(e.target.value),
+        },
+    ];
 
-        e.preventDefault();
-
-        try {
-            setIsUpdatingUsername(true);
-
-            const res = await updateUsernameInCollection(userId, newUsername);
-
-            setUsername(res.username);
-
-        } catch (error) {
-            console.error('Error updating username:', error);
-        } finally {
-            setIsUpdatingUsername(false);
-        }
-    }
+    const updatePasswordFields = [
+        {
+            id: 'currentPasswordField',
+            label: 'Current password',
+            type: 'password',
+            placeholder: 'Enter your current password',
+            value: currentPassword,
+            onChange: (e) => setCurrentPassword(e.target.value),
+        },
+        {
+            id: 'newPasswordField',
+            label: 'New password',
+            type: 'password',
+            placeholder: 'Enter your new password',
+            value: newPassword,
+            onChange: (e) => setNewPassword(e.target.value),
+        },
+        {
+            id: 'newPasswordRenterField',
+            label: 'Confirm new password',
+            type: 'password',
+            placeholder: 'Confirm your new password',
+            value: confirmNewPassword,
+            onChange: (e) => setConfirmNewPassword(e.target.value),
+        },
+    ];
 
     if (isDashboardLoading) {
         return (
@@ -132,7 +143,7 @@ export const Dashboard = () => {
 
                     {/* User's information */}
                     <Row className='sticky-top'>
-                        <Col className='p-4 text-center'>
+                        <Col className='p-4 p-lg-5 text-center'>
                             <h2 className=''>
                                 {username}
                             </h2>
@@ -148,7 +159,7 @@ export const Dashboard = () => {
 
                     {/* Dashboard title */}
                     <Row>
-                        <Col className='px-4 pt-4'>
+                        <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
                             <h3 className='fw-bold'>
                                 Account Settings
                             </h3>
@@ -159,44 +170,24 @@ export const Dashboard = () => {
                     </Row>
 
                     {/* Username update */}
-                    <Row className='w-100'>
-                        <Col className='px-4 py-4'>
-                            <h4>
-                                Username
-                            </h4>
+                    <Row>
+                        <Col className='p-4 p-lg-5'>
+                            <DashboardForm
+                                title='Username'
+                                description='Your username must be unique. Your username will be visible to others.'
+                                fields={updateUsernameFields}
+                                onSubmit={onUpdateUsernameClick}
+                                buttonLabel='Update Username'
+                                isLoading={isUpdatingUsername}
+                                isDisabled={
+                                    !newUsername ||
+                                    newUsername.includes(' ') ||
+                                    newUsername === username
+                                }
+                                successMsg={usrnmSuccessMsg}
+                                errorMsg={usrnmErrorMsg}
+                            />
 
-                            <p className='text-muted'>
-                                Your username must be unique. Your username will be visible to others.
-                            </p>
-
-                            <Form>
-                                <Form.Group className='mb-3' controlId='newUsernameField'>
-                                    <Form.Label>Username</Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        placeholder='Enter your new username'
-                                        value={newUsername}
-                                        onChange={(e) => setNewUsername(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Button
-                                    type='button'
-                                    onClick={onUpdateUsernameClick}
-                                    disabled={
-                                        !newUsername ||
-                                        newUsername.includes(' ') ||
-                                        newUsername === username
-                                    }
-                                    className='w-100'
-                                >
-                                    {!isUpdatingUsername ? 'Update Username' : <LoadingComponent />}
-                                </Button>
-
-                                <Form.Text className='text-danger'>
-                                    {usrnmSuccessMsg || usrnmErrorMsg}
-                                </Form.Text>
-                            </Form>
                         </Col>
                     </Row>
 
@@ -204,59 +195,25 @@ export const Dashboard = () => {
 
                     {/* Password update */}
                     <Row>
-                        <Col className='px-4 py-4'>
-                            <h4>
-                                Password
-                            </h4>
+                        <Col className='p-4 p-lg-5'>
+                            <DashboardForm
+                                title='Password'
+                                description='Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.'
+                                fields={updatePasswordFields}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    onUpdateUserPasswordClick();
+                                }}
+                                buttonLabel='Update Password'
+                                isLoading={isUpdatingPassword}
+                                isDisabled={
+                                    currentPassword.length < 8 ||
+                                    !currentPassword || !newPassword || !confirmNewPassword || isUpdatingPassword
+                                }
+                                successMsg={psswdSuccessMsg}
+                                errorMsg={psswdErrorMsg}
+                            />
 
-                            <p className='text-muted'>
-                                Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.
-                            </p>
-
-                            <Form>
-                                <Form.Group className='mb-3' controlId='currentPasswordField'>
-                                    <Form.Label>Current password</Form.Label>
-                                    <Form.Control
-                                        type='password'
-                                        placeholder='Enter your current password'
-                                        value={currentPassword}
-                                        onChange={(e) => setCurrentPassword(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group className='mb-3' controlId='newPasswordField'>
-                                    <Form.Label>New password</Form.Label>
-                                    <Form.Control
-                                        type='password'
-                                        placeholder='Enter your new password'
-                                        value={newPassword}
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group className='mb-3' controlId='newPasswordRenterField'>
-                                    <Form.Label>Confirm new password</Form.Label>
-                                    <Form.Control
-                                        type='password'
-                                        placeholder='Confirm your new password'
-                                        value={confirmNewPassword}
-                                        onChange={(e) => setConfirmNewPassword(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Button
-                                    type='button'
-                                    onClick={onUpdateUserPasswordClick}
-                                    disabled={!currentPassword || !newPassword || !confirmNewPassword || isUpdatingPassword}
-                                    className='w-100'
-                                >
-                                    {!isUpdatingPassword ? 'Update Password' : <LoadingComponent />}
-                                </Button>
-
-                                <Form.Text className='text-danger'>
-                                    {psswdErrorMsg || psswdSuccessMsg}
-                                </Form.Text>
-                            </Form>
                         </Col>
                     </Row>
 

@@ -101,9 +101,14 @@ export const updateUsername = async (username) => {
 
 export const updateUsernameInCollection = async (userId, username) => {
 
-    console.log({ userId, username });
-
     try {
+
+        const existingUser = await getUserFromCollectionByUsername(username);
+
+        if (existingUser) {
+            return 'Username is taken. Your username must be unique.'
+        }
+
         const res = await databases.updateDocument(
             dbEnv,
             usernamesCollEnv,
@@ -148,6 +153,27 @@ export const getUserFromCollectionById = async (userId) => {
 
         if (user) {
             return user;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error getting user from collection:', error);
+    }
+}
+
+export const getUserFromCollectionByUsername = async (username) => {
+
+    try {
+        const userExists = await databases.listDocuments(
+            dbEnv,
+            usernamesCollEnv,
+            [
+                Query.equal('username', username)
+            ]
+        )
+
+        if (userExists.total > 0) {
+            return userExists;
         }
 
         return null;
@@ -235,7 +261,7 @@ export const updateUserPassword = async (newPassword, oldPassword) => {
         if (error.code === 400) {
             return 'Password must be between 8 and 265 characters long.'
         } else if (error.code === 401) {
-            return 'Please check your old passowrd.'
+            return 'Please check your current passowrd.'
         } else {
             return 'Something went wrong. Please try again later.'
         }
