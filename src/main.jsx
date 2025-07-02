@@ -21,6 +21,7 @@ const MainLayout = () => {
   const {
     userId, setUserId,
     username, setUsername,
+    email, setEmail,
     isLoggedIn, setIsLoggedIn,
     setIsSessionInProgress, setIsSignOutInProgress
   } = useUserContext();
@@ -32,6 +33,7 @@ const MainLayout = () => {
         <Outlet context={{
           userId, setUserId,
           username, setUsername,
+          email, setEmail,
           isLoggedIn, setIsLoggedIn,
           setIsSessionInProgress, setIsSignOutInProgress
         }} />

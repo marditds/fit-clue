@@ -1,7 +1,7 @@
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LoadingComponent } from '../Loading/LoadingComponent';
-import './Form.css';
+import './SignPasswordForm.css';
 
 export const SignForm = ({
     title,

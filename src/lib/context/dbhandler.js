@@ -39,7 +39,7 @@ export const createUser = async (email, password, name) => {
             let userInColl = {};
 
             if (session) {
-                userInColl = await createUserInCollection(name);
+                userInColl = await createUserInCollection(name, email);
 
                 await account.updatePrefs({
                     profile_id: userInColl.$id,
@@ -51,7 +51,6 @@ export const createUser = async (email, password, name) => {
 
         return null;
     } catch (error) {
-
         console.error('Error creating user:', error);
         if (error.code === 400) {
             return 'Password must be between 8 and 265 characters long.'
@@ -63,14 +62,15 @@ export const createUser = async (email, password, name) => {
     }
 }
 
-export const createUserInCollection = async (username) => {
+export const createUserInCollection = async (username, email) => {
     try {
         const user = await databases.createDocument(
             dbEnv,
             usernamesCollEnv,
             ID.unique(),
             {
-                username
+                username,
+                email
             }
         )
 
