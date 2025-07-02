@@ -3,7 +3,7 @@ import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions.js';
-import { CustomTooltip } from '../../components/ToolTip/CustomTooltip.jsx';
+import { CustomTooltip, TextTooltip } from '../../components/ToolTip/CustomTooltip.jsx';
 
 const CreatePost = () => {
 
@@ -68,39 +68,48 @@ const CreatePost = () => {
     };
 
     return (
-        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-center'>
+            <Row>
+                <Col>
+                    <h2>
+                        Create Post
+                    </h2>
+                    <p>
+                        Share the social media post details. The social media post must be available for public viewing.
+                    </p>
+                </Col>
+            </Row>
             <Row className='w-100'>
-                {/* <Col xs={5}>
-                    <h3>Preview</h3>
-
-
-                </Col> */}
-
                 <Col>
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group className='mb-3' controlId='formName'>
-                            <Form.Label>Name:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
+                        <Row xs={1} md={2}>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formName'>
+                                    <Form.Label>Name:</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formPhotoLink'>
+                                    <Form.Label>Photo Link:</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        rows={3}
+                                        value={photoLink}
+                                        onChange={e => {
+                                            console.log('photoLink:', e.target.value);
 
-                        <Form.Group className='mb-3' controlId='formPhotoLink'>
-                            <Form.Label>Photo Link:</Form.Label>
-                            <Form.Control
-                                as='textarea'
-                                rows={3}
-                                value={photoLink}
-                                onChange={e => {
-                                    console.log('photoLink:', e.target.value);
-
-                                    setPhotoLink(e.target.value)
-                                }}
-                            />
-                        </Form.Group>
+                                            setPhotoLink(e.target.value)
+                                        }}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
 
                         <Form.Group className='mb-3' controlId='formShowLinks'>
                             <Form.Check
@@ -112,91 +121,110 @@ const CreatePost = () => {
                         </Form.Group>
 
                         {showLinks && (
-                            <div>
-                                <Form.Label>Links:</Form.Label>
+                            <Row className='flex-column'>
                                 {links.map((link, index) => (
-                                    <Row key={index} className='mb-2'>
+                                    <Col key={index} className='mb-2'>
+                                        <hr className='mt-0' />
+                                        <Row>
+                                            <Col className='d-flex align-items-center mb-3'>
+                                                <h5 className='mb-0 me-2'>
+                                                    Link #{index + 1}
+                                                </h5>
+                                                <Button variant='danger' onClick={() => removeLinkField(index)}>
+                                                    Remove
+                                                </Button>
+                                            </Col>
+                                        </Row>
 
-                                        <Col>
-                                            <Form.Control
-                                                name='href'
-                                                placeholder='Link URL'
-                                                value={link.href}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            />
-                                        </Col>
 
-                                        <Col>
-                                            <Form.Control
-                                                name='companyName'
-                                                placeholder='Company Name'
-                                                value={link.companyName}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            />
-                                        </Col>
+                                        <Row xs={1} md={2}>
+                                            <Form.Group as={Col} className='mb-3' controlId={`formProductLink-${index}`}>
+                                                <Form.Label>Product Link</Form.Label>
+                                                <Form.Control
+                                                    name='href'
+                                                    placeholder='Link URL'
+                                                    value={link.href}
+                                                    onChange={e => handleLinkChange(index, e)}
+                                                    required
+                                                />
+                                            </Form.Group>
 
-                                        <Col>
-                                            <Form.Control
-                                                name='item'
-                                                placeholder='Item'
-                                                value={link.item}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            />
-                                        </Col>
+                                            <Form.Group as={Col} className='mb-3' controlId={`formBrandName-${index}`}>
+                                                <Form.Label>Producer/Brand</Form.Label>
+                                                <Form.Control
+                                                    name='companyName'
+                                                    placeholder='Company Name'
+                                                    value={link.companyName}
+                                                    onChange={e => handleLinkChange(index, e)}
+                                                    required
+                                                />
+                                            </Form.Group>
+                                        </Row>
 
-                                        <Col>
-                                            <CustomTooltip>
-                                                <ul className='text-start list-unstyled'>
-                                                    {similarityLevelOptions.map((option, idx) => (
-                                                        <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
-                                                    ))}
-                                                </ul>
-                                            </CustomTooltip>
-                                            <Form.Select
-                                                aria-label='Select similarity level'
-                                                name='similarityLevel'
-                                                id={`similarityLevelSelect-${index}`}
-                                                value={link.similarityLevel}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            >
-                                                <option value='' disabled>
-                                                    Select similarity level
-                                                </option>
-                                                {similarityLevelOptions.map((option, idx) => (
-                                                    <option key={idx} value={option.label}>
-                                                        {option.label}
+                                        <Row xs={1} md={2} className='align-items-end'>
+                                            <Form.Group as={Col} className='mb-3' controlId={`formItemName-${index}`}>
+                                                <Form.Label>Item</Form.Label>
+                                                <Form.Control
+                                                    name='item'
+                                                    placeholder='Item'
+                                                    value={link.item}
+                                                    onChange={e => handleLinkChange(index, e)}
+                                                    required
+                                                />
+                                            </Form.Group>
+
+                                            <Form.Group as={Col} className='mb-3'>
+                                                <Form.Label htmlFor={`similarityLevelSelect-${index}`}>
+                                                    Similarity Level
+                                                </Form.Label>
+                                                <CustomTooltip tooltipText={similarityLevelOptions}
+                                                    iconClassName={'bi bi-question-square'}
+                                                />
+                                                <Form.Select
+                                                    aria-label='Select similarity level'
+                                                    name='similarityLevel'
+                                                    id={`similarityLevelSelect-${index}`}
+                                                    value={link.similarityLevel}
+                                                    onChange={e => handleLinkChange(index, e)}
+                                                    required
+                                                >
+                                                    <option value='' disabled>
+                                                        Select similarity level
                                                     </option>
-                                                ))}
-                                            </Form.Select>
-                                        </Col>
+                                                    {similarityLevelOptions.map((option, idx) => (
+                                                        <option key={idx} value={option.label}>
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
+                                                </Form.Select>
+                                            </Form.Group>
 
-                                        <Col xs='auto'>
-                                            <Button variant='danger' onClick={() => removeLinkField(index)}>
-                                                Remove
-                                            </Button>
-                                        </Col>
-                                    </Row>
+                                        </Row>
+
+                                    </Col>
                                 ))}
-                                <Button variant='secondary' type='button' onClick={addLinkField}>
-                                    + Add Another Link
-                                </Button>
-                            </div>
+
+                                <Col>
+                                    <Button
+                                        type='button'
+                                        className='w-100'
+                                        onClick={addLinkField}>
+                                        + Add Another Link
+                                    </Button>
+                                </Col>
+
+                            </Row>
                         )}
 
                         <Button
-                            variant='primary'
                             type='submit'
-                            className='mt-3'
+                            className='mt-3 w-100'
                             disabled={!name || !photoLink}
                         >
                             Create Post
                         </Button>
-                    </Form>
 
+                    </Form>
                 </Col>
             </Row>
         </Container>

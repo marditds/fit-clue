@@ -176,7 +176,10 @@ export const Dashboard = () => {
                                 title='Username'
                                 description='Your username must be unique. Your username will be visible to others.'
                                 fields={updateUsernameFields}
-                                onSubmit={onUpdateUsernameClick}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    onUpdateUsernameClick();
+                                }}
                                 buttonLabel='Update Username'
                                 isLoading={isUpdatingUsername}
                                 isDisabled={
