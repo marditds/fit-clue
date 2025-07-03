@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
+import { LoadingComponent } from '../../components/Loading/LoadingComponent.jsx';
 
 const CreatePost = () => {
 
@@ -12,8 +13,18 @@ const CreatePost = () => {
 
     const [name, setName] = useState('');
     const [instaLink, setInstaLink] = useState('');
-    const [showLinks, setShowLinks] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
+    const [sccssMsg, setSccssMsg] = useState('');
     const [links, setLinks] = useState([]);
+    const [incorrectlyFormattedLinks, setIncorrectlyFormattedLinks] = useState([]);
+    const [showLinks, setShowLinks] = useState(false);
+    const [isPostGettingCreated, setIsPostGettingCreated] = useState(false);
+    const [isInstaLinkFormatIncorrect, setIsInstaLinkFormatIncorrect] = useState(false);
+    const [isItemLinkFormatIncorrect, setIsItemLinkFormatIncorrect] = useState(false);
+
+    const onInstagramLinkChange = (e) => {
+        setInstaLink(e.target.value)
+    }
 
     const addLinkField = () => {
         setLinks([...links, { href: '', companyName: '', item: '', similarityLevel: '' }]);
@@ -32,23 +43,60 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setIsPostGettingCreated(true);
             // const filteredLinks = showLinks
             //     ? links.filter(link => link.href && link.companyName && link.item && link.userId && link.similarityLevel)
             //     : [];
 
-            console.log('filteredLinks', links);
+            console.log('links', links);
 
+            const itemLinkInIncorrectFormat = links?.some((link) => !link.href.startsWith('https://'));
+
+            const wronglyFormattedLinks = links.map(link => !link.href.startsWith('https://'));
+            setIncorrectlyFormattedLinks(wronglyFormattedLinks);
+
+            console.log('incorrectLinkswronglyFormattedLinks');
+
+
+            console.log('itemLinkInIncorrectFormat', itemLinkInIncorrectFormat);
+
+            if (itemLinkInIncorrectFormat) {
+                setErrMsg('One or more item links are incorrectly formatted. All links must begin with https://');
+                setIsItemLinkFormatIncorrect(true);
+                setSccssMsg('');
+                return;
+            }
+
+            if (!instaLink.startsWith('https://www.instagram.com/p/')) {
+                setErrMsg('You instagram link must be in the following format: https://www.instagram.com/p/...');
+                setIsInstaLinkFormatIncorrect(true);
+                setSccssMsg('');
+                return;
+            }
 
             const response = await makePost(name, links, instaLink, userId);
             if (response) {
                 console.log('Post created successfully!');
+                setErrMsg('');
+                setSccssMsg('Post created successfully!');
+                setName('');
+                setInstaLink('');
+                setLinks([]);
             } else {
                 console.error('Post creation failed.');
+                setErrMsg('Something went wrong. Please try again later.');
+                setSccssMsg('');
             }
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsPostGettingCreated(false);
         }
     };
+
+    useEffect(() => {
+
+    }, [isItemLinkFormatIncorrect])
 
     return (
         <Container>
@@ -88,11 +136,8 @@ const CreatePost = () => {
                                         type='text'
                                         placeholder='https://www.instagram.com/...'
                                         value={instaLink}
-                                        onChange={e => {
-                                            console.log('instaLink:', e.target.value);
-
-                                            setInstaLink(e.target.value)
-                                        }}
+                                        className={`border ${!isInstaLinkFormatIncorrect ? '' : 'border-danger'}`}
+                                        onChange={onInstagramLinkChange}
                                     />
                                 </Form.Group>
                             </Col>
@@ -117,6 +162,7 @@ const CreatePost = () => {
                                 links={links}
                                 setLinks={setLinks}
                                 addLinkField={addLinkField}
+                                incorrectlyFormattedLinks={incorrectlyFormattedLinks}
                             />
                         )}
 
@@ -125,8 +171,12 @@ const CreatePost = () => {
                             className='mt-3 w-100'
                             disabled={!name || !instaLink}
                         >
-                            Create Post
+                            {!isPostGettingCreated ? 'Create Post' : <LoadingComponent />}
                         </Button>
+
+                        <Form.Text className={sccssMsg ? 'text-success' : 'text-danger'}>
+                            {sccssMsg || errMsg}
+                        </Form.Text>
 
                     </Form>
                 </Col>

@@ -346,9 +346,6 @@ export const makePost = async (name, productLinksData, url, userId) => {
             );
         }
 
-        console.log();
-
-
         // console.log({ url, personality_id: personality.$id, links: links.map(link => link.$id) });
 
         const post = await databases.createDocument(

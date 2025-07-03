@@ -5,7 +5,8 @@ import { CustomTooltip } from '../ToolTip/CustomTooltip';
 export const AddLinksInCreatePostForm = ({
     links,
     setLinks,
-    addLinkField
+    addLinkField,
+    incorrectlyFormattedLinks
 }) => {
 
     const handleLinkChange = (index, e) => {
@@ -44,7 +45,12 @@ export const AddLinksInCreatePostForm = ({
                                 name='href'
                                 placeholder='https://shop.example.com/product'
                                 value={link.href}
-                                onChange={e => handleLinkChange(index, e)}
+                                onChange={(e) => {
+                                    handleLinkChange(index, e);
+                                }}
+
+                                className={`border ${incorrectlyFormattedLinks[index] ? 'border-danger' : 'lezu'}`}
+
                                 required
                             />
                         </Form.Group>
