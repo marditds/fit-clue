@@ -23,7 +23,7 @@ export const AddLinksInCreatePostForm = ({
     return (
         <Row className='flex-column'>
             {links.map((link, index) => (
-                <Col key={index} className='mb-2'>
+                <Col key={index}>
                     <hr className='mt-0' />
                     <Row>
                         <Col className='d-flex align-items-center mb-3'>

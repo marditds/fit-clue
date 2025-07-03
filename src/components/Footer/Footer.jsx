@@ -5,7 +5,7 @@ import './Footer.css';
 
 const Footer = () => {
     return (
-        <footer className='bg-light py-3 mt-5 border-top mt-auto'>
+        <footer className='bg-light py-3 mt-auto border-top mt-auto'>
             <Container>
                 <Row className='justify-content-between align-items-center'>
                     <Col xs='12' md='6' className='text-center text-md-start mb-2 mb-md-0'>

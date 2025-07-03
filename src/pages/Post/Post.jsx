@@ -90,7 +90,9 @@ const Post = () => {
     if (isPostLoading) return <Container>Loading post…</Container>;
 
     return (
-        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch'>
+        <Container
+        // className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch'
+        >
             <Row>
                 <h3 className='text-left'>
                     {personalityName}

@@ -29,7 +29,9 @@ const MainLayout = () => {
   return (
     <>
       <NavigationBar />
-      <main className='min-vh-100'>
+      <main className='' style={{
+        minHeight: 'calc(100vh - 112px)'
+      }}>
         <Outlet context={{
           userId, setUserId,
           username, setUsername,
