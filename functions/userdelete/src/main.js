@@ -29,12 +29,8 @@ export default async ({ req, res, log, error }) => {
 
     console.log('User info:', user);
 
-    // await users.delete(data.$id);
-
-    // log(`User deleted successfully.`);
-
   } catch (err) {
-    error("Could not delete AUTH user: " + err.message);
+    error("Could not delete user: " + err);
   }
   return res.json({ msg: 'User deleted from Appwrite.' });
 }; 
