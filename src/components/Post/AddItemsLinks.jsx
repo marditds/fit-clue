@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
@@ -69,6 +69,8 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
     }
 
     return (
+        // <Row>
+        //     <Col>
         <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
             <h3>Add a linkcxsd</h3>
             <Form.Group className='mb-3' controlId='CompanyNameField'>
@@ -135,5 +137,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                 {isAddningLink ? 'Adding link...' : 'Add Item Link'}
             </Button>
         </Form>
+        //    </Col>
+        // </Row>   
     )
 }

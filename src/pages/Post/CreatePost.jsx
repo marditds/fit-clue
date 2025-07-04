@@ -106,7 +106,7 @@ const CreatePost = () => {
                         Create Post
                     </h2>
                     <p>
-                        Share the Instagram link. The Instagram post must be available for public viewing.
+                        Please share the Instagram link. The post must be publicly accessible.
                     </p>
                 </Col>
             </Row>

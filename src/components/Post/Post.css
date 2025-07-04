@@ -4,6 +4,7 @@
     border-style: solid !important;
     border-color: var(--card-border-color) !important;
     padding-block: 12px;
+    background-color: var(--main-white-shade);
 }
 
 .post__col:nth-child(1) {
@@ -66,7 +67,6 @@
 }
 
 @media (max-width: 767px) {
-
     .post__col {
         border-top: 0px !important;
         border-left: 0px !important;
@@ -78,5 +78,11 @@
     .post__div-link-item,
     .post__div-link-item>.row {
         max-width: 493px;
+    }
+}
+
+@media (max-width: 575px) {
+    .post__col {
+        padding-inline: 2px !important;
     }
 }

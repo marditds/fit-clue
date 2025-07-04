@@ -60,7 +60,10 @@ const TheLatest = () => {
     if (isGridLoading) return <div>Loading the latest…</div>;
 
     return (
-        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch latest__container'>
+        <Container
+            className='py-5'
+        // className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch latest__container'
+        >
             <Row className='justify-content-start'>
                 <Col className=''>
                     <h2 className='latest__page-title'>
