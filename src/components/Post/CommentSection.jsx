@@ -130,7 +130,7 @@ export const CommentSection = ({ postId, username, userId }) => {
 
 
     return (
-        <Row className='post__comment-section-row'>
+        <Row className='post__comment-section-row mx-auto'>
 
             {/* Leave a comment */}
             <Col xs={12} lg={5}>

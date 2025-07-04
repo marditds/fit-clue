@@ -40,7 +40,6 @@
 }
 
 .post__div-links-row {
-    /* max-width: 538px; */
     height: 54px;
     background-color: white;
     border: 1px solid var(--main-border-color);
@@ -76,8 +75,15 @@
 
     .post__div-links-row,
     .post__div-link-item,
-    .post__div-link-item>.row {
+    .post__div-link-item>.row,
+    .post__add-link-row,
+    .post__comment-section-row {
         max-width: 493px;
+    }
+
+    .post__comment-section-row>.col,
+    .post__comment-section-row>.col-12 {
+        padding-inline: 2px !important;
     }
 }
 

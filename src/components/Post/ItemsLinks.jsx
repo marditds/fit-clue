@@ -28,8 +28,7 @@ export const ItemsLinks = ({ itemsLinks }) => {
     }
 
     return (
-        // <ul className='list-unstyled'>
-        <>
+        <div>
             <Row className='post__div-links-row w-100 mx-auto sticky-top'>
                 <Col className='d-flex justify-content-center align-items-center'>
                     Item
@@ -48,7 +47,6 @@ export const ItemsLinks = ({ itemsLinks }) => {
             {
                 itemsLinks?.map((itemLink) => {
                     return (
-                        // <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex justify-content-center mx-auto align-items-center post__div-link-item'>
                         <Row key={itemLink.$id} className='py-3 post__div-link-item  mx-auto border border-top-0 border-start-0 border-end-0 border-bottom-1'>
                             <a
                                 href={itemLink.href}
@@ -101,7 +99,6 @@ export const ItemsLinks = ({ itemsLinks }) => {
                 show={showModal}
                 onSubmitReport={onSubmitReportLinkClick}
             />
-            {/* </ul> */}
-        </>
+        </div>
     )
 }
