@@ -7,6 +7,8 @@ export default async ({ req, res, log, error }) => {
     .setProject(process.env.VITE_PROJECT_ID)
     .setKey(req.headers['x-appwrite-key'] ?? process.env.APPWRITE_API_KEY);
 
+  log('this is req.body:', req.body);
+
   const users = new Users(client);
 
   try {
