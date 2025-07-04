@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useUser } from '../../../lib/hooks/useUser';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { DashboardForm } from '../../../components/Form/DashboardForm';
 import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
 
@@ -217,6 +217,25 @@ export const Dashboard = () => {
                                 errorMsg={psswdErrorMsg}
                             />
 
+                        </Col>
+                    </Row>
+
+                    <hr />
+
+                    {/* Account delete */}
+                    <Row>
+                        <Col className='p-4 p-lg-5'>
+
+                            <h4>
+                                Delete Account
+                            </h4>
+                            <p className='text-muted'>
+                                This action is irreversible. You will not be able to recover your account.
+                            </p>
+
+                            <Button className='w-100'>
+                                Delete Account
+                            </Button>
                         </Col>
                     </Row>
 
