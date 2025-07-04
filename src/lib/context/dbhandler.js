@@ -1,4 +1,5 @@
 import { Client, Databases, ID, Query, Functions, Account } from 'appwrite';
+import { dbFunctionKeysProvider } from './keysProvider';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -257,6 +258,39 @@ export const deleteUserSession = async () => {
         await account.deleteSession('current');
     } catch (error) {
         console.error('Error removing session:', error);
+    }
+}
+
+export const deleteUserFromPlatform = async (userId) => {
+    try {
+        console.log('this userId will be deleted - dbhandler:', userId);
+        const payload = JSON.stringify({ $id: userId });
+        console.log('Payload being sent:');
+        console.log(payload);
+
+        const user_delete_function_id = await dbFunctionKeysProvider('user_delete_function');
+
+        if (!user_delete_function_id) {
+            throw new Error('Failed to load function ID');
+        }
+
+        const res = await functions.createExecution(
+            user_delete_function_id,
+            payload
+        )
+        if (res.status === 'completed') {
+            try {
+                const result = JSON.parse(res.responseBody);
+                console.log(result);
+            } catch (parseError) {
+                console.error('Error parsing response:', parseError);
+                return false;
+            }
+        } else {
+            console.error("Failed to delete auth user");
+        }
+    } catch (error) {
+        console.error('Error deleting auth user:', error);
     }
 }
 

@@ -1,35 +1,35 @@
 import { Client, Users } from 'node-appwrite';
 
-// This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
-  // You can use the Appwrite SDK to interact with other services
-  // For this example, we're using the Users service
+
   const client = new Client()
-    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? '');
+    .setEndpoint(process.env.VITE_ENDPOINT)
+    .setProject(process.env.VITE_PROJECT_ID)
+    .setKey(req.headers['x-appwrite-key'] ?? process.env.APPWRITE_API_KEY);
+
   const users = new Users(client);
 
   try {
-    const response = await users.list();
-    // Log messages and errors to the Appwrite Console
-    // These logs won't be seen by your end users
-    log(`Total users: ${response.total}`);
-  } catch(err) {
-    error("Could not list users: " + err.message);
-  }
+    if (!req.body) {
+      throw new Error('Request body is missing.');
+    }
 
-  // The req object contains the request data
-  if (req.path === "/ping") {
-    // Use res object to respond with text(), json(), or binary()
-    // Don't forget to return a response!
-    return res.text("Pong");
-  }
+    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-  return res.json({
-    motto: "Build like a team of hundreds_",
-    learn: "https://appwrite.io/docs",
-    connect: "https://appwrite.io/discord",
-    getInspired: "https://builtwith.appwrite.io",
-  });
-};
+    if (!data.$id) {
+      throw new Error('ID not provided.');
+    }
+
+    const user = await users.get(data.$id);
+
+    console.log('User info:', user);
+
+    // await users.delete(data.$id);
+
+    // log(`User deleted successfully.`);
+
+  } catch (err) {
+    error("Could not delete AUTH user: " + err.message);
+  }
+  return res.json({ msg: 'User deleted from Appwrite.' });
+}; 
