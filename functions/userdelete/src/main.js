@@ -19,6 +19,7 @@ export default async ({ req, res, log, error }) => {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
     log('this is data:', data);
+    log('this is data.$id:', data.$id);
 
     if (!data.$id) {
       throw new Error('ID not provided.');
