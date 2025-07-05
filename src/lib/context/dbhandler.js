@@ -1,4 +1,5 @@
 import { Client, Databases, ID, Query, Functions, Account } from 'appwrite';
+import { dbFunctionKeysProvider } from './keysProvider';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -323,6 +324,50 @@ export const deleteUserSession = async () => {
         console.error('Error removing session:', error);
     }
 }
+
+export const deleteUserFromPlatform = async () => {
+    try {
+        const user_delete_function_id = await dbFunctionKeysProvider('user_delete_function');
+
+        if (!user_delete_function_id) {
+            throw new Error('Missing function ID')
+        };
+
+        const res = await functions.createExecution(
+            user_delete_function_id
+        );
+
+        if (res.status === 'completed') {
+            try {
+                const response = JSON.parse(res.responseBody);
+                console.log('Deletion successful:', response);
+                return true;
+            } catch (error) {
+                console.error('Error parsing response:', error);
+                return false;
+            }
+        } else {
+            console.error('Function execution failed:', res);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        return false;
+    }
+}
+
+export const deleteUserFromCollection = async (userId) => {
+    try {
+        await databases.deleteDocument(
+            dbEnv,
+            usernamesCollEnv,
+            userId,
+        );
+        return 'User successfully deleted from the collection.';
+    } catch (error) {
+        console.error('Error deleting user form collection:', error);
+    }
+};
 
 export const makePost = async (name, productLinksData, url, userId) => {
 
