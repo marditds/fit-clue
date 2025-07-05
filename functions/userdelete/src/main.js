@@ -9,6 +9,8 @@ export default async ({ req, res, log, error }) => {
   const users = new Users(client);
   const databases = new Databases(client);
 
+  log(req.userId);
+
   try {
     const userId = req.userId;
 
