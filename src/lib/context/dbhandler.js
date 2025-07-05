@@ -40,7 +40,7 @@ export const createUser = async (email, password, name) => {
             let userInColl = {};
 
             if (session) {
-                userInColl = await createUserInCollection(name);
+                userInColl = await createUserInCollection(name, email);
 
                 await account.updatePrefs({
                     profile_id: userInColl.$id,
@@ -52,10 +52,10 @@ export const createUser = async (email, password, name) => {
 
         return null;
     } catch (error) {
-
         console.error('Error creating user:', error);
-
-        if (error.code === 409) {
+        if (error.code === 400) {
+            return 'Password must be between 8 and 265 characters long.'
+        } else if (error.code === 409) {
             return 'A user with the same email already exists.'
         } else {
             return ('Something went wrong. Please refresh the page, and try again.');
@@ -63,14 +63,15 @@ export const createUser = async (email, password, name) => {
     }
 }
 
-export const createUserInCollection = async (username) => {
+export const createUserInCollection = async (username, email) => {
     try {
         const user = await databases.createDocument(
             dbEnv,
             usernamesCollEnv,
             ID.unique(),
             {
-                username
+                username,
+                email
             }
         )
 
@@ -82,6 +83,48 @@ export const createUserInCollection = async (username) => {
         return null;
     } catch (error) {
         console.error('Error creating user in collection:', error);
+    }
+}
+
+export const updateUsername = async (username) => {
+    try {
+        const res = await account.updateName(username);
+
+        if (res) {
+            console.log('Username updated successfully.');
+            return res;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error updating username:', error);
+    }
+}
+
+export const updateUsernameInCollection = async (userId, username) => {
+
+    try {
+
+        const existingUser = await getUserFromCollectionByUsername(username);
+
+        if (existingUser) {
+            return 'Username is taken. Your username must be unique.'
+        }
+
+        const res = await databases.updateDocument(
+            dbEnv,
+            usernamesCollEnv,
+            userId,
+            {
+                username
+            }
+        )
+        if (res) {
+            await updateUsername(username);
+            console.log('Username in collection updated successfully.');
+            return res;
+        }
+    } catch (error) {
+        console.error('Error updating username in collection:', error);
     }
 }
 
@@ -111,6 +154,27 @@ export const getUserFromCollectionById = async (userId) => {
 
         if (user) {
             return user;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error getting user from collection:', error);
+    }
+}
+
+export const getUserFromCollectionByUsername = async (username) => {
+
+    try {
+        const userExists = await databases.listDocuments(
+            dbEnv,
+            usernamesCollEnv,
+            [
+                Query.equal('username', username)
+            ]
+        )
+
+        if (userExists.total > 0) {
+            return userExists;
         }
 
         return null;
@@ -198,7 +262,7 @@ export const updateUserPassword = async (newPassword, oldPassword) => {
         if (error.code === 400) {
             return 'Password must be between 8 and 265 characters long.'
         } else if (error.code === 401) {
-            return 'Please check your old passowrd.'
+            return 'Please check your current passowrd.'
         } else {
             return 'Something went wrong. Please try again later.'
         }
@@ -326,9 +390,6 @@ export const makePost = async (name, productLinksData, url, userId) => {
                 )
             );
         }
-
-        console.log();
-
 
         // console.log({ url, personality_id: personality.$id, links: links.map(link => link.$id) });
 
@@ -800,15 +861,23 @@ export const createComment = async (postId, commentText, userId) => {
     }
 }
 
-export const fetchCommentsTextByPostId = async (postId) => {
+export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastCursor = null) => {
     try {
+
+        const queries = [
+            Query.equal('post_id', postId),
+            Query.limit(commentsLoadLimit),
+            Query.orderDesc('$createdAt')
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        }
+
         const doc = await databases.listDocuments(
             dbEnv,
             commentsCollEnv,
-            [
-                Query.equal('post_id', postId),
-                Query.orderDesc('$createdAt')
-            ]
+            queries
         )
 
         if (doc.total > 0) {

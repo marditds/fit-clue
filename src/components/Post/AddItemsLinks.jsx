@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
@@ -69,71 +69,84 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
     }
 
     return (
-        <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
-            <h3>Add a linkcxsd</h3>
-            <Form.Group className='mb-3' controlId='CompanyNameField'>
-                <Form.Label>Brand:</Form.Label>
-                <Form.Control
-                    type='text'
-                    value={companyName}
-                    onChange={onCompanyNameCahnge}
-                    placeholder='Enter Company Name' />
-            </Form.Group>
+        // <Row>
+        //     <Col>
+        //          
+        <>
+            <Row className='post__add-link-row mx-auto pt-3'>
+                <Col>
+                    <h3>Add a linkcxsd</h3>
 
-            <Form.Group className='mb-3' controlId='ItemNameField'>
-                <Form.Label>Item:</Form.Label>
-                <Form.Control
-                    type='text'
-                    value={itemName}
-                    onChange={onItemNameChange}
-                    placeholder='Enter Brand Name' />
-            </Form.Group>
+                    <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
 
-            <Form.Group className='mb-3' controlId='ItemUrlField'>
-                <Form.Label>URL:</Form.Label>
-                <Form.Control
-                    type='text'
-                    value={href}
-                    onChange={onUrlCahnge}
-                    placeholder='Enter Item URL' />
-            </Form.Group>
+                        <Form.Group className='mb-3' controlId='CompanyNameField'>
+                            <Form.Label>Company name</Form.Label>
+                            <Form.Control
+                                type='text'
+                                value={companyName}
+                                onChange={onCompanyNameCahnge}
+                                placeholder='Enter company name' />
+                        </Form.Group>
 
-            <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
+                        <Form.Group className='mb-3' controlId='ItemNameField'>
+                            <Form.Label>Item:</Form.Label>
+                            <Form.Control
+                                type='text'
+                                value={itemName}
+                                onChange={onItemNameChange}
+                                placeholder='Enter item name' />
+                        </Form.Group>
 
-                <Form.Label className='w-100'>
-                    Similarity Level:
-                    <CustomTooltip
-                        iconClassName={'bi bi-question-square'}
-                        tooltipText={similarityLevelOptions}
-                    />
-                </Form.Label>
+                        <Form.Group className='mb-3' controlId='ItemUrlField'>
+                            <Form.Label>Product Link</Form.Label>
+                            <Form.Control
+                                type='text'
+                                value={href}
+                                onChange={onUrlCahnge}
+                                placeholder='https://shop.example.com/product' />
+                        </Form.Group>
 
-                <Form.Select
-                    aria-label='Select similarity level'
-                    name='similarityLevel'
-                    value={similarityLevel}
-                    onChange={onSimilarityLevelChange}
-                    required
-                >
-                    <option value='' disabled>Select similarity level</option>
-                    {similarityLevelOptions.map((option, idx) => (
-                        <option key={idx} value={option.label}>
-                            {option.label}
-                        </option>
-                    ))}
-                </Form.Select>
-                <Form.Text>{similarityLevelDesc}</Form.Text>
-            </Form.Group>
+                        <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
+
+                            <Form.Label className='w-100'>
+                                Similarity Level:
+                                <CustomTooltip
+                                    iconClassName={'bi bi-question-square'}
+                                    tooltipText={similarityLevelOptions}
+                                />
+                            </Form.Label>
+
+                            <Form.Select
+                                aria-label='Select similarity level'
+                                name='similarityLevel'
+                                value={similarityLevel}
+                                onChange={onSimilarityLevelChange}
+                                required
+                            >
+                                <option value='' disabled>Select similarity level</option>
+                                {similarityLevelOptions.map((option, idx) => (
+                                    <option key={idx} value={option.label}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                            <Form.Text>{similarityLevelDesc}</Form.Text>
+                        </Form.Group>
 
 
-            <Button
-                variant='primary'
-                type='submit'
-                disabled={!companyName || !itemName || !href}
-                className='mt-1'
-            >
-                {isAddningLink ? 'Adding link...' : 'Add Item Link'}
-            </Button>
-        </Form>
+                        <Button
+                            variant='primary'
+                            type='submit'
+                            disabled={!companyName || !itemName || !href}
+                            className='mt-1'
+                        >
+                            {isAddningLink ? 'Adding link...' : 'Add Item Link'}
+                        </Button>
+                    </Form>
+                </Col>
+            </Row>
+        </>
+        //       </Col>
+        // </Row>  
     )
 }

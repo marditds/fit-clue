@@ -1,143 +1,247 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useUser } from '../../../lib/hooks/useUser';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { DashboardForm } from '../../../components/Form/DashboardForm';
+import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
 
 export const Dashboard = () => {
 
-    const { getUserFromCollectionById, updateUserPassword, getUserPreferences } = useUser();
+    const { updateUserPassword, updateUsernameInCollection } = useUser();
 
-    const { userId, userEmail, username, isLoggedIn, setUserId, setUsername } = useOutletContext();
+    const { userId, email, username, setUsername } = useOutletContext();
 
     const [isDashboardLoading, setIsDashboardLoading] = useState(false);
 
-    const [oldPassword, setOldPassword] = useState('');
+    // Username
+    const [newUsername, setNewUsername] = useState(username);
+    const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
+    const [usrnmSuccessMsg, setUsrnmSuccessMsg] = useState(null);
+    const [usrnmErrorMsg, setUsrnmErrorMsg] = useState(null);
+
+    // Passwprd
+    const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const [successMsg, setSuccessMsg] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
+    const [psswdSuccessMsg, setPsswdSuccessMsg] = useState(null);
+    const [psswdErrorMsg, setPsswdErrorMsg] = useState(null);
+    const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
-    // Fetch user id
     useEffect(() => {
-        const fetchUserPrefs = async () => {
-            const prefs = await getUserPreferences();
+        console.log({ userId, username });
+    }, [userId, username])
 
-            console.log('prefs in dashboard:', prefs);
+    const onUpdateUsernameClick = async () => {
 
-            setUserId(prefs.prfile_id)
-        }
-        fetchUserPrefs();
-    }, [])
+        try {
+            setIsUpdatingUsername(true);
 
-    // Fetch username
-    useEffect(() => {
-        const fetchUserAccount = async () => {
+            const res = await updateUsernameInCollection(userId, newUsername);
 
-            if (!userId) {
+            console.log(res);
+
+            if (typeof res === 'string') {
+                setUsrnmErrorMsg(res);
+                setUsrnmSuccessMsg('');
                 return;
             }
 
-            setIsDashboardLoading(true);
-            try {
-                const user = await getUserFromCollectionById(userId);
+            setUsername(res.username);
+            setUsrnmErrorMsg('');
+            setUsrnmSuccessMsg('Username updated successfully.');
 
-                console.log('userAccount:', user);
-
-                setUsername(user.username);
-
-            } catch (error) {
-                console.error('Error fetching user account:', error);
-            } finally {
-                setIsDashboardLoading(false);
-            }
+        } catch (error) {
+            console.error('Error updating username:', error);
+        } finally {
+            setIsUpdatingUsername(false);
         }
-        fetchUserAccount();
-    }, [userId])
+    }
 
     const onUpdateUserPasswordClick = async () => {
 
         if (newPassword !== confirmNewPassword) {
-            setErrorMsg('Your passwords do not match. Re-enter your new password.');
+            setPsswdErrorMsg('Your passwords do not match. Re-enter your new password.');
             setNewPassword('');
             setConfirmNewPassword('');
             return;
         }
 
         try {
-            const res = await updateUserPassword(newPassword, oldPassword);
+            setIsUpdatingPassword(true);
+
+            const res = await updateUserPassword(newPassword, currentPassword);
 
             if (typeof res === 'string') {
-                setErrorMsg(res);
+                setPsswdErrorMsg(res);
                 return;
             }
 
-            setErrorMsg('');
-            setSuccessMsg('Password updated successfully.');
+            setPsswdErrorMsg('');
+            setPsswdSuccessMsg('Password updated successfully.');
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmNewPassword('');
 
         } catch (error) {
             console.error('Error updating user password:', error);
+        } finally {
+            setIsUpdatingPassword(false);
         }
     }
+
+    const updateUsernameFields = [
+        {
+            id: 'newUsernameField',
+            label: 'Username',
+            type: 'text',
+            placeholder: 'Enter your new username',
+            value: newUsername,
+            onChange: (e) => setNewUsername(e.target.value),
+        },
+    ];
+
+    const updatePasswordFields = [
+        {
+            id: 'currentPasswordField',
+            label: 'Current password',
+            type: 'password',
+            placeholder: 'Enter your current password',
+            value: currentPassword,
+            onChange: (e) => setCurrentPassword(e.target.value),
+        },
+        {
+            id: 'newPasswordField',
+            label: 'New password',
+            type: 'password',
+            placeholder: 'Enter your new password',
+            value: newPassword,
+            onChange: (e) => setNewPassword(e.target.value),
+        },
+        {
+            id: 'newPasswordRenterField',
+            label: 'Confirm new password',
+            type: 'password',
+            placeholder: 'Confirm your new password',
+            value: confirmNewPassword,
+            onChange: (e) => setConfirmNewPassword(e.target.value),
+        },
+    ];
 
     if (isDashboardLoading) {
         return (
             <Container>
-                Loading your dashboard...
+                Loading your dashboard <span>{<LoadingComponent />}</span>...
             </Container>
         )
     }
 
     return (
         <Container>
-            {username}'s dashboard
+
             <Row>
-                <Col>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="oldPasswordField">
-                            <Form.Label>Old password:</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                value={oldPassword}
-                                onChange={(e) => setOldPassword(e.target.value)}
+                <Col xs={12} md={4} className='border'>
+
+                    {/* User's information */}
+                    <Row className='sticky-top'>
+                        <Col className='p-4 p-lg-5 text-center'>
+                            <h2 className=''>
+                                {username}
+                            </h2>
+                            <p className='mb-0'>
+                                {email}
+                            </p>
+                        </Col>
+                    </Row>
+
+                </Col>
+
+                <Col className='border'>
+
+                    {/* Dashboard title */}
+                    <Row>
+                        <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
+                            <h3 className='fw-bold'>
+                                Account Settings
+                            </h3>
+                            <p>
+                                Manage your account information and security settings
+                            </p>
+                        </Col>
+                    </Row>
+
+                    {/* Username update */}
+                    <Row>
+                        <Col className='p-4 p-lg-5'>
+                            <DashboardForm
+                                title='Username'
+                                description='Your username must be unique. Your username will be visible to others.'
+                                fields={updateUsernameFields}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    onUpdateUsernameClick();
+                                }}
+                                buttonLabel='Update Username'
+                                isLoading={isUpdatingUsername}
+                                isDisabled={
+                                    !newUsername ||
+                                    newUsername.includes(' ') ||
+                                    newUsername === username
+                                }
+                                successMsg={usrnmSuccessMsg}
+                                errorMsg={usrnmErrorMsg}
                             />
-                        </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="newPasswordField">
-                            <Form.Label>New password:</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
+                        </Col>
+                    </Row>
+
+                    <hr />
+
+                    {/* Password update */}
+                    <Row>
+                        <Col className='p-4 p-lg-5'>
+                            <DashboardForm
+                                title='Password'
+                                description='Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.'
+                                fields={updatePasswordFields}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    onUpdateUserPasswordClick();
+                                }}
+                                buttonLabel='Update Password'
+                                isLoading={isUpdatingPassword}
+                                isDisabled={
+                                    currentPassword.length < 8 ||
+                                    !currentPassword || !newPassword || !confirmNewPassword || isUpdatingPassword
+                                }
+                                successMsg={psswdSuccessMsg}
+                                errorMsg={psswdErrorMsg}
                             />
-                        </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="newPasswordRenterField">
-                            <Form.Label>Re-enter new password:</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="Password"
-                                value={confirmNewPassword}
-                                onChange={(e) => setConfirmNewPassword(e.target.value)}
-                            />
-                        </Form.Group>
+                        </Col>
+                    </Row>
 
-                        <Button
-                            variant="primary"
-                            type="button"
-                            onClick={onUpdateUserPasswordClick}
-                            disabled={!oldPassword || !newPassword || !confirmNewPassword}
-                        >
-                            Update
-                        </Button>
+                    <hr />
 
-                        <Form.Text>
-                            {errorMsg || successMsg}
-                        </Form.Text>
-                    </Form>
+                    {/* Account delete */}
+                    <Row>
+                        <Col className='p-4 p-lg-5'>
+
+                            <h4>
+                                Delete Account
+                            </h4>
+                            <p className='text-muted'>
+                                This action is irreversible. You will not be able to recover your account.
+                            </p>
+
+                            <Button className='w-100'>
+                                Delete Account
+                            </Button>
+                        </Col>
+                    </Row>
+
                 </Col>
             </Row>
+
         </Container>
     )
 }

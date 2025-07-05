@@ -1,39 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
-import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions.js';
-import { CustomTooltip } from '../../components/ToolTip/CustomTooltip.jsx';
+import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
+import { LoadingComponent } from '../../components/Loading/LoadingComponent.jsx';
 
 const CreatePost = () => {
 
     const { userId } = useOutletContext();
 
-    const { makePost, fetchPosts } = usePosts();
+    const { makePost } = usePosts();
 
     const [name, setName] = useState('');
-    const [photoLink, setPhotoLink] = useState('');
-    const [showLinks, setShowLinks] = useState(false);
+    const [instaLink, setInstaLink] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+    const [sccssMsg, setSccssMsg] = useState('');
     const [links, setLinks] = useState([]);
+    const [incorrectlyFormattedLinks, setIncorrectlyFormattedLinks] = useState([]);
+    const [showLinks, setShowLinks] = useState(false);
+    const [isPostGettingCreated, setIsPostGettingCreated] = useState(false);
+    const [isInstaLinkFormatIncorrect, setIsInstaLinkFormatIncorrect] = useState(false);
+    const [isItemLinkFormatIncorrect, setIsItemLinkFormatIncorrect] = useState(false);
 
-    // useEffect(() => {
-    //     fetchPosts();
-    // }, []);
-
-    const handleLinkChange = (index, e) => {
-        const { name, value } = e.target;
-        const updatedLinks = [...links];
-        updatedLinks[index][name] = value;
-        setLinks(updatedLinks);
-    };
+    const onInstagramLinkChange = (e) => {
+        setInstaLink(e.target.value)
+    }
 
     const addLinkField = () => {
         setLinks([...links, { href: '', companyName: '', item: '', similarityLevel: '' }]);
-    };
-
-    const removeLinkField = (indexToRemove) => {
-        const updatedLinks = links.filter((_, index) => index !== indexToRemove);
-        setLinks(updatedLinks);
     };
 
     const handleCheckboxChange = (e) => {
@@ -49,154 +43,142 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setIsPostGettingCreated(true);
             // const filteredLinks = showLinks
             //     ? links.filter(link => link.href && link.companyName && link.item && link.userId && link.similarityLevel)
             //     : [];
 
-            console.log('filteredLinks', links);
+            console.log('links', links);
+
+            const itemLinkInIncorrectFormat = links?.some((link) => !link.href.startsWith('https://'));
+
+            const wronglyFormattedLinks = links.map(link => !link.href.startsWith('https://'));
+            setIncorrectlyFormattedLinks(wronglyFormattedLinks);
+
+            console.log('incorrectLinkswronglyFormattedLinks');
 
 
-            const response = await makePost(name, links, photoLink, userId);
+            console.log('itemLinkInIncorrectFormat', itemLinkInIncorrectFormat);
+
+            if (itemLinkInIncorrectFormat) {
+                setErrMsg('One or more item links are incorrectly formatted. All links must begin with https://');
+                setIsItemLinkFormatIncorrect(true);
+                setSccssMsg('');
+                return;
+            }
+
+            if (!instaLink.startsWith('https://www.instagram.com/p/')) {
+                setErrMsg('You instagram link must be in the following format: https://www.instagram.com/p/...');
+                setIsInstaLinkFormatIncorrect(true);
+                setSccssMsg('');
+                return;
+            }
+
+            const response = await makePost(name, links, instaLink, userId);
             if (response) {
                 console.log('Post created successfully!');
+                setErrMsg('');
+                setSccssMsg('Post created successfully!');
+                setName('');
+                setInstaLink('');
+                setLinks([]);
             } else {
                 console.error('Post creation failed.');
+                setErrMsg('Something went wrong. Please try again later.');
+                setSccssMsg('');
             }
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsPostGettingCreated(false);
         }
     };
 
+    useEffect(() => {
+
+    }, [isItemLinkFormatIncorrect])
+
     return (
-        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
-            <Row className='w-100'>
-                {/* <Col xs={5}>
-                    <h3>Preview</h3>
+        <Container>
+            <Row>
+                <Col className='px-md-5 pt-3 pt-md-5'>
+                    <h2>
+                        Create Post
+                    </h2>
+                    <p>
+                        Please share the Instagram link. The post must be publicly accessible.
+                    </p>
+                </Col>
+            </Row>
 
-
-                </Col> */}
-
-                <Col>
+            <Row>
+                <Col className='pt-md-3 px-md-5 mb-3 mb-md-0'>
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group className='mb-3' controlId='formName'>
-                            <Form.Label>Name:</Form.Label>
-                            <Form.Control
-                                type='text'
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
 
-                        <Form.Group className='mb-3' controlId='formPhotoLink'>
-                            <Form.Label>Photo Link:</Form.Label>
-                            <Form.Control
-                                as='textarea'
-                                rows={3}
-                                value={photoLink}
-                                onChange={e => {
-                                    console.log('photoLink:', e.target.value);
+                        {/* Personality name and insta link */}
+                        <Row xs={1} md={2}>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formName'>
+                                    <Form.Label>Personality Name</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        placeholder='Enter personality name'
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                        required
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formPhotoLink'>
+                                    <Form.Label>Instagram Link</Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        placeholder='https://www.instagram.com/...'
+                                        value={instaLink}
+                                        className={`border ${!isInstaLinkFormatIncorrect ? '' : 'border-danger'}`}
+                                        onChange={onInstagramLinkChange}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
 
-                                    setPhotoLink(e.target.value)
-                                }}
-                            />
-                        </Form.Group>
+                        {/* Show Links checkbox */}
+                        <Row>
+                            <Form.Group as={Col} controlId='formShowLinks'>
+                                <Form.Check
+                                    type='checkbox'
+                                    label='Add Links'
+                                    checked={showLinks}
+                                    onChange={handleCheckboxChange}
+                                    className='mb-0'
+                                />
+                            </Form.Group>
+                        </Row>
 
-                        <Form.Group className='mb-3' controlId='formShowLinks'>
-                            <Form.Check
-                                type='checkbox'
-                                label='Add Links'
-                                checked={showLinks}
-                                onChange={handleCheckboxChange}
-                            />
-                        </Form.Group>
-
+                        {/* Items info + links */}
                         {showLinks && (
-                            <div>
-                                <Form.Label>Links:</Form.Label>
-                                {links.map((link, index) => (
-                                    <Row key={index} className='mb-2'>
-
-                                        <Col>
-                                            <Form.Control
-                                                name='href'
-                                                placeholder='Link URL'
-                                                value={link.href}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            />
-                                        </Col>
-
-                                        <Col>
-                                            <Form.Control
-                                                name='companyName'
-                                                placeholder='Company Name'
-                                                value={link.companyName}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            />
-                                        </Col>
-
-                                        <Col>
-                                            <Form.Control
-                                                name='item'
-                                                placeholder='Item'
-                                                value={link.item}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            />
-                                        </Col>
-
-                                        <Col>
-                                            <CustomTooltip>
-                                                <ul className='text-start list-unstyled'>
-                                                    {similarityLevelOptions.map((option, idx) => (
-                                                        <li key={idx}><strong>{option.label}</strong> - {option.description}</li>
-                                                    ))}
-                                                </ul>
-                                            </CustomTooltip>
-                                            <Form.Select
-                                                aria-label='Select similarity level'
-                                                name='similarityLevel'
-                                                id={`similarityLevelSelect-${index}`}
-                                                value={link.similarityLevel}
-                                                onChange={e => handleLinkChange(index, e)}
-                                                required
-                                            >
-                                                <option value='' disabled>
-                                                    Select similarity level
-                                                </option>
-                                                {similarityLevelOptions.map((option, idx) => (
-                                                    <option key={idx} value={option.label}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </Form.Select>
-                                        </Col>
-
-                                        <Col xs='auto'>
-                                            <Button variant='danger' onClick={() => removeLinkField(index)}>
-                                                Remove
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                ))}
-                                <Button variant='secondary' type='button' onClick={addLinkField}>
-                                    + Add Another Link
-                                </Button>
-                            </div>
+                            <AddLinksInCreatePostForm
+                                links={links}
+                                setLinks={setLinks}
+                                addLinkField={addLinkField}
+                                incorrectlyFormattedLinks={incorrectlyFormattedLinks}
+                            />
                         )}
 
                         <Button
-                            variant='primary'
                             type='submit'
-                            className='mt-3'
-                            disabled={!name || !photoLink}
+                            className='mt-3 w-100'
+                            disabled={!name || !instaLink}
                         >
-                            Create Post
+                            {!isPostGettingCreated ? 'Create Post' : <LoadingComponent />}
                         </Button>
-                    </Form>
 
+                        <Form.Text className={sccssMsg ? 'text-success' : 'text-danger'}>
+                            {sccssMsg || errMsg}
+                        </Form.Text>
+
+                    </Form>
                 </Col>
             </Row>
         </Container>
