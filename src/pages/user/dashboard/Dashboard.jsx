@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useUser } from '../../../lib/hooks/useUser';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { DashboardForm } from '../../../components/Form/DashboardForm';
@@ -7,9 +7,14 @@ import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
 
 export const Dashboard = () => {
 
+    const navigate = useNavigate();
+
     const { updateUserPassword, updateUsernameInCollection, deleteUserFromPlatform } = useUser();
 
-    const { userId, email, username, setUsername } = useOutletContext();
+    const { userId, setUserId,
+        email, setEmail,
+        username, setUsername,
+        setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
 
     const [isDashboardLoading, setIsDashboardLoading] = useState(false);
 
@@ -95,7 +100,22 @@ export const Dashboard = () => {
     const removeUserFromPlatform = async () => {
         setIsDeleteInProgress(true);
         try {
-            await deleteUserFromPlatform();
+            const res = await deleteUserFromPlatform();
+
+            console.log('res.success:', res.success);
+
+            if (res.success === true) {
+
+                setUserId(null);
+                setIsLoggedIn(false);
+                setIsSessionInProgress(false);
+                setUsername('');
+                setEmail('');
+
+                localStorage.removeItem('authUserId');
+
+                navigate('/');
+            }
         } catch (error) {
             console.error('Error removing user from platform:', error);
         } finally {
