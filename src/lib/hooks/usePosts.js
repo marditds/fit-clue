@@ -96,7 +96,7 @@ export const usePosts = () => {
 
                 return {
                     ...comment,
-                    username: user?.username || 'Unknown User'
+                    username: user?.username || 'Deleted user'
                 };
             });
 

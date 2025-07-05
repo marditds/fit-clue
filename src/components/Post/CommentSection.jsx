@@ -49,9 +49,9 @@ export const CommentSection = ({ postId, username, userId }) => {
             // setHasMore(res.length === commentsLoadLimit);
 
             // if (res.length < commentsLoadLimit) {
-            // {
-            // setHasMore(false);
-            // }
+            //     {
+            //         setHasMore(false);
+            //     }
             // }
 
         } catch (error) {
@@ -208,9 +208,6 @@ export const CommentSection = ({ postId, username, userId }) => {
                                                         <strong className='me-2'>
                                                             {comment.username || 'Deleted user'}
                                                         </strong>
-
-
-                                                        <strong className='me-2'>{comment.username}</strong>
 
                                                         <small>{dateTimeFormatter(comment.$createdAt)}</small>
                                                     </Col>
