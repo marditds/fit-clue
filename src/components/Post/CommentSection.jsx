@@ -61,7 +61,7 @@ export const CommentSection = ({ postId, username, userId }) => {
 
             const fullNewComment = {
                 ...newComment,
-                username: username || 'Unknown User'
+                username: username || 'Deleted user'
             };
 
             setComments((prevComments) => [fullNewComment, ...(prevComments || [])]);
@@ -146,7 +146,7 @@ export const CommentSection = ({ postId, username, userId }) => {
                                                 <Row className='justify-content-center align-items-center'>
                                                     <Col className='d-flex justify-content-start align-items-baseline'>
                                                         <strong className='me-2'>
-                                                            {comment.username}
+                                                            {comment.username || 'Deleted user'}
                                                         </strong>
 
                                                         <small>{dateTimeFormatter(comment.$createdAt)}</small>

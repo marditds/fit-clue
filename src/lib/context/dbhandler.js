@@ -261,12 +261,15 @@ export const deleteUserSession = async () => {
     }
 }
 
-export const deleteUserFromPlatform = async (userId) => {
+export const deleteUserFromPlatform = async () => {
     try {
-        console.log('this userId will be deleted - dbhandler:', userId);
-        const payload = JSON.stringify({ $id: userId });
+        const user = await account.get();
+
+        const payload = JSON.stringify({ $id: user.$id });
         console.log('Payload being sent:');
         console.log(payload);
+
+        const userIdInColl = user.prefs.profile_id;
 
         const user_delete_function_id = await dbFunctionKeysProvider('user_delete_function');
 
@@ -280,8 +283,9 @@ export const deleteUserFromPlatform = async (userId) => {
         )
         if (res.status === 'completed') {
             try {
-                const result = JSON.parse(res.responseBody);
-                console.log(result);
+                const funcRes = JSON.parse(res.responseBody);
+                const colRes = await deleteUserFromCollection(userIdInColl);
+                console.log({ funcRes: funcRes, colRes: colRes });
             } catch (parseError) {
                 console.error('Error parsing response:', parseError);
                 return false;
@@ -293,6 +297,19 @@ export const deleteUserFromPlatform = async (userId) => {
         console.error('Error deleting auth user:', error);
     }
 }
+
+export const deleteUserFromCollection = async (userId) => {
+    try {
+        await databases.deleteDocument(
+            dbEnv,
+            usernamesCollEnv,
+            userId,
+        );
+        return 'User successfully deleted from the collection.';
+    } catch (error) {
+        console.error('Error deleting user form collection:', error);
+    }
+};
 
 export const makePost = async (name, productLinksData, url, userId) => {
 

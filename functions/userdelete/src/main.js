@@ -25,9 +25,13 @@ export default async ({ req, res, log, error }) => {
       throw new Error('ID not provided.');
     }
 
-    const user = await users.get(data.$id);
+    // const user = await users.get(data.$id);
 
-    console.log('User info:', user);
+    // log('User info:', user);
+
+    await users.delete(data.$id);
+
+    log(`User successfully deleted from the platform.`);
 
   } catch (err) {
     error("Could not delete user: " + err);
