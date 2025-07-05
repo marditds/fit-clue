@@ -7,7 +7,7 @@ import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
 
 export const Dashboard = () => {
 
-    const { updateUserPassword, updateUsernameInCollection } = useUser();
+    const { updateUserPassword, updateUsernameInCollection, deleteUserFromPlatform } = useUser();
 
     const { userId, email, username, setUsername } = useOutletContext();
 
@@ -26,6 +26,9 @@ export const Dashboard = () => {
     const [psswdSuccessMsg, setPsswdSuccessMsg] = useState(null);
     const [psswdErrorMsg, setPsswdErrorMsg] = useState(null);
     const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+    //Account delete
+    const [isDeleteInProgress, setIsDeleteInProgress] = useState(false);
 
     useEffect(() => {
         console.log({ userId, username });
@@ -86,6 +89,17 @@ export const Dashboard = () => {
             console.error('Error updating user password:', error);
         } finally {
             setIsUpdatingPassword(false);
+        }
+    }
+
+    const removeUserFromPlatform = async () => {
+        setIsDeleteInProgress(true);
+        try {
+            await deleteUserFromPlatform();
+        } catch (error) {
+            console.error('Error removing user from platform:', error);
+        } finally {
+            setIsDeleteInProgress(false);
         }
     }
 
@@ -233,8 +247,15 @@ export const Dashboard = () => {
                                 This action is irreversible. You will not be able to recover your account.
                             </p>
 
-                            <Button className='w-100'>
-                                Delete Account
+                            <Button
+                                onClick={removeUserFromPlatform}
+                                className='w-100'
+                            >
+                                {
+                                    !isDeleteInProgress ?
+                                        'Delete Account' :
+                                        <LoadingComponent />
+                                }
                             </Button>
                         </Col>
                     </Row>
