@@ -263,36 +263,32 @@ export const deleteUserSession = async () => {
 
 export const deleteUserFromPlatform = async () => {
     try {
-        const user = await account.get();
-
-        const payload = JSON.stringify({ $id: user.$id });
-
-        const userIdInColl = user.prefs.profile_id;
-
         const user_delete_function_id = await dbFunctionKeysProvider('user_delete_function');
 
         if (!user_delete_function_id) {
-            throw new Error('Failed to load function ID');
-        }
+            throw new Error('Missing function ID')
+        };
 
         const res = await functions.createExecution(
-            user_delete_function_id,
-            payload
-        )
+            user_delete_function_id
+        );
+
         if (res.status === 'completed') {
             try {
-                const funcRes = JSON.parse(res.responseBody);
-                const colRes = await deleteUserFromCollection(userIdInColl);
-                console.log({ funcRes: funcRes, colRes: colRes });
+                const response = JSON.parse(res.responseBody);
+                console.log('Deletion successful:', response);
+                return true;
             } catch (error) {
                 console.error('Error parsing response:', error);
                 return false;
             }
         } else {
-            console.error('Failed to delete user from the platform');
+            console.error('Function execution failed:', res);
+            return false;
         }
     } catch (error) {
         console.error('Error deleting user:', error);
+        return false;
     }
 }
 
