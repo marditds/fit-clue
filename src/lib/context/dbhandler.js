@@ -327,34 +327,27 @@ export const deleteUserSession = async () => {
 
 export const deleteUserFromPlatform = async () => {
     try {
-        const user_delete_function_id = await dbFunctionKeysProvider('user_delete_function');
+        const user = await account.get();
 
-        if (!user_delete_function_id) {
-            throw new Error('Missing function ID')
-        };
+        const payload = JSON.stringify({ $id: user.$id });
 
-        const res = await functions.createExecution(
-            user_delete_function_id
-        );
+        const functionId = await dbFunctionKeysProvider('user_delete_function');
+
+        const res = await functions.createExecution(functionId, payload);
 
         if (res.status === 'completed') {
-            try {
-                const response = JSON.parse(res.responseBody);
-                console.log('Deletion successful:', response);
-                return true;
-            } catch (error) {
-                console.error('Error parsing response:', error);
-                return false;
-            }
+            const response = JSON.parse(res.responseBody);
+            console.log('Deletion result:', response);
+            return response;
         } else {
             console.error('Function execution failed:', res);
             return false;
         }
-    } catch (error) {
-        console.error('Error deleting user:', error);
+    } catch (err) {
+        console.error('Error in deleteUserFromPlatform:', err);
         return false;
     }
-}
+};
 
 export const deleteUserFromCollection = async (userId) => {
     try {

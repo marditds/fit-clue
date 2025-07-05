@@ -9,22 +9,24 @@ export default async ({ req, res, log, error }) => {
   const users = new Users(client);
   const databases = new Databases(client);
 
-  log(req.userId);
-
   try {
-    const userId = req.userId;
+    if (!req.body) throw new Error('Missing request body');
 
-    if (!userId) {
-      throw new Error('Unauthorized. No user ID found in request context.');
-    }
+    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
+    const userId = data?.$id;
+
+    log('userId:', userId);
+
+    if (!userId) throw new Error('Missing user ID in request');
 
     const user = await users.get(userId);
 
-    log(user);
+    log('user:', user);
 
     const profileId = user.prefs?.profile_id;
 
-    log(profileId);
+    log('profileId:', profileId);
 
     // await users.delete(userId);
 
@@ -36,10 +38,9 @@ export default async ({ req, res, log, error }) => {
     //   );
     // }
 
-    log(`Deleted user ${userId} and profile ${profileId}`);
-    return res.json({ success: true, userId, profileId });
+    return res.json({ success: true, deletedProfileId: profileId });
   } catch (err) {
-    error('Deletion error: ' + err.message);
+    error('Failed to delete user: ' + err.message);
     return res.json({ success: false, error: err.message });
   }
 };
