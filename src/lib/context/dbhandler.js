@@ -266,8 +266,6 @@ export const deleteUserFromPlatform = async () => {
         const user = await account.get();
 
         const payload = JSON.stringify({ $id: user.$id });
-        console.log('Payload being sent:');
-        console.log(payload);
 
         const userIdInColl = user.prefs.profile_id;
 
@@ -286,15 +284,15 @@ export const deleteUserFromPlatform = async () => {
                 const funcRes = JSON.parse(res.responseBody);
                 const colRes = await deleteUserFromCollection(userIdInColl);
                 console.log({ funcRes: funcRes, colRes: colRes });
-            } catch (parseError) {
-                console.error('Error parsing response:', parseError);
+            } catch (error) {
+                console.error('Error parsing response:', error);
                 return false;
             }
         } else {
-            console.error("Failed to delete auth user");
+            console.error('Failed to delete user from the platform');
         }
     } catch (error) {
-        console.error('Error deleting auth user:', error);
+        console.error('Error deleting user:', error);
     }
 }
 
