@@ -18,7 +18,9 @@ export default async ({ req, res, log, error }) => {
 
     log('userId:', userId);
 
-    if (!userId) throw new Error('Missing user ID in request');
+    if (!userId) {
+      throw new Error('Missing user ID in request')
+    };
 
     const user = await users.get(userId);
 
@@ -28,15 +30,15 @@ export default async ({ req, res, log, error }) => {
 
     log('profileId:', profileId);
 
-    // await users.delete(userId);
+    await users.delete(userId);
 
-    // if (profileId) {
-    //   await databases.deleteDocument(
-    //     process.env.VITE_DATABASE_ID,
-    //     process.env.VITE_USERNAMES_COLLECTION,
-    //     profileId
-    //   );
-    // }
+    if (profileId) {
+      await databases.deleteDocument(
+        process.env.VITE_DATABASE_ID,
+        process.env.VITE_USERNAMES_COLLECTION,
+        profileId
+      );
+    }
 
     return res.json({ success: true, deletedProfileId: profileId });
   } catch (err) {
