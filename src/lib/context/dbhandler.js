@@ -25,8 +25,6 @@ const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 
 export const reCaptchaVerification = async (token) => {
 
-    console.log('token in dbhandler:', token);
-
     try {
         const recaptcha_function_id = await dbFunctionKeysProvider('recaptcha_function');
 
@@ -35,10 +33,6 @@ export const reCaptchaVerification = async (token) => {
         }
 
         const payload = JSON.stringify({ token });
-
-        console.log('Payload being sent:');
-        console.log(payload);
-        console.log(typeof payload);
 
         const res = await functions.createExecution(
             recaptcha_function_id,

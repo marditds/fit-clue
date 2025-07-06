@@ -22,7 +22,7 @@ export default async ({ req, res, log, error }) => {
 
     const data = await verifyResponse.json();
 
-    log('This is data in server-side:', data);
+    // log('This is data in server-side:', data);
 
     if (!data.success) {
       log('Verification response data:', data);
