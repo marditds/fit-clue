@@ -158,7 +158,7 @@ export const SignUp = () => {
             onReCaptchaChange={onReCaptchaChange}
             reCaptchaSiteKey={reCaptchaSiteKey}
             showReCaptcha={true}
-            isCaptchaVerficationLoading={isReCaptchaVerficationLoading}
+            isReCaptchaVerficationLoading={isReCaptchaVerficationLoading}
             reCaptchaErrorMessage={reCaptchaErrorMessage}
             reCaptchaSuccessMessage={reCaptchaSuccessMessage}
             links={[

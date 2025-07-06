@@ -24,6 +24,7 @@ export const SignForm = ({
     showReCaptcha = false,
     reCaptchaSiteKey,
     onReCaptchaChange,
+    isReCaptchaVerficationLoading,
     reCaptchaErrorMessage,
     reCaptchaSuccessMessage,
 }) => {
@@ -94,9 +95,23 @@ export const SignForm = ({
                             </Col>
                         )}
 
-                        {reCaptchaErrorMessage && (
+                        {isReCaptchaVerficationLoading && (
                             <Col
                                 className={`mb-3 ${!isXs && !isSm && !isMd
+                                    ? 'd-flex ms-auto'
+                                    : 'd-flex mx-auto'
+                                    }`}
+                            >
+                                <span id='recaptcha-verification-loading'>
+                                    <LoadingComponent />
+                                </span>
+                            </Col>
+                        )
+                        }
+
+                        {reCaptchaErrorMessage && (
+                            <Col
+                                className={`mb-3 text-danger ${!isXs && !isSm && !isMd
                                     ? 'd-flex ms-auto'
                                     : 'd-flex mx-auto'
                                     }`}
@@ -107,7 +122,7 @@ export const SignForm = ({
 
                         {reCaptchaSuccessMessage && (
                             <Col
-                                className={`mb-3 ${!isXs && !isSm && !isMd
+                                className={`mb-3 text-success ${!isXs && !isSm && !isMd
                                     ? 'd-flex ms-auto'
                                     : 'd-flex mx-auto'
                                     }`}
