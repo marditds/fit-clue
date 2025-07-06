@@ -135,7 +135,7 @@ export const SignForm = ({
                             type='button'
                             onClick={onSubmit}
                             disabled={disabled}
-                            className='w-100 mb-3 position-relative form__btn'
+                            className='w-100 mt-0 mt-sm-3 mb-3 position-relative form__btn'
                         >
                             {
                                 !loading ?
