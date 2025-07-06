@@ -2,6 +2,7 @@ import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LoadingComponent } from '../Loading/LoadingComponent';
 import './SignPasswordForm.css';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export const SignForm = ({
     title,
@@ -18,7 +19,13 @@ export const SignForm = ({
     backgroundColClass = '',
     colImgClass = '',
     isXs = false,
-    isSm = false
+    isSm = false,
+    isMd = false,
+    showReCaptcha = false,
+    reCaptchaSiteKey,
+    onReCaptchaChange,
+    reCaptchaErrorMessage,
+    reCaptchaSuccessMessage,
 }) => {
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
@@ -63,6 +70,50 @@ export const SignForm = ({
                                     aria-hidden='true'
                                 />
                             </Form.Group>
+                        )}
+
+                        {showReCaptcha && (
+                            <Col
+                                className={`d-flex ${!isXs && !isSm && !isMd
+                                    ? 'ms-auto'
+                                    : 'mx-auto'
+                                    }`}
+                            >
+                                {reCaptchaSiteKey ? (
+                                    <ReCAPTCHA
+                                        className='form__recaptcha-box'
+                                        sitekey={reCaptchaSiteKey}
+                                        onChange={onReCaptchaChange}
+                                        onExpired={() => onReCaptchaChange(null)}
+                                        onErrored={() => onReCaptchaChange(null)}
+                                        aria-labelledby='recaptcha-label'
+                                    />
+                                ) : (
+                                    <span id='recaptcha-label'>Loading ReCAPTCHA...</span>
+                                )}
+                            </Col>
+                        )}
+
+                        {reCaptchaErrorMessage && (
+                            <Col
+                                className={`mb-3 ${!isXs && !isSm && !isMd
+                                    ? 'd-flex ms-auto'
+                                    : 'd-flex mx-auto'
+                                    }`}
+                            >
+                                <span role='alert'>{reCaptchaErrorMessage}</span>
+                            </Col>
+                        )}
+
+                        {reCaptchaSuccessMessage && (
+                            <Col
+                                className={`mb-3 ${!isXs && !isSm && !isMd
+                                    ? 'd-flex ms-auto'
+                                    : 'd-flex mx-auto'
+                                    }`}
+                            >
+                                <span role='alert'>{reCaptchaSuccessMessage}</span>
+                            </Col>
                         )}
 
                         <Button

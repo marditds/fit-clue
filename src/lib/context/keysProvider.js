@@ -3,7 +3,7 @@ export const keysProvider = (key, setFunction) => {
 
     if (import.meta.env.DEV) {
         const localKeyMap = {
-            captcha: "VITE_CAPTCHA_SITE_KEY",
+            recaptcha: "VITE_RECAPTCHA_SITE_KEY",
         };
 
         const localKey = import.meta.env[localKeyMap[key]];
@@ -26,7 +26,7 @@ export const dbFunctionKeysProvider = async (key) => {
         const localKeyMap = {
             user_auth_function: "VITE_USER_AUTH_FUNCTION_ID",
             user_delete_function: "VITE_USER_DELETE_FUNCTION_ID",
-            captcha_function: "VITE_CAPTCHA_FUNCTION_ID",
+            recaptcha_function: "VITE_RECAPTCHA_FUNCTION_ID",
             gemini_function: "VITE_GEMINI_FUNCTION_ID"
         };
 

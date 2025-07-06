@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from '../../lib/hooks/useUser';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import signUpImg from '../../assets/sign-up.jpg'
 import { SignForm } from '../../components/Form/SignForm';
+import { keysProvider } from '../../lib/context/keysProvider';
+import { reCaptchaVerification } from '../../lib/context/dbhandler';
 
 export const SignUp = () => {
 
@@ -13,7 +15,7 @@ export const SignUp = () => {
 
     const { createUser } = useUser();
 
-    const { isXs, isSm } = useBreakpoints();
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -22,6 +24,14 @@ export const SignUp = () => {
     const [easterWish, setEasterWish] = useState('');
     const [isAccountBeingCreated, setIsAccountBeingCreated] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
+
+    // ReCaptcha
+    const [reCaptchaSiteKey, setReCaptchaSiteKey] = useState('');
+    const [isReCaptchaVerficationLoading, setIsReCaptchaVerficationLoading] = useState(false);
+    const [isReCaptchaVerified, setIsReCaptchaVerified] = useState(false);
+    const [reCaptchaSuccessMessage, setReCaptchaSuccessMessage] = useState('');
+    const [reCaptchaErrorMessage, setReCaptchaErrorMessage] = useState('');
+
 
     const onCreateUserClick = async () => {
 
@@ -58,6 +68,36 @@ export const SignUp = () => {
             setIsAccountBeingCreated(false);
         }
     }
+
+    useEffect(() => {
+        keysProvider('recaptcha', setReCaptchaSiteKey)
+    }, []);
+
+    const onReCaptchaChange = async (value) => {
+
+        setIsReCaptchaVerficationLoading(true);
+
+        if (value) {
+            const result = await reCaptchaVerification(value);
+
+            if (result?.success) {
+                setIsReCaptchaVerified(true);
+                setIsReCaptchaVerficationLoading(false);
+                setReCaptchaSuccessMessage('reCAPTCHA verification was sucessful.')
+                setReCaptchaErrorMessage('')
+            } else {
+                setIsReCaptchaVerified(false);
+                setReCaptchaErrorMessage('reCAPTCHA verification failed. Please try again.');
+                setReCaptchaSuccessMessage('');
+                setIsReCaptchaVerficationLoading(false);
+            }
+        } else {
+            setIsReCaptchaVerified(false);
+            setIsReCaptchaVerficationLoading(false);
+            setReCaptchaSuccessMessage('');
+            setReCaptchaErrorMessage('reCAPTCHA verification has either expired or failed. Please try again.');
+        }
+    };
 
     const fields = [
         {
@@ -114,6 +154,13 @@ export const SignUp = () => {
             colImgClass="form__col-signup-img"
             isXs={isXs}
             isSm={isSm}
+            isMd={isMd}
+            onReCaptchaChange={onReCaptchaChange}
+            reCaptchaSiteKey={reCaptchaSiteKey}
+            showReCaptcha={true}
+            isCaptchaVerficationLoading={isReCaptchaVerficationLoading}
+            reCaptchaErrorMessage={reCaptchaErrorMessage}
+            reCaptchaSuccessMessage={reCaptchaSuccessMessage}
             links={[
                 {
                     text: 'Already have an account?',
