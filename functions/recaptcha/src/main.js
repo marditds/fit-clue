@@ -1,42 +1,35 @@
+import { Client, Users } from 'node-appwrite';
+
+// This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
-    // const oembedToken = process.env.META_USER_TOKEN;
+  // You can use the Appwrite SDK to interact with other services
+  // For this example, we're using the Users service
+  const client = new Client()
+    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+    .setKey(req.headers['x-appwrite-key'] ?? '');
+  const users = new Users(client);
 
-    try {
+  try {
+    const response = await users.list();
+    // Log messages and errors to the Appwrite Console
+    // These logs won't be seen by your end users
+    log(`Total users: ${response.total}`);
+  } catch(err) {
+    error("Could not list users: " + err.message);
+  }
 
-        log('THIS IS RECAPTCHA FUNCTION.')
-        // const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+  // The req object contains the request data
+  if (req.path === "/ping") {
+    // Use res object to respond with text(), json(), or binary()
+    // Don't forget to return a response!
+    return res.text("Pong");
+  }
 
-        // log('data:', data);
-        // log('data.url:', data.url);
-
-        // const url = `https://graph.facebook.com/v19.0/instagram_oembed?` +
-        //     new URLSearchParams({
-        //         url: data.url,
-        //         access_token: oembedToken,
-        //         omit_script: 'false'
-        //     });
-
-        // log('url:', url);
-
-        // const response = await fetch(url);
-
-        // log('response:', response);
-
-        // const text = await response.text();
-        // log('Raw response body:', text);
-
-        // if (!response.ok) {
-        //     throw new Error(`Fetch failed with status ${response.status}`);
-        // }
-
-        // const result = await response.json();
-
-        // log('result:', result);
-
-        return 'THIS IS RECAPTCHA FUNCTION. 2';
-
-    } catch (err) {
-        error('Error: ' + err.message);
-        return res.json({ success: false, message: 'Server error', error: err.message });
-    }
+  return res.json({
+    motto: "Build like a team of hundreds_",
+    learn: "https://appwrite.io/docs",
+    connect: "https://appwrite.io/discord",
+    getInspired: "https://builtwith.appwrite.io",
+  });
 };
