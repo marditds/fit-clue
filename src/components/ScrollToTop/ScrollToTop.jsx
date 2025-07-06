@@ -11,7 +11,7 @@ export const ScrollToTop = () => {
     return (
         <TextTooltip tooltipText={'Scroll to top'}>
             <Button
-                className='py-2 px-2 d-flex justify-content-center align-items-center'
+                className='py-2 d-flex justify-content-center align-items-center'
                 onClick={handleClick}
                 style={{
                     position: 'fixed',

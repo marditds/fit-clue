@@ -6,6 +6,7 @@ export const usePosts = () => {
 
     const { userId } = useUserContext();
 
+    const commentsLoadLimit = 5;
     const [comments, setComments] = useState();
 
     useEffect(() => {
@@ -50,28 +51,35 @@ export const usePosts = () => {
         }
     }
 
-    const fetchCommentsTextByPostId = async (postId) => {
+    const fetchCommentsTextByPostId = async (postId, lastCursor) => {
+
+        console.log({ postId: postId, lastCursor: lastCursor });
+
         try {
-            const res = await getCommentsTextByPostId(postId);
+            const res = await getCommentsTextByPostId(postId, commentsLoadLimit, lastCursor);
+            console.log('fetchCommentsTextByPostId;', res);
+
             return res;
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
     }
 
-    const fetchComments = async (postId) => {
+    const fetchComments = async (postId, lastCursor) => {
+
+        console.log({ postId: postId, lastCursor: lastCursor });
 
         if (!postId) {
             return;
         }
 
         try {
-            const commentsTexts = await fetchCommentsTextByPostId(postId);
+            const commentsTexts = await fetchCommentsTextByPostId(postId, lastCursor);
 
             console.log('commentsTexts', commentsTexts);
 
             if (commentsTexts.length === 0) {
-                return;
+                return [];
             }
 
             const userIds = [...new Set(commentsTexts.map(comment => comment.user_id).filter(Boolean))];
@@ -88,13 +96,16 @@ export const usePosts = () => {
 
                 return {
                     ...comment,
-                    username: user?.username || 'Unknown User'
+                    username: user?.username || 'Deleted user'
                 };
             });
 
-            setComments((prevComments) => [...(fullComments || []), ...(prevComments || [])].flat());
+            console.log('fullComments:', fullComments);
 
 
+            setComments((prevComments) => [...(prevComments || []), ...(fullComments || [])].flat());
+
+            return fullComments;
             // setComments(prevComments => {
             //     const nonDuplicateComments = fullComments.filter(newComment =>
             //         !prevComments?.some(existingComment => existingComment.$id === newComment.$id)
@@ -145,5 +156,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportLink, fetchComments, comments, setComments, createReportComment }
+    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment }
 }

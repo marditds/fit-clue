@@ -8,12 +8,15 @@ import { CommentSection } from '../../components/Post/CommentSection';
 import { AddItemsLinks } from '../../components/Post/AddItemsLinks';
 import { ItemsLinks } from '../../components/Post/ItemsLinks';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
+import { usePosts } from '../../lib/hooks/usePosts';
 
 const Post = () => {
 
     const { userId, username } = useOutletContext();
 
     let params = useParams()
+
+    const { fetchPostById } = usePosts();
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
@@ -87,7 +90,9 @@ const Post = () => {
     if (isPostLoading) return <Container>Loading post…</Container>;
 
     return (
-        <Container className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch'>
+        <Container
+        // className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch'
+        >
             <Row>
                 <h3 className='text-left'>
                     {personalityName}

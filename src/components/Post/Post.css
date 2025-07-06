@@ -4,6 +4,7 @@
     border-style: solid !important;
     border-color: var(--card-border-color) !important;
     padding-block: 12px;
+    background-color: var(--main-white-shade);
 }
 
 .post__col:nth-child(1) {
@@ -39,7 +40,6 @@
 }
 
 .post__div-links-row {
-    /* max-width: 538px; */
     height: 54px;
     background-color: white;
     border: 1px solid var(--main-border-color);
@@ -62,11 +62,10 @@
 }
 
 .post__comment-section-row {
-    padding-top: 22px;
+    padding-block: 22px;
 }
 
 @media (max-width: 767px) {
-
     .post__col {
         border-top: 0px !important;
         border-left: 0px !important;
@@ -76,7 +75,20 @@
 
     .post__div-links-row,
     .post__div-link-item,
-    .post__div-link-item>.row {
+    .post__div-link-item>.row,
+    .post__add-link-row,
+    .post__comment-section-row {
         max-width: 493px;
+    }
+
+    .post__comment-section-row>.col,
+    .post__comment-section-row>.col-12 {
+        padding-inline: 2px !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .post__col {
+        padding-inline: 2px !important;
     }
 }

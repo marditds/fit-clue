@@ -12,16 +12,16 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { SignUp } from './pages/signup/SignUp.jsx';
 import { SignIn } from './pages/signin/SignIn.jsx';
 import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
-import { ForgotPassword } from './pages/forgotPassword/ForgotPassword.jsx';
-import { ResetPassword } from './pages/resetPassword/ResetPassword';
+import { ForgotPassword } from './pages/forgot-password/ForgotPassword.jsx';
+import { ResetPassword } from './pages/reset-password/ResetPassword';
 import Footer from './components/Footer/Footer.jsx';
 
 const MainLayout = () => {
 
   const {
     userId, setUserId,
-    sessionId, setSessionId,
     username, setUsername,
+    email, setEmail,
     isLoggedIn, setIsLoggedIn,
     setIsSessionInProgress, setIsSignOutInProgress
   } = useUserContext();
@@ -29,11 +29,13 @@ const MainLayout = () => {
   return (
     <>
       <NavigationBar />
-      <main className='min-vh-100'>
+      <main className='' style={{
+        minHeight: 'calc(100vh - 112px)'
+      }}>
         <Outlet context={{
           userId, setUserId,
-          sessionId, setSessionId,
           username, setUsername,
+          email, setEmail,
           isLoggedIn, setIsLoggedIn,
           setIsSessionInProgress, setIsSignOutInProgress
         }} />

@@ -1,5 +1,5 @@
 import './App.css';
-import TheLatest from './pages/TheLatest/TheLatest';
+import TheLatest from './pages/the-latest/TheLatest';
 
 function App() {
 

@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform } from '../context/dbhandler';
 
 export const useUser = () => {
 
@@ -8,6 +8,15 @@ export const useUser = () => {
             return user;
         } catch (error) {
             console.error('Error creating user:', error);
+        }
+    }
+
+    const updateUsernameInCollection = async (userId, username) => {
+        try {
+            const res = await renewUsernameInCollection(userId, username);
+            return res;
+        } catch (error) {
+            console.error('Error updating username in collection:', error);
         }
     }
 
@@ -28,6 +37,15 @@ export const useUser = () => {
             return user;
         } catch (error) {
             console.error('Error signing in user:', error);
+        }
+    }
+
+    const deleteUserFromPlatform = async () => {
+        try {
+            const res = await removeUserFromPlatform();
+            return res;
+        } catch (error) {
+            console.error('Error deleting user from platform.', error);
         }
     }
 
@@ -96,5 +114,5 @@ export const useUser = () => {
         }
     }
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform };
 }

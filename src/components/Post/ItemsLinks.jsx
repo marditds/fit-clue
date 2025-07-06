@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Col, Row, Button } from 'react-bootstrap'
-import { truncateString } from '../../lib/utils/truncateStrings'
-import { TextTooltip } from '../ToolTip/CustomTooltip'
 import { ItemLinkCol } from './ItemLinkCol'
 import { ReportModal } from '../Modals/Modals'
 import { reportCategories } from '../../lib/data/reportCategories'
@@ -30,8 +28,8 @@ export const ItemsLinks = ({ itemsLinks }) => {
     }
 
     return (
-        <ul className='list-unstyled'>
-            <Row className='sticky-top mx-auto post__div-links-row'>
+        <div>
+            <Row className='post__div-links-row w-100 mx-auto sticky-top'>
                 <Col className='d-flex justify-content-center align-items-center'>
                     Item
                 </Col>
@@ -49,46 +47,46 @@ export const ItemsLinks = ({ itemsLinks }) => {
             {
                 itemsLinks?.map((itemLink) => {
                     return (
-                        <li key={itemLink.$id} className='border border-top-0 border-start-0 border-end-0 border-bottom-1 d-flex justify-content-center mx-auto align-items-center  post__div-link-item'>
-                            <Row className='w-100 d-flex justify-content-center align-items-center py-3'>
-                                <a
-                                    href={itemLink.href}
-                                    target='_blank'
-                                    className='d-flex align-items-start align-items-md-center justify-content-center col-9'
+                        <Row key={itemLink.$id} className='py-3 post__div-link-item  mx-auto border border-top-0 border-start-0 border-end-0 border-bottom-1'>
+                            <a
+                                href={itemLink.href}
+                                target='_blank'
+                                className='d-flex align-items-start align-items-lg-center justify-content-center col-9 px-0'
+                            >
+
+                                <ItemLinkCol
+                                    displayText={itemLink.item}
+                                    tooltipText={itemLink.item}
+                                    maxLength={11}
+                                />
+
+                                <ItemLinkCol
+                                    displayText={itemLink.company_name}
+                                    tooltipText={itemLink.company_name}
+                                    maxLength={8}
+                                />
+
+                                <ItemLinkCol
+                                    displayText={itemLink.similarity_level}
+                                    tooltipText={itemLink.similarity_level}
+                                    maxLength={22}
+                                />
+
+                            </a>
+
+                            <Col xs={3} className='d-flex justify-content-center align-items-center link__report-btn-col'>
+                                <Button
+                                    className='px-2 py-1 link__report-btn'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleReportClick(itemLink);
+                                    }}
                                 >
+                                    <i className='bi bi-flag' /> Report
+                                </Button>
+                            </Col>
+                        </Row>
 
-                                    <ItemLinkCol
-                                        displayText={itemLink.item}
-                                        tooltipText={itemLink.item}
-                                        maxLength={11}
-                                    />
-
-                                    <ItemLinkCol
-                                        displayText={itemLink.company_name}
-                                        tooltipText={itemLink.company_name}
-                                        maxLength={8}
-                                    />
-
-                                    <ItemLinkCol
-                                        displayText={itemLink.similarity_level}
-                                        tooltipText={itemLink.similarity_level}
-                                        maxLength={22}
-                                    />
-
-                                </a>
-                                <Col xs={3} className='d-flex justify-content-center align-items-center link__report-btn-col'>
-                                    <Button
-                                        className='px-2 py-1 link__report-btn'
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleReportClick(itemLink);
-                                        }}
-                                    >
-                                        Report <i className='bi bi-flag' />
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </li>
                     )
                 })
             }
@@ -101,6 +99,6 @@ export const ItemsLinks = ({ itemsLinks }) => {
                 show={showModal}
                 onSubmitReport={onSubmitReportLinkClick}
             />
-        </ul>
+        </div>
     )
 }

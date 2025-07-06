@@ -11,10 +11,9 @@ export const UserProvider = ({ children }) => {
     // const location = useLocation();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [sessionId, setSessionId] = useState(null);
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(null);
-    const [userEmail, setUserEmail] = useState(null);
+    const [email, setEmail] = useState(null);
     const [username, setUsername] = useState('');
 
     const [isAppLoading, setIsAppLoading] = useState(false);
@@ -55,14 +54,13 @@ export const UserProvider = ({ children }) => {
                 // const userEmailInSession = localStorage.getItem('authUserEmail');
 
                 console.log('userIdInSession', userIdInSession);
-                // console.log('userEmailInSession', userEmailInSession);
 
                 const user = await getUserFromCollectionById(userIdInSession);
 
                 setIsSessionInProgress(true);
-                // setUserEmail(userEmailInSession);
                 setUserId(user.$id);
                 setUsername(user.username);
+                setEmail(user.email);
                 setIsLoggedIn(true);
 
             } catch (error) {
@@ -115,9 +113,8 @@ export const UserProvider = ({ children }) => {
         <UserContext.Provider
             value={{
                 isLoggedIn, setIsLoggedIn,
-                sessionId, setSessionId,
                 userId, setUserId,
-                userEmail, setUserEmail,
+                email, setEmail,
                 username, setUsername,
                 isAppLoading, setIsAppLoading,
                 isCheckEmailExistanceLoading, setIsCheckEmailExistanceLoading,

@@ -5,6 +5,7 @@
   --card-title-weight: 400;
   --main-title-color: rgb(0, 0, 0);
   --main-title-color-hover: rgb(119, 119, 119);
+  --main-title-color-hover-vals: 119, 119, 119;
   --main-border-radius: 3px;
   --main-border-color: rgb(219, 219, 219);
   --main-accent-color: rgb(219, 219, 219);
@@ -15,7 +16,8 @@
   --main-text-color-rgb-vals: 0, 0, 0;
   --main-font-size: 16pt;
   --main-transition-speed: 0.3s;
-  --white: rgb(255, 255, 255);
+  --main-white-shade: rgb(255, 255, 255);
+  --main-white-shade-vals: 255, 255, 255;
 }
 
 #root {
@@ -58,6 +60,8 @@ select:focus {
 }
 
 button {
+  padding-block: 4px !important;
+  padding-inline: 8px !important;
   background-color: var(--main-accent-color) !important;
   color: var(--main-text-color) !important;
   border: 1px solid transparent !important;
