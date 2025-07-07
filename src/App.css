@@ -117,7 +117,7 @@ div, p, button {
 }
 
 @media (max-width: 767px) {
-  div, p, button {
+  div, p, button, input, select {
     font-size: 0.875rem !important;
   }
 }

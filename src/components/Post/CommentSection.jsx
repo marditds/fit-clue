@@ -7,9 +7,9 @@ import { onePostComments } from '../../lib/data/testData';
 import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { CustomTooltip } from '../ToolTip/CustomTooltip';
+import { TextTooltip } from '../ToolTip/CustomTooltip';
 
-export const CommentSection = ({ postId, username, userId }) => {
+export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
     const { comments, commentsLoadLimit, setComments, createComment, fetchComments, createReportComment } = usePosts();
 
@@ -174,9 +174,22 @@ export const CommentSection = ({ postId, username, userId }) => {
                             </Form.Text>
                         </Form.Group>
 
-                        <Button type='submit' className='mb-3'>
-                            {!isAddningComment ? 'Submit' : <LoadingComponent />}
-                        </Button>
+                        <TextTooltip
+                            tooltipText={'Please sign in to leave a comment.'}
+                        >
+                            <Button
+                                type='submit'
+                                disabled={!isLoggedIn}
+                                className='mb-3'
+                            >
+                                {
+                                    !isAddningComment ?
+                                        'Submit' :
+                                        <LoadingComponent />
+                                }
+                            </Button>
+                        </TextTooltip>
+
                     </Form>
                 </div>
             </Col>

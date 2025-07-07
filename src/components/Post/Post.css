@@ -36,7 +36,6 @@
 
 .post__div-links {
     padding-block: 10px;
-    /* max-width: 100%; */
 }
 
 .post__div-links-row {
@@ -47,8 +46,21 @@
     border-top-right-radius: var(--main-border-radius);
 }
 
-.post__div-link-item:hover {
+.post__div-link-item {
     transition: var(--main-transition-speed);
+}
+
+.post__div-links-row,
+.post__div-link-item,
+.post__div-no-links-row {
+    max-width: 721px;
+}
+
+.post__div-no-links-row {
+    padding-inline: 12px;
+}
+
+.post__div-link-item:hover {
     background-color: var(--main-accent-color);
 }
 
@@ -79,6 +91,10 @@
     .post__add-link-row,
     .post__comment-section-row {
         max-width: 493px;
+    }
+
+    .post__div-links {
+        padding-block: 0px;
     }
 
     .post__comment-section-row>.col,

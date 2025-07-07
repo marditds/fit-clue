@@ -4,7 +4,7 @@ import './CustomTooltip.css';
 export const CustomTooltip = ({ iconClassName, tooltipText }) => {
     return (
         <OverlayTrigger
-            show
+            // show
             placement='top'
             overlay={
                 <Tooltip className='tool-tip__custom'>

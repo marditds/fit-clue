@@ -69,13 +69,10 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
     }
 
     return (
-        // <Row>
-        //     <Col>
-        //          
-        <>
+        <div>
             <Row className='post__add-link-row mx-auto pt-3'>
                 <Col>
-                    <h3>Add a linkcxsd</h3>
+                    <h3>Add a link</h3>
 
                     <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
 
@@ -89,7 +86,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ItemNameField'>
-                            <Form.Label>Item:</Form.Label>
+                            <Form.Label>Item</Form.Label>
                             <Form.Control
                                 type='text'
                                 value={itemName}
@@ -145,8 +142,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                     </Form>
                 </Col>
             </Row>
-        </>
-        //       </Col>
-        // </Row>  
+        </div>
+
     )
 }

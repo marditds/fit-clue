@@ -12,7 +12,7 @@ import { usePosts } from '../../lib/hooks/usePosts';
 
 const Post = () => {
 
-    const { userId, username } = useOutletContext();
+    const { userId, username, isLoggedIn } = useOutletContext();
 
     let params = useParams()
 
@@ -112,11 +112,10 @@ const Post = () => {
                     <div className='post__div-links w-100 h-100'>
 
                         {/* Items lists */}
-                        {itemsLinks &&
-                            <ItemsLinks
-                                itemsLinks={itemsLinks}
-                            />
-                        }
+                        <ItemsLinks
+                            itemsLinks={itemsLinks}
+                        />
+
 
                         {/* Add items links */}
                         <AddItemsLinks
@@ -135,6 +134,7 @@ const Post = () => {
                 postId={params.postId}
                 userId={userId}
                 username={username}
+                isLoggedIn={isLoggedIn}
             />
 
             <ScrollToTop />

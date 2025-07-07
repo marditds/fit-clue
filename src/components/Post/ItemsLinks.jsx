@@ -29,31 +29,37 @@ export const ItemsLinks = ({ itemsLinks }) => {
 
     return (
         <div>
-            <Row className='post__div-links-row w-100 mx-auto sticky-top'>
-                <Col className='d-flex justify-content-center align-items-center'>
-                    Item
-                </Col>
-                <Col className='d-flex justify-content-center align-items-center'>
-                    Brand
-                </Col>
-                <Col className='d-flex justify-content-center align-items-center'>
-                    Similarity
-                </Col>
-                <Col className='d-flex justify-content-center align-items-center'>
+            {/* Header */}
+            {itemsLinks?.length > 0 &&
+                < Row className='post__div-links-row w-100 mx-auto sticky-top'>
+                    <Col className='d-flex justify-content-center align-items-center'>
+                        Item
+                    </Col>
+                    <Col className='d-flex justify-content-center align-items-center'>
+                        Brand
+                    </Col>
+                    <Col className='d-flex justify-content-center align-items-center'>
+                        Similarity
+                    </Col>
+                    <Col className='d-flex justify-content-center align-items-center'>
+                    </Col>
+                </Row>
+            }
 
-                </Col>
-            </Row>
 
-            {
+            {/* Items links */}
+            {itemsLinks?.length > 0 ?
                 itemsLinks?.map((itemLink) => {
                     return (
-                        <Row key={itemLink.$id} className='py-3 post__div-link-item  mx-auto border border-top-0 border-start-0 border-end-0 border-bottom-1'>
+                        <Row
+                            key={itemLink.$id}
+                            className='py-3 post__div-link-item mx-auto border border-top-0 border-start-0 border-end-0 border-bottom-1'
+                        >
                             <a
                                 href={itemLink.href}
                                 target='_blank'
                                 className='d-flex align-items-start align-items-lg-center justify-content-center col-9 px-0'
                             >
-
                                 <ItemLinkCol
                                     displayText={itemLink.item}
                                     tooltipText={itemLink.item}
@@ -71,7 +77,6 @@ export const ItemsLinks = ({ itemsLinks }) => {
                                     tooltipText={itemLink.similarity_level}
                                     maxLength={22}
                                 />
-
                             </a>
 
                             <Col xs={3} className='d-flex justify-content-center align-items-center link__report-btn-col'>
@@ -86,9 +91,19 @@ export const ItemsLinks = ({ itemsLinks }) => {
                                 </Button>
                             </Col>
                         </Row>
-
                     )
                 })
+                :
+                <Row className='mx-auto post__div-no-links-row'>
+                    <Col className='text-center border border-top-1 border-start-0 border-end-0 border-bottom-1 py-4'>
+                        <h5 className='fw-bold'>
+                            No Shopping Links Yet
+                        </h5>
+                        <p className='mb-0'>
+                            Start building your fashion collection by adding your first shopping link below!
+                        </p>
+                    </Col>
+                </Row>
             }
 
             {/* Report Link modal */}
