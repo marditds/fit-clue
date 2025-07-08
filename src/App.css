@@ -44,7 +44,7 @@ a:hover {
   text-decoration: none;
 }
 
-input, textarea, button, select {
+input, textarea, button, a[role="button"], select {
   border-radius: var(--main-border-radius) !important;
 }
 
@@ -59,7 +59,8 @@ select:focus {
   border-color: var(--main-accent-color-hover) !important;
 }
 
-button {
+button,
+a[role="button"] {
   padding-block: 4px !important;
   padding-inline: 8px !important;
   background-color: var(--main-accent-color) !important;
@@ -73,16 +74,19 @@ button {
   transition: var(--main-transition-speed) !important;
 }
 
-button:hover {
+button:hover,
+a[role="button"]:hover {
   background-color: var(--main-accent-color-hover) !important;
   color: var(--main-text-color-hover) !important;
 }
 
-button:focus {
+button:focus,
+a[role="button"]:focus {
   box-shadow: 0px 0px 0px 0.1rem rgba(var(--main-text-color-rgb-vals), 1) !important;
 }
 
-button:active {
+button:active,
+a[role="button"]:active {
   box-shadow: none !important;
 }
 
@@ -117,7 +121,7 @@ div, p, button {
 }
 
 @media (max-width: 767px) {
-  div, p, button, input, select {
+  div, p, button, a[role="button"], input, select {
     font-size: 0.875rem !important;
   }
 }

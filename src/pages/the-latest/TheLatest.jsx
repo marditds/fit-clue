@@ -23,8 +23,8 @@ const TheLatest = () => {
         const getPosts = async () => {
             setIsGridLoading(true);
             try {
-                const p = await fetchTheLatestPosts();
-                // const p = theLatestData;
+                // const p = await fetchTheLatestPosts();
+                const p = theLatestData;
 
                 console.log('posts', p);
 

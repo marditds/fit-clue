@@ -1,0 +1,143 @@
+import { useState } from 'react';
+import { useGemini } from '../../lib/hooks/useGemini';
+import { usePosts } from '../../lib/hooks/usePosts';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import { LoadingComponent } from '../Loading/LoadingComponent';
+
+export const AddComment = ({ postId, userId, username, isLoggedIn, isViewCommentsClicked }) => {
+
+    const { isXs, isSm, isMd } = useBreakpoints();
+
+    const { isRunningGemini, runGemini } = useGemini();
+
+    const { setComments, createComment } = usePosts();
+
+    // Leaving a comment
+    const [commentText, setCommentText] = useState('');
+    const [commentSuccessMessage, setCommentSuccessMessage] = useState('');
+    const [commentErrorMessage, setCommentErrorMessage] = useState('');
+    const [isAddningComment, setIsAddingComment] = useState(false);
+
+    // Gemini Results
+    const [geminiResult, setGeminiResult] = useState('');
+
+    const onCreateCommentSubmit = async (e) => {
+
+        e.preventDefault();
+
+        try {
+            setIsAddingComment(true);
+
+            const geminiRes = await runGemini(commentText);
+
+            if (geminiRes.trim().toLowerCase() !== 'ok') {
+                setGeminiResult(geminiRes);
+                setCommentText('');
+                setCommentSuccessMessage('');
+                return;
+            };
+
+            const newComment = await createComment(postId, commentText, userId);
+
+            console.log('comment in Post.jsx:', newComment);
+
+            if (typeof newComment === 'string') {
+                setCommentErrorMessage(newComment);
+                setCommentSuccessMessage('');
+            }
+
+            const fullNewComment = {
+                ...newComment,
+                username: username || 'Deleted user'
+            };
+
+            if (isViewCommentsClicked) {
+                setComments((prevComments) => [fullNewComment, ...(prevComments || [])]);
+            };
+
+            setCommentErrorMessage('');
+            setCommentSuccessMessage('Comment posted successfully.');
+            setGeminiResult('');
+
+        } catch (error) {
+            console.error('Error onCreateCommentSubmit:', error);
+        } finally {
+            setIsAddingComment(false);
+            setCommentText('');
+        }
+    }
+
+    return (
+        <Form
+            onSubmit={onCreateCommentSubmit}
+            style={{ maxWidth: (!isXs && !isSm && !isMd) ? '503px' : '100%' }}
+            className='mx-auto'>
+
+            <Form.Group className='mb-3' controlId='userCommentEntryField'>
+                <span className='d-flex justify-content-between align-items-center mb-2'>
+                    <Form.Label className='mb-0'>
+                        Comment
+                    </Form.Label>
+
+                    <Form.Text id='commentHelpText' className='mt-0'>
+                        {commentText.length}/300 characters
+                    </Form.Text>
+                </span>
+                <Form.Control
+                    as='textarea'
+                    name='userComment'
+                    rows={5}
+                    aria-describedby='commentHelpText'
+                    placeholder='Enter comment'
+                    value={commentText}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.length <= 300) {
+                            setCommentText(value);
+                        }
+                    }}
+                />
+                <Form.Text id='commentHelpText' className='text-muted'>
+                    FitClue utilizes AI to ensure a safe and respectful environment for all users and visitors.
+                </Form.Text>
+            </Form.Group>
+
+            {
+                geminiResult &&
+                <Row>
+                    <Col className='mb-3'>
+                        <Form.Text className='text-danger'>
+                            {geminiResult}
+                        </Form.Text>
+                    </Col>
+                </Row>
+            }
+
+            <Button
+                type='submit'
+                disabled={!isLoggedIn || !commentText}
+                className='mb-3'
+            >
+                {
+                    !isAddningComment ?
+                        'Post Comment' :
+                        <LoadingComponent loadingText={
+                            !isRunningGemini ?
+                                'Posting Comment' :
+                                'Scanning comment with AI'}
+                        />
+                }
+            </Button>
+
+            <Row>
+                <Col className='mb-3'>
+                    <Form.Text className={commentSuccessMessage ? 'text-success' : 'text-danger'}>
+                        {commentSuccessMessage || commentErrorMessage}
+                    </Form.Text>
+                </Col>
+            </Row>
+
+        </Form>
+    )
+}
