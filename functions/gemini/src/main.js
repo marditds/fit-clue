@@ -7,7 +7,9 @@ export default async ({ req, res, log, error }) => {
   try {
     const data = req.body;
 
-    log('data', data);
+    log('data:', data);
+
+    log('data.commentText:', data.commentText);
 
     const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
 
