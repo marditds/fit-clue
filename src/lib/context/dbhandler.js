@@ -23,40 +23,6 @@ const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
 const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 
-export const reCaptchaVerification = async (token) => {
-
-    try {
-        const recaptcha_function_id = await dbFunctionKeysProvider('recaptcha_function');
-
-        if (!recaptcha_function_id) {
-            throw new Error('Failed to load function ID');
-        }
-
-        const payload = JSON.stringify({ token });
-
-        const res = await functions.createExecution(
-            recaptcha_function_id,
-            payload
-        )
-
-        if (res.status === 'completed') {
-            try {
-                const result = JSON.parse(res.responseBody);
-                console.log(result);
-                return result;
-            } catch (parseError) {
-                console.error('Error parsing response:', parseError);
-                return false;
-            }
-        } else {
-            console.error("Failed to complete reCaptcha verification process.");
-        }
-
-    } catch (error) {
-        console.error('Error running reCaptcha verification process:', error);
-    }
-}
-
 export const createUser = async (email, password, name) => {
     try {
         const user = await account.create(
@@ -358,30 +324,6 @@ export const deleteUserSession = async () => {
         console.error('Error removing session:', error);
     }
 }
-
-export const deleteUserFromPlatform = async () => {
-    try {
-        const user = await account.get();
-
-        const payload = JSON.stringify({ $id: user.$id });
-
-        const functionId = await dbFunctionKeysProvider('user_delete_function');
-
-        const res = await functions.createExecution(functionId, payload);
-
-        if (res.status === 'completed') {
-            const response = JSON.parse(res.responseBody);
-            console.log('Deletion result:', response);
-            return response;
-        } else {
-            console.error('Function execution failed:', res);
-            return false;
-        }
-    } catch (err) {
-        console.error('Error in deleteUserFromPlatform:', err);
-        return false;
-    }
-};
 
 export const deleteUserFromCollection = async (userId) => {
     try {
@@ -920,3 +862,99 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
         console.error('Error fetching comment:', error);
     }
 }
+
+// Server-side functions
+export const reCaptchaVerification = async (token) => {
+
+    try {
+        const recaptcha_function_id = await dbFunctionKeysProvider('recaptcha_function');
+
+        if (!recaptcha_function_id) {
+            throw new Error('Failed to load function ID');
+        }
+
+        const payload = JSON.stringify({ token });
+
+        const res = await functions.createExecution(
+            recaptcha_function_id,
+            payload
+        )
+
+        if (res.status === 'completed') {
+            try {
+                const result = JSON.parse(res.responseBody);
+                console.log(result);
+                return result;
+            } catch (parseError) {
+                console.error('Error parsing response:', parseError);
+                return false;
+            }
+        } else {
+            console.error("Failed to complete reCaptcha verification process.");
+        }
+
+    } catch (error) {
+        console.error('Error running reCaptcha verification process:', error);
+    }
+}
+
+export const assessCommentWithGemini = async (commentText) => {
+
+    try {
+        const gemini_function_id = await dbFunctionKeysProvider('gemini_function');
+
+        if (!gemini_function_id) {
+            throw new Error('Failed to load function ID');
+        }
+
+        const payload = JSON.stringify({ commentText });
+
+        const res = await functions.createExecution(
+            gemini_function_id,
+            payload
+        )
+
+        if (res.status === 'completed') {
+            try {
+                const result = JSON.parse(res.responseBody);
+                console.log(result);
+                return result;
+            } catch (parseError) {
+                console.error('Error parsing response:', parseError);
+                return false;
+            }
+        } else {
+            console.error("Failed to complete comment assessment.");
+        }
+
+    } catch (error) {
+        console.log('Error assessing comment with Gemini:', error);
+    }
+}
+
+export const deleteUserFromPlatform = async () => {
+    try {
+        const user = await account.get();
+
+        const payload = JSON.stringify({ $id: user.$id });
+
+        const delete_function_id = await dbFunctionKeysProvider('user_delete_function');
+
+        const res = await functions.createExecution(
+            delete_function_id,
+            payload
+        );
+
+        if (res.status === 'completed') {
+            const response = JSON.parse(res.responseBody);
+            console.log('Deletion result:', response);
+            return response;
+        } else {
+            console.error('Function execution failed:', res);
+            return false;
+        }
+    } catch (err) {
+        console.error('Error in deleteUserFromPlatform:', err);
+        return false;
+    }
+};

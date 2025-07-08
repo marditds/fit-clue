@@ -40,15 +40,6 @@ export const useUser = () => {
         }
     }
 
-    const deleteUserFromPlatform = async () => {
-        try {
-            const res = await removeUserFromPlatform();
-            return res;
-        } catch (error) {
-            console.error('Error deleting user from platform.', error);
-        }
-    }
-
     const getUserFromCollectionById = async (userId) => {
         try {
             const user = await fetchUserFromCollectionById(userId);
@@ -113,6 +104,17 @@ export const useUser = () => {
             console.error('Error getting user session details:', error);
         }
     }
+
+    // Server-side functions
+    const deleteUserFromPlatform = async () => {
+        try {
+            const res = await removeUserFromPlatform();
+            return res;
+        } catch (error) {
+            console.error('Error deleting user from platform.', error);
+        }
+    }
+
 
     return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform };
 }
