@@ -95,9 +95,9 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
             const geminiRes = await runGemini(commentText);
 
-            if (geminiRes !== 'Ok') {
+            if (geminiRes.trim().toLowerCase() !== 'ok') {
                 setGeminiResult(geminiRes);
-                setIsAddingComment(false);
+                setCommentText('');
                 return;
             };
 
@@ -110,7 +110,9 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                 username: username || 'Deleted user'
             };
 
-            setComments((prevComments) => [fullNewComment, ...(prevComments || [])]);
+            if (isViewCommentsClicked) {
+                setComments((prevComments) => [fullNewComment, ...(prevComments || [])]);
+            };
 
         } catch (error) {
             console.error('Error onAddSubmitLink:', error);
@@ -190,17 +192,17 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
                         {
                             geminiResult &&
-                            <>
-                                <Form.Text className='text-danger'>
-                                    {geminiResult}
-                                </Form.Text>
-                                <br />
-
-                            </>
+                            <Row>
+                                <Col className='mb-3'>
+                                    <Form.Text className='text-danger'>
+                                        {geminiResult}
+                                    </Form.Text>
+                                </Col>
+                            </Row>
                         }
 
                         <TextTooltip
-                            tooltipText={!isLoggedIn && 'Please sign in to leave a comment.'}
+                            tooltipText={!isLoggedIn ? 'Please sign in to leave a comment.' : 'Submit'}
                         >
                             <Button
                                 type='submit'
