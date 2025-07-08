@@ -3,6 +3,7 @@ import { Button, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstra
 import { LoadingComponent } from '../Loading/LoadingComponent';
 import { dateTimeFormatter } from '../../lib/utils/dateTimeFormatter';
 import { usePosts } from '../../lib/hooks/usePosts';
+import { useGemini } from '../../lib/hooks/useGemini';
 import { onePostComments } from '../../lib/data/testData';
 import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
@@ -12,6 +13,8 @@ import { TextTooltip } from '../ToolTip/CustomTooltip';
 export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
     const { comments, commentsLoadLimit, setComments, createComment, fetchComments, createReportComment } = usePosts();
+
+    const { runGemini } = useGemini();
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
@@ -25,6 +28,9 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
     const [isCommentsLoading, setIsCommentsLoading] = useState(false);
     const [isCommentsFirstBatchLoading, setIsCommentsFirstBatchLoading] = useState(false);
+
+    // Gemini Results
+    const [geminiResult, setGeminiResult] = useState('');
 
     // Report Comment 
     const [selectedComment, setSelectedComment] = useState(null);
@@ -40,19 +46,19 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
             setIsCommentsLoading(true);
 
             // To be commented out when testing real data
-            setComments(onePostComments);
+            // setComments(onePostComments);
 
-            // const res = await fetchComments(postId, lastComment?.$id || null);
+            const res = await fetchComments(postId, lastComment?.$id || null);
             // console.log('res:', res);
 
-            // setLastComment(res[res.length - 1] || null);
-            // setHasMore(res.length === commentsLoadLimit);
+            setLastComment(res[res.length - 1] || null);
+            setHasMore(res.length === commentsLoadLimit);
 
-            // if (res.length < commentsLoadLimit) {
-            //     {
-            //         setHasMore(false);
-            //     }
-            // }
+            if (res.length < commentsLoadLimit) {
+                {
+                    setHasMore(false);
+                }
+            }
 
         } catch (error) {
             console.error('Error getting comments:', error);
@@ -86,6 +92,16 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
         try {
             setIsAddingComment(true);
+
+            const geminiRes = await runGemini(commentText);
+
+            console.log('geminiRes:', geminiRes);
+
+            if (geminiRes !== 'Ok') {
+                setGeminiResult(geminiRes);
+                setIsAddingComment(false);
+                return;
+            };
 
             const newComment = await createComment(postId, commentText, userId);
 
@@ -174,12 +190,21 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                             </Form.Text>
                         </Form.Group>
 
+                        {
+                            geminiResult &&
+                            <Form.Text className='text-danger'>
+                                {geminiResult}
+                            </Form.Text>
+                        }
+
+                        <br />
+
                         <TextTooltip
-                            tooltipText={'Please sign in to leave a comment.'}
+                            tooltipText={!isLoggedIn && 'Please sign in to leave a comment.'}
                         >
                             <Button
                                 type='submit'
-                                disabled={!isLoggedIn}
+                                disabled={!isLoggedIn || !commentText}
                                 className='mb-3'
                             >
                                 {
