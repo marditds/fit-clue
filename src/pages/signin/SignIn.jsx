@@ -105,9 +105,10 @@ export const SignIn = () => {
             subtitle="Sign in to your account"
             fields={fields}
             onSubmit={onSignInUserClick}
-            submitText="Sign in"
+            submitText="Sign In"
             disabled={isSigningInInProgress || !!christmasWish || !emailInSignInForm || password.length < 8}
             loading={isSigningInInProgress}
+            loadingText={'Signing in'}
             error={errorMsg}
             hiddenField={{
                 id: 'christmasWish',

@@ -14,9 +14,9 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
     const { comments, commentsLoadLimit, setComments, createComment, fetchComments, createReportComment } = usePosts();
 
-    const { runGemini } = useGemini();
+    const { isRunningGemini, runGemini } = useGemini();
 
-    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     //Fetching comments 
     const [lastComment, setLastComment] = useState(null);
@@ -24,6 +24,8 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
     // Leaving a comment
     const [commentText, setCommentText] = useState('');
+    const [commentSuccessMessage, setCommentSuccessMessage] = useState('');
+    const [commentErrorMessage, setCommentErrorMessage] = useState('');
     const [isAddningComment, setIsAddingComment] = useState(false);
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
     const [isCommentsLoading, setIsCommentsLoading] = useState(false);
@@ -98,12 +100,18 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
             if (geminiRes.trim().toLowerCase() !== 'ok') {
                 setGeminiResult(geminiRes);
                 setCommentText('');
+                setCommentSuccessMessage('');
                 return;
             };
 
             const newComment = await createComment(postId, commentText, userId);
 
             console.log('comment in Post.jsx:', newComment);
+
+            if (typeof newComment === 'string') {
+                setCommentErrorMessage(newComment);
+                setCommentSuccessMessage('');
+            }
 
             const fullNewComment = {
                 ...newComment,
@@ -113,6 +121,10 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
             if (isViewCommentsClicked) {
                 setComments((prevComments) => [fullNewComment, ...(prevComments || [])]);
             };
+
+            setCommentErrorMessage('');
+            setCommentSuccessMessage('Comment posted successfully.');
+            setGeminiResult('');
 
         } catch (error) {
             console.error('Error onAddSubmitLink:', error);
@@ -202,7 +214,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                         }
 
                         <TextTooltip
-                            tooltipText={!isLoggedIn ? 'Please sign in to leave a comment.' : 'Submit'}
+                            tooltipText={!isLoggedIn ? 'Please sign in to leave a comment.' : 'Post Comment'}
                         >
                             <Button
                                 type='submit'
@@ -211,11 +223,23 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                             >
                                 {
                                     !isAddningComment ?
-                                        'Submit' :
-                                        <LoadingComponent />
+                                        'Post Comment' :
+                                        <LoadingComponent loadingText={
+                                            !isRunningGemini ?
+                                                'Posting Comment' :
+                                                'Scanning comment with AI'}
+                                        />
                                 }
                             </Button>
                         </TextTooltip>
+
+                        <Row>
+                            <Col className='mb-3'>
+                                <Form.Text className={commentSuccessMessage ? 'text-success' : 'text-danger'}>
+                                    {commentSuccessMessage || commentErrorMessage}
+                                </Form.Text>
+                            </Col>
+                        </Row>
 
                     </Form>
                 </div>

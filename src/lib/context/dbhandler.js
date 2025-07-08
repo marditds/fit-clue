@@ -827,6 +827,7 @@ export const createComment = async (postId, commentText, userId) => {
         return null;
     } catch (error) {
         console.error('Error creating comment:', error);
+        return 'Something went wrong. Please try again later.'
     }
 }
 
@@ -917,7 +918,7 @@ export const assessCommentWithGemini = async (commentText) => {
         if (res.status === 'completed') {
             try {
                 const result = JSON.parse(res.responseBody);
-                console.log(result);
+                // console.log(result);
                 return result;
             } catch (parseError) {
                 console.error('Error parsing response:', parseError);

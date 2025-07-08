@@ -141,8 +141,9 @@ export const SignUp = () => {
             fields={fields}
             onSubmit={onCreateUserClick}
             submitText="Create Account"
-            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword}
+            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword || !isReCaptchaVerified}
             loading={isAccountBeingCreated}
+            loadingText={'Creating your account'}
             error={errorMsg}
             hiddenField={{
                 id: 'easterWish',

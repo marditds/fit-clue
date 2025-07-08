@@ -12,6 +12,7 @@ export const SignForm = ({
     submitText,
     disabled,
     loading,
+    loadingText,
     error,
     links = [],
     hiddenField,
@@ -75,7 +76,7 @@ export const SignForm = ({
 
                         {showReCaptcha && (
                             <Col
-                                className={`d-flex ${!isXs && !isSm && !isMd
+                                className={`mb-sm-3 form__recaptcha-col d-flex ${!isXs && !isSm && !isMd
                                     ? 'ms-auto'
                                     : 'mx-auto'
                                     }`}
@@ -103,7 +104,7 @@ export const SignForm = ({
                                     }`}
                             >
                                 <span id='recaptcha-verification-loading'>
-                                    <LoadingComponent />
+                                    <LoadingComponent loadingText={'Verifying ReCaptcha'} />
                                 </span>
                             </Col>
                         )
@@ -135,12 +136,12 @@ export const SignForm = ({
                             type='button'
                             onClick={onSubmit}
                             disabled={disabled}
-                            className='w-100 mt-0 mt-sm-3 mb-3 position-relative form__btn'
+                            className='w-100 mb-3 position-relative form__btn'
                         >
                             {
                                 !loading ?
                                     submitText :
-                                    <LoadingComponent />
+                                    <LoadingComponent loadingText={loadingText} />
                             }
                         </Button>
 
