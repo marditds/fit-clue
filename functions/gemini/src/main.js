@@ -7,7 +7,7 @@ export default async ({ req, res, log, error }) => {
   try {
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-    console.log('data', data);
+    log('data', data);
 
     const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
 
