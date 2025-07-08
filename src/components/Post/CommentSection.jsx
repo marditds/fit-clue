@@ -95,8 +95,6 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
             const geminiRes = await runGemini(commentText);
 
-            console.log('geminiRes:', geminiRes);
-
             if (geminiRes !== 'Ok') {
                 setGeminiResult(geminiRes);
                 setIsAddingComment(false);
@@ -192,12 +190,14 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
                         {
                             geminiResult &&
-                            <Form.Text className='text-danger'>
-                                {geminiResult}
-                            </Form.Text>
-                        }
+                            <>
+                                <Form.Text className='text-danger'>
+                                    {geminiResult}
+                                </Form.Text>
+                                <br />
 
-                        <br />
+                            </>
+                        }
 
                         <TextTooltip
                             tooltipText={!isLoggedIn && 'Please sign in to leave a comment.'}
