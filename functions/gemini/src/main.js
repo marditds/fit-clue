@@ -5,7 +5,7 @@ export default async ({ req, res, log, error }) => {
   const GeminiApiKey = process.env.GEMINI_API_KEY;
 
   try {
-    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const data = req.body;
 
     log('data', data);
 
