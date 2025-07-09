@@ -16,6 +16,7 @@ import { ForgotPassword } from './pages/forgot-password/ForgotPassword.jsx';
 import { ResetPassword } from './pages/reset-password/ResetPassword';
 import Footer from './components/Footer/Footer.jsx';
 import { Results } from './pages/Search/Results.jsx';
+import { More } from './pages/personality/More.jsx';
 
 const MainLayout = () => {
 
@@ -66,10 +67,24 @@ const router = createBrowserRouter([
         ]
       },
       {
+        path: 'personality',
+        children: [
+          {
+            path: ':personalityName',
+            children: [
+              {
+                path: 'more',
+                element: <More />
+              }
+            ]
+          }
+        ]
+      },
+      {
         path: 'search',
         children: [
           {
-            path: ':personalityId',
+            path: ':term',
             element: <Results />
           },
         ]

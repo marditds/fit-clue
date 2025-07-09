@@ -1,60 +1,68 @@
-import { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import { useOutletContext, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { LoadingComponent } from '../../components/Loading/LoadingComponent';
+import { Col, Container, Row } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { searchResultsData } from '../../lib/data/testData';
+import { LoadingComponent } from '../../components/Loading/LoadingComponent';
 
 export const Results = () => {
 
-    let params = useParams()
+    const params = useParams();
 
-    const { userId, username, isLoggedIn } = useOutletContext();
-
-    const { fetchPostsByPersonalityId } = usePosts();
+    const { fetchPostsByString } = usePosts();
 
     const [posts, setPosts] = useState([]);
-    const [personalityName, setPersonalityName] = useState('');
     const [isResultsLoading, setIsResultsLoading] = useState(false);
 
     useEffect(() => {
-        console.log('params in search res:', params);
-    }, []);
-
-    useEffect(() => {
-        const fetchAllPostsByPersonalityId = async () => {
+        const fetchAllPostsByString = async () => {
             setIsResultsLoading(true);
             try {
 
-                const searchResults = await fetchPostsByPersonalityId(params.personalityId);
+                const searchResults = await fetchPostsByString(params.term);
 
                 // const searchResults = searchResultsData;
 
+                console.log('searchResults', searchResults);
+
                 setPosts(searchResults);
-                setPersonalityName(searchResults[0]?.personality?.name)
 
             } catch (error) {
-                console.error('Error loading search results:', error);
+                console.error('Error loading more results:', error);
             } finally {
                 setIsResultsLoading(false);
             }
         }
-        fetchAllPostsByPersonalityId();
-    }, []);
+        fetchAllPostsByString();
+    }, [params.term]);
 
     return (
         <Container>
-            <Row>
-                <Col>
-                    Showing results for {personalityName}.
-                </Col>
-            </Row>
+
+            {
+                posts.length !== 0 &&
+                <Row>
+                    <Col>
+                        Showing results for {params.term}
+                    </Col>
+                </Row>
+            }
 
             <Row>
-                <InstagramEmbedCards
-                    posts={posts}
-                />
+                {
+                    isResultsLoading ? (
+                        <Col>
+                            <LoadingComponent loadingText={`Loading results for ${params.term}`} />
+                        </Col>
+                    ) : posts.length === 0 ? (
+                        <Col>
+                            <p>No results found for <strong>{params.term}</strong>.</p>
+                        </Col>
+                    ) : (
+                        <InstagramEmbedCards posts={posts} />
+                    )
+                }
             </Row>
 
         </Container>

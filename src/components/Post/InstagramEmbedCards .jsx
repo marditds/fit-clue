@@ -10,9 +10,9 @@ export const InstagramEmbedCards = ({ posts }) => {
             {
                 posts.map((post) => {
 
-                    const id = post?.content?.$id;
-                    const rawUrl = post?.content?.url;
-                    const personalityName = post?.personality?.name;
+                    const id = post?.$id;
+                    const rawUrl = post?.url;
+                    const personalityName = post?.personality_name;
 
                     let iUrl = null;
                     try {

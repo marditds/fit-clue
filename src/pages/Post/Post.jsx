@@ -14,7 +14,7 @@ const Post = () => {
 
     const { userId, username, isLoggedIn } = useOutletContext();
 
-    let params = useParams()
+    const params = useParams()
 
     const { fetchPostById } = usePosts();
 
@@ -44,10 +44,10 @@ const Post = () => {
 
                 console.log('post in Post.jsx:', post);
 
-                setPersonalityName(post?.personality?.name);
-                setPersonalityId(post?.personality?.$id);
+                setPersonalityName(post?.content.personality_name);
+                setPersonalityId(post?.content.personality_id);
                 setItemsLinks(post?.links);
-                const rawUrl = post?.content?.url;
+                const rawUrl = post?.content.url;
 
                 if (rawUrl) {
                     try {
@@ -73,6 +73,12 @@ const Post = () => {
         };
 
         getPosts();
+    }, []);
+
+    useEffect(() => {
+        console.log({
+            personalityName, personalityId
+        });
     }, []);
 
     useEffect(() => {

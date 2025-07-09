@@ -71,7 +71,7 @@ export const Card = ({ id, personalityName, personalityId, iUrl }) => {
 
                 {
                     !location.pathname.startsWith('/post') &&
-                    <Link to={`post/${id}`} className='w-100 d-flex align-items-center card__div-details-link'>
+                    <Link to={`/post/${id}`} className='w-100 d-flex align-items-center card__div-details-link'>
                         <span className='me-auto'>View details</span>
                         <i className='bi bi-arrow-right ms-auto fs-4' />
                     </Link>
@@ -81,7 +81,7 @@ export const Card = ({ id, personalityName, personalityId, iUrl }) => {
                     location.pathname.startsWith('/post') &&
                     <p className='cta mt-3 text-center w-100'>
                         <Link
-                            to={`/search/${personalityId}`}
+                            to={`/personality/${personalityName}/more`}
                             className='fw-bolder'
                         >
                             Get more style inspiration from {personalityName} →
