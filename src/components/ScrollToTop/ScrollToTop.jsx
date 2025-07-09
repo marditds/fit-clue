@@ -18,7 +18,7 @@ export const ScrollToTop = () => {
                     bottom: '2rem',
                     right: '2rem',
                     cursor: 'pointer',
-                    zIndex: 9999,
+                    zIndex: 1500,
                 }}
             >
                 <i className='bi bi-arrow-up-square d-flex justify-content-center align-items-center fs-4' />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import './Modals.css';
 
 export const ReportModal = ({
     show,
@@ -37,11 +38,16 @@ export const ReportModal = ({
     };
 
     return (
-        <Modal show={show} onHide={onClose}>
-            <Modal.Header closeButton>
+        <Modal
+            show={show}
+            onHide={onClose}
+            style={{ zIndex: 1501 }}
+            className='report-modal'
+        >
+            <Modal.Header className='report-modal__header' closeButton>
                 <Modal.Title>Report</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='report-modal__body'>
                 {isReportSubmitted ? (
                     <p>Your report has been submitted successfully.</p>
                 ) : (
@@ -49,7 +55,7 @@ export const ReportModal = ({
                         {/* <p>
                             Reporting: <strong>{item?.item} from {item?.company_name}</strong>
                         </p> */}
-                        <Form>
+                        <Form className='report-modal__form'>
                             {reportCategories.map((category, index) => (
                                 <Form.Check
                                     type='radio'

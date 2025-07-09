@@ -1,0 +1,18 @@
+.report-modal {
+    padding-left: 0px !important;
+}
+
+.report-modal>.modal-dialog {
+    height: 100vh;
+    margin-block: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.report-modal>.modal-dialog>.modal-content {
+    max-height: 100vh;
+    overflow-y: auto;
+    margin-block: 0;
+    border-radius: var(--main-border-radius) !important;
+}

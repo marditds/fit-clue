@@ -34,7 +34,6 @@ body {
 }
 
 a {
-  /* text-decoration: none !important; */
   color: var(--main-text-color) !important;
   transition: var(--main-transition-speed);
 }
@@ -44,7 +43,11 @@ a:hover {
   text-decoration: none;
 }
 
-input, textarea, button, a[role="button"], select {
+input,
+textarea,
+button,
+a[role="button"],
+select {
   border-radius: var(--main-border-radius) !important;
 }
 
@@ -59,6 +62,22 @@ select:focus {
   border-color: var(--main-accent-color-hover) !important;
 }
 
+input[type="radio"]:focus {
+  border-color: var(--main-text-color) !important;
+  border-width: 2px;
+}
+
+input:checked {
+  background-color: var(--main-accent-color) !important;
+  border-color: var(--main-text-color) !important;
+}
+
+input:checked[type="radio"] {
+  background-color: var(--main-accent-color) !important;
+  border-color: var(--main-text-color) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-x' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
+
 button,
 a[role="button"] {
   padding-block: 4px !important;
@@ -66,10 +85,6 @@ a[role="button"] {
   background-color: var(--main-accent-color) !important;
   color: var(--main-text-color) !important;
   border: 1px solid transparent !important;
-  /* border-top: 1px solid var(--main-accent-color) !important;
-  border-right: 1px solid var(--main-accent-color) !important;
-  border-bottom: 1px solid var(--main-accent-color) !important;
-  border-left: 1px solid var(--main-accent-color) !important; */
   height: fit-content;
   transition: var(--main-transition-speed) !important;
 }
