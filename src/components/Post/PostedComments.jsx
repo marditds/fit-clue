@@ -5,9 +5,10 @@ import { LoadingComponent } from '../Loading/LoadingComponent';
 import { dateTimeFormatter } from '../../lib/utils/dateTimeFormatter';
 import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
+import { TextTooltip } from '../ToolTip/CustomTooltip';
 import { onePostComments } from '../../lib/data/testData';
 
-export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewCommentsClicked, }) => {
+export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewCommentsClicked, isLoggedIn }) => {
 
     const { comments, commentsLoadLimit, setComments, fetchComments, createReportComment } = usePosts();
 
@@ -91,12 +92,24 @@ export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewComment
     return (
         <Row className='d-flex flex-column justify-content-center mx-auto'>
             <Col className='sticky-top px-0'>
-                <Button
-                    onClick={onViewCommentsClick}
-                    className='sticky-top mb-3 w-100'
-                >
-                    {isViewCommentsClicked ? 'Hide' : 'View'} Comments
-                </Button>
+                {
+                    !isLoggedIn ?
+                        <TextTooltip tooltipText='Please sign in to view comments'>
+                            <Button
+                                type='button'
+                                className='sticky-top mb-3 w-100'
+                            >
+                                View Comments
+                            </Button>
+                        </TextTooltip> :
+                        <Button
+                            onClick={onViewCommentsClick}
+                            className='sticky-top mb-3 w-100'
+                        >
+                            {isViewCommentsClicked ? 'Hide' : 'View'} Comments
+                        </Button>
+                }
+
             </Col>
 
             {isViewCommentsClicked && (

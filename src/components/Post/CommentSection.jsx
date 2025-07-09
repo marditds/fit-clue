@@ -62,6 +62,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
             <Col>
                 <PostedComments
                     postId={postId}
+                    isLoggedIn={isLoggedIn}
                     isViewCommentsClicked={isViewCommentsClicked}
                     setIsViewCommentsClicked={setIsViewCommentsClicked}
                 />
