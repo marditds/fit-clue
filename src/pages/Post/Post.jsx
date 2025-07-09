@@ -20,6 +20,7 @@ const Post = () => {
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
+    const [personalityId, setPersonalityId] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
 
@@ -44,6 +45,7 @@ const Post = () => {
                 console.log('post in Post.jsx:', post);
 
                 setPersonalityName(post?.personality?.name);
+                setPersonalityId(post?.personality?.$id);
                 setItemsLinks(post?.links);
                 const rawUrl = post?.content?.url;
 
@@ -105,6 +107,7 @@ const Post = () => {
                 {/* image */}
                 <Card
                     personalityName={personalityName}
+                    personalityId={personalityId}
                     iUrl={iUrl}
                 />
 

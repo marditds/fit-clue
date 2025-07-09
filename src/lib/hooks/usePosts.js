@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, updatePost as update, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment } from '../context/dbhandler';
+import { makePost as composePost, fetchPosts as getPosts, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, updatePost as update, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 export const usePosts = () => {
@@ -136,6 +136,15 @@ export const usePosts = () => {
         }
     }
 
+    const fetchPostsByPersonalityId = async (personalityId) => {
+        try {
+            const res = await getPostsByPersonalityId(personalityId);
+            return res;
+        } catch (error) {
+            console.error('Error fetching post by id:', error);
+        }
+    }
+
     const createReportLink = async (linkId, reason) => {
         try {
             const reportDoc = await makeReportLink(linkId, reason);
@@ -156,5 +165,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment }
+    return { makePost, createComment, fetchPosts, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchPostsByPersonalityId, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment }
 }

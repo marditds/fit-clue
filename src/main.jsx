@@ -15,6 +15,7 @@ import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
 import { ForgotPassword } from './pages/forgot-password/ForgotPassword.jsx';
 import { ResetPassword } from './pages/reset-password/ResetPassword';
 import Footer from './components/Footer/Footer.jsx';
+import { Results } from './pages/Search/Results.jsx';
 
 const MainLayout = () => {
 
@@ -61,6 +62,15 @@ const router = createBrowserRouter([
           {
             path: 'create',
             element: <CreatePost />
+          },
+        ]
+      },
+      {
+        path: 'search',
+        children: [
+          {
+            path: ':personalityId',
+            element: <Results />
           },
         ]
       },

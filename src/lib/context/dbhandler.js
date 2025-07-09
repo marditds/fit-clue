@@ -668,6 +668,38 @@ export const fetchPostById = async (postId) => {
     }
 };
 
+export const fetchPostsByPersonalityId = async (personalityId) => {
+    try {
+
+        const postsByPersonalityId = await databases.listDocuments(
+            dbEnv,
+            postsCollEnv,
+            [
+                Query.equal('personality_id', personalityId),
+                Query.orderDesc('$createdAt'),
+                Query.limit(3)
+            ]
+        )
+
+        const contents = postsByPersonalityId.documents;
+
+        const personality = await fetchPersonalityById(personalityId);
+
+        // Results for one personality
+        const results = contents.map(content => ({
+            content,
+            personality
+        }));
+
+        console.log(results);
+
+        return results;
+
+    } catch (error) {
+        console.error('Error fetching posts by personality id:', error);
+    }
+}
+
 export const fetchProductLinksByIds = async (productLinkId) => {
 
     console.log('linkId in fetchProductLinksByIds:', productLinkId);
@@ -717,6 +749,24 @@ export const fetchPersonalityById = async (personalityId) => {
             dbEnv,
             personalitiesCollEnv,
             personalityId
+        )
+        if (res) {
+            return res;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching links:', error);
+
+    }
+}
+
+export const fetchPersonalityByName = async (name) => {
+    try {
+        const res = await databases.getDocument(
+            dbEnv,
+            personalitiesCollEnv,
+            name
         )
         if (res) {
             return res;

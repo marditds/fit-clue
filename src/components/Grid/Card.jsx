@@ -1,7 +1,7 @@
-import { Col } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 
-export const Card = ({ id, personalityName, iUrl }) => {
+export const Card = ({ id, personalityName, personalityId, iUrl }) => {
 
     const location = useLocation();
 
@@ -12,7 +12,7 @@ export const Card = ({ id, personalityName, iUrl }) => {
             xl={!location.pathname.startsWith('/post') ? 4 : 5}
             className={`d-flex flex-column ${!location.pathname.startsWith('/post') ? 'card__col justify-content-center' : 'post__col'}`}
         >
-            <div className={` ${!location.pathname.startsWith('/post') ? 'card__div card__div-latest' : 'd-flex justify-content-center align-items-start post__div sticky-top'}`}>
+            <div className={` ${!location.pathname.startsWith('/post') ? 'card__div card__div-latest' : 'd-flex flex-column justify-content-center align-items-start post__div sticky-top'}`}>
                 {
                     !location.pathname.startsWith('/post') &&
                     <Link to={`post/${id}`}>
@@ -77,10 +77,20 @@ export const Card = ({ id, personalityName, iUrl }) => {
                     </Link>
                 }
 
+                {
+                    location.pathname.startsWith('/post') &&
+                    <p className='cta mt-3 text-center w-100'>
+                        <Link
+                            to={`/search/${personalityId}`}
+                            className='fw-bolder'
+                        >
+                            Get more style inspiration from {personalityName} →
+                        </Link>
+                    </p>
+                }
+
             </div>
 
-
-            {/* </div> */}
         </Col>
     )
 }
