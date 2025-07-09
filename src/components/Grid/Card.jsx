@@ -15,7 +15,7 @@ export const Card = ({ id, personalityName, personalityId, iUrl }) => {
             <div className={` ${!location.pathname.startsWith('/post') ? 'card__div card__div-latest' : 'd-flex flex-column justify-content-center align-items-start post__div sticky-top'}`}>
                 {
                     !location.pathname.startsWith('/post') &&
-                    <Link to={`post/${id}`}>
+                    <Link to={`/post/${id}`}>
                         <h3 className='text-left latest__card-name'>
                             {personalityName}
                         </h3>

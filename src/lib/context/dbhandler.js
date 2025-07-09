@@ -575,23 +575,10 @@ export const fetchTheLatestPosts = async () => {
 
         // console.log('personalitiesMap', personalitiesMap);
 
-        // Fetch links  
-        const productLinksRes = await fetchProductLinksByIds(productLinkIds);
-
-        console.log('productLinksRes in fetchPosts:', productLinksRes);
-
-        let productLinksMap = {};
-        if (productLinksRes.length !== 0) {
-            productLinksMap = Object.fromEntries(
-                productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])
-            );
-        }
-
         // All posts
         const results = contents.map(content => ({
             content,
             personality: personalitiesMap[content.personality_id] || null,
-            links: (content.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
         }));
 
         // console.log('results', results);

@@ -1,0 +1,41 @@
+import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader';
+import { Card } from '../Grid/Card';
+
+export const InstagramEmbedCards = ({ posts }) => {
+
+    useInstagramEmbedLoader(posts);
+
+    return (
+        <>
+            {
+                posts.map((post) => {
+
+                    const id = post?.content?.$id;
+                    const rawUrl = post?.content?.url;
+                    const personalityName = post?.personality?.name;
+
+                    let iUrl = null;
+                    try {
+                        const url = new URL(rawUrl);
+                        const parts = url.pathname.split('/').filter(Boolean);
+                        const postIndex = parts.indexOf('p') !== -1 ? parts.indexOf('p') : parts.indexOf('reel');
+                        if (postIndex !== -1 && parts[postIndex + 1]) {
+                            const postId = parts[postIndex + 1];
+                            iUrl = `https://www.instagram.com/${parts[postIndex]}/${postId}/`;
+                        }
+                    } catch (e) {
+                        console.error('Invalid URL:', rawUrl);
+                    }
+                    return (
+                        <Card
+                            key={id}
+                            id={id}
+                            personalityName={personalityName}
+                            iUrl={iUrl}
+                        />
+                    );
+                })
+            }
+        </>
+    )
+}
