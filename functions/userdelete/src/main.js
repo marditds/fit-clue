@@ -4,7 +4,7 @@ export default async ({ req, res, log, error }) => {
   const client = new Client()
     .setEndpoint(process.env.VITE_ENDPOINT)
     .setProject(process.env.VITE_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
+    .setKey(req.headers['x-appwrite-key']);
 
   const users = new Users(client);
   const databases = new Databases(client);
