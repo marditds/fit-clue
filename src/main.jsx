@@ -1,6 +1,6 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
 import './index.css'
 import App from './App.jsx'
@@ -27,6 +27,12 @@ const MainLayout = () => {
     isLoggedIn, setIsLoggedIn,
     setIsSessionInProgress, setIsSignOutInProgress
   } = useUserContext();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <>

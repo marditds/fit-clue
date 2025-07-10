@@ -15,6 +15,7 @@ export const More = () => {
     const { fetchPostsByPersonalityName } = usePosts();
 
     const [posts, setPosts] = useState([]);
+    const [postsTotal, setPostsTotal] = useState(0);
     const [personalityName, setPersonalityName] = useState('');
     const [isResultsLoading, setIsResultsLoading] = useState(false);
 
@@ -28,10 +29,13 @@ export const More = () => {
             try {
 
                 // const moreResults = await fetchPostsByPersonalityName(params.personalityName);
+                // setPosts(moreResults.documents);
+                // setPostsTotal(moreResults.total);
+                // setPersonalityName(moreResults.documents[0]?.personality_name)
 
                 const moreResults = morePersonalityData;
-
                 setPosts(moreResults);
+                setPostsTotal(8);
                 setPersonalityName(moreResults[0]?.personality_name)
 
             } catch (error) {
@@ -54,15 +58,13 @@ export const More = () => {
 
             {
                 posts.length !== 0 &&
-                <Row className='my-4 align-items-center sticky-top bg-white'>
-                    <Col>
-                        <BackButton />
+                <Row className='my-4 py-2 py-sm-1 align-items-center sticky-top bg-white'>
+                    <Col xs={12} sm={1}>
+                        <BackButton className='mb-1' />
                     </Col>
-                    <Col>
-                        <h3
-                            className='text-center'
-                        >
-                            More from {personalityName}
+                    <Col xs={12} sm={11}>
+                        <h3 className='text-center'>
+                            More from {personalityName} ({postsTotal})
                         </h3>
                         <p
                             className='text-center mb-0'
@@ -71,7 +73,6 @@ export const More = () => {
                             Get more style inspiration from Heather McDonald
                         </p>
                     </Col>
-                    <Col></Col>
                 </Row>
             }
 

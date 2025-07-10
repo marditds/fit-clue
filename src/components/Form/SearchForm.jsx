@@ -1,13 +1,13 @@
 import { Button, Form } from 'react-bootstrap';
 
-export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement }) => {
+export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, className }) => {
     return (
         <>
             <Form.Control
                 id={`searchIn${searchFieldPlacement}`}
                 type='search'
                 placeholder='Search'
-                className='me-2'
+                className={`me-2 ${className || ''}`}
                 aria-label='Search'
                 value={searchTerm}
                 onChange={(e) => {

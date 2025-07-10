@@ -601,11 +601,7 @@ export const fetchPostsByPersonalityName = async (personalityName) => {
             ]
         )
 
-        const content = postsByPersonalityName.documents;
-
-        console.log(content);
-
-        return content;
+        return postsByPersonalityName;
 
     } catch (error) {
         console.error('Error fetching posts by personality id:', error);
@@ -624,12 +620,6 @@ export const fetchPostsByString = async (str) => {
                 Query.limit(4)
             ]
         )
-
-        // console.log(postsByStr);
-
-        // const content = postsByStr.documents;
-
-        // console.log(content);
 
         return postsByStr;
 
