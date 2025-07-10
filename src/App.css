@@ -143,4 +143,8 @@ div, p, button {
   div, p, button, a[role="button"], input, select {
     font-size: 0.875rem !important;
   }
+
+  input {
+    max-height: 31px;
+  }
 }

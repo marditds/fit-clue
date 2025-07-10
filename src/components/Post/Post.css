@@ -27,7 +27,7 @@
     box-shadow: 0px 0px 0px white;
 }
 
-.post__div>iframe {
+.post__div>div>iframe {
     min-width: 0px !important;
     width: 100% !important;
     transition: var(--main-transition-speed);
@@ -83,6 +83,7 @@
         border-left: 0px !important;
         border-right: 0px !important;
         /* border-bottom: 0px !important; */
+        padding-bottom: 0;
     }
 
     .post__div-links-row,

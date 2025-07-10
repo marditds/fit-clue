@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
+import { SearchForm } from '../Form/SearchForm';
 
 const NavigationBar = () => {
 
@@ -83,17 +84,19 @@ const NavigationBar = () => {
                                 </Nav.Link>
                         }
                     </Nav>
-                    <Form className='d-flex' onSubmit={handleSearch}>
-                        <Form.Control
-                            type='search'
-                            placeholder='Search'
-                            className='me-2'
-                            aria-label='Search'
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <Button type='submit'>Search</Button>
-                    </Form>
+
+                    {
+                        !location.pathname.startsWith('/search') &&
+
+                        <Form className='d-flex' onSubmit={handleSearch}>
+                            <SearchForm
+                                searchFieldPlacement='NavigationBar'
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                            />
+                        </Form>
+                    }
+
                 </Navbar.Collapse>
             </Container>
         </Navbar>

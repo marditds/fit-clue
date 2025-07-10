@@ -40,7 +40,7 @@
     /* color: var(--main-title-color) !important; */
 }
 
-.card__div>iframe {
+.card__div>div>iframe {
     min-width: 0px !important;
     width: 100% !important;
     transition: var(--main-transition-speed);

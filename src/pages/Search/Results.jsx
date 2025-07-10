@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
-import { searchResultsData } from '../../lib/data/testData';
-import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading';
+import { LoadingPage } from '../../components/Loading/Loading';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import BackButton from '../../components/Navigation/BackButton';
+import { SearchForm } from '../../components/Form/SearchForm';
+import { searchResultsData } from '../../lib/data/testData';
 
 export const Results = () => {
 
@@ -14,7 +15,7 @@ export const Results = () => {
 
     const { fetchPostsByString } = usePosts();
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(params.term);
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsLoading, setIsResultsLoading] = useState(false);
@@ -22,10 +23,11 @@ export const Results = () => {
     const fetchAllPostsByString = async () => {
         setIsResultsLoading(true);
         try {
+            console.log('Search term in fetchAllPostsByString:', searchTerm);
 
-            const searchResults = await fetchPostsByString(params.term);
+            // const searchResults = await fetchPostsByString(searchTerm);
 
-            // const searchResults = searchResultsData;
+            const searchResults = searchResultsData;
 
             console.log('searchResults', searchResults);
 
@@ -41,11 +43,10 @@ export const Results = () => {
 
     useEffect(() => {
         fetchAllPostsByString();
-    }, [params.term]);
+    }, []);
 
     const onSearchTermSubmit = async (e) => {
         console.log('Calling search.');
-
         e.preventDefault();
         await fetchAllPostsByString();
     }
@@ -57,49 +58,36 @@ export const Results = () => {
             }}
         >
 
-            {
-                results.length !== 0 &&
-                <Row className='my-4 align-items-start sticky-top bg-white'>
-                    <Col xs={1}>
-                        <BackButton />
-                    </Col>
-                    <Col xs={11}>
+            <Row className='my-4 align-items-start sticky-top bg-white'>
+                <Col xs={1}>
+                    <BackButton />
+                </Col>
+                <Col xs={11}>
 
-                        <Form onSubmit={onSearchTermSubmit}>
-                            <div className='d-flex'>
-                                <Form.Control
-                                    type='search'
-                                    placeholder='Search'
-                                    className='me-2'
-                                    aria-label='Search'
-                                    value={searchTerm || params.term || null}
-                                    onChange={(e) => {
-                                        console.log('Looking for:', e.target.value);
+                    <Form onSubmit={onSearchTermSubmit}>
+                        <div className='d-flex'>
+                            <SearchForm
+                                searchFieldPlacement='ResultsPage'
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                            />
+                        </div>
+                        <Form.Text>
+                            Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
+                        </Form.Text>
+                    </Form>
+                </Col>
+            </Row>
 
-                                        setSearchTerm(e.target.value);
-                                    }
-                                    }
-                                />
-                                <Button type='submit'>Search</Button>
-                            </div>
-                            <Form.Text>
-                                Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
-                            </Form.Text>
-                        </Form>
-                    </Col>
-                </Row>
-            }
 
             <Row>
                 {
                     isResultsLoading ? (
                         <Col>
-                            <LoadingPage loadingText={`Loading results for ${params.term}`} />
+                            <LoadingPage loadingText={`Loading results for ${searchTerm || params.term}`} />
                         </Col>
                     ) : results.length === 0 ? (
-                        <Col>
-                            <p>No results found for <strong>{params.term}</strong>.</p>
-                        </Col>
+                        null
                     ) : (
                         <InstagramEmbedCards posts={results} />
                     )
