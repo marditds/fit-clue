@@ -1,5 +1,5 @@
 import { Form, Button } from 'react-bootstrap';
-import { LoadingComponent } from '../Loading/LoadingComponent';
+import { LoadingComponent } from '../Loading/Loading';
 
 export const DashboardForm = ({
     title,

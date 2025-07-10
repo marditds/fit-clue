@@ -3,7 +3,7 @@ import { useGemini } from '../../lib/hooks/useGemini';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { LoadingComponent } from '../Loading/LoadingComponent';
+import { LoadingComponent } from '../Loading/Loading';
 
 export const AddComment = ({ postId, userId, username, isLoggedIn, isViewCommentsClicked }) => {
 

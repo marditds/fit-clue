@@ -1,12 +1,32 @@
-import React from 'react';
 import { Button } from 'react-bootstrap';
 import { TextTooltip } from '../ToolTip/CustomTooltip';
+import { useEffect, useState } from 'react';
 
 export const ScrollToTop = () => {
-    // Function to scroll to top smoothly
+
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const toggleVisibility = () => {
+            if (window.scrollY > 100) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener('scroll', toggleVisibility);
+
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+        };
+    }, []);
+
     const handleClick = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    if (!isVisible) return null;
 
     return (
         <TextTooltip tooltipText={'Scroll to top'}>

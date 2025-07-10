@@ -1,4 +1,4 @@
-import { Button, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 
 export const Card = ({ id, personalityName, personalityId, iUrl }) => {

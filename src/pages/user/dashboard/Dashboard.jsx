@@ -3,7 +3,7 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useUser } from '../../../lib/hooks/useUser';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { DashboardForm } from '../../../components/Form/DashboardForm';
-import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
+import { LoadingComponent } from '../../../components/Loading/Loading';
 
 export const Dashboard = () => {
 

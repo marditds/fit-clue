@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { searchResultsData } from '../../lib/data/testData';
-import { LoadingComponent } from '../../components/Loading/LoadingComponent';
+import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading';
+import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
+import BackButton from '../../components/Navigation/BackButton';
 
 export const Results = () => {
 
@@ -12,7 +14,8 @@ export const Results = () => {
 
     const { fetchPostsByString } = usePosts();
 
-    const [posts, setPosts] = useState([]);
+    const [results, setResults] = useState([]);
+    const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsLoading, setIsResultsLoading] = useState(false);
 
     useEffect(() => {
@@ -20,13 +23,14 @@ export const Results = () => {
             setIsResultsLoading(true);
             try {
 
-                const searchResults = await fetchPostsByString(params.term);
+                // const searchResults = await fetchPostsByString(params.term);
 
-                // const searchResults = searchResultsData;
+                const searchResults = searchResultsData;
 
                 console.log('searchResults', searchResults);
 
-                setPosts(searchResults);
+                setResultsTotal(searchResults.total);
+                setResults(searchResults.documents);
 
             } catch (error) {
                 console.error('Error loading more results:', error);
@@ -38,13 +42,38 @@ export const Results = () => {
     }, [params.term]);
 
     return (
-        <Container>
+        <Container
+            style={{
+                minHeight: 'calc(100vh - 112px)'
+            }}
+        >
 
             {
-                posts.length !== 0 &&
-                <Row>
+                results.length !== 0 &&
+                <Row className='my-4 align-items-center sticky-top bg-white'>
                     <Col>
-                        Showing results for {params.term}
+                        <BackButton />
+                    </Col>
+                    <Col xs={10}>
+                        <h3>
+                            Search Results
+                        </h3>
+                        <Form>
+                            <div className='d-flex'>
+                                <Form.Control
+                                    type='search'
+                                    placeholder='Search'
+                                    className='me-2'
+                                    aria-label='Search'
+                                    value={params.term}
+                                // onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                                <Button type='submit'>Search</Button>
+                            </div>
+                            <Form.Text>
+                                Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
+                            </Form.Text>
+                        </Form>
                     </Col>
                 </Row>
             }
@@ -53,17 +82,19 @@ export const Results = () => {
                 {
                     isResultsLoading ? (
                         <Col>
-                            <LoadingComponent loadingText={`Loading results for ${params.term}`} />
+                            <LoadingPage loadingText={`Loading results for ${params.term}`} />
                         </Col>
-                    ) : posts.length === 0 ? (
+                    ) : results.length === 0 ? (
                         <Col>
                             <p>No results found for <strong>{params.term}</strong>.</p>
                         </Col>
                     ) : (
-                        <InstagramEmbedCards posts={posts} />
+                        <InstagramEmbedCards posts={results} />
                     )
                 }
             </Row>
+
+            <ScrollToTop />
 
         </Container>
     )

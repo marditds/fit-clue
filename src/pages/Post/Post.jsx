@@ -39,8 +39,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                const post = await fetchPostById(params.postId);
-                // const post = onePostData;
+                // const post = await fetchPostById(params.postId);
+                const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 
@@ -76,12 +76,6 @@ const Post = () => {
     }, []);
 
     useEffect(() => {
-        console.log({
-            personalityName, personalityId
-        });
-    }, []);
-
-    useEffect(() => {
         if (!iUrl) return;
 
         const script = document.createElement('script');
@@ -98,9 +92,7 @@ const Post = () => {
     if (isPostLoading) return <Container>Loading post…</Container>;
 
     return (
-        <Container
-        // className='min-vh-100 d-flex flex-column justify-content-center align-items-stretch'
-        >
+        <Container>
             <Row>
                 <h3 className='text-left'>
                     {personalityName}

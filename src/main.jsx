@@ -5,7 +5,7 @@ import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
 import './index.css'
 import App from './App.jsx'
 import Post from './pages/Post/Post.jsx';
-import NavigationBar from './components/Navbar/NavigationBar.jsx';
+import NavigationBar from './components/Navigation/NavigationBar.jsx';
 import CreatePost from './pages/Post/CreatePost.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';

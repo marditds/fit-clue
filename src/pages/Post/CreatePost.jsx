@@ -3,7 +3,7 @@ import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
-import { LoadingComponent } from '../../components/Loading/LoadingComponent.jsx';
+import { LoadingComponent } from '../../components/Loading/Loading.jsx';
 
 const CreatePost = () => {
 

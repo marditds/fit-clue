@@ -621,15 +621,17 @@ export const fetchPostsByString = async (str) => {
             [
                 Query.contains('personality_name', str),
                 Query.orderDesc('$createdAt'),
-                // Query.limit(3)
+                Query.limit(4)
             ]
         )
 
-        const content = postsByStr.documents;
+        // console.log(postsByStr);
 
-        console.log(content);
+        // const content = postsByStr.documents;
 
-        return content;
+        // console.log(content);
+
+        return postsByStr;
 
     } catch (error) {
         console.error('Error fetching posts by personality id:', error);
