@@ -14,32 +14,41 @@ export const Results = () => {
 
     const { fetchPostsByString } = usePosts();
 
+    const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsLoading, setIsResultsLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchAllPostsByString = async () => {
-            setIsResultsLoading(true);
-            try {
+    const fetchAllPostsByString = async () => {
+        setIsResultsLoading(true);
+        try {
 
-                // const searchResults = await fetchPostsByString(params.term);
+            const searchResults = await fetchPostsByString(params.term);
 
-                const searchResults = searchResultsData;
+            // const searchResults = searchResultsData;
 
-                console.log('searchResults', searchResults);
+            console.log('searchResults', searchResults);
 
-                setResultsTotal(searchResults.total);
-                setResults(searchResults.documents);
+            setResultsTotal(searchResults.total);
+            setResults(searchResults.documents);
 
-            } catch (error) {
-                console.error('Error loading more results:', error);
-            } finally {
-                setIsResultsLoading(false);
-            }
+        } catch (error) {
+            console.error('Error loading more results:', error);
+        } finally {
+            setIsResultsLoading(false);
         }
+    }
+
+    useEffect(() => {
         fetchAllPostsByString();
     }, [params.term]);
+
+    const onSearchTermSubmit = async (e) => {
+        console.log('Calling search.');
+
+        e.preventDefault();
+        await fetchAllPostsByString();
+    }
 
     return (
         <Container
@@ -50,23 +59,26 @@ export const Results = () => {
 
             {
                 results.length !== 0 &&
-                <Row className='my-4 align-items-center sticky-top bg-white'>
-                    <Col>
+                <Row className='my-4 align-items-start sticky-top bg-white'>
+                    <Col xs={1}>
                         <BackButton />
                     </Col>
-                    <Col xs={10}>
-                        <h3>
-                            Search Results
-                        </h3>
-                        <Form>
+                    <Col xs={11}>
+
+                        <Form onSubmit={onSearchTermSubmit}>
                             <div className='d-flex'>
                                 <Form.Control
                                     type='search'
                                     placeholder='Search'
                                     className='me-2'
                                     aria-label='Search'
-                                    value={params.term}
-                                // onChange={(e) => setSearchTerm(e.target.value)}
+                                    value={searchTerm || params.term || null}
+                                    onChange={(e) => {
+                                        console.log('Looking for:', e.target.value);
+
+                                        setSearchTerm(e.target.value);
+                                    }
+                                    }
                                 />
                                 <Button type='submit'>Search</Button>
                             </div>

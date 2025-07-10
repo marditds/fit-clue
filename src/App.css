@@ -62,6 +62,10 @@ select:focus {
   border-color: var(--main-accent-color-hover) !important;
 }
 
+input {
+  max-height: 34px;
+}
+
 input[type="radio"]:focus {
   border-color: var(--main-text-color) !important;
   border-width: 2px;
