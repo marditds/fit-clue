@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { Col, Container, Form, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { Col, Container, Form, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
-import BackButton from '../../components/Navigation/BackButton';
 import { SearchForm } from '../../components/Form/SearchForm';
+import { RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
 import { searchResultsData } from '../../lib/data/testData';
 
 export const Results = () => {
@@ -60,36 +60,24 @@ export const Results = () => {
                 minHeight: 'calc(100vh - 112px)'
             }}
         >
-            <div className='sticky-top'>
-                <Row className='py-2 bg-white align-items-center'>
-                    <Col xs={12} md={1}>
-                        <BackButton />
-                    </Col>
-                    <Col xs={12} md={10}>
-                        <h3 className='text-center mb-0'>
-                            Search Results
-                        </h3>
-                    </Col>
-                    <Col xs={12} md={1}></Col>
-                </Row>
-                <Row className='pb-2 bg-white'>
-                    <Col>
-                        <Form onSubmit={onSearchTermSubmit}>
-                            <div className='d-flex justify-content-center'>
-                                <SearchForm
-                                    searchFieldPlacement='ResultsPage'
-                                    searchTerm={searchTerm}
-                                    setSearchTerm={setSearchTerm}
-                                    className={(!isXs && !isSm) ? 'w-50' : 'w-100'}
-                                />
-                            </div>
-                            <Form.Text>
-                                Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
-                            </Form.Text>
-                        </Form>
-                    </Col>
-                </Row>
-            </div>
+
+            <RelatedPosts
+                headerText='Search Results'
+            >
+                <Form onSubmit={onSearchTermSubmit} className={(!isXs && !isSm && !isMd) ? 'w-50 mx-auto' : 'w-100'}>
+                    <div className='d-flex justify-content-center'>
+                        <SearchForm
+                            searchFieldPlacement='ResultsPage'
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                        />
+
+                    </div>
+                    <Form.Text>
+                        Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
+                    </Form.Text>
+                </Form>
+            </RelatedPosts>
 
             <Row>
                 {

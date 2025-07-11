@@ -1,5 +1,5 @@
 import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader';
-import { Card } from '../Grid/Card';
+import { Card } from '../Card/Card';
 
 export const InstagramEmbedCards = ({ posts }) => {
 

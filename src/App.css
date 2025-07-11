@@ -51,7 +51,7 @@ select {
   border-radius: var(--main-border-radius) !important;
 }
 
-input, select {
+form, input, select {
   transition: var(--main-transition-speed) !important;
 }
 

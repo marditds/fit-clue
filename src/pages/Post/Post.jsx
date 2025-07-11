@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Card } from '../../components/Grid/Card';
+import { Card } from '../../components/Card/Card';
 import { onePostData } from '../../lib/data/testData';
 import '../../components/Post/Post.css';
 import { CommentSection } from '../../components/Post/CommentSection';
