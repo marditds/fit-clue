@@ -6,6 +6,7 @@ import signUpImg from '../../assets/sign-up.jpg'
 import { SignForm } from '../../components/Form/SignForm';
 import { keysProvider } from '../../lib/context/keysProvider';
 import { reCaptchaVerification } from '../../lib/context/dbhandler';
+import { authText } from '../../config/formText';
 
 export const SignUp = () => {
 
@@ -136,11 +137,11 @@ export const SignUp = () => {
 
     return (
         <SignForm
-            title="Create Your Account"
-            subtitle="Join us today and get started"
+            title={authText.signUp.heading}
+            subtitle={authText.signUp.subheading}
             fields={fields}
             onSubmit={onCreateUserClick}
-            submitText="Create Account"
+            submitText={authText.signUp.button}
             disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword || !isReCaptchaVerified}
             loading={isAccountBeingCreated}
             loadingText={'Creating your account'}
@@ -164,8 +165,8 @@ export const SignUp = () => {
             reCaptchaSuccessMessage={reCaptchaSuccessMessage}
             links={[
                 {
-                    text: 'Already have an account?',
-                    linkText: 'Sign in',
+                    text: `${authText.signUp.haveAccountPrompt}`,
+                    linkText: `${authText.signUp.signInLinkText}`,
                     href: '/sign-in'
                 }
             ]}

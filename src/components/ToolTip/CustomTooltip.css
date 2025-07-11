@@ -3,7 +3,7 @@
 }
 
 .tool-tip__custom>.tooltip-inner {
-    max-width: 300px;
+    max-width: 328px;
     border-radius: var(--main-border-radius);
     background-color: var(--main-white-shade);
     color: var(--main-text-color);
@@ -13,4 +13,10 @@
 
 .tool-tip__custom>.tooltip-arrow::before {
     border-top-color: var(--main-border-color) !important;
+}
+
+@media (max-width: 575px) {
+    .tool-tip__custom>.tooltip-inner {
+        max-width: 300px;
+    }
 }

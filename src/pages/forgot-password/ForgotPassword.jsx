@@ -79,9 +79,9 @@ export const ForgotPassword = () => {
                         </Link>
                     </div>
                     <div>
-                        <span className='text-muted'>Don't have an account? </span>
+                        <span className='text-muted'>New here? </span>
                         <Link to='/sign-up' className='text-decoration-none fw-medium'>
-                            Sign up
+                            Create a free account
                         </Link>
                     </div>
                 </>

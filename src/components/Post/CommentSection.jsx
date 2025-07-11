@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Col, Row } from 'react-bootstrap';
 import { AddComment } from '../Form/AddComment';
 import { PostedComments } from './PostedComments';
+import { authText } from '../../config/formText';
 
 export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
@@ -34,7 +35,8 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                             :
                             <div className='mb-3'>
                                 <p>
-                                    Please <Link to='/sign-in'>sign in</Link> to leave a comment. If you don't have an account, <Link to='/sign-up'>sign up</Link>.
+                                    {authText.commentPrompt}
+                                    {/* Please <Link to='/sign-in'>sign in</Link> to leave a comment. Don't have an account? <Link to='/sign-up'><strong>Create one for free</strong></Link>. */}
                                 </p>
                                 <Row className='d-flex justify-content-evenly'>
                                     <Col>
@@ -43,7 +45,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                                             to='/sign-in'
                                             className='w-100'
                                         >
-                                            Sign In
+                                            {authText.signIn.button}
                                         </Button>
                                     </Col>
                                     <Col>
@@ -52,7 +54,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                                             to='/sign-up'
                                             className='w-100'
                                         >
-                                            Sign Up
+                                            {authText.signUp.button}
                                         </Button>
                                     </Col>
                                 </Row>

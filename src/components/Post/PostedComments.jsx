@@ -112,7 +112,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
             <Col className='sticky-top px-0 bg-white'>
                 {
                     !isLoggedIn ? (
-                        <TextTooltip tooltipText='Please sign in to view comments'>
+                        <TextTooltip tooltipText="Please sign in to view comments — It's free!">
                             <Button
                                 type='button'
                                 className='sticky-top mb-3 w-100'

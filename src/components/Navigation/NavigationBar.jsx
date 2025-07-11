@@ -74,7 +74,7 @@ const NavigationBar = () => {
                         {
                             !isLoggedIn ?
                                 <><Nav.Link as={Link} to='/sign-up'>
-                                    Sign up
+                                    Create Free Account
                                 </Nav.Link>
                                     <Nav.Link as={Link} to='/sign-in'>
                                         Sign in

@@ -4,6 +4,8 @@ import { useUser } from '../../lib/hooks/useUser';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { SignForm } from '../../components/Form/SignForm';
 import signInImg from '../../assets/sign-in.jpg'
+import { FormText } from 'react-bootstrap';
+import { authText } from '../../config/formText';
 
 export const SignIn = () => {
 
@@ -101,11 +103,11 @@ export const SignIn = () => {
 
     return (
         <SignForm
-            title="Welcome"
-            subtitle="Sign in to your account"
+            title={authText.signIn.heading}
+            subtitle={authText.signIn.subheading}
             fields={fields}
             onSubmit={onSignInUserClick}
-            submitText="Sign In"
+            submitText={authText.signIn.button}
             disabled={isSigningInInProgress || !!christmasWish || !emailInSignInForm || password.length < 8}
             loading={isSigningInInProgress}
             loadingText={'Signing in'}
@@ -122,8 +124,8 @@ export const SignIn = () => {
             isSm={isSm}
             links={[
                 {
-                    text: "Don't have an account?",
-                    linkText: 'Sign up',
+                    text: `${authText.signIn.noAccountPrompt}`,
+                    linkText: `${authText.signIn.signUpLinkText}`,
                     href: '/sign-up'
                 }
             ]}
