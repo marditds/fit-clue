@@ -1,6 +1,7 @@
 import { Button, Form } from 'react-bootstrap';
+import { LoadingComponent } from '../Loading/Loading';
 
-export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, className }) => {
+export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, className, isLoading }) => {
     return (
         <>
             <Form.Control
@@ -18,8 +19,9 @@ export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, cl
             <Button
                 type='submit'
                 disabled={!searchTerm}
+                style={{ minHeight: '31px' }}
             >
-                Search
+                {!isLoading ? 'Search' : <LoadingComponent loadingText={' '} />}
             </Button>
         </>
     )

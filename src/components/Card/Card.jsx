@@ -88,7 +88,7 @@ export const Card = ({ id, personalityName, personalityId, iUrl }) => {
                     location.pathname.startsWith('/post') &&
                     <p className='cta mt-3 text-center w-100'>
                         <Link
-                            to={`/personality/${personalityName}/more`}
+                            to={`/search/${encodeURIComponent(personalityName)}`}
                             className='fw-bolder'
                         >
                             Get more style inspiration from {personalityName} →

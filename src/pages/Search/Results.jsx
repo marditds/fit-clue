@@ -23,6 +23,7 @@ export const Results = () => {
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
     const [isResultsLoading, setIsResultsLoading] = useState(false);
+    const [isOnLoadMoreResultsClicked, setIsOnLoadMoreResultsClicked] = useState(false);
 
     const [lastResult, setLastResult] = useState(null);
     const [hasMore, setHasMore] = useState(true);
@@ -53,6 +54,11 @@ export const Results = () => {
                 isNewSearch ? newDocuments : [...prevResults, ...newDocuments]
             );
 
+            if (newDocuments.length === 0 || newDocuments.length === total) {
+                setHasMore(false);
+                return;
+            }
+
             setLastResult(newDocuments[newDocuments.length - 1].$id || null);
 
             setHasMore(newDocuments.length === searchResultLoadLimit);
@@ -71,6 +77,10 @@ export const Results = () => {
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [isOnLoadMoreResultsClicked]);
+
+    useEffect(() => {
         const loadingResultsFirstBatch = async () => {
             setIsResultsFirstBatchLoading(true);
             try {
@@ -87,9 +97,15 @@ export const Results = () => {
     }, []);
 
     const onSearchTermSubmit = async (e) => {
-        console.log('Calling search.');
         e.preventDefault();
-        await fetchAllPostsByString(true);
+        setIsOnLoadMoreResultsClicked(true);
+        try {
+            await fetchAllPostsByString(true);
+        } catch (error) {
+            console.error('Error onSearchTermSubmit', error);
+        } finally {
+            setIsOnLoadMoreResultsClicked(false);
+        }
     }
 
     const onLoadMoreResultsClick = async () => {
@@ -111,9 +127,9 @@ export const Results = () => {
                         <SearchForm
                             searchFieldPlacement='ResultsPage'
                             searchTerm={searchTerm}
+                            isLoading={isResultsLoading}
                             setSearchTerm={setSearchTerm}
                         />
-
                     </div>
                     <Form.Text>
                         Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
@@ -132,8 +148,8 @@ export const Results = () => {
                     ) : (
                         <>
                             <InstagramEmbedCards posts={results} />
-                            <Row>
-                                <Col>
+                            <Row className='mx-auto'>
+                                <Col className='px-0 justify-content-center'>
                                     <LoadMoreButton
                                         hasMore={hasMore}
                                         onLoadMoreClick={onLoadMoreResultsClick}
@@ -141,6 +157,7 @@ export const Results = () => {
                                         loadMoreText={`Load more results for for ${searchTerm}`}
                                         loadingText={`Loading more results for ${searchTerm}`}
                                         noMoreText='No more results'
+                                        className='w-100 mb-3'
                                     />
                                 </Col>
                             </Row>
