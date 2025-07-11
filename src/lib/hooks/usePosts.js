@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByPersonalityName as getPostsByPersonalityName, fetchPostsByString as getPostsByString, updatePost as update, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
@@ -9,7 +9,6 @@ export const usePosts = () => {
     const searchResultLoadLimit = 6;
 
     const commentsLoadLimit = 5;
-    const [comments, setComments] = useState();
 
     useEffect(() => {
         console.log('user id in usePosts.jsx:', userId);
@@ -49,10 +48,15 @@ export const usePosts = () => {
         console.log({ postId: postId, lastCursor: lastCursor });
 
         try {
-            const res = await getCommentsTextByPostId(postId, commentsLoadLimit, lastCursor);
-            console.log('fetchCommentsTextByPostId;', res);
+            const cmmnts = await getCommentsTextByPostId(postId, commentsLoadLimit, lastCursor);
 
-            return res;
+            console.log('fetchCommentsTextByPostId;', cmmnts);
+
+            if (cmmnts.length === 0) {
+                return [];
+            }
+
+            return cmmnts;
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
@@ -67,13 +71,18 @@ export const usePosts = () => {
         }
 
         try {
-            const commentsTexts = await fetchCommentsTextByPostId(postId, lastCursor);
+            const commentsRes = await fetchCommentsTextByPostId(postId, lastCursor);
 
-            console.log('commentsTexts', commentsTexts);
+            console.log('commentsRes', commentsRes);
 
-            if (commentsTexts.length === 0) {
+            if (commentsRes?.length === 0) {
                 return [];
             }
+
+            const commentsTotal = commentsRes.total;
+            const commentsTexts = commentsRes.documents;
+
+            console.log('commentsTexts', commentsTexts);
 
             const userIds = [...new Set(commentsTexts.map(comment => comment.user_id).filter(Boolean))];
 
@@ -83,22 +92,17 @@ export const usePosts = () => {
 
             const userMap = new Map(allUsersData.documents.map(user => [user.$id, user]));
 
-            const fullComments = commentsTexts.map(comment => {
-
-                const user = userMap.get(comment.user_id);
-
-                return {
-                    ...comment,
-                    username: user?.username || 'Deleted user'
-                };
-            });
+            const fullComments = commentsTexts.map(comment => ({
+                ...comment,
+                username: userMap.get(comment.user_id)?.username || 'Deleted user',
+            }));
 
             console.log('fullComments:', fullComments);
 
-
-            setComments((prevComments) => [...(prevComments || []), ...(fullComments || [])].flat());
-
-            return fullComments;
+            return {
+                documents: fullComments,
+                total: commentsTotal,
+            };
             // setComments(prevComments => {
             //     const nonDuplicateComments = fullComments.filter(newComment =>
             //         !prevComments?.some(existingComment => existingComment.$id === newComment.$id)
@@ -176,5 +180,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment, searchResultLoadLimit }
+    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit }
 }

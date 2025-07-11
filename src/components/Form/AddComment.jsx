@@ -5,13 +5,13 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 
-export const AddComment = ({ postId, userId, username, isLoggedIn, isViewCommentsClicked }) => {
+export const AddComment = ({ postId, userId, username, isLoggedIn, isViewCommentsClicked, setComments, setCommentsTotal }) => {
 
     const { isXs, isSm, isMd } = useBreakpoints();
 
     const { isRunningGemini, runGemini } = useGemini();
 
-    const { setComments, createComment } = usePosts();
+    const { createComment } = usePosts();
 
     // Leaving a comment
     const [commentText, setCommentText] = useState('');
@@ -52,8 +52,9 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
                 username: username || 'Deleted user'
             };
 
-            if (isViewCommentsClicked) {
+            if (isViewCommentsClicked === true) {
                 setComments((prevComments) => [fullNewComment, ...(prevComments || [])]);
+                setCommentsTotal((prevTotal) => prevTotal + 1);
             };
 
             setCommentErrorMessage('');

@@ -6,6 +6,8 @@ import { PostedComments } from './PostedComments';
 
 export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
+    const [comments, setComments] = useState([]);
+    const [commentsTotal, setCommentsTotal] = useState(0);
     const [isViewCommentsClicked, setIsViewCommentsClicked] = useState(false);
 
     return (
@@ -26,6 +28,8 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                                 username={username}
                                 isLoggedIn={isLoggedIn}
                                 isViewCommentsClicked={isViewCommentsClicked}
+                                setComments={setComments}
+                                setCommentsTotal={setCommentsTotal}
                             />
                             :
                             <div className='mb-3'>
@@ -64,6 +68,10 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                     postId={postId}
                     isLoggedIn={isLoggedIn}
                     isViewCommentsClicked={isViewCommentsClicked}
+                    comments={comments}
+                    commentsTotal={commentsTotal}
+                    setComments={setComments}
+                    setCommentsTotal={setCommentsTotal}
                     setIsViewCommentsClicked={setIsViewCommentsClicked}
                 />
             </Col>

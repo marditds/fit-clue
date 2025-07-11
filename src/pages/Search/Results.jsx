@@ -112,6 +112,12 @@ export const Results = () => {
         await fetchAllPostsByString(false);
     }
 
+    if (isResultsFirstBatchLoading) {
+        return (
+            <LoadingPage loadingText={`Loading results for ${searchTerm || params.term}`} />
+        )
+    }
+
     return (
         <Container
             style={{
@@ -139,28 +145,26 @@ export const Results = () => {
 
             <Row>
                 {
-                    isResultsFirstBatchLoading ? (
-                        <Col>
-                            <LoadingPage loadingText={`Loading results for ${searchTerm || params.term}`} />
-                        </Col>
-                    ) : results.length === 0 ? (
+                    results.length === 0 ? (
                         null
                     ) : (
                         <>
                             <InstagramEmbedCards posts={results} />
-                            <Row className='mx-auto'>
-                                <Col className='px-0 justify-content-center'>
-                                    <LoadMoreButton
-                                        hasMore={hasMore}
-                                        onLoadMoreClick={onLoadMoreResultsClick}
-                                        isLoading={isResultsLoading}
-                                        loadMoreText={`Load more results for for ${searchTerm}`}
-                                        loadingText={`Loading more results for ${searchTerm}`}
-                                        noMoreText='No more results'
-                                        className='w-100 mb-3'
-                                    />
-                                </Col>
-                            </Row>
+                            <Col xs={12}>
+                                <Row className='mx-auto'>
+                                    <Col className='px-0 justify-content-center'>
+                                        <LoadMoreButton
+                                            hasMore={hasMore}
+                                            onClick={onLoadMoreResultsClick}
+                                            isLoading={isResultsLoading}
+                                            loadMoreText={`Load more results for for ${searchTerm}`}
+                                            loadingText={`Loading more results for ${searchTerm}`}
+                                            noMoreText='No more results'
+                                            className='w-100 mb-3'
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
                         </>
                     )
                 }

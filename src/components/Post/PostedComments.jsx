@@ -6,11 +6,12 @@ import { dateTimeFormatter } from '../../lib/utils/dateTimeFormatter';
 import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
 import { TextTooltip } from '../ToolTip/CustomTooltip';
+import { LoadMoreButton } from '../RelatedPosts/RelatedPosts';
 import { onePostComments } from '../../lib/data/testData';
 
-export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewCommentsClicked, isLoggedIn }) => {
+export const PostedComments = ({ postId, comments, setComments, commentsTotal, setCommentsTotal, isViewCommentsClicked, setIsViewCommentsClicked, isLoggedIn }) => {
 
-    const { comments, commentsLoadLimit, setComments, fetchComments, createReportComment } = usePosts();
+    const { commentsLoadLimit, fetchComments, createReportComment } = usePosts();
 
     // Fetching comments
     const [lastComment, setLastComment] = useState(null);
@@ -34,12 +35,29 @@ export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewComment
             // setComments(onePostComments);
 
             const res = await fetchComments(postId, lastComment?.$id || null);
-            // console.log('res:', res);
 
-            setLastComment(res[res.length - 1] || null);
-            setHasMore(res.length === commentsLoadLimit);
+            const commentsDocs = res.documents;
+            const commentsTotal = res.total;
 
-            if (res.length < commentsLoadLimit) {
+            setCommentsTotal(commentsTotal);
+
+            setComments((prevComments) => [...(prevComments || []), ...(commentsDocs || [])].flat());
+
+            console.log('reseseses:', commentsDocs);
+
+            if (res?.length === 0) {
+                setCommentsTotal(0);
+            }
+
+            if (res?.length === 0 || commentsDocs.length === commentsTotal) {
+                setHasMore(false);
+                return;
+            }
+
+            setLastComment(commentsDocs[commentsDocs.length - 1] || null);
+            setHasMore(commentsDocs.length === commentsLoadLimit);
+
+            if (commentsDocs.length < commentsLoadLimit) {
                 {
                     setHasMore(false);
                 }
@@ -72,7 +90,7 @@ export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewComment
     }
 
     const onViewCommentsClick = () => {
-        setIsViewCommentsClicked(preVal => !preVal)
+        setIsViewCommentsClicked(true)
     }
 
     const handleReportClick = (item) => {
@@ -91,9 +109,9 @@ export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewComment
 
     return (
         <Row className='d-flex flex-column justify-content-center mx-auto'>
-            <Col className='sticky-top px-0'>
+            <Col className='sticky-top px-0 bg-white'>
                 {
-                    !isLoggedIn ?
+                    !isLoggedIn ? (
                         <TextTooltip tooltipText='Please sign in to view comments'>
                             <Button
                                 type='button'
@@ -101,15 +119,22 @@ export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewComment
                             >
                                 View Comments
                             </Button>
-                        </TextTooltip> :
+                        </TextTooltip>
+                    ) : !isViewCommentsClicked ? (
                         <Button
                             onClick={onViewCommentsClick}
                             className='sticky-top mb-3 w-100'
                         >
-                            {isViewCommentsClicked ? 'Hide' : 'View'} Comments
+                            View Comments
                         </Button>
+                    ) : null
                 }
 
+                {isViewCommentsClicked && !isCommentsFirstBatchLoading &&
+                    <h4>
+                        Comments ({commentsTotal})
+                    </h4>
+                }
             </Col>
 
             {isViewCommentsClicked && (
@@ -154,17 +179,15 @@ export const PostedComments = ({ postId, isViewCommentsClicked, setIsViewComment
                                 </p>
                             )}
 
-                            <Button
-                                className='w-100'
+                            <LoadMoreButton
+                                isLoading={isCommentsLoading}
+                                hasMore={hasMore}
                                 onClick={onLoadMoreCommentsClick}
-                                disabled={!hasMore}
-                            >
-                                {hasMore ? (
-                                    !isCommentsLoading ? 'Load more comments' : <LoadingComponent />
-                                ) : (
-                                    'No more comments'
-                                )}
-                            </Button>
+                                loadMoreText='Load more comments'
+                                loadingText='Loading more comments'
+                                noMoreText='No more comments'
+                                className='w-100'
+                            />
                         </>
                     )}
                 </Col>

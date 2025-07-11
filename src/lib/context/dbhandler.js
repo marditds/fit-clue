@@ -834,9 +834,10 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
         )
 
         if (doc.total > 0) {
-            console.log('Comments fetched successfully:', doc.documents);
-            return doc.documents;
+            console.log('Comments fetched successfully:', doc);
+            return doc;
         }
+
         if (doc.total === 0) {
             return [];
         }

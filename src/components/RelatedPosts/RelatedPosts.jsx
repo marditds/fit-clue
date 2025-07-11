@@ -25,10 +25,10 @@ export const RelatedPosts = ({ headerText, children }) => {
     )
 }
 
-export const LoadMoreButton = ({ onLoadMoreClick, hasMore, className, isLoading, loadMoreText, loadingText, noMoreText }) => {
+export const LoadMoreButton = ({ onClick, hasMore, className, isLoading, loadMoreText, loadingText, noMoreText }) => {
     return (
         <Button
-            onClick={onLoadMoreClick}
+            onClick={onClick}
             disabled={!hasMore}
             className={className || ''}
         >
@@ -36,7 +36,7 @@ export const LoadMoreButton = ({ onLoadMoreClick, hasMore, className, isLoading,
                 !isLoading ?
                     loadMoreText :
                     <LoadingComponent
-                        loadingText={loadingText}
+                        loadingText={loadingText || ''}
                     />
             ) : (
                 noMoreText
