@@ -1,5 +1,6 @@
-import { Col, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import BackButton from '../Navigation/BackButton'
+import { LoadingComponent } from '../Loading/Loading'
 
 export const RelatedPosts = ({ headerText, children }) => {
     return (
@@ -23,3 +24,24 @@ export const RelatedPosts = ({ headerText, children }) => {
         </div>
     )
 }
+
+export const LoadMoreButton = ({ onLoadMoreClick, hasMore, className, isLoading, loadMoreText, loadingText, noMoreText }) => {
+    return (
+        <Button
+            onClick={onLoadMoreClick}
+            disabled={!hasMore}
+            className={className || ''}
+        >
+            {hasMore ? (
+                !isLoading ?
+                    loadMoreText :
+                    <LoadingComponent
+                        loadingText={loadingText}
+                    />
+            ) : (
+                noMoreText
+            )}
+        </Button>
+    )
+}
+

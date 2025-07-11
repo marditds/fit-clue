@@ -6,6 +6,8 @@ export const usePosts = () => {
 
     const { userId } = useUserContext();
 
+    const searchResultLoadLimit = 6;
+
     const commentsLoadLimit = 5;
     const [comments, setComments] = useState();
 
@@ -145,9 +147,9 @@ export const usePosts = () => {
         }
     }
 
-    const fetchPostsByString = async (str) => {
+    const fetchPostsByString = async (str, lastCursor) => {
         try {
-            const res = await getPostsByString(str);
+            const res = await getPostsByString(str, searchResultLoadLimit, lastCursor);
             return res;
         } catch (error) {
             console.error('Error fetching post by id:', error);
@@ -174,5 +176,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment }
+    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, comments, setComments, commentsLoadLimit, createReportComment, searchResultLoadLimit }
 }

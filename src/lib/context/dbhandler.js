@@ -608,18 +608,23 @@ export const fetchPostsByPersonalityName = async (personalityName) => {
     }
 }
 
-export const fetchPostsByString = async (str) => {
+export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor = null) => {
     try {
+        const queries = [
+            Query.contains('personality_name', str),
+            Query.orderDesc('$createdAt'),
+            Query.limit(searchResultLoadLimit)
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        };
 
         const postsByStr = await databases.listDocuments(
             dbEnv,
             postsCollEnv,
-            [
-                Query.contains('personality_name', str),
-                Query.orderDesc('$createdAt'),
-                Query.limit(4)
-            ]
-        )
+            queries
+        );
 
         return postsByStr;
 
