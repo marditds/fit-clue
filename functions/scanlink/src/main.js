@@ -1,35 +1,89 @@
-import { Client, Users } from 'node-appwrite';
+import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from '@google/genai';
 
-// This Appwrite function will be executed every time your function is triggered
 export default async ({ req, res, log, error }) => {
-  // You can use the Appwrite SDK to interact with other services
-  // For this example, we're using the Users service
-  const client = new Client()
-    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? '');
-  const users = new Users(client);
+  const GeminiApiKey = process.env.GEMINI_API_KEY;
 
   try {
-    const response = await users.list();
-    // Log messages and errors to the Appwrite Console
-    // These logs won't be seen by your end users
-    log(`Total users: ${response.total}`);
-  } catch(err) {
-    error("Could not list users: " + err.message);
-  }
+    let data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-  // The req object contains the request data
-  if (req.path === "/ping") {
-    // Use res object to respond with text(), json(), or binary()
-    // Don't forget to return a response!
-    return res.text("Pong");
-  }
+    log('data.link:', data.link);
 
-  return res.json({
-    motto: "Build like a team of hundreds_",
-    learn: "https://appwrite.io/docs",
-    connect: "https://appwrite.io/discord",
-    getInspired: "https://builtwith.appwrite.io",
-  });
+    if (!data.link) {
+      return res.json({ success: false, message: 'Missing link in request body.' });
+    }
+
+    const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
+
+    const prompt = 'Analyze the provided content and determine if it is Safe For Work. Respond with "ok" if it is SFW, otherwise respond with a reason why it is not SFW (e.g., "sexual content," "violent content," etc.).';
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash-001',
+      contents: [
+        { text: prompt },
+        { fileData: { mimeType: 'text/uri-list', uri: data.link } }
+      ],
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+          threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+        },
+      ],
+      config: {
+        temperature: 0,
+        topP: 0.95,
+        topK: 40,
+        maxOutputTokens: 256,
+        responseMimeType: 'text/plain'
+      }
+    });
+
+    const candidates = response.candidates;
+
+    if (candidates && candidates.length > 0) {
+      const firstCandidate = candidates[0];
+      const safetyRatings = firstCandidate.safetyRatings;
+
+      const isUnsafe = safetyRatings.some(rating => {
+        return rating.category === HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT &&
+          (rating.probability === 'MEDIUM' || rating.probability === 'HIGH');
+      });
+
+      if (isUnsafe) {
+        const problematicCategories = safetyRatings
+          .filter(rating =>
+            (rating.category === HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT && (rating.probability === 'MEDIUM' || rating.probability === 'HIGH'))
+          )
+          .map(rating => rating.category.replace('HARM_CATEGORY_', '').toLowerCase());
+
+        return res.json({ success: false, isSFW: false, reason: `Content blocked due to: ${problematicCategories.join(', ')}` });
+      } else {
+        const generatedText = firstCandidate.content.parts[0].text.trim();
+
+        if (generatedText.toLowerCase() === 'ok') {
+          return res.json({ success: true, isSFW: true, message: 'ok' });
+        } else {
+          return res.json({ success: false, isSFW: false, reason: generatedText });
+        }
+      }
+    } else {
+      log('No candidates found in the response.');
+      return res.json({ success: false, message: 'Could not determine SFW status. No candidates in response.' });
+    }
+
+  } catch (err) {
+    error('Error: ' + err.message);
+    return res.json({ success: false, message: 'Server error during SFW check', error: err.message });
+  }
 };
