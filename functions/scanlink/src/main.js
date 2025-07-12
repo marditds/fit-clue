@@ -10,7 +10,7 @@ export default async ({ req, res, log, error }) => {
     log('data.link:', data.link);
 
     if (!data.link) {
-      return res.status(400).json({ success: false, message: 'Missing link' });
+      return res.json({ success: false, message: 'Missing link' });
     }
 
     const responseFromLink = await axios.get(data.link);
@@ -41,6 +41,6 @@ export default async ({ req, res, log, error }) => {
 
   } catch (err) {
     error('Error: ' + err.message);
-    return res.status(500).json({ success: false, message: 'Server error', error: err.message });
+    return res.json({ success: false, message: 'Server error', error: err.message });
   }
 };
