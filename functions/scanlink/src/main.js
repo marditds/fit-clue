@@ -25,6 +25,8 @@ export default async ({ req, res, log, error }) => {
     const responseFromLink = await axios.get(link);
     const pageContent = responseFromLink.data;
 
+    log(pageContent);
+
     const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
 
     const systemInstruction = `You are a content safety assistant. Analyze the following webpage content and determine if it is Safe For Work (SFW). If it is safe, respond with only the word "ok". Do not add anything else.`;
