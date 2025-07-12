@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useOutletContext, useLocation } from 'react-router-dom';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
 import { Card } from '../../components/Card/Card';
 import '../../components/Post/Post.css';
 import { CommentSection } from '../../components/Post/CommentSection';
@@ -10,8 +10,9 @@ import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { LockComponent } from '../../components/Post/LockComponent';
 import { authText } from '../../config/formText';
-import { onePostData } from '../../lib/data/testData';
 import { LoadingPage } from '../../components/Loading/Loading';
+import { TextTooltipOnClick } from '../../components/ToolTip/CustomTooltip';
+import { onePostData } from '../../lib/data/testData';
 
 const Post = () => {
 
@@ -30,6 +31,8 @@ const Post = () => {
     const [isPostLoading, setIsPostLoading] = useState(false);
 
     const currentUrl = window.location.origin + location.pathname;
+    const [copyBtnTxt, setCopyBtnTxt] = useState('copy');
+    const [isUrlCopied, setIsUrlCopied] = useState(false);
 
     useEffect(() => {
         console.log('userId:', userId);
@@ -46,8 +49,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                // const post = await fetchPostById(params.postId);
-                const post = onePostData;
+                const post = await fetchPostById(params.postId);
+                // const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 
@@ -96,6 +99,19 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
+    const handleCopy = () => {
+        navigator.clipboard.writeText(currentUrl)
+            .then(() => {
+                setIsUrlCopied(true);
+
+                setTimeout(() => setIsUrlCopied(false), 800)
+            })
+            .catch((err) => {
+                console.error('Failed to copy: ', err);
+                setIsUrlCopied(false);
+            });
+    };
+
     if (isPostLoading) {
         return (
             <Container>
@@ -130,35 +146,46 @@ const Post = () => {
                             itemsLinks={itemsLinks}
                         />
 
-                        {isLoggedIn ?
-                            <>
-                                {/* Link share field */}
-                                <div>
-                                    <Row className='mx-auto'>
-                                        <Col>
-                                            <p>
-                                                Share the link with your network and ask for help in putting together your fashion collection!
-                                            </p>
-                                            <p>
-                                                {currentUrl}
+                        {/* Link share field */}
+                        <Row className='mx-auto w-100'>
+                            <Col className='py-3 border border-bottom-1 border-top-0 border-start-0 border-end-0'>
+                                <h3>Share This Page</h3>
+                                <p className='mb-0'>
+                                    Share this link with your network and ask for help completing this fashion collection!
+                                </p>
+                                <Form>
+                                    <Form.Group controlId='share-url'>
+                                        <InputGroup>
+                                            <Form.Control
+                                                value={currentUrl}
+                                                readOnly
+                                                className='me-2'
+                                            />
+                                            <TextTooltipOnClick
+                                                isItemClicked={isUrlCopied}
+                                                tooltipText={isUrlCopied && 'Copied!'}
+                                            >
                                                 <Button
                                                     type='button'
+                                                    onClick={handleCopy}
                                                 >
-                                                    Copy
+                                                    {copyBtnTxt}
                                                 </Button>
-                                            </p>
-                                        </Col>
-                                    </Row>
-                                </div>
+                                            </TextTooltipOnClick>
+                                        </InputGroup>
+                                    </Form.Group>
+                                </Form>
+                            </Col>
+                        </Row>
 
-                                {/* Add items links   */}
-                                <AddItemsLinks
-                                    postId={params.postId}
-                                    userId={userId}
-                                    isLoggedIn={isLoggedIn}
-                                    setItemsLinks={setItemsLinks}
-                                />
-                            </>
+                        {isLoggedIn ?
+
+                            <AddItemsLinks
+                                postId={params.postId}
+                                userId={userId}
+                                isLoggedIn={isLoggedIn}
+                                setItemsLinks={setItemsLinks}
+                            />
                             :
 
                             // Lock 
