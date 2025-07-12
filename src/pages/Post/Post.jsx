@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useOutletContext } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import { useParams, useOutletContext, useLocation } from 'react-router-dom';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Card } from '../../components/Card/Card';
 import '../../components/Post/Post.css';
 import { CommentSection } from '../../components/Post/CommentSection';
@@ -11,12 +11,15 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { LockComponent } from '../../components/Post/LockComponent';
 import { authText } from '../../config/formText';
 import { onePostData } from '../../lib/data/testData';
+import { LoadingPage } from '../../components/Loading/Loading';
 
 const Post = () => {
 
     const { userId, username, isLoggedIn } = useOutletContext();
 
     const params = useParams()
+
+    const location = useLocation();
 
     const { fetchPostById } = usePosts();
 
@@ -25,6 +28,8 @@ const Post = () => {
     const [personalityId, setPersonalityId] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
+
+    const currentUrl = window.location.origin + location.pathname;
 
     useEffect(() => {
         console.log('userId:', userId);
@@ -91,7 +96,13 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
-    if (isPostLoading) return <Container>Loading post…</Container>;
+    if (isPostLoading) {
+        return (
+            <Container>
+                <LoadingPage />
+            </Container>
+        );
+    }
 
     return (
         <Container>
@@ -112,7 +123,7 @@ const Post = () => {
                 />
 
                 <Col className='post__col d-flex justify-content-center w-100'>
-                    <div className='post__div-links d-flex flex-column justify-content-between w-100 h-100'>
+                    <div className={`post__div-links w-100 h-100 ${!isLoggedIn ? ' d-flex flex-column justify-content-between' : ''}`}>
 
                         {/* Items lists */}
                         <ItemsLinks
@@ -120,13 +131,35 @@ const Post = () => {
                         />
 
                         {isLoggedIn ?
-                            //   Add items links  
-                            <AddItemsLinks
-                                postId={params.postId}
-                                userId={userId}
-                                isLoggedIn={isLoggedIn}
-                                setItemsLinks={setItemsLinks}
-                            /> :
+                            <>
+                                {/* Link share field */}
+                                <div>
+                                    <Row className='mx-auto'>
+                                        <Col>
+                                            <p>
+                                                Share the link with your network and ask for help in putting together your fashion collection!
+                                            </p>
+                                            <p>
+                                                {currentUrl}
+                                                <Button
+                                                    type='button'
+                                                >
+                                                    Copy
+                                                </Button>
+                                            </p>
+                                        </Col>
+                                    </Row>
+                                </div>
+
+                                {/* Add items links   */}
+                                <AddItemsLinks
+                                    postId={params.postId}
+                                    userId={userId}
+                                    isLoggedIn={isLoggedIn}
+                                    setItemsLinks={setItemsLinks}
+                                />
+                            </>
+                            :
 
                             // Lock 
                             <LockComponent
