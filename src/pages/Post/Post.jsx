@@ -8,6 +8,8 @@ import { AddItemsLinks } from '../../components/Post/AddItemsLinks';
 import { ItemsLinks } from '../../components/Post/ItemsLinks';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { usePosts } from '../../lib/hooks/usePosts';
+import { LockComponent } from '../../components/Post/LockComponent';
+import { authText } from '../../config/formText';
 import { onePostData } from '../../lib/data/testData';
 
 const Post = () => {
@@ -110,20 +112,31 @@ const Post = () => {
                 />
 
                 <Col className='post__col d-flex justify-content-center w-100'>
-                    <div className='post__div-links w-100 h-100'>
+                    <div className='post__div-links d-flex flex-column justify-content-between w-100 h-100'>
 
                         {/* Items lists */}
                         <ItemsLinks
                             itemsLinks={itemsLinks}
                         />
 
-
                         {/* Add items links */}
-                        <AddItemsLinks
-                            postId={params.postId}
-                            userId={userId}
-                            setItemsLinks={setItemsLinks}
-                        />
+                        {isLoggedIn ?
+                            <AddItemsLinks
+                                postId={params.postId}
+                                userId={userId}
+                                isLoggedIn={isLoggedIn}
+                                setItemsLinks={setItemsLinks}
+                            /> :
+                            <LockComponent
+                                btnText={`${authText.signIn.button}`}
+                                lockTitle='Sign in to Add Links'
+                                lockText='Sign in to start curating your own fashion shopping collection!'
+                                divClassName='h-100'
+                                rowClassName='mx-auto post__div-no-links-row h-100 pt-0 pt-md-4'
+                                colClassName='text-center pb-4 pb-md-0 pt-4 pt-md-4'
+                                btnClassName='w-25'
+                            />
+                        }
 
                     </div>
                 </Col>

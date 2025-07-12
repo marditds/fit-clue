@@ -6,7 +6,7 @@ import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { CustomTooltip } from '../ToolTip/CustomTooltip';
 
 
-export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
+export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
 
     const { createLink } = useShoppingLinks();
 
@@ -73,6 +73,10 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
             <Row className='post__add-link-row mx-auto pt-3'>
                 <Col>
                     <h3>Add a link</h3>
+                    {
+                        !isLoggedIn &&
+                        <h4>Please sign in to add links.</h4>
+                    }
 
                     <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
 
@@ -81,6 +85,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                             <Form.Control
                                 type='text'
                                 value={companyName}
+                                disabled={!isLoggedIn}
                                 onChange={onCompanyNameCahnge}
                                 placeholder='Enter company name' />
                         </Form.Group>
@@ -90,6 +95,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                             <Form.Control
                                 type='text'
                                 value={itemName}
+                                disabled={!isLoggedIn}
                                 onChange={onItemNameChange}
                                 placeholder='Enter item name' />
                         </Form.Group>
@@ -99,6 +105,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                             <Form.Control
                                 type='text'
                                 value={href}
+                                disabled={!isLoggedIn}
                                 onChange={onUrlCahnge}
                                 placeholder='https://shop.example.com/product' />
                         </Form.Group>
@@ -117,6 +124,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                                 aria-label='Select similarity level'
                                 name='similarityLevel'
                                 value={similarityLevel}
+                                disabled={!isLoggedIn}
                                 onChange={onSimilarityLevelChange}
                                 required
                             >
@@ -134,7 +142,7 @@ export const AddItemsLinks = ({ userId, postId, setItemsLinks }) => {
                         <Button
                             variant='primary'
                             type='submit'
-                            disabled={!companyName || !itemName || !href}
+                            disabled={!companyName || !itemName || !href || !isLoggedIn}
                             className='mt-1'
                         >
                             {isAddningLink ? 'Adding link...' : 'Add Item Link'}
