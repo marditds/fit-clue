@@ -1,7 +1,7 @@
 import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from '@google/genai';
 
 export default async ({ req, res, log, error }) => {
-  const GeminiApiKey = process.env.GEMINI_API_KEY;
+  const GeminiApiKey = process.env.SCAN_LINK_API_KEY;
 
   try {
     let data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
