@@ -13,7 +13,16 @@ export default async ({ req, res, log, error }) => {
       return res.json({ success: false, message: 'Missing link' });
     }
 
-    const responseFromLink = await axios.get(data.link);
+    const normalizeUrl = (url) => {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        return 'https://' + url;
+      }
+      return url;
+    };
+
+    const link = normalizeUrl(data.link);
+
+    const responseFromLink = await axios.get(link);
     const pageContent = responseFromLink.data;
 
     const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
