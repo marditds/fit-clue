@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { AddComment } from '../Form/AddComment';
 import { PostedComments } from './PostedComments';
 import { authText } from '../../config/formText';
 import { LockComponent } from './LockComponent';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
+
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     const [comments, setComments] = useState([]);
     const [commentsTotal, setCommentsTotal] = useState(0);
@@ -24,6 +27,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
                     {
                         isLoggedIn ?
+                            // Add comment
                             <AddComment
                                 postId={postId}
                                 userId={userId}
@@ -34,39 +38,21 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                                 setCommentsTotal={setCommentsTotal}
                             />
                             :
+                            // Lock
                             <LockComponent
                                 rowClassName='d-flex justify-content-evenly'
-                                lockText={`Please sign in to leave a comment. Don't have an account? ${<Link to='/sign-up'>Create one for free</Link>}.`}
+                                lockText={<>
+                                    Please sign in to leave a comment. Don't have an account?{' '}
+                                    <Link to="/sign-up">
+                                        Create one for free
+                                    </Link>.
+                                </>}
                                 divClassName='mb-3'
                                 path='/sign-in'
-                                btnClassName=''
+                                titleClassName='mb-0'
+                                btnClassName={isXs || isSm || isMd ? 'w-100' : 'w-auto'}
                                 btnText={authText.signIn.button}
                             />
-                        // <div className='mb-3'>
-                        //     <p>
-                        //         {authText.commentPrompt}
-                        //     </p>
-                        //     <Row className='d-flex justify-content-evenly'>
-                        //         <Col>
-                        //             <Button
-                        //                 as={Link}
-                        //                 to='/sign-in'
-                        //                 className='w-100'
-                        //             >
-                        //                 {authText.signIn.button}
-                        //             </Button>
-                        //         </Col>
-                        //         <Col>
-                        //             <Button
-                        //                 as={Link}
-                        //                 to='/sign-up'
-                        //                 className='w-100'
-                        //             >
-                        //                 {authText.signUp.button}
-                        //             </Button>
-                        //         </Col>
-                        //     </Row>
-                        // </div>
                     }
 
                 </div>

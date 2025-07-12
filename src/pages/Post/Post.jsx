@@ -119,14 +119,16 @@ const Post = () => {
                             itemsLinks={itemsLinks}
                         />
 
-                        {/* Add items links */}
                         {isLoggedIn ?
+                            //   Add items links  
                             <AddItemsLinks
                                 postId={params.postId}
                                 userId={userId}
                                 isLoggedIn={isLoggedIn}
                                 setItemsLinks={setItemsLinks}
                             /> :
+
+                            // Lock 
                             <LockComponent
                                 btnText={`${authText.signIn.button}`}
                                 lockTitle='Sign in to Add Links'
@@ -135,6 +137,7 @@ const Post = () => {
                                 rowClassName='mx-auto post__div-no-links-row h-100 pt-0 pt-md-4'
                                 colClassName='text-center pb-4 pb-md-0 pt-4 pt-md-4'
                                 btnClassName='w-25'
+                                path='/sign-in'
                             />
                         }
 
