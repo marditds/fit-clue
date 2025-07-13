@@ -29,9 +29,9 @@ export default async ({ req, res, log, error }) => {
 
     const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
 
-    const systemInstruction = `You are a content safety assistant. Analyze the following webpage content and determine if it is Safe For Work (SFW). If it is safe, respond with only the word "ok". Do not add anything else.`;
+    const systemInstruction = `You are a content safety assistant. Analyze the following domain name or the webpage content. If you recognize the domain name as platforms that are used for distributing and/or sharing NSFW content, immediately respond with "unsafe." If it is not apparent from the domain name, analyze the content of the webpage to determine if it is Safe For Work (SFW). If it is safe, respond with only the word "ok". If it contains any Not Safe For Work (NSFW) content (e.g., nudity, sexually explicit material, violence, gore, hate speech, illegal activities), respond with "unsafe". Do not add anything else. Additionally, if you recognize the domain name and the domin is never used to sell products such as twitter.com or x.com, repond with "Not a valid shopping link."`;
 
-    const fullPrompt = `${systemInstruction}\n\nContent:\n${pageContent.slice(0, 8000)}`;
+    const fullPrompt = `${systemInstruction}\n\nLink:\n${link}\nContent:\n${pageContent.slice(0, 8000)}`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.0-flash-001',
