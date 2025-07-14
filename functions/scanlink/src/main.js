@@ -151,9 +151,9 @@ Content: ${specialDomains.includes(domain) ? '[No content available]' : content}
       model: 'gemini-2.0-flash-001',
       contents: safetyCheckPrompt,
       config: {
-        temperature: 0.2,
-        topP: 0.8,
-        maxOutputTokens: 1024,
+        temperature: 0.0,
+        topP: 0.7,
+        maxOutputTokens: 100,
         responseMimeType: 'text/plain'
       }
     });
