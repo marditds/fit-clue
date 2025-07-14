@@ -12,6 +12,8 @@ import { LockComponent } from '../../components/Post/LockComponent';
 import { authText } from '../../config/formText';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { TextTooltipOnClick } from '../../components/ToolTip/CustomTooltip';
+import { SharePost } from '../../components/Post/SharePost';
+import { Interaction } from '../../components/Post/Interaction';
 import { onePostData } from '../../lib/data/testData';
 
 const Post = () => {
@@ -49,8 +51,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                const post = await fetchPostById(params.postId);
-                // const post = onePostData;
+                // const post = await fetchPostById(params.postId);
+                const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 
@@ -143,40 +145,15 @@ const Post = () => {
 
                         {/* Items lists */}
                         <ItemsLinks
+                            isLoggedIn={isLoggedIn}
                             itemsLinks={itemsLinks}
                         />
 
+                        {/* Interaction buttons */}
+                        <Interaction />
+
                         {/* Link share field */}
-                        <Row className='mx-auto w-100'>
-                            <Col className='py-3 border border-bottom-1 border-top-0 border-start-0 border-end-0'>
-                                <h3>Share This Page</h3>
-                                <p className='mb-0'>
-                                    Share this link with your network and ask for help completing this fashion collection!
-                                </p>
-                                <Form>
-                                    <Form.Group controlId='share-url'>
-                                        <InputGroup>
-                                            <Form.Control
-                                                value={currentUrl}
-                                                readOnly
-                                                className='me-2'
-                                            />
-                                            <TextTooltipOnClick
-                                                isItemClicked={isUrlCopied}
-                                                tooltipText={isUrlCopied && 'Copied!'}
-                                            >
-                                                <Button
-                                                    type='button'
-                                                    onClick={handleCopy}
-                                                >
-                                                    {copyBtnTxt}
-                                                </Button>
-                                            </TextTooltipOnClick>
-                                        </InputGroup>
-                                    </Form.Group>
-                                </Form>
-                            </Col>
-                        </Row>
+                        <SharePost />
 
                         {isLoggedIn ?
 

@@ -5,7 +5,7 @@ import { ReportModal } from '../Modals/Modals'
 import { reportCategories } from '../../lib/data/reportCategories'
 import { usePosts } from '../../lib/hooks/usePosts'
 
-export const ItemsLinks = ({ itemsLinks }) => {
+export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
     const { createReportLink } = usePosts();
 
@@ -41,7 +41,7 @@ export const ItemsLinks = ({ itemsLinks }) => {
                     <Col className='d-flex justify-content-center align-items-center'>
                         Similarity
                     </Col>
-                    <Col className='d-flex justify-content-center align-items-center'>
+                    <Col className={`d-flex justify-content-center align-items-center ${!isLoggedIn ? 'd-none' : ''}`}>
                     </Col>
                 </Row>
             }
@@ -58,7 +58,7 @@ export const ItemsLinks = ({ itemsLinks }) => {
                             <a
                                 href={itemLink.href}
                                 target='_blank'
-                                className='d-flex align-items-start align-items-lg-center justify-content-center col-9 px-0'
+                                className={`d-flex align-items-start align-items-lg-center justify-content-center px-0 ${!isLoggedIn ? 'col' : 'col-9'}`}
                             >
                                 <ItemLinkCol
                                     displayText={itemLink.item}
@@ -79,7 +79,8 @@ export const ItemsLinks = ({ itemsLinks }) => {
                                 />
                             </a>
 
-                            <Col xs={3} className='d-flex justify-content-center align-items-center link__report-btn-col'>
+                            <Col xs={3}
+                                className={`d-flex justify-content-center align-items-center link__report-btn-col ${!isLoggedIn ? 'd-none' : ''}`}>
                                 <Button
                                     className='px-2 py-1 link__report-btn'
                                     onClick={(e) => {
