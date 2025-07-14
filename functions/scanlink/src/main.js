@@ -103,46 +103,49 @@ export default async ({ req, res, log, error }) => {
     }
 
     const safetyCheckPrompt = `
-You are a strict content safety assistant.
+You are a strict content safety assistant. Your task is to classify the safety and validity of a webpage link and its content. You must return **exactly one** of the following responses — nothing else.
 
-Step 1: If the domain is familiar, use your previously known knowledge to determine if it is a safe shopping link.
+- unsafe
+- ok
+- Not a valid shopping link
 
-- If the domain is a known non-shopping platform (like twitter.com or x.com), respond with:
-Not a valid shopping link.
+Follow the steps below:
 
-- If the domain is a known shopping platform (like amazon.com or prada.com), respond with:
+Step 1: Check if the domain is well-known and can be classified based on your existing knowledge.
+
+- If the domain is a known non-shopping platform (e.g., twitter.com, x.com), respond with:
+Not a valid shopping link
+
+- If the domain is a known shopping platform (e.g., amazon.com, prada.com), respond with:
 ok
 
-- If the domain is a known NSFW platform, respond with:
+- If the domain is associated with adult or other NSFW content, respond with:
 unsafe
 
-Step 2: If the following content is not in English, silently translate it into English. Do not say "translated text" or anything else. Just continue to the next step using the English version internally.
+If the domain is not familiar or you cannot confidently classify it, proceed to Step 2.
 
-Step 3: Analyze the English content.
+Step 2: If the content is not in English, translate it into English internally. Do not include any translation labels or indicate that translation occurred.
 
-- If the content contains any NSFW material (e.g. nudity, explicit language, gore, hate speech, illegal activity), respond with **only**:
+Step 3: Analyze the content.
+
+- If it contains any NSFW material (e.g., nudity, explicit language, gore, hate speech, or illegal activity), respond with:
 unsafe
 
-- If the content is clean and safe for work, respond with:
+- If the content is clean and safe for work **and** it appears to be from a legitimate shopping site, respond with:
 ok
 
-- If the domain is a known non-shopping platform (like twitter.com or x.com), respond with:
-Not a valid shopping link.
+- If the content is clean but does not relate to online shopping, respond with:
+Not a valid shopping link
 
-- If the domain is a known shopping platform (like Amazon or Chanel), respond with:
-ok
-
-- If the content of the webpage is safe, but it does not associate with any online shop, respond with:
-Not a valid shopping link.
-
-You must return exactly one of these answers — nothing else.
+You must return only one of the three valid responses: "unsafe", "ok", or "Not a valid shopping link".
 
 ---
 
 Link: ${link}
 
 Content: ${specialDomains.includes(domain) ? '[No content available]' : content}
-    `.trim();
+`.trim();
+
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.0-flash-001',
