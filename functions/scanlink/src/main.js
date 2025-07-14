@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import axios from 'axios';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 
 export default async ({ req, res, log, error }) => {
   const GeminiApiKey = process.env.SCAN_LINK_API_KEY;
