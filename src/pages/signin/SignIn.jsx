@@ -4,10 +4,9 @@ import { useUser } from '../../lib/hooks/useUser';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { SignForm } from '../../components/Form/SignForm';
 import signInImg from '../../assets/sign-in.jpg'
-import { FormText } from 'react-bootstrap';
 import { authText } from '../../config/formText';
 
-export const SignIn = () => {
+const SignIn = () => {
 
     const navigate = useNavigate();
 
@@ -132,3 +131,4 @@ export const SignIn = () => {
         />
     )
 }
+export default SignIn;

@@ -3,9 +3,9 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { useUser } from '../../../lib/hooks/useUser';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { DashboardForm } from '../../../components/Form/DashboardForm';
-import { LoadingComponent } from '../../../components/Loading/Loading';
+import { LoadingComponent, LoadingPage } from '../../../components/Loading/Loading';
 
-export const Dashboard = () => {
+const Dashboard = () => {
 
     const navigate = useNavigate();
 
@@ -163,9 +163,7 @@ export const Dashboard = () => {
 
     if (isDashboardLoading) {
         return (
-            <Container>
-                Loading your dashboard <span>{<LoadingComponent />}</span>...
-            </Container>
+            <LoadingPage loadingText='Loading your dashboard' />
         )
     }
 
@@ -286,3 +284,5 @@ export const Dashboard = () => {
         </Container>
     )
 }
+
+export default Dashboard;

@@ -3,19 +3,19 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
 import './index.css'
-import App from './App.jsx'
-import Post from './pages/Post/Post.jsx';
-import NavigationBar from './components/Navigation/NavigationBar.jsx';
-import CreatePost from './pages/Post/CreatePost.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { SignUp } from './pages/signup/SignUp.jsx';
-import { SignIn } from './pages/signin/SignIn.jsx';
-import { Dashboard } from './pages/user/dashboard/Dashboard.jsx';
-import { ForgotPassword } from './pages/forgot-password/ForgotPassword.jsx';
-import { ResetPassword } from './pages/reset-password/ResetPassword';
+import App from './App.jsx'
+import Post from './pages/post/Post.jsx';
+import NavigationBar from './components/Navigation/NavigationBar.jsx';
+import CreatePost from './pages/post/CreatePost.jsx';
+import SignUp from './pages/signup/SignUp.jsx';
+import SignIn from './pages/signin/SignIn.jsx';
+import Dashboard from './pages/user/dashboard/Dashboard.jsx';
+import ForgotPassword from './pages/forgot-password/ForgotPassword.jsx';
+import ResetPassword from './pages/reset-password/ResetPassword';
 import Footer from './components/Footer/Footer.jsx';
-import { Results } from './pages/search/Results.jsx';
+import Results from './pages/search/Results.jsx';
 import { More } from './pages/personality/More.jsx';
 
 const MainLayout = () => {

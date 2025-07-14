@@ -10,7 +10,7 @@ import { SearchForm } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
 import { searchResultsData } from '../../lib/data/testData';
 
-export const Results = () => {
+const Results = () => {
 
     const params = useParams();
 
@@ -175,3 +175,5 @@ export const Results = () => {
         </Container>
     )
 }
+
+export default Results; 

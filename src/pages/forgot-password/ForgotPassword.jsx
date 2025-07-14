@@ -6,7 +6,7 @@ import { Form } from 'react-bootstrap';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import forgotImg from '../../assets/forgot-password.jpg';
 
-export const ForgotPassword = () => {
+const ForgotPassword = () => {
 
     const { createPasswordRecoveryEmail } = useUser();
 
@@ -111,4 +111,6 @@ export const ForgotPassword = () => {
             </Form.Group>
         </PasswordForm>
     )
-} 
+}
+
+export default ForgotPassword;

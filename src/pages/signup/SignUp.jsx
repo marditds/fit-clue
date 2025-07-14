@@ -8,7 +8,7 @@ import { keysProvider } from '../../lib/context/keysProvider';
 import { reCaptchaVerification } from '../../lib/context/dbhandler';
 import { authText } from '../../config/formText';
 
-export const SignUp = () => {
+const SignUp = () => {
 
     const { setUserId, setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
 
@@ -173,3 +173,5 @@ export const SignUp = () => {
         />
     )
 }
+
+export default SignUp;

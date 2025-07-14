@@ -6,7 +6,7 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import resetImg from '../../assets/reset-password.jpg';
 
-export const ResetPassword = () => {
+const ResetPassword = () => {
 
     const { updatePasswordFromRecoveryEmail } = useUser();
 
@@ -151,3 +151,5 @@ export const ResetPassword = () => {
         </PasswordForm>
     )
 }
+
+export default ResetPassword;
