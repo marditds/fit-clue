@@ -16,12 +16,11 @@ export default async ({ req, res, log, error }) => {
     const response = await ai.models.generateContent({
       model: 'gemini-2.0-flash-001',
       contents: `${systemInstruction}\n\n${data.commentText}`,
-      // contents: `Who invented the ${data.commentText} alphabet?`,
       config: {
-        temperature: 1,
-        topP: 0.95,
-        topK: 40,
-        maxOutputTokens: 8192,
+        temperature: 0.0,
+        topP: 0.7,
+        topK: 1,
+        maxOutputTokens: 52,
         responseMimeType: 'text/plain'
       }
     });
