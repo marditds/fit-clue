@@ -65,10 +65,15 @@ export default async ({ req, res, log, error }) => {
     if (!specialDomains.includes(domain)) {
       try {
         const responseFromLink = await axios.get(link, {
-          timeout: 7000,
+          timeout: 7000,           // 7-second timeout
           maxRedirects: 3,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
           }
         });
 
@@ -84,9 +89,11 @@ export default async ({ req, res, log, error }) => {
           .join('\n');
 
         content = `${title}\n${h1}\n${paragraphs}`.trim().slice(0, 8000);
+
       } catch (axiosErr) {
-        if (axiosErr.code === 'ECONNABORTED') {
-          log(`Timeout fetching ${link}. Proceeding with no content.`);
+        const status = axiosErr.response?.status;
+        if (axiosErr.code === 'ECONNABORTED' || status === 403) {
+          log(`Blocked or timed out fetching ${link} (status: ${status || 'timeout'}). Proceeding with no content.`);
           content = '[No content available]';
         } else {
           log(`Failed to fetch link: ${axiosErr.message}`);
