@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import axios from 'axios';
+import cheerio from 'cheerio';
 
 export default async ({ req, res, log, error }) => {
   const GeminiApiKey = process.env.SCAN_LINK_API_KEY;
@@ -27,28 +28,56 @@ export default async ({ req, res, log, error }) => {
 
     const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
 
-    const systemInstruction = `You are a content safety assistant. Analyze the following domain name or the webpage content. If you recognize the domain name as platforms that are used for distributing and/or sharing NSFW content, immediately respond with "unsafe." If it is not apparent from the domain name, analyze the content of the webpage to determine if it is Safe For Work (SFW). If it is safe, respond with only the word "ok". If it contains any Not Safe For Work (NSFW) content (e.g., nudity, sexually explicit material, violence, gore, hate speech, illegal activities), respond with "unsafe". Do not add anything else. Additionally, if you recognize the domain name and the domain is never used to sell products such as twitter.com or x.com, respond with "Not a valid shopping link."`;
+    let content = '';
 
-    let fullPrompt;
-
-    if (specialDomains.includes(domain)) {
-
-      fullPrompt = `${systemInstruction}\n\nLink:\n${link}`;
-
-    } else {
+    if (!specialDomains.includes(domain)) {
       const responseFromLink = await axios.get(link, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36'
         }
       });
-      const pageContent = responseFromLink.data;
-      fullPrompt = `${systemInstruction}\n\nLink:\n${link}\nContent:\n${pageContent.slice(0, 8000)}`;
 
+      const rawHtml = responseFromLink.data;
+      const $ = cheerio.load(rawHtml);
+
+      const title = $('title').text();
+      const h1 = $('h1').map((_, el) => $(el).text()).get().join('\n');
+      const paragraphs = $('p').map((_, el) => $(el).text()).get().join('\n');
+
+      content = `${title}\n${h1}\n${paragraphs}`.trim().slice(0, 8000); // Max input chunk
     }
+
+    const safetyCheckPrompt = `
+You are a strict content safety assistant.
+
+Step 1: If the following content is not in English, silently translate it into English. Do not say "translated text" or anything else. Just continue to the next step using the English version internally.
+
+Step 2: Analyze the English content.
+
+- If the content contains any NSFW material (e.g. nudity, explicit language, gore, hate speech, illegal activity), respond with **only**:
+unsafe
+
+- If the content is clean and safe for work, respond with:
+ok
+
+- If the domain is a known non-shopping platform (like twitter.com or x.com), respond with:
+Not a valid shopping link.
+
+- If the content of the webpage is safe, but it does not associate with any online shop, respond with:
+Not a valid shopping link.
+
+You must return exactly one of these answers — nothing else.
+
+---
+
+Link: ${link}
+
+Content: ${specialDomains.includes(domain) ? '[No content available]' : content}
+    `.trim();
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.0-flash-001',
-      contents: fullPrompt,
+      contents: safetyCheckPrompt,
       config: {
         temperature: 0.2,
         topP: 0.8,
