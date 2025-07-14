@@ -38,7 +38,6 @@ export default async ({ req, res, log, error }) => {
       return res.json({ success: false, message: 'Not a valid shopping link.' });
     }
 
-    // Check for internal/private IPs to prevent SSRF
     try {
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
       const isPrivateIP = (ip) => {
@@ -66,8 +65,8 @@ export default async ({ req, res, log, error }) => {
     if (!specialDomains.includes(domain)) {
       try {
         const responseFromLink = await axios.get(link, {
-          timeout: 7000,           // 7 second timeout
-          maxRedirects: 3,         // Prevent redirect loops
+          timeout: 7000,
+          maxRedirects: 3,
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0.0.0 Safari/537.36'
           }
@@ -81,22 +80,38 @@ export default async ({ req, res, log, error }) => {
         const paragraphs = $('p')
           .map((_, el) => $(el).text())
           .get()
-          .slice(0, 10) // Limit to first 10 paragraphs
+          .slice(0, 10)
           .join('\n');
 
         content = `${title}\n${h1}\n${paragraphs}`.trim().slice(0, 8000);
       } catch (axiosErr) {
-        log(`Failed to fetch link: ${axiosErr.message}`);
-        return res.json({ success: false, message: 'Failed to fetch the link.', error: axiosErr.message });
+        if (axiosErr.code === 'ECONNABORTED') {
+          log(`Timeout fetching ${link}. Proceeding with no content.`);
+          content = '[No content available]';
+        } else {
+          log(`Failed to fetch link: ${axiosErr.message}`);
+          return res.json({ success: false, message: 'Failed to fetch the link.', error: axiosErr.message });
+        }
       }
     }
 
     const safetyCheckPrompt = `
 You are a strict content safety assistant.
 
-Step 1: If the following content is not in English, silently translate it into English. Do not say "translated text" or anything else. Just continue to the next step using the English version internally.
+Step 1: If the domain is familiar, use your previously known knowledge to determine if it is a safe shopping link.
 
-Step 2: Analyze the English content.
+- If the domain is a known non-shopping platform (like twitter.com or x.com), respond with:
+Not a valid shopping link.
+
+- If the domain is a known shopping platform (like amazon.com or prada.com), respond with:
+ok
+
+- If the domain is a known NSFW platform, respond with:
+unsafe
+
+Step 2: If the following content is not in English, silently translate it into English. Do not say "translated text" or anything else. Just continue to the next step using the English version internally.
+
+Step 3: Analyze the English content.
 
 - If the content contains any NSFW material (e.g. nudity, explicit language, gore, hate speech, illegal activity), respond with **only**:
 unsafe
