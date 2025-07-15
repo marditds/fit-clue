@@ -20,6 +20,7 @@ const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
 const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
+const savesCollEnv = import.meta.env.VITE_SAVES_COLLECTION;
 const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 
@@ -768,6 +769,63 @@ export const createReportLink = async (linkId, reason) => {
     }
 }
 
+// Saves 
+export const createSave = async (postId, userId) => {
+
+    console.log({ postId, userId });
+
+    try {
+        const saveRes = await databases.createDocument(
+            dbEnv,
+            savesCollEnv,
+            ID.unique(),
+            {
+                post_id: postId,
+                user_id: userId
+            }
+        )
+
+        if (saveRes) {
+            return saveRes;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error creating save:', error);
+    }
+}
+
+export const fetchSavesByPostId = async (postId) => {
+    try {
+        const savesByPostId = await databases.listDocuments(
+            dbEnv,
+            savesCollEnv,
+            [Query.equal('post_id', postId)]
+        );
+
+        if (savesByPostId.total > 0) {
+            return savesByPostId;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching saves by post id:', error);
+    }
+}
+
+export const deleteSave = async (docId) => {
+    try {
+        await databases.deleteDocument(
+            dbEnv,
+            savesCollEnv,
+            docId
+        )
+    } catch (error) {
+        console.error('Error deleting save:', error);
+    }
+}
+
+// Comments 
 export const createReportComment = async (commentId, reason) => {
     try {
         const reportDoc = await databases.createDocument(

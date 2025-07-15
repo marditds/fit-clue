@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useOutletContext, useLocation } from 'react-router-dom';
-import { Container, Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
+import { useParams, useOutletContext } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Card/Card';
 import '../../components/Post/Post.css';
 import { CommentSection } from '../../components/Post/CommentSection';
@@ -11,7 +11,6 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { LockComponent } from '../../components/Post/LockComponent';
 import { authText } from '../../config/formText';
 import { LoadingPage } from '../../components/Loading/Loading';
-import { TextTooltipOnClick } from '../../components/ToolTip/CustomTooltip';
 import { SharePost } from '../../components/Post/SharePost';
 import { Interaction } from '../../components/Post/Interaction';
 import { onePostData } from '../../lib/data/testData';
@@ -22,8 +21,6 @@ const Post = () => {
 
     const params = useParams()
 
-    const location = useLocation();
-
     const { fetchPostById } = usePosts();
 
     const [iUrl, setIUrl] = useState(null);
@@ -32,18 +29,6 @@ const Post = () => {
     const [itemsLinks, setItemsLinks] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
 
-    const currentUrl = window.location.origin + location.pathname;
-    const [copyBtnTxt, setCopyBtnTxt] = useState('copy');
-    const [isUrlCopied, setIsUrlCopied] = useState(false);
-
-    useEffect(() => {
-        console.log('userId:', userId);
-    }, [userId])
-
-    useEffect(() => {
-        console.log('username:', username);
-    }, [userId])
-
     // Get the post
     useEffect(() => {
         const getPosts = async () => {
@@ -51,8 +36,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                // const post = await fetchPostById(params.postId);
-                const post = onePostData;
+                const post = await fetchPostById(params.postId);
+                // const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 
@@ -101,19 +86,6 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(currentUrl)
-            .then(() => {
-                setIsUrlCopied(true);
-
-                setTimeout(() => setIsUrlCopied(false), 800)
-            })
-            .catch((err) => {
-                console.error('Failed to copy: ', err);
-                setIsUrlCopied(false);
-            });
-    };
-
     if (isPostLoading) {
         return (
             <Container>
@@ -150,10 +122,16 @@ const Post = () => {
                         />
 
                         {/* Interaction buttons */}
-                        <Interaction />
+                        <Interaction
+                            postId={params.postId}
+                            userId={userId}
+                        >
+                            <SharePost />
+                        </Interaction>
 
                         {/* Link share field */}
-                        <SharePost />
+                        {/* <SharePost /> */}
+
 
                         {isLoggedIn ?
 

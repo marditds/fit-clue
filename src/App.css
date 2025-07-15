@@ -10,6 +10,7 @@
   --main-border-color: rgb(219, 219, 219);
   --main-accent-color: rgb(219, 219, 219);
   --main-accent-color-hover: rgb(119, 119, 119);
+  --main-accent-color-active: rgb(119, 119, 119);
   --main-accent-color-rgb-vals: 219, 219, 219;
   --main-text-color: rgb(0, 0, 0);
   --main-text-color-hover: rgb(219, 219, 219);
@@ -107,6 +108,11 @@ a[role="button"]:focus {
 button:active,
 a[role="button"]:active {
   box-shadow: none !important;
+}
+
+.button-active {
+  background-color: var(--main-accent-color-active) !important;
+  color: var(--main-accent-color) !important;
 }
 
 .loading__i {
