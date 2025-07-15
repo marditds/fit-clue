@@ -800,16 +800,67 @@ export const fetchSavesByPostId = async (postId) => {
         const savesByPostId = await databases.listDocuments(
             dbEnv,
             savesCollEnv,
-            [Query.equal('post_id', postId)]
+            [
+                Query.equal('post_id', postId),
+                Query.limit(1)
+            ],
         );
 
         if (savesByPostId.total > 0) {
+            console.log('savesByPostId:', savesByPostId);
             return savesByPostId;
         }
 
         return null;
     } catch (error) {
         console.error('Error fetching saves by post id:', error);
+    }
+}
+
+export const fetchSavesByUserId = async (userId) => {
+    try {
+        const savesByUserId = await databases.listDocuments(
+            dbEnv,
+            savesCollEnv,
+            [
+                Query.equal('user_id', postId),
+                Query.limit(5)
+            ],
+        );
+
+        if (savesByUserId.total > 0) {
+            console.log('savesByUserId:', savesByUserId);
+            return savesByUserId;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching saves by user id:', error);
+    }
+}
+
+export const fetchUserSaveForPost = async (postId, userId) => {
+    try {
+        const userSaveForPost = await databases.listDocuments(
+            dbEnv,
+            savesCollEnv,
+            [Query.and(
+                [
+                    Query.equal('post_id', postId),
+                    Query.equal('user_id', userId)
+                ]
+            )
+            ],
+        );
+
+        if (userSaveForPost.total > 0) {
+            console.log('userSaveForPost:', userSaveForPost);
+            return userSaveForPost;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching saves by user for this post:', error);
     }
 }
 

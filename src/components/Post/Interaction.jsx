@@ -5,7 +5,7 @@ import { LoadingComponent } from '../Loading/Loading';
 
 export const Interaction = ({ children, postId, userId }) => {
 
-    const { createSave, fetchSavesByPostId, deleteSave } = usePosts();
+    const { createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave } = usePosts();
 
     // Button states
     const [savesCount, setSavesCount] = useState(0);
@@ -16,6 +16,7 @@ export const Interaction = ({ children, postId, userId }) => {
     const [isCreatingSave, setIsCreatingSave] = useState(false);
     const [savedDocId, setSavedDocId] = useState(null);
 
+    // Fech total saves number
     useEffect(() => {
         const getSavesByPostId = async () => {
             try {
@@ -26,20 +27,28 @@ export const Interaction = ({ children, postId, userId }) => {
 
                     setSavesCount(saves.total)
 
-                    const userHasSaved = saves.documents.find((savedDoc) => savedDoc.user_id === userId);
-
-                    if (userHasSaved) {
-                        setSavedDocId(userHasSaved.$id);
-                    }
-
-                    setIsPostSaved(!!userHasSaved);
-
                 }
             } catch (error) {
                 console.error('Error getting saves by post id:', error);
             }
-        }
+        };
         getSavesByPostId();
+    }, [])
+
+    useEffect(() => {
+        const getUserSaveForPost = async () => {
+            try {
+                const res = await fetchUserSaveForPost(postId, userId);
+
+                if (res) {
+                    setSavedDocId(res.documents[0].$id);
+                    setIsPostSaved(!!res);
+                }
+            } catch (error) {
+                console.error('Error getting user save for post:', error);
+            }
+        };
+        getUserSaveForPost();
     }, [])
 
     useEffect(() => {
