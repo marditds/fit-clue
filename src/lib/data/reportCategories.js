@@ -37,7 +37,7 @@ export const reportCategories = [
     {
         label: "Off-Topic Content",
         short: "OFF-TOPIC",
-        description: "Not related to wearable items or irrelevant to the app’s purpose."
+        description: "Not related to wearable items or irrelevant to the app's purpose."
     },
     {
         label: "Impersonation",

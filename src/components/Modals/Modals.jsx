@@ -5,7 +5,7 @@ import './Modals.css';
 export const ReportModal = ({
     show,
     onClose,
-    item,
+    itemId,
     reportCategories,
     onSubmitReport
 }) => {
@@ -27,7 +27,7 @@ export const ReportModal = ({
     const handleSubmit = async () => {
         setIsSubmitting(true);
         try {
-            await onSubmitReport(item?.$id, selectedReason);
+            await onSubmitReport(itemId, selectedReason);
             setIsReportSubmitted(true);
             setTimeout(onClose, 2000);
         } catch (error) {
@@ -51,57 +51,52 @@ export const ReportModal = ({
                 {isReportSubmitted ? (
                     <p>Your report has been submitted successfully.</p>
                 ) : (
-                    <>
-                        {/* <p>
-                            Reporting: <strong>{item?.item} from {item?.company_name}</strong>
-                        </p> */}
-                        <Form className='report-modal__form'>
-                            {reportCategories.map((category, index) => (
-                                <Form.Check
-                                    type='radio'
-                                    id={`report-${index}`}
-                                    key={index}
-                                    name='reportReason'
-                                    label={<><strong>{category.label}</strong>: {category.description}</>}
-                                    value={category.short}
-                                    checked={selectedReason === category.short || (category.short === 'OTHER' && isOtherSelected)}
+                    <Form className='report-modal__form'>
+                        {reportCategories.map((category, index) => (
+                            <Form.Check
+                                type='radio'
+                                id={`report-${index}`}
+                                key={index}
+                                name='reportReason'
+                                label={<><strong>{category.label}</strong>: {category.description}</>}
+                                value={category.short}
+                                checked={selectedReason === category.short || (category.short === 'OTHER' && isOtherSelected)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value === 'OTHER') {
+                                        setIsOtherSelected(true);
+                                        setSelectedReason(otherText);
+                                    } else {
+                                        setIsOtherSelected(false);
+                                        setOtherText('');
+                                        setSelectedReason(value);
+                                    }
+                                }}
+                            />
+                        ))}
+
+                        {isOtherSelected && (
+                            <div className='mt-3'>
+                                <Form.Label>
+                                    Please describe the issue (max 300 characters)
+                                </Form.Label>
+                                <Form.Control
+                                    as='textarea'
+                                    rows={3}
+                                    maxLength={300}
+                                    value={otherText}
                                     onChange={(e) => {
                                         const value = e.target.value;
-                                        if (value === 'OTHER') {
-                                            setIsOtherSelected(true);
-                                            setSelectedReason(otherText);
-                                        } else {
-                                            setIsOtherSelected(false);
-                                            setOtherText('');
-                                            setSelectedReason(value);
-                                        }
+                                        setOtherText(value);
+                                        setSelectedReason(value);
                                     }}
                                 />
-                            ))}
-
-                            {isOtherSelected && (
-                                <div className='mt-3'>
-                                    <Form.Label>
-                                        Please describe the issue (max 300 characters)
-                                    </Form.Label>
-                                    <Form.Control
-                                        as='textarea'
-                                        rows={3}
-                                        maxLength={300}
-                                        value={otherText}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            setOtherText(value);
-                                            setSelectedReason(value);
-                                        }}
-                                    />
-                                    <div className='text-muted text-end'>
-                                        {otherText.length} / 300
-                                    </div>
+                                <div className='text-muted text-end'>
+                                    {otherText.length} / 300
                                 </div>
-                            )}
-                        </Form>
-                    </>
+                            </div>
+                        )}
+                    </Form>
                 )}
             </Modal.Body>
 

@@ -32,36 +32,36 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
             setIsCommentsLoading(true);
 
             // To be commented out when testing real data
-            setComments(onePostComments);
+            // setComments(onePostComments);
 
-            // const res = await fetchComments(postId, lastComment?.$id || null);
+            const res = await fetchComments(postId, lastComment?.$id || null);
 
-            // const commentsDocs = res.documents;
-            // const commentsTotal = res.total;
+            const commentsDocs = res.documents;
+            const commentsTotal = res.total;
 
-            // setCommentsTotal(commentsTotal);
+            setCommentsTotal(commentsTotal);
 
-            // setComments((prevComments) => [...(prevComments || []), ...(commentsDocs || [])].flat());
+            setComments((prevComments) => [...(prevComments || []), ...(commentsDocs || [])].flat());
 
-            // console.log('reseseses:', commentsDocs);
+            console.log('reseseses:', commentsDocs);
 
-            // if (res?.length === 0) {
-            //     setCommentsTotal(0);
-            // }
+            if (res?.length === 0) {
+                setCommentsTotal(0);
+            }
 
-            // if (res?.length === 0 || commentsDocs.length === commentsTotal) {
-            //     setHasMore(false);
-            //     return;
-            // }
+            if (res?.length === 0 || commentsDocs.length === commentsTotal) {
+                setHasMore(false);
+                return;
+            }
 
-            // setLastComment(commentsDocs[commentsDocs.length - 1] || null);
-            // setHasMore(commentsDocs.length === commentsLoadLimit);
+            setLastComment(commentsDocs[commentsDocs.length - 1] || null);
+            setHasMore(commentsDocs.length === commentsLoadLimit);
 
-            // if (commentsDocs.length < commentsLoadLimit) {
-            //     {
-            //         setHasMore(false);
-            //     }
-            // }
+            if (commentsDocs.length < commentsLoadLimit) {
+                {
+                    setHasMore(false);
+                }
+            }
 
         } catch (error) {
             console.error('Error getting comments:', error);
@@ -196,7 +196,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
             <ReportModal
                 show={show}
                 onClose={handleClose}
-                item={selectedComment}
+                itemId={selectedComment?.$id}
                 reportCategories={commentReportCategories}
                 onSubmitReport={handleSubmitReport}
             />

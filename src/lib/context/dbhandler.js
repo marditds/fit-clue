@@ -23,6 +23,7 @@ const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
 const savesCollEnv = import.meta.env.VITE_SAVES_COLLECTION;
 const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
+const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
 
 export const createUser = async (email, password, name) => {
     try {
@@ -449,39 +450,6 @@ export const createPersonality = async (personalityName) => {
     }
 }
 
-export const createLink = async (href, companyName, item, userId, similarityLevel) => {
-
-    console.log({ href, companyName, item, userId, similarityLevel });
-
-    if (!href) {
-        return;
-    }
-
-    try {
-        const res = await databases.createDocument(
-            dbEnv,
-            linksCollEnv,
-            ID.unique(),
-            {
-                href,
-                company_name: companyName,
-                item,
-                user_id: userId,
-                similarity_level: similarityLevel
-            }
-        )
-
-        if (res) {
-            return res;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error creating link:', error);
-
-    }
-}
-
 export const fetchTheLatestPosts = async () => {
     try {
         const postsRes = await databases.listDocuments(
@@ -634,31 +602,6 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
     }
 }
 
-export const fetchProductLinksByIds = async (productLinkId) => {
-
-    console.log('linkId in fetchProductLinksByIds:', productLinkId);
-
-
-    if (productLinkId.length === 0) {
-        return [];
-    }
-
-    try {
-        const res = await databases.listDocuments(
-            dbEnv,
-            linksCollEnv,
-            [Query.equal('$id', productLinkId)]
-        )
-        if (res.total > 0) {
-            return res;
-        }
-
-        return [];
-    } catch (error) {
-        console.error('Error fetching links:', error);
-    }
-}
-
 export const fetchPersonalitiesByIds = async (personalityId) => {
     try {
         const res = await databases.listDocuments(
@@ -713,23 +656,6 @@ export const fetchPersonalityByName = async (name) => {
     }
 }
 
-export const fetchLinks = async () => {
-    try {
-        const res = await databases.listDocuments(
-            dbEnv,
-            linksCollEnv
-        )
-        if (res.total > 0) {
-            return res;
-        }
-
-        return [];
-    } catch (error) {
-        console.error('Error fetching links:', error);
-
-    }
-}
-
 export const fetchPersonalities = async () => {
     try {
         const res = await databases.listDocuments(
@@ -747,6 +673,62 @@ export const fetchPersonalities = async () => {
     }
 }
 
+export const createPostReport = async (postId, reason) => {
+    try {
+        const reportDoc = await databases.createDocument(
+            dbEnv,
+            reportsPostsCollEnv,
+            ID.unique(),
+            {
+                post_id: postId,
+                reason
+            }
+        )
+
+        if (reportDoc) {
+            console.log('Post report created successfully.');
+            return reportDoc;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error creating post report:', error);
+    }
+}
+
+// Links
+export const createLink = async (href, companyName, item, userId, similarityLevel) => {
+
+    console.log({ href, companyName, item, userId, similarityLevel });
+
+    if (!href) {
+        return;
+    }
+
+    try {
+        const res = await databases.createDocument(
+            dbEnv,
+            linksCollEnv,
+            ID.unique(),
+            {
+                href,
+                company_name: companyName,
+                item,
+                user_id: userId,
+                similarity_level: similarityLevel
+            }
+        )
+
+        if (res) {
+            return res;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error creating link:', error);
+
+    }
+}
+
 export const createReportLink = async (linkId, reason) => {
     try {
         const reportDoc = await databases.createDocument(
@@ -760,12 +742,54 @@ export const createReportLink = async (linkId, reason) => {
         )
 
         if (reportDoc) {
-            console.log('Post report created successfully.');
+            console.log('Link report created successfully.');
             return reportDoc;
         }
         return null;
     } catch (error) {
-        console.error('Error creating post report:', error);
+        console.error('Error creating link report:', error);
+    }
+}
+
+export const fetchLinks = async () => {
+    try {
+        const res = await databases.listDocuments(
+            dbEnv,
+            linksCollEnv
+        )
+        if (res.total > 0) {
+            return res;
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error fetching links:', error);
+
+    }
+}
+
+export const fetchProductLinksByIds = async (productLinkId) => {
+
+    console.log('linkId in fetchProductLinksByIds:', productLinkId);
+
+
+    if (productLinkId.length === 0) {
+        return [];
+    }
+
+    try {
+        const res = await databases.listDocuments(
+            dbEnv,
+            linksCollEnv,
+            [Query.equal('$id', productLinkId)]
+        )
+        if (res.total > 0) {
+            return res;
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error fetching links:', error);
     }
 }
 
@@ -808,7 +832,7 @@ export const fetchSavesByPostId = async (postId) => {
 
         if (savesByPostId.total > 0) {
             console.log('savesByPostId:', savesByPostId);
-            return savesByPostId;
+            return savesByPostId.total;
         }
 
         return null;

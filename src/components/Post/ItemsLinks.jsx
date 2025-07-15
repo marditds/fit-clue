@@ -14,6 +14,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
     const [selectedItem, setSelectedItem] = useState(null);
 
     const handleReportClick = (item) => {
+        console.log("item:", item);
         setSelectedItem(item);
         setShowModal(true);
     };
@@ -109,7 +110,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
             {/* Report Link modal */}
             <ReportModal
-                item={selectedItem}
+                itemId={selectedItem?.$id}
                 onClose={handleClose}
                 reportCategories={reportCategories}
                 show={showModal}
