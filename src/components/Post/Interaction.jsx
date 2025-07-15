@@ -3,11 +3,11 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { Button, Col, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { ReportModal } from '../Modals/Modals';
-import { reportCategories } from '../../lib/data/reportCategories';
+import { postReportCategories } from '../../lib/data/reportCategories';
 
 export const Interaction = ({ children, postId, userId }) => {
 
-    const { createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave } = usePosts();
+    const { createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport } = usePosts();
 
     // Button states
     const [savesCount, setSavesCount] = useState(0);
@@ -100,16 +100,16 @@ export const Interaction = ({ children, postId, userId }) => {
     }
 
     const handleReportClick = () => {
+        setIsReportClicked(true);
         setShowModal(true);
     };
 
     const handleClose = () => {
         setShowModal(false);
-        setSelectedItem(null);
     };
 
-    const onSubmitReportLinkClick = async (selectedItemLinkId, reason) => {
-        await createReportLink(selectedItemLinkId, reason);
+    const onSubmitReportPost = async (selectedItemLinkId, reason) => {
+        await createPostReport(selectedItemLinkId, reason);
     }
 
     const interactionButtons = [
@@ -138,10 +138,7 @@ export const Interaction = ({ children, postId, userId }) => {
             icon: 'bi bi-flag',
             loadingComponent: null,
             isClicked: isReportClicked,
-            func: () => {
-                console.log(`Report is clicked.`);
-                handleReportClick();
-            },
+            func: () => { handleReportClick(); },
         },
     ]
 
@@ -173,9 +170,9 @@ export const Interaction = ({ children, postId, userId }) => {
             <ReportModal
                 itemId={postId}
                 onClose={handleClose}
-                reportCategories={reportCategories}
+                reportCategories={postReportCategories}
                 show={showModal}
-                onSubmitReport={onSubmitReportLinkClick}
+                onSubmitReport={onSubmitReportPost}
             />
 
         </>

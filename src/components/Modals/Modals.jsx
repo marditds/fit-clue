@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import './Modals.css';
+import { LoadingComponent } from '../Loading/Loading';
 
 export const ReportModal = ({
     show,
@@ -109,7 +110,7 @@ export const ReportModal = ({
                         disabled={!selectedReason || isSubmitting}
                         onClick={handleSubmit}
                     >
-                        {isSubmitting ? 'Submitting...' : 'Submit'}
+                        {isSubmitting ? <LoadingComponent loadingText='Sumbitting' /> : 'Submit'}
                     </Button>
                 )}
             </Modal.Footer>

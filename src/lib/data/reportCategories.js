@@ -47,7 +47,7 @@ export const reportCategories = [
     {
         label: "Illegal Items",
         short: "ILLEGAL",
-        description: "Content involving counterfeit goods or prohibited items."
+        description: "Content involving prohibited items."
     },
     {
         label: "Other",
@@ -86,5 +86,43 @@ export const commentReportCategories = [
         label: "Other",
         short: "OTHER",
         description: "None of the above — let us know why."
+    }
+];
+
+export const postReportCategories = [
+    {
+        label: "Spam or Scam",
+        short: "SPAM",
+        description: "Unrelated promotional content or scams."
+    },
+    {
+        label: "Inappropriate or Offensive Content",
+        short: "OFFENSIVE",
+        description: "Includes nudity, hate speech, harassment, or discriminatory content."
+    },
+    {
+        label: "Misinformation or Misleading Content",
+        short: "MISINFO",
+        description: "False or deceptive content."
+    },
+    {
+        label: "Copyright or Trademark Infringement",
+        short: "COPYRIGHT",
+        description: "Unauthorized use of protected logos, designs, or brand names."
+    },
+    {
+        label: "Broken Post",
+        short: "BROKEN",
+        description: "The shared post does not work."
+    },
+    {
+        label: "Off-Topic Content",
+        short: "OFF-TOPIC",
+        description: "Not related to wearable items or irrelevant to the app's purpose."
+    },
+    {
+        label: "Illegal Items",
+        short: "ILLEGAL",
+        description: "Content involving prohibited items."
     }
 ];
