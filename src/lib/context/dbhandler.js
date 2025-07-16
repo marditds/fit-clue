@@ -882,7 +882,6 @@ export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor 
         );
 
         if (savesByUserId.total > 0) {
-            // console.log('savesByUserId:', savesByUserId);
             return savesByUserId;
         }
 

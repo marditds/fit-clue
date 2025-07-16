@@ -20,8 +20,6 @@ export const SavedPosts = () => {
     const [userSavesTotal, setUserSavesTotal] = useState([]);
     const [isSavesLoading, setIsSavesLoading] = useState(false);
 
-    let instaPosts = [];
-
     const getSavesByPostId = async () => {
 
         if (!userId || !hasMore) {
@@ -33,19 +31,28 @@ export const SavedPosts = () => {
         try {
             const userSaves = await fetchSavesByUserId(userId, lastSave || null);
 
+            if (!userSaves) {
+                setHasMore(false);
+                return;
+            }
+
             setUserSavesTotal(userSaves.total);
 
             const userSavesDocs = userSaves.documents;
 
             console.log(`userSaves by ${username}:`, userSaves);
 
-            instaPosts = await Promise.all(
+            const fetchedInstaPosts = await Promise.all(
                 userSavesDocs.map((usrSvs) => fetchInstaPostById(usrSvs.post_id))
             );
 
-            // console.log(`instaPosts by ${username}:`, instaPosts);
+            console.log(`instaPosts by ${username}:`, fetchedInstaPosts);
 
-            setUserSaves(prevInstaPosts => [...prevInstaPosts, ...instaPosts]);
+            if (lastSave === null) {
+                setUserSaves(fetchedInstaPosts);
+            } else {
+                setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
+            }
 
             setLastSave(userSavesDocs[userSavesDocs.length - 1].$id || null);
 
@@ -64,10 +71,6 @@ export const SavedPosts = () => {
             setIsSavesLoading(false);
         }
     }
-
-    useEffect(() => {
-        console.log('instaPosts in useEffect:', instaPosts);
-    }, [instaPosts])
 
     useEffect(() => {
         console.log('userSaves in useEffect:', userSaves);
