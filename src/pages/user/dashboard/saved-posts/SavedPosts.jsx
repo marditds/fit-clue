@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { LoadingPage } from '../../../../components/Loading/Loading';
 import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedCards ';
 import { savesDashboardData } from '../../../../lib/data/testData';
+import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
 
 export const SavedPosts = () => {
 
@@ -14,10 +15,12 @@ export const SavedPosts = () => {
 
     const [lastSave, setLastSave] = useState(null);
     const [hasMore, setHasMore] = useState(true);
-    const [isSavesBatchLoading, setIsSavesFirstBatchLoading] = useState(false);
+    const [isSavesFirstBatchLoading, setIsSavesFirstBatchLoading] = useState(false);
     const [userSaves, setUserSaves] = useState([]);
     const [userSavesTotal, setUserSavesTotal] = useState([]);
     const [isSavesLoading, setIsSavesLoading] = useState(false);
+
+    let instaPosts = [];
 
     const getSavesByPostId = async () => {
 
@@ -32,23 +35,23 @@ export const SavedPosts = () => {
 
             setUserSavesTotal(userSaves.total);
 
+            const userSavesDocs = userSaves.documents;
+
             console.log(`userSaves by ${username}:`, userSaves);
 
-            const instaPosts = await Promise.all(
-                userSaves.documents.map((usrSvs) => fetchInstaPostById(usrSvs.post_id))
+            instaPosts = await Promise.all(
+                userSavesDocs.map((usrSvs) => fetchInstaPostById(usrSvs.post_id))
             );
 
-            setUserSaves(prev => [...prev, ...instaPosts]);
+            // console.log(`instaPosts by ${username}:`, instaPosts);
 
-            const lastDoc = userSaves.documents[userSaves.documents.length - 1];
-            setLastSave(lastDoc?.$id || null);
+            setUserSaves(prevInstaPosts => [...prevInstaPosts, ...instaPosts]);
 
-            // Determine if there's more to fetch
-            if (userSaves.documents.length < userSavesLoadLimit) {
+            setLastSave(userSavesDocs[userSavesDocs.length - 1].$id || null);
+
+            if (userSavesDocs.length < userSavesLoadLimit) {
                 setHasMore(false);
             }
-
-            console.log(`instaPosts by ${username}:`, instaPosts);
 
             // const instaPosts = savesDashboardData;
 
@@ -61,6 +64,14 @@ export const SavedPosts = () => {
             setIsSavesLoading(false);
         }
     }
+
+    useEffect(() => {
+        console.log('instaPosts in useEffect:', instaPosts);
+    }, [instaPosts])
+
+    useEffect(() => {
+        console.log('userSaves in useEffect:', userSaves);
+    }, [userSaves])
 
     useEffect(() => {
         const loadingSavesFirstBatch = async () => {
@@ -82,7 +93,7 @@ export const SavedPosts = () => {
         await getSavesByPostId();
     }
 
-    if (isSavesLoading) {
+    if (isSavesFirstBatchLoading) {
         return (
             <LoadingPage loadingText='Loading your saves' />
         )
@@ -102,9 +113,27 @@ export const SavedPosts = () => {
             </Row>
 
             <Row>
-                <InstagramEmbedCards
-                    posts={userSaves}
-                />
+                {userSaves?.length > 0 ?
+                    (<InstagramEmbedCards
+                        posts={userSaves}
+                    />) : (
+                        <p>You saved posts well appear here.</p>
+                    )
+                }
+            </Row>
+
+            <Row>
+                <Col>
+                    <LoadMoreButton
+                        isLoading={isSavesLoading}
+                        hasMore={hasMore}
+                        onClick={onLoadMoreSavesClick}
+                        loadMoreText='Load more saves'
+                        loadingText='Loading more saves'
+                        noMoreText='No more saves'
+                        className='w-100'
+                    />
+                </Col>
             </Row>
         </Col>
     )

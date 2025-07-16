@@ -534,14 +534,10 @@ export const fetchInstaPostById = async (postId) => {
             postId
         );
 
-        console.log('postRes in fetchInstaPostById:', postRes);
-
         if (!postRes) {
             console.log('No posts yet.');
             return null
         };
-
-        console.log('result in fetchInstaPostById:', postRes);
 
         return postRes;
 
@@ -871,7 +867,7 @@ export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor 
     try {
         const queries = [
             Query.equal('user_id', userId),
-            Query.orderDesc('$createAt'),
+            Query.orderDesc('$createdAt'),
             Query.limit(userSavesLoadLimit)
         ];
 
@@ -886,7 +882,7 @@ export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor 
         );
 
         if (savesByUserId.total > 0) {
-            console.log('savesByUserId:', savesByUserId);
+            // console.log('savesByUserId:', savesByUserId);
             return savesByUserId;
         }
 
