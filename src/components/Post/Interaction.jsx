@@ -3,14 +3,16 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { Button, Col, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { ReportModal } from '../Modals/Modals';
+import { TextTooltip, TextTooltipOnClick } from '../ToolTip/CustomTooltip';
 import { postReportCategories } from '../../lib/data/reportCategories';
 
-export const Interaction = ({ children, postId, userId }) => {
+export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 
     const { createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport } = usePosts();
 
     // Button states
     const [savesCount, setSavesCount] = useState(0);
+    const [isPostSavedClicked, setIsPostSavedClicked] = useState(false);
     const [isShareClicked, setIsShareClicked] = useState(false);
     const [isReportClicked, setIsReportClicked] = useState(false);
     const [isPostSaved, setIsPostSaved] = useState(false);
@@ -60,14 +62,14 @@ export const Interaction = ({ children, postId, userId }) => {
 
                 if (res) {
                     setSavedDocId(res.documents[0].$id);
-                    setIsPostSaved(!!res);
+                    setIsPostSaved(true);
                 }
             } catch (error) {
                 console.error('Error getting user save for post:', error);
             }
         };
         getUserSaveForPost();
-    }, [])
+    }, [userId])
 
     const removeSave = async () => {
         setIsUpdatingSaveStatus(true);
@@ -106,6 +108,7 @@ export const Interaction = ({ children, postId, userId }) => {
 
     const handleClose = () => {
         setShowModal(false);
+        setIsReportClicked(false);
     };
 
     const onSubmitReportPost = async (selectedItemLinkId, reason) => {
@@ -113,23 +116,25 @@ export const Interaction = ({ children, postId, userId }) => {
     }
 
     const interactionButtons = [
+        // {
+        //     name: 'Share',
+        //     icon: 'bi bi-share',
+        //     loadingComponent: null,
+        //     isClicked: isShareClicked,
+        //     func: () => { setIsShareClicked(preVal => !preVal) },
+        // },
         {
-            name: 'Share',
-            icon: 'bi bi-share',
-            loadingComponent: null,
-            isClicked: isShareClicked,
-            func: () => { setIsShareClicked(preVal => !preVal) },
-        },
-        {
-            name: !isPostSaved ? 'Save ' + savesCount : (!isUpdatingSaveStatus && isPostSaved ? 'Saved ' + savesCount : ''),
+            name: !isPostSaved ? 'Save ' + '(' + savesCount + ')' : (!isUpdatingSaveStatus && isPostSaved ? 'Saved ' + '(' + savesCount + ')' : ''),
             icon: !isPostSaved ? 'bi bi-floppy' : 'bi bi-floppy-fill',
             loadingComponent: (isUpdatingSaveStatus || isGettingSaveStatus) ? <LoadingComponent loadingText=' ' /> : null,
             isClicked: isPostSaved,
             func: async () => {
-                if (isPostSaved) {
-                    await removeSave();
-                } else {
-                    await makeSave();
+                if (isLoggedIn) {
+                    if (isPostSaved) {
+                        await removeSave();
+                    } else {
+                        await makeSave();
+                    }
                 }
             },
         },
@@ -138,7 +143,11 @@ export const Interaction = ({ children, postId, userId }) => {
             icon: 'bi bi-flag',
             loadingComponent: null,
             isClicked: isReportClicked,
-            func: () => { handleReportClick(); },
+            func: () => {
+                if (isLoggedIn) {
+                    handleReportClick();
+                }
+            },
         },
     ]
 
@@ -146,19 +155,23 @@ export const Interaction = ({ children, postId, userId }) => {
         <>
             <div>
                 <Row className='mx-auto'>
-                    <Col className={`d-flex justify-content-around pt-4 ${!isShareClicked ? 'border border-bottom-1 border-top-0 border-start-0 border-end-0 pb-4' : ''}`}>
+                    <Col className={`d-flex justify-content-evenly pt-4 ${!isShareClicked ? 'border border-bottom-1 border-top-0 border-start-0 border-end-0 pb-4' : ''}`}>
                         {
                             interactionButtons.map((button, idx) => {
                                 return (
-                                    <Button
+                                    <TextTooltip
                                         key={idx}
-                                        onClick={button.func}
-                                        className={`d-flex justify-content-center w-25 ${button.isClicked ? 'button-active' : ''}`}
+                                        tooltipText={!isLoggedIn ? 'Please sign in to perform this action.' : button.name}
                                     >
-                                        <i className={`${button.icon} me-2`} />{' '}
-                                        {button.loadingComponent ?? button.name}
-                                        {button.actionCount}
-                                    </Button>
+                                        <Button
+                                            onClick={button.func}
+                                            className={`d-flex justify-content-center interaction__btn ${isLoggedIn && button.isClicked ? 'button-active' : ''}`}
+                                        >
+                                            <i className={`${button.icon} me-2`} />{' '}
+                                            {button.loadingComponent ?? button.name}
+                                            {button.actionCount}
+                                        </Button>
+                                    </TextTooltip>
                                 )
                             })
                         }

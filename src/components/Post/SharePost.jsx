@@ -28,7 +28,7 @@ export const SharePost = () => {
         <div>
             <Row className='mx-auto w-100'>
                 <Col className='py-4 border border-bottom-1 border-top-0 border-start-0 border-end-0'>
-                    <h3>Share This Page</h3>
+                    <h3><i className='bi bi-share me-2' /> Share This Page</h3>
                     <p className='mb-0'>
                         Share this link with your network and ask for help completing this fashion collection!
                     </p>

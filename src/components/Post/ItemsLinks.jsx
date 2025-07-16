@@ -102,7 +102,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                             No Shopping Links Yet
                         </h5>
                         <p className='mb-0'>
-                            Start building your fashion collection by adding your first shopping link below!
+                            Start building this fashion collection by adding its first shopping link below!
                         </p>
                     </Col>
                 </Row>

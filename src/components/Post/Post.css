@@ -77,6 +77,10 @@
     padding-block: 22px;
 }
 
+.interaction__btn {
+    width: 45%;
+}
+
 @media (max-width: 767px) {
     .post__col {
         border-top: 0px !important;

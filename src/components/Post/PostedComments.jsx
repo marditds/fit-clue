@@ -132,7 +132,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
 
                 {isViewCommentsClicked && !isCommentsFirstBatchLoading &&
                     <h4>
-                        Comments ({commentsTotal})
+                        <i className='bi bi-chat-left me-2' /> Comments ({commentsTotal})
                     </h4>
                 }
             </Col>

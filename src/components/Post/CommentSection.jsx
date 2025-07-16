@@ -22,7 +22,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
             <Col xs={12} lg={5}>
                 <div className='sticky-top'>
                     <h3>
-                        Leave a comment
+                        <i className='bi bi-chat-left-dots me-2' />   Leave a comment
                     </h3>
 
                     {

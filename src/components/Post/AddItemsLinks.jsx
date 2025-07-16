@@ -70,9 +70,9 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
 
     return (
         <div>
-            <Row className='post__add-link-row mx-auto pt-3'>
+            <Row className='post__add-link-row mx-auto py-4'>
                 <Col>
-                    <h3>Add New Shopping Link</h3>
+                    <h3><i className='bi bi-plus-lg me-2' /> Add New Shopping Link</h3>
                     {
                         !isLoggedIn &&
                         <h4>Please sign in to add links.</h4>

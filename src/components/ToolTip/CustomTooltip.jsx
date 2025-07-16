@@ -37,7 +37,7 @@ export const CustomTooltip = ({ iconClassName, tooltipText }) => {
 export const TextTooltip = ({ tooltipText, children }) => {
     return (
         <OverlayTrigger
-            // show 
+            // show
             placement='top'
             overlay={
                 <Tooltip className='tool-tip__custom'>

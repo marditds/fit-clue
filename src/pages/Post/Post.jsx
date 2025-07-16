@@ -125,13 +125,11 @@ const Post = () => {
                         <Interaction
                             postId={params.postId}
                             userId={userId}
-                        >
-                            <SharePost />
-                        </Interaction>
+                            isLoggedIn={isLoggedIn}
+                        />
 
                         {/* Link share field */}
-                        {/* <SharePost /> */}
-
+                        <SharePost />
 
                         {isLoggedIn ?
 
