@@ -17,6 +17,8 @@ import ResetPassword from './pages/reset-password/ResetPassword';
 import Footer from './components/Footer/Footer.jsx';
 import Results from './pages/search/Results.jsx';
 import { More } from './pages/personality/More.jsx';
+import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';
+import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
 
 const MainLayout = () => {
 
@@ -97,7 +99,21 @@ const router = createBrowserRouter([
       },
       {
         path: 'dashboard',
-        element: <Dashboard />
+        element: <Dashboard />,
+        children: [
+          {
+            index: true,
+            element: <AccountSettings />
+          },
+          {
+            path: 'settings',
+            element: <AccountSettings />
+          },
+          {
+            path: 'saved-posts',
+            element: <SavedPosts />
+          }
+        ]
       },
       {
         path: 'sign-up',

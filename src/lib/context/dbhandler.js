@@ -525,6 +525,32 @@ export const fetchPostById = async (postId) => {
     }
 };
 
+export const fetchInstaPostById = async (postId) => {
+
+    try {
+        const postRes = await databases.getDocument(
+            dbEnv,
+            postsCollEnv,
+            postId
+        );
+
+        console.log('postRes in fetchInstaPostById:', postRes);
+
+        if (!postRes) {
+            console.log('No posts yet.');
+            return null
+        };
+
+        console.log('result in fetchInstaPostById:', postRes);
+
+        return postRes;
+
+    } catch (error) {
+        console.error('Error fetching insta post:', error);
+        return null;
+    }
+};
+
 export const fetchPostsByPersonalityId = async (personalityId) => {
     try {
 
@@ -842,12 +868,15 @@ export const fetchSavesByPostId = async (postId) => {
 }
 
 export const fetchSavesByUserId = async (userId) => {
+
+    console.log('userId in fetchSavesByUserId:', userId);
+
     try {
         const savesByUserId = await databases.listDocuments(
             dbEnv,
             savesCollEnv,
             [
-                Query.equal('user_id', postId),
+                Query.equal('user_id', userId),
                 Query.limit(5)
             ],
         );

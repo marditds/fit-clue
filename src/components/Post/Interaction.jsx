@@ -49,7 +49,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
         getSavesByPostId();
     }, [])
 
-    // Fech saves
+    // Fech save status for one post
     useEffect(() => {
         const getUserSaveForPost = async () => {
 

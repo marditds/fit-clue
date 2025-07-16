@@ -1,0 +1,251 @@
+import { Col, Row, Button } from "react-bootstrap";
+import { DashboardForm } from "../../../../components/Form/DashboardForm";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { useUser } from "../../../../lib/hooks/useUser";
+import { useState } from "react";
+
+export const AccountSettings = () => {
+
+    const navigate = useNavigate();
+
+    const { userId, setUserId,
+        email, setEmail,
+        username, setUsername,
+        setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
+
+    const { updateUserPassword, updateUsernameInCollection, deleteUserFromPlatform } = useUser();
+
+    // Username
+    const [newUsername, setNewUsername] = useState(username);
+    const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
+    const [usrnmSuccessMsg, setUsrnmSuccessMsg] = useState(null);
+    const [usrnmErrorMsg, setUsrnmErrorMsg] = useState(null);
+
+    // Passwprd
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [psswdSuccessMsg, setPsswdSuccessMsg] = useState(null);
+    const [psswdErrorMsg, setPsswdErrorMsg] = useState(null);
+    const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+    //Account delete
+    const [isDeleteInProgress, setIsDeleteInProgress] = useState(false);
+
+    const onUpdateUsernameClick = async () => {
+
+        try {
+            setIsUpdatingUsername(true);
+
+            const res = await updateUsernameInCollection(userId, newUsername);
+
+            console.log(res);
+
+            if (typeof res === 'string') {
+                setUsrnmErrorMsg(res);
+                setUsrnmSuccessMsg('');
+                return;
+            }
+
+            setUsername(res.username);
+            setUsrnmErrorMsg('');
+            setUsrnmSuccessMsg('Username updated successfully.');
+
+        } catch (error) {
+            console.error('Error updating username:', error);
+        } finally {
+            setIsUpdatingUsername(false);
+        }
+    }
+
+    const onUpdateUserPasswordClick = async () => {
+
+        if (newPassword !== confirmNewPassword) {
+            setPsswdErrorMsg('Your passwords do not match. Re-enter your new password.');
+            setNewPassword('');
+            setConfirmNewPassword('');
+            return;
+        }
+
+        try {
+            setIsUpdatingPassword(true);
+
+            const res = await updateUserPassword(newPassword, currentPassword);
+
+            if (typeof res === 'string') {
+                setPsswdErrorMsg(res);
+                return;
+            }
+
+            setPsswdErrorMsg('');
+            setPsswdSuccessMsg('Password updated successfully.');
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmNewPassword('');
+
+        } catch (error) {
+            console.error('Error updating user password:', error);
+        } finally {
+            setIsUpdatingPassword(false);
+        }
+    }
+
+    const removeUserFromPlatform = async () => {
+        setIsDeleteInProgress(true);
+        try {
+            const res = await deleteUserFromPlatform();
+
+            console.log('res.success:', res.success);
+
+            if (res.success === true) {
+
+                setUserId(null);
+                setIsLoggedIn(false);
+                setIsSessionInProgress(false);
+                setUsername('');
+                setEmail('');
+
+                localStorage.removeItem('authUserId');
+
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Error removing user from platform:', error);
+        } finally {
+            setIsDeleteInProgress(false);
+        }
+    }
+
+    const updateUsernameFields = [
+        {
+            id: 'newUsernameField',
+            label: 'Username',
+            type: 'text',
+            placeholder: 'Enter your new username',
+            value: newUsername,
+            onChange: (e) => setNewUsername(e.target.value),
+        },
+    ];
+
+    const updatePasswordFields = [
+        {
+            id: 'currentPasswordField',
+            label: 'Current password',
+            type: 'password',
+            placeholder: 'Enter your current password',
+            value: currentPassword,
+            onChange: (e) => setCurrentPassword(e.target.value),
+        },
+        {
+            id: 'newPasswordField',
+            label: 'New password',
+            type: 'password',
+            placeholder: 'Enter your new password',
+            value: newPassword,
+            onChange: (e) => setNewPassword(e.target.value),
+        },
+        {
+            id: 'newPasswordRenterField',
+            label: 'Confirm new password',
+            type: 'password',
+            placeholder: 'Confirm your new password',
+            value: confirmNewPassword,
+            onChange: (e) => setConfirmNewPassword(e.target.value),
+        },
+    ];
+
+    return (
+        <Col className='border'>
+
+            {/* Dashboard title */}
+            <Row>
+                <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
+                    <h3 className='fw-bold'>
+                        Account Settings
+                    </h3>
+                    <p>
+                        Manage your account information and security settings
+                    </p>
+                </Col>
+            </Row>
+
+            {/* Username update */}
+            <Row>
+                <Col className='p-4 p-lg-5'>
+                    <DashboardForm
+                        title='Username'
+                        description='Your username must be unique. Your username will be visible to others.'
+                        fields={updateUsernameFields}
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            onUpdateUsernameClick();
+                        }}
+                        buttonLabel='Update Username'
+                        isLoading={isUpdatingUsername}
+                        isDisabled={
+                            !newUsername ||
+                            newUsername.includes(' ') ||
+                            newUsername === username
+                        }
+                        successMsg={usrnmSuccessMsg}
+                        errorMsg={usrnmErrorMsg}
+                    />
+
+                </Col>
+            </Row>
+
+            <hr />
+
+            {/* Password update */}
+            <Row>
+                <Col className='p-4 p-lg-5'>
+                    <DashboardForm
+                        title='Password'
+                        description='Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.'
+                        fields={updatePasswordFields}
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            onUpdateUserPasswordClick();
+                        }}
+                        buttonLabel='Update Password'
+                        isLoading={isUpdatingPassword}
+                        isDisabled={
+                            currentPassword.length < 8 ||
+                            !currentPassword || !newPassword || !confirmNewPassword || isUpdatingPassword
+                        }
+                        successMsg={psswdSuccessMsg}
+                        errorMsg={psswdErrorMsg}
+                    />
+
+                </Col>
+            </Row>
+
+            <hr />
+
+            {/* Account delete */}
+            <Row>
+                <Col className='p-4 p-lg-5'>
+
+                    <h4>
+                        Delete Account
+                    </h4>
+                    <p className='text-muted'>
+                        This action is irreversible. You will not be able to recover your account.
+                    </p>
+
+                    <Button
+                        onClick={removeUserFromPlatform}
+                        className='w-100'
+                    >
+                        {
+                            !isDeleteInProgress ?
+                                'Delete Account' :
+                                <LoadingComponent />
+                        }
+                    </Button>
+                </Col>
+            </Row>
+
+        </Col>
+    )
+} 
