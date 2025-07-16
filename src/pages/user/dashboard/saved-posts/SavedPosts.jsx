@@ -1,4 +1,4 @@
-import { Col, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { useOutletContext } from 'react-router-dom';
 import { usePosts } from '../../../../lib/hooks/usePosts';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ export const SavedPosts = () => {
     const [hasMore, setHasMore] = useState(true);
     const [isSavesFirstBatchLoading, setIsSavesFirstBatchLoading] = useState(false);
     const [userSaves, setUserSaves] = useState([]);
-    const [userSavesTotal, setUserSavesTotal] = useState([]);
+    const [userSavesTotal, setUserSavesTotal] = useState(0);
     const [isSavesLoading, setIsSavesLoading] = useState(false);
 
     const getSavesByPostId = async () => {
@@ -29,41 +29,42 @@ export const SavedPosts = () => {
         setIsSavesLoading(true);
 
         try {
-            const userSaves = await fetchSavesByUserId(userId, lastSave || null);
+            // const userSaves = await fetchSavesByUserId(userId, lastSave || null);
 
-            if (!userSaves) {
-                setHasMore(false);
-                return;
-            }
+            // if (!userSaves) {
+            //     console.log('No saves found.');
+            //     setHasMore(false);
+            //     return;
+            // }
 
-            setUserSavesTotal(userSaves.total);
+            // setUserSavesTotal(userSaves.total);
 
-            const userSavesDocs = userSaves.documents;
+            // const userSavesDocs = userSaves.documents;
 
-            console.log(`userSaves by ${username}:`, userSaves);
+            // console.log(`userSaves by ${username}:`, userSaves);
 
-            const fetchedInstaPosts = await Promise.all(
-                userSavesDocs.map((usrSvs) => fetchInstaPostById(usrSvs.post_id))
-            );
+            // const fetchedInstaPosts = await Promise.all(
+            //     userSavesDocs.map((usrSvs) => fetchInstaPostById(usrSvs.post_id))
+            // );
 
-            console.log(`instaPosts by ${username}:`, fetchedInstaPosts);
+            // console.log(`instaPosts by ${username}:`, fetchedInstaPosts);
 
-            if (lastSave === null) {
-                setUserSaves(fetchedInstaPosts);
-            } else {
-                setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
-            }
+            // if (lastSave === null) {
+            //     setUserSaves(fetchedInstaPosts);
+            // } else {
+            //     setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
+            // }
 
-            setLastSave(userSavesDocs[userSavesDocs.length - 1].$id || null);
+            // setLastSave(userSavesDocs[userSavesDocs.length - 1].$id || null);
 
-            if (userSavesDocs.length < userSavesLoadLimit) {
-                setHasMore(false);
-            }
+            // if (userSavesDocs.length < userSavesLoadLimit) {
+            //     setHasMore(false);
+            // }
 
             // const instaPosts = savesDashboardData;
 
-            // setUserSaves(instaPosts);
-            // setUserSavesTotal(instaPosts.length);
+            setUserSaves([]);
+            setUserSavesTotal(0);
 
         } catch (error) {
             console.error('Error getting saves:', error);
@@ -104,8 +105,8 @@ export const SavedPosts = () => {
 
     return (
         <Col className='border'>
-            <Row>
-                <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
+            <Row className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
+                <Col className=''>
                     <h3 className='fw-bold'>
                         Your Saves ({userSavesTotal})
                     </h3>
@@ -115,12 +116,12 @@ export const SavedPosts = () => {
                 </Col>
             </Row>
 
-            <Row>
+            <Row className='px-4 pb-0 px-lg-5 pb-lg-0'>
                 {userSaves?.length > 0 ?
                     (<InstagramEmbedCards
                         posts={userSaves}
                     />) : (
-                        <p>You saved posts well appear here.</p>
+                        <p>You saved posts will appear here.</p>
                     )
                 }
             </Row>
