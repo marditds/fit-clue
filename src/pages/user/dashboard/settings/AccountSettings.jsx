@@ -1,8 +1,8 @@
-import { Col, Row, Button } from "react-bootstrap";
-import { DashboardForm } from "../../../../components/Form/DashboardForm";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { useUser } from "../../../../lib/hooks/useUser";
-import { useState } from "react";
+import { Col, Row, Button, Form } from 'react-bootstrap';
+import { DashboardForm } from '../../../../components/Form/DashboardForm';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useUser } from '../../../../lib/hooks/useUser';
+import { useState } from 'react';
 
 export const AccountSettings = () => {
 
@@ -168,6 +168,35 @@ export const AccountSettings = () => {
                     </p>
                 </Col>
             </Row>
+
+            <hr />
+
+            {/* Email */}
+            <Row>
+                <Col className='p-4 p-lg-5'>
+                    <h4>
+                        Email
+                    </h4>
+                    <p className='text-muted'>
+                        This email is linked to your FitClue registration and cannot be changed.
+                    </p>
+                    <Form>
+                        <Form.Group
+                            as={Row}
+                            controlId='userEmail'
+                        >
+                            <Col>
+                                <Form.Control
+                                    readOnly
+                                    defaultValue={email}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </Col>
+            </Row>
+
+            <hr />
 
             {/* Username update */}
             <Row>

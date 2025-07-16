@@ -867,18 +867,22 @@ export const fetchSavesByPostId = async (postId) => {
     }
 }
 
-export const fetchSavesByUserId = async (userId) => {
-
-    console.log('userId in fetchSavesByUserId:', userId);
-
+export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor = null) => {
     try {
+        const queries = [
+            Query.equal('user_id', userId),
+            Query.orderDesc('$createAt'),
+            Query.limit(userSavesLoadLimit)
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        };
+
         const savesByUserId = await databases.listDocuments(
             dbEnv,
             savesCollEnv,
-            [
-                Query.equal('user_id', userId),
-                Query.limit(5)
-            ],
+            queries
         );
 
         if (savesByUserId.total > 0) {

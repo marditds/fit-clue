@@ -1,7 +1,7 @@
-import { Col } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 
-export const Card = ({ id, personalityName, personalityId, iUrl }) => {
+export const Card = ({ id, personalityName, iUrl, onCardTitleButtonClick }) => {
 
     const location = useLocation();
 
@@ -21,11 +21,13 @@ export const Card = ({ id, personalityName, personalityId, iUrl }) => {
                 <div className='w-100'>
                     {
                         !location.pathname.startsWith('/post') &&
-                        <Link to={`/post/${id}`}>
-                            <h3 className='text-left latest__card-name'>
-                                {personalityName}
-                            </h3>
-                        </Link>
+                        <div className='d-flex justify-content-between'>
+                            <Link to={`/post/${id}`} className='d-flex justify-content-between'>
+                                <h3 className='text-left latest__card-name'>
+                                    {personalityName}
+                                </h3>
+                            </Link>
+                        </div>
                     }
 
                     <blockquote

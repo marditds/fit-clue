@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useOutletContext, Link, Outlet } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import { LoadingPage } from '../../../components/Loading/Loading';
-import { AccountSettings } from './settings/AccountSettings';
-import { SavedPosts } from './saved-posts/SavedPosts';
 
 const Dashboard = () => {
 
@@ -11,8 +9,6 @@ const Dashboard = () => {
         email, setEmail,
         username, setUsername,
         setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
-
-
 
     useEffect(() => {
         console.log({ userId, username });
@@ -22,19 +18,24 @@ const Dashboard = () => {
         <Container>
 
             <Row>
-                <Col xs={12} md={4} className='border'>
-
+                <Col
+                    xs={12} sm={4} lg={3}
+                    className='border'
+                    style={{
+                        minHeight: 'calc(100vh - 112px)'
+                    }}
+                >
                     {/* User's information */}
-                    <Row className='sticky-top flex-column'>
+                    <Row
+                        className='sticky-top'
+                    >
                         <Col className='p-4 p-lg-5 text-center'>
                             <h2 className=''>
                                 {username}
                             </h2>
-                            <p className='mb-0'>
-                                {email}
-                            </p>
                         </Col>
-                        <Col>
+
+                        <Col className='px-4 px-lg-5'>
                             <ul className='list-unstyled'>
                                 <li>
                                     <Link to='settings'>

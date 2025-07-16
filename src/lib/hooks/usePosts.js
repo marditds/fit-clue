@@ -10,6 +10,8 @@ export const usePosts = () => {
 
     const commentsLoadLimit = 5;
 
+    const userSavesLoadLimit = 5;
+
     useEffect(() => {
         console.log('user id in usePosts.jsx:', userId);
     }, [userId])
@@ -217,9 +219,9 @@ export const usePosts = () => {
         }
     }
 
-    const fetchSavesByUserId = async (userId) => {
+    const fetchSavesByUserId = async (userId, lastCursor) => {
         try {
-            const savesRes = await getSavesByUserId(userId);
+            const savesRes = await getSavesByUserId(userId, userSavesLoadLimit, lastCursor);
             return savesRes;
         } catch (error) {
             console.error('Error creating save:', error);
@@ -243,5 +245,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId }
+    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit }
 }

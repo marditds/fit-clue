@@ -39,7 +39,7 @@ const MainLayout = () => {
   return (
     <>
       <NavigationBar />
-      <main className='' style={{
+      <main style={{
         minHeight: 'calc(100vh - 112px)'
       }}>
         <Outlet context={{
