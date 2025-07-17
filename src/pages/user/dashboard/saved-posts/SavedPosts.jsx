@@ -23,49 +23,56 @@ export const SavedPosts = () => {
 
     const getSavesByPostId = async () => {
 
-        if (!userId || !hasMore) {
+        if (!userId) {
             return;
         }
 
         setIsSavesLoading(true);
 
         try {
-            // const userSaves = await fetchSavesByUserId(userId, lastSave || null);
+            const userSavesDocs = await fetchSavesByUserId(userId, lastSave || null);
 
-            // if (!userSaves) {
-            //     console.log('No saves found.');
-            //     setHasMore(false);
-            //     return;
-            // }
+            if (!userSavesDocs || !userSavesDocs.documents?.length) {
+                console.log('No saves found.');
+                setHasMore(false);
+                return;
+            }
 
-            // setUserSavesTotal(userSaves.total);
+            setUserSavesTotal(userSavesDocs.total);
 
-            // const userSavesDocs = userSaves.documents;
+            const usrSvsDcs = userSavesDocs.documents;
 
-            // console.log(`userSaves by ${username}:`, userSaves);
+            console.log(`usrSvsDcs:`, usrSvsDcs);
 
-            // const fetchedInstaPosts = await Promise.all(
-            //     userSavesDocs.map((usrSvs) => fetchInstaPostById(usrSvs.post_id))
-            // );
+            const fetchedInstaPosts = await Promise.all(
+                usrSvsDcs.map(async (usrSv) => {
+                    const post = await fetchInstaPostById(usrSv.post_id);
+                    return {
+                        post,
+                        saveDocId: usrSv.$id,
+                    };
+                })
+            );
 
-            // console.log(`instaPosts by ${username}:`, fetchedInstaPosts);
+            console.log(`fetchedInstaPosts:`, fetchedInstaPosts);
 
-            // if (lastSave === null) {
-            //     setUserSaves(fetchedInstaPosts);
-            // } else {
-            //     setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
-            // }
+            if (lastSave === null) {
+                setUserSaves(fetchedInstaPosts);
+            } else {
+                setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
+            }
 
-            // setLastSave(userSavesDocs[userSavesDocs.length - 1].$id || null);
+            setLastSave(usrSvsDcs[usrSvsDcs.length - 1].$id || null);
 
-            // if (userSavesDocs.length < userSavesLoadLimit) {
-            //     setHasMore(false);
-            // }
+            if (usrSvsDcs.length < userSavesLoadLimit) {
+                setHasMore(false);
+            }
 
+            // Uncomment below for test data
             // const instaPosts = savesDashboardData; 
-            setUserSaves([]);
-            setHasMore(false);
-            setUserSavesTotal(0);
+            // setUserSaves([]);
+            // setHasMore(false);
+            // setUserSavesTotal(0);
 
         } catch (error) {
             console.error('Error getting saves:', error);
@@ -75,11 +82,13 @@ export const SavedPosts = () => {
     }
 
     useEffect(() => {
-        console.log('userSaves in useEffect:', userSaves);
+        console.log('userSaves:', userSaves);
     }, [userSaves])
 
     useEffect(() => {
         const loadingSavesFirstBatch = async () => {
+            console.log('Loading first batch of saves.');
+
             setIsSavesFirstBatchLoading(true);
             try {
                 await getSavesByPostId();
@@ -119,9 +128,17 @@ export const SavedPosts = () => {
 
             <Row className='px-4 pb-0 px-lg-5 pb-lg-0'>
                 {userSaves?.length > 0 ?
-                    (<InstagramEmbedCards
-                        posts={userSaves}
-                    />) : (
+                    (
+                        userSaves.map((savedPost) => {
+                            return (
+                                <InstagramEmbedCards
+                                    key={savedPost.saveDocId}
+                                    posts={[savedPost.post]}
+                                    saveDocId={savedPost.saveDocId}
+                                />
+                            );
+                        })
+                    ) : (
                         <p>You saved posts will appear here.</p>
                     )
                 }

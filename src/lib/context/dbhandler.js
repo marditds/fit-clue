@@ -917,6 +917,9 @@ export const fetchUserSaveForPost = async (postId, userId) => {
 }
 
 export const deleteSave = async (docId) => {
+
+    console.log('docId for deleteSave in dbhandler:', docId);
+
     try {
         await databases.deleteDocument(
             dbEnv,

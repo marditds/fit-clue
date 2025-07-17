@@ -1,9 +1,15 @@
-import { Button, Col } from 'react-bootstrap';
+import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { usePosts } from '../../lib/hooks/usePosts';
+import { Button, Col } from 'react-bootstrap';
 
-export const Card = ({ id, personalityName, iUrl, onCardTitleButtonClick }) => {
+export const Card = ({ id, personalityName, iUrl, saveDocId }) => {
 
     const location = useLocation();
+
+    const { deleteSave } = usePosts();
+
+    const [isDeleteSaveClicked, setIsDeleteSaveClicked] = useState(false);
 
     return (
         <Col
@@ -19,14 +25,27 @@ export const Card = ({ id, personalityName, iUrl, onCardTitleButtonClick }) => {
             }>
 
                 <div className='w-100'>
-                    {
-                        !location.pathname.startsWith('/post') &&
+
+                    {!location.pathname.startsWith('/post') &&
                         <div className='d-flex justify-content-between'>
                             <Link to={`/post/${id}`} className='d-flex justify-content-between'>
                                 <h3 className='text-left latest__card-name'>
                                     {personalityName}
                                 </h3>
                             </Link>
+
+                            {location.pathname === '/dashboard/saved-posts' &&
+                                <Button
+                                    type='button'
+                                    onClick={async () => {
+                                        console.log('this is id:', saveDocId);
+                                        await deleteSave(saveDocId);
+                                        setIsDeleteSaveClicked(true);
+                                    }}
+                                    disabled={isDeleteSaveClicked}
+                                >
+                                    {!isDeleteSaveClicked ? 'Remove' : 'Removed'}
+                                </Button>}
                         </div>
                     }
 

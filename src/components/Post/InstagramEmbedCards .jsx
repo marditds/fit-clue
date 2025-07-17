@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader';
 import { Card } from '../Card/Card';
 
-export const InstagramEmbedCards = ({ posts }) => {
+export const InstagramEmbedCards = ({ posts, saveDocId }) => {
 
     useInstagramEmbedLoader(posts);
 
@@ -13,8 +14,8 @@ export const InstagramEmbedCards = ({ posts }) => {
                     const id = post?.$id;
                     const rawUrl = post?.url;
                     const personalityName = post?.personality_name;
-
                     let iUrl = null;
+
                     try {
                         const url = new URL(rawUrl);
                         const parts = url.pathname.split('/').filter(Boolean);
@@ -32,6 +33,7 @@ export const InstagramEmbedCards = ({ posts }) => {
                             id={id}
                             personalityName={personalityName}
                             iUrl={iUrl}
+                            saveDocId={saveDocId}
                         />
                     );
                 })
