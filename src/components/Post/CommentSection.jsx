@@ -6,6 +6,7 @@ import { PostedComments } from './PostedComments';
 import { authText } from '../../config/formText';
 import { LockComponent } from './LockComponent';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { Icon } from '../Accessories/Icon';
 
 export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
 
@@ -22,7 +23,8 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
             <Col xs={12} lg={5}>
                 <div className='sticky-top'>
                     <h3>
-                        <i className='bi bi-chat-left-dots me-2' />   Leave a comment
+                        <Icon className='bi bi-chat-left-dots' />
+                        Leave a comment
                     </h3>
 
                     {

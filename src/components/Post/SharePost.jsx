@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import { TextTooltipOnClick } from '../ToolTip/CustomTooltip';
+import { TextTooltipOnClick } from '../Accessories/CustomTooltip';
+import { Icon } from '../Accessories/Icon';
 
 export const SharePost = () => {
 
@@ -28,7 +29,9 @@ export const SharePost = () => {
         <div>
             <Row className='mx-auto w-100'>
                 <Col className='py-4 border border-bottom-1 border-top-0 border-start-0 border-end-0'>
-                    <h3><i className='bi bi-share me-2' /> Share This Page</h3>
+                    <h3>
+                        <Icon className='bi bi-share' />Share This Page
+                    </h3>
                     <p className='mb-0'>
                         Share this link with your network and ask for help completing this fashion collection!
                     </p>

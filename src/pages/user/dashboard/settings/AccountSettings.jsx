@@ -3,6 +3,7 @@ import { DashboardForm } from '../../../../components/Form/DashboardForm';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useUser } from '../../../../lib/hooks/useUser';
 import { useState } from 'react';
+import { Icon } from '../../../../components/Accessories/Icon';
 
 export const AccountSettings = () => {
 
@@ -161,7 +162,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
                     <h3 className='fw-bold'>
-                        Account Settings
+                        <Icon className='bi bi-gear me-3' />Account Settings
                     </h3>
                     <p>
                         Manage your account information and security settings
@@ -175,7 +176,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <h4>
-                        Email
+                        <Icon className='bi bi-at' />Email
                     </h4>
                     <p className='text-muted'>
                         This email is linked to your FitClue registration and cannot be changed.
@@ -202,7 +203,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <DashboardForm
-                        title='Username'
+                        title={<><Icon className='bi bi-hash' />Username</>}
                         description='Your username must be unique. Your username will be visible to others.'
                         fields={updateUsernameFields}
                         onSubmit={(e) => {
@@ -229,7 +230,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <DashboardForm
-                        title='Password'
+                        title={<><Icon className='bi bi-lock' />Password</>}
                         description='Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.'
                         fields={updatePasswordFields}
                         onSubmit={(e) => {
@@ -256,6 +257,7 @@ export const AccountSettings = () => {
                 <Col className='p-4 p-lg-5'>
 
                     <h4>
+                        <Icon className='bi bi-exclamation-square' />
                         Delete Account
                     </h4>
                     <p className='text-muted'>

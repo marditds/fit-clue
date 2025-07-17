@@ -4,6 +4,7 @@ import { ItemLinkCol } from './ItemLinkCol'
 import { ReportModal } from '../Modals/Modals'
 import { reportCategories } from '../../lib/data/reportCategories'
 import { usePosts } from '../../lib/hooks/usePosts'
+import { Icon } from '../Accessories/Icon'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
@@ -89,7 +90,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                         handleReportClick(itemLink);
                                     }}
                                 >
-                                    <i className='bi bi-flag' /> Report
+                                    <Icon className='bi bi-flag' />Report
                                 </Button>
                             </Col>
                         </Row>

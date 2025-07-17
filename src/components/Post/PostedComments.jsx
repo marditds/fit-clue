@@ -5,9 +5,10 @@ import { LoadingComponent } from '../Loading/Loading';
 import { dateTimeFormatter } from '../../lib/utils/dateTimeFormatter';
 import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
-import { TextTooltip } from '../ToolTip/CustomTooltip';
+import { TextTooltip } from '../Accessories/CustomTooltip';
 import { LoadMoreButton } from '../RelatedPosts/RelatedPosts';
 import { onePostComments } from '../../lib/data/testData';
+import { Icon } from '../Accessories/Icon';
 
 export const PostedComments = ({ postId, comments, setComments, commentsTotal, setCommentsTotal, isViewCommentsClicked, setIsViewCommentsClicked, isLoggedIn }) => {
 
@@ -132,7 +133,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
 
                 {isViewCommentsClicked && !isCommentsFirstBatchLoading &&
                     <h4>
-                        <i className='bi bi-chat-left me-2' /> Comments ({commentsTotal})
+                        <Icon className='bi bi-chat-left' />Comments ({commentsTotal})
                     </h4>
                 }
             </Col>
@@ -160,7 +161,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
                                                     className='py-1 px-2 bg-transparent text-muted'
                                                 >
                                                     <small>
-                                                        <i className='bi bi-flag' /> Report
+                                                        <Icon className='bi bi-flag' />Report
                                                     </small>
                                                 </Button>
                                             </Col>

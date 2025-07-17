@@ -3,8 +3,9 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { Button, Col, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { ReportModal } from '../Modals/Modals';
-import { TextTooltip, TextTooltipOnClick } from '../ToolTip/CustomTooltip';
+import { TextTooltip, TextTooltipOnClick } from '../Accessories/CustomTooltip';
 import { postReportCategories } from '../../lib/data/reportCategories';
+import { Icon } from '../Accessories/Icon';
 
 export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 
@@ -167,7 +168,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                                             onClick={button.func}
                                             className={`d-flex justify-content-center interaction__btn ${isLoggedIn && button.isClicked ? 'button-active' : ''}`}
                                         >
-                                            <i className={`${button.icon} me-2`} />{' '}
+                                            <Icon className={`${button.icon}`} />
                                             {button.loadingComponent ?? button.name}
                                             {button.actionCount}
                                         </Button>

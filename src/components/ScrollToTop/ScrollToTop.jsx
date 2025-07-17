@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { TextTooltip } from '../ToolTip/CustomTooltip';
+import { TextTooltip } from '../Accessories/CustomTooltip';
 import { useEffect, useState } from 'react';
 
 export const ScrollToTop = () => {

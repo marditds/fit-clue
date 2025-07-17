@@ -23,6 +23,7 @@ const Dashboard = () => {
                     username={username}
                 />
 
+                {/* Dashboard content */}
                 <Outlet context={{
                     userId, setUserId,
                     email, setEmail,

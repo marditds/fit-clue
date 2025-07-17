@@ -6,6 +6,7 @@ import { LoadingPage } from '../../../../components/Loading/Loading';
 import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedCards ';
 import { savesDashboardData } from '../../../../lib/data/testData';
 import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
+import { Icon } from '../../../../components/Accessories/Icon';
 
 export const SavedPosts = () => {
 
@@ -14,7 +15,7 @@ export const SavedPosts = () => {
     const { fetchSavesByUserId, fetchInstaPostById, deleteSave, userSavesLoadLimit } = usePosts();
 
     const [lastSave, setLastSave] = useState(null);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(false);
     const [isSavesFirstBatchLoading, setIsSavesFirstBatchLoading] = useState(false);
     const [userSaves, setUserSaves] = useState([]);
     const [userSavesTotal, setUserSavesTotal] = useState(0);
@@ -61,9 +62,9 @@ export const SavedPosts = () => {
             //     setHasMore(false);
             // }
 
-            // const instaPosts = savesDashboardData;
-
+            // const instaPosts = savesDashboardData; 
             setUserSaves([]);
+            setHasMore(false);
             setUserSavesTotal(0);
 
         } catch (error) {
@@ -108,7 +109,7 @@ export const SavedPosts = () => {
             <Row className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
                 <Col className=''>
                     <h3 className='fw-bold'>
-                        Your Saves ({userSavesTotal})
+                        <Icon className='bi bi-floppy me-3' />Your Saves ({userSavesTotal})
                     </h3>
                     <p>
                         Here is where your saved posts live.

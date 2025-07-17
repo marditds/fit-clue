@@ -14,8 +14,6 @@ function BackButton({ className }) {
             }}
             className={`d-flex justify-content-center align-items-center back-button ${className || ''}`}
         >
-            {/* <i className='bi bi-arrow-left-square me-2' /> */}
-            {/* <i className='bi bi-arrow-left' /> */}
             ←
             Go Back
         </Button>

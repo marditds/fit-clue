@@ -5,20 +5,30 @@ export const OffcanvasSidebar = ({ children }) => {
 
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     return (
         <>
-            <Button className='d-lg-none' onClick={handleShow}>
-                Launch
+            <Button
+                className='d-lg-none w-25'
+                onClick={handleShow}
+            >
+                <i className='bi bi-list' />
             </Button>
 
-            <Offcanvas show={show} onHide={handleClose} responsive='lg'>
-                <Offcanvas.Header closeButton>
-                </Offcanvas.Header>
+            <Offcanvas
+                show={show}
+                onHide={handleClose}
+                responsive='lg w-100'
+            >
+                <Offcanvas.Header closeButton />
                 <Offcanvas.Body className='flex-column'>
-                    {children}
+                    {
+                        typeof children === 'function' ?
+                            children({ close: handleClose }) :
+                            children
+                    }
                 </Offcanvas.Body>
             </Offcanvas>
         </>

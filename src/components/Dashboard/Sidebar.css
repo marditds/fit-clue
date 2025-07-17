@@ -1,0 +1,8 @@
+.sidebar__link {
+    transition: var(--main-transition-speed);
+}
+
+.sidebar__link:hover {
+    background-color: var(--main-accent-color-hover) !important;
+    color: var(--main-accent-color) !important;
+}

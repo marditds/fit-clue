@@ -1,5 +1,5 @@
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import './CustomTooltip.css';
+import './Accessories.css';
 
 export const CustomTooltip = ({ iconClassName, tooltipText }) => {
     return (

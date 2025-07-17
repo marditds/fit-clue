@@ -3,7 +3,8 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
-import { CustomTooltip } from '../ToolTip/CustomTooltip';
+import { CustomTooltip } from '../Accessories/CustomTooltip';
+import { Icon } from '../Accessories/Icon';
 
 
 export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
@@ -72,7 +73,10 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
         <div>
             <Row className='post__add-link-row mx-auto py-4'>
                 <Col>
-                    <h3><i className='bi bi-plus-lg me-2' /> Add New Shopping Link</h3>
+                    <h3>
+                        <Icon className='bi bi-plus-lg' />
+                        Add New Shopping Link
+                    </h3>
                     {
                         !isLoggedIn &&
                         <h4>Please sign in to add links.</h4>

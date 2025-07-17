@@ -1,6 +1,7 @@
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
-import { CustomTooltip } from '../ToolTip/CustomTooltip';
+import { CustomTooltip } from '../Accessories/CustomTooltip';
+import { Icon } from '../Accessories/Icon';
 
 export const AddLinksInCreatePostForm = ({
     links,
@@ -115,7 +116,7 @@ export const AddLinksInCreatePostForm = ({
                     type='button'
                     className='w-100'
                     onClick={addLinkField}>
-                    <i className='bi bi-plus-square' /> Add Another Link
+                    <Icon className='bi bi-plus-square' />Add Another Link
                 </Button>
             </Col>
 
