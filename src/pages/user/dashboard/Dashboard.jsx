@@ -5,6 +5,7 @@ import { LoadingPage } from '../../../components/Loading/Loading';
 import { useBreakpoints } from '../../../lib/hooks/useBreakpoints';
 import { Sidebar } from '../../../components/Dashboard/Sidebar';
 import { OffcanvasSidebar } from '../../../components/Dashboard/OffcanvasSidebar';
+import { ScrollToTop } from '../../../components/ScrollToTop/ScrollToTop';
 
 const Dashboard = () => {
 
@@ -33,6 +34,7 @@ const Dashboard = () => {
 
             </Row>
 
+            <ScrollToTop />
         </Container>
     )
 }

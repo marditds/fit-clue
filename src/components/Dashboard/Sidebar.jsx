@@ -58,7 +58,7 @@ export const Sidebar = ({ username }) => {
                     <ul className='list-unstyled'>
                         {links.map((link, idx) => (
                             <li key={idx}
-                                className='p-3'
+                                className='px-0 px-xl-3 py-3'
                             >
                                 <Link
                                     to={link.to}
