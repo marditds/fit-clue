@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
-import { useOutletContext, Link, Outlet } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
-import { LoadingPage } from '../../../components/Loading/Loading';
+import { useOutletContext, Outlet } from 'react-router-dom';
 import { useBreakpoints } from '../../../lib/hooks/useBreakpoints';
 import { Sidebar } from '../../../components/Dashboard/Sidebar';
-import { OffcanvasSidebar } from '../../../components/Dashboard/OffcanvasSidebar';
 import { ScrollToTop } from '../../../components/ScrollToTop/ScrollToTop';
+import { LayoutDashboard } from '../../../components/Dashboard/LayoutDashboard';
 
 const Dashboard = () => {
 
@@ -14,28 +11,27 @@ const Dashboard = () => {
         username, setUsername,
         setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
 
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     return (
-        <Container>
-
-            <Row>
-
-                <Sidebar
-                    username={username}
-                />
-
-                {/* Dashboard content */}
-                <Outlet context={{
-                    userId, setUserId,
-                    email, setEmail,
-                    username, setUsername,
-                    setIsLoggedIn, setIsSessionInProgress
-                }} />
-
-            </Row>
-
-            <ScrollToTop />
-        </Container>
+        <LayoutDashboard
+            colOneContent={
+                <Sidebar username={username} />
+            }
+            colOneClassName='border'
+            colOneStyle={
+                { minHeight: !isXs && !isSm && !isMd ? 'calc(100vh - 112px)' : 'fit-content' }
+            }
+            colTwoClassName='border'
+            scrollTop={<ScrollToTop />}
+        >
+            <Outlet context={{
+                userId, setUserId,
+                email, setEmail,
+                username, setUsername,
+                setIsLoggedIn, setIsSessionInProgress
+            }} />
+        </LayoutDashboard>
     )
 }
 

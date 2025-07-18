@@ -156,8 +156,7 @@ export const AccountSettings = () => {
     ];
 
     return (
-        <Col className='border'>
-
+        <>
             {/* Dashboard title */}
             <Row>
                 <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
@@ -277,6 +276,6 @@ export const AccountSettings = () => {
                 </Col>
             </Row>
 
-        </Col>
+        </>
     )
 } 

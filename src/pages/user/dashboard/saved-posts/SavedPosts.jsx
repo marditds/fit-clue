@@ -1,4 +1,4 @@
-import { Col, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { useOutletContext } from 'react-router-dom';
 import { usePosts } from '../../../../lib/hooks/usePosts';
 import { useEffect, useState } from 'react';
@@ -6,8 +6,8 @@ import { LoadingPage } from '../../../../components/Loading/Loading';
 import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedCards ';
 import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
 import { Icon } from '../../../../components/Accessories/Icon';
-import { savesDashboardData } from '../../../../lib/data/testData';
 import { ToastComponent } from '../../../../components/Accessories/ToastComponent';
+import { savesDashboardData } from '../../../../lib/data/testData';
 
 export const SavedPosts = () => {
 
@@ -121,7 +121,7 @@ export const SavedPosts = () => {
     }
 
     return (
-        <Col className='border'>
+        <>
             <Row className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
                 <Col className=''>
                     <h3 className='fw-bold'>
@@ -167,14 +167,13 @@ export const SavedPosts = () => {
             </Row>
 
             {/* Toast */}
-            <div>
+            <Container>
                 <ToastComponent
                     showToast={showToast}
                     setShowToast={setShowToast}
                     toastTitle='Save Removed Successfully.'
                 />
-            </div>
-
-        </Col>
+            </Container>
+        </>
     )
 }
