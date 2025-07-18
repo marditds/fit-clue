@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { Button, Col } from 'react-bootstrap';
+import { TextTooltip } from '../Accessories/CustomTooltip';
+import { ToastComponent } from '../Accessories/ToastComponent';
 
-export const Card = ({ id, personalityName, iUrl, saveDocId }) => {
+export const Card = ({ id, personalityName, iUrl, saveDocId, setShowToast }) => {
 
     const location = useLocation();
 
@@ -14,8 +16,14 @@ export const Card = ({ id, personalityName, iUrl, saveDocId }) => {
     return (
         <Col
             xs={12}
-            md={6}
-            xl={!location.pathname.startsWith('/post') ? 4 : 5}
+            md={location.pathname.startsWith('/dashboard') ? 12 : 6}
+            lg={location.pathname.startsWith('/dashboard') ? 12 : 6}
+            xl={
+                location.pathname.startsWith('/post') ? 5 :
+                    location.pathname.startsWith('/search') ? 4 :
+                        location.pathname.startsWith('/dashboard') ? 6 :
+                            4
+            }
             className={`d-flex flex-column ${!location.pathname.startsWith('/post') ? 'card__col justify-content-center' : 'post__col'}`}
         >
             <div className={` 
@@ -27,25 +35,33 @@ export const Card = ({ id, personalityName, iUrl, saveDocId }) => {
                 <div className='w-100'>
 
                     {!location.pathname.startsWith('/post') &&
-                        <div className='d-flex justify-content-between'>
+                        <div
+                            className='d-flex justify-content-between align-items-center mb-2'>
                             <Link to={`/post/${id}`} className='d-flex justify-content-between'>
-                                <h3 className='text-left latest__card-name'>
+                                <h3
+                                    className='text-left latest__card-name mb-0'
+                                >
                                     {personalityName}
                                 </h3>
                             </Link>
 
                             {location.pathname === '/dashboard/saved-posts' &&
-                                <Button
-                                    type='button'
-                                    onClick={async () => {
-                                        console.log('this is id:', saveDocId);
-                                        await deleteSave(saveDocId);
-                                        setIsDeleteSaveClicked(true);
-                                    }}
-                                    disabled={isDeleteSaveClicked}
-                                >
-                                    {!isDeleteSaveClicked ? 'Remove' : 'Removed'}
-                                </Button>}
+                                <TextTooltip
+                                    tooltipText={!isDeleteSaveClicked ? 'Remove Save' : 'Removed'}>
+                                    <Button
+                                        type='button'
+                                        onClick={async () => {
+                                            console.log('this is id:', saveDocId);
+                                            await deleteSave(saveDocId);
+                                            setIsDeleteSaveClicked(true);
+                                            setShowToast(true);
+                                        }}
+                                        disabled={isDeleteSaveClicked}
+                                    >
+                                        <i className='bi bi-x' />
+                                    </Button>
+                                </TextTooltip>
+                            }
                         </div>
                     }
 

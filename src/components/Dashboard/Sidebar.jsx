@@ -44,13 +44,14 @@ export const Sidebar = ({ username }) => {
     return (
         <Col
             xs={12}
+            md={5}
             lg={4}
             className='border'
             style={{
                 minHeight: !isXs && !isSm && !isMd ? 'calc(100vh - 112px)' : 'fit-content',
             }}
         >
-            <Row className='sticky-top px-4 px-lg-5 pt-lg-5 flex-column'>
+            <Row className='sticky-top px-4 px-lg-4 pt-lg-5 flex-column'>
                 <Col className='text-center'>
                     <h2>{username}</h2>
                 </Col>

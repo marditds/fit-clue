@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
 import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader';
 import { Card } from '../Card/Card';
 
-export const InstagramEmbedCards = ({ posts, saveDocId }) => {
+export const InstagramEmbedCards = ({ posts, saveDocId, setShowToast }) => {
 
     useInstagramEmbedLoader(posts);
 
@@ -34,6 +33,7 @@ export const InstagramEmbedCards = ({ posts, saveDocId }) => {
                             personalityName={personalityName}
                             iUrl={iUrl}
                             saveDocId={saveDocId}
+                            setShowToast={setShowToast}
                         />
                     );
                 })

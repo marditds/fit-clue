@@ -59,9 +59,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
             setHasMore(commentsDocs.length === commentsLoadLimit);
 
             if (commentsDocs.length < commentsLoadLimit) {
-                {
-                    setHasMore(false);
-                }
+                setHasMore(false);
             }
 
         } catch (error) {
