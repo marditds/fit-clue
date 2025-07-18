@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { useOutletContext } from 'react-router-dom';
 import { usePosts } from '../../../../lib/hooks/usePosts';
 import { useEffect, useState } from 'react';
@@ -167,13 +167,11 @@ export const SavedPosts = () => {
             </Row>
 
             {/* Toast */}
-            <Container>
-                <ToastComponent
-                    showToast={showToast}
-                    setShowToast={setShowToast}
-                    toastTitle='Save Removed Successfully.'
-                />
-            </Container>
+            <ToastComponent
+                showToast={true}
+                setShowToast={setShowToast}
+                toastTitle='Save Removed Successfully.'
+            />
         </>
     )
 }

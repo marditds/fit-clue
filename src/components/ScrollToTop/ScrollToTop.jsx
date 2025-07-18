@@ -26,7 +26,9 @@ export const ScrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    if (!isVisible) return null;
+    if (!isVisible) {
+        return null
+    };
 
     return (
         <TextTooltip tooltipText={'Scroll to top'}>

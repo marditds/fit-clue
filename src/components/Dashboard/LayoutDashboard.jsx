@@ -1,6 +1,6 @@
 import { Col, Container, Row } from 'react-bootstrap'
 
-export const LayoutDashboard = ({ rowClassName, rowStyle, colOneClassName, colOneStyle, colOneContent, colTwoClassName, children, scrollTop }) => {
+export const LayoutDashboard = ({ rowClassName, rowStyle, colOneClassName, colOneStyle, colOneContent, colTwoClassName, colTwoStyle, children, scrollTop }) => {
     return (
         <Container>
             <Row className={rowClassName} style={rowStyle}>
@@ -13,7 +13,7 @@ export const LayoutDashboard = ({ rowClassName, rowStyle, colOneClassName, colOn
                 >
                     {colOneContent}
                 </Col>
-                <Col className={colTwoClassName}>
+                <Col className={colTwoClassName} style={colTwoStyle}>
                     {children}
                 </Col>
             </Row>
