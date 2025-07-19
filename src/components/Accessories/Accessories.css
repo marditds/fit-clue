@@ -15,6 +15,12 @@
     border-top-color: var(--main-border-color) !important;
 }
 
+.toast__full,
+.toast__full>.toast-header {
+    border-radius: var(--main-border-radius) !important;
+    border-color: var(--main-border-color) !important;
+}
+
 @media (max-width: 575px) {
     .tool-tip__custom>.tooltip-inner {
         max-width: 300px;

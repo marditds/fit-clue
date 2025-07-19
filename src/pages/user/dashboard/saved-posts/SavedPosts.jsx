@@ -22,6 +22,9 @@ export const SavedPosts = () => {
     const [userSavesTotal, setUserSavesTotal] = useState(0);
     const [isSavesLoading, setIsSavesLoading] = useState(false);
 
+    // Deletion
+    const [loadingSaveDocId, setLoadingSaveDocId] = useState(null);
+
     //Toast
     const [showToast, setShowToast] = useState(false);
 
@@ -88,9 +91,8 @@ export const SavedPosts = () => {
     }
 
     useEffect(() => {
-        console.log('Last Save:', lastSave);
-
-    }, [lastSave])
+        console.log('userSaves:', userSaves);
+    }, [userSaves])
 
     useEffect(() => {
         const loadingSavesFirstBatch = async () => {
@@ -113,6 +115,28 @@ export const SavedPosts = () => {
     const onLoadMoreSavesClick = async () => {
         await getSavesByPostId();
     }
+
+    const onDeleteSaveClick = async (saveDocIdToDelete) => {
+
+        setLoadingSaveDocId(saveDocIdToDelete);
+
+        try {
+            await deleteSave(saveDocIdToDelete);
+
+            setUserSaves((prevSaves) =>
+                prevSaves.filter((item) => item.saveDocId !== saveDocIdToDelete)
+            );
+
+            setUserSavesTotal(prevTotal => prevTotal - 1);
+
+            setShowToast(true);
+        } catch (error) {
+            console.error('Failed to delete save:', error);
+        } finally {
+            setLoadingSaveDocId(null);
+        }
+    };
+
 
     if (isSavesFirstBatchLoading) {
         return (
@@ -142,7 +166,8 @@ export const SavedPosts = () => {
                                     key={savedPost.saveDocId}
                                     posts={[savedPost.post]}
                                     saveDocId={savedPost.saveDocId}
-                                    setShowToast={setShowToast}
+                                    onDeleteSaveClick={onDeleteSaveClick}
+                                    isDeleteSaveLoading={loadingSaveDocId === savedPost.saveDocId}
                                 />
                             );
                         })
@@ -168,7 +193,7 @@ export const SavedPosts = () => {
 
             {/* Toast */}
             <ToastComponent
-                showToast={true}
+                showToast={showToast}
                 setShowToast={setShowToast}
                 toastTitle='Save Removed Successfully.'
             />

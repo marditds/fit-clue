@@ -29,8 +29,9 @@ export const ToastComponent = ({ showToast, setShowToast, toastTitle, toastText 
                     zIndex: 1500,
                     maxWidth: isSmallScreen ? '90%' : '500px',
                 }}
+                className='toast__full'
             >
-                <Toast.Header style={{ maxHeight: '42px' }}>
+                <Toast.Header className='border-0' style={{ maxHeight: '42px' }}>
                     <strong className='me-auto'>
                         {toastTitle}
                     </strong>

@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { usePosts } from '../../lib/hooks/usePosts';
 import { Button, Col } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
-import { ToastComponent } from '../Accessories/ToastComponent';
+import { LoadingComponent } from '../Loading/Loading';
+import { useState } from 'react';
 
-export const Card = ({ id, personalityName, iUrl, saveDocId, setShowToast }) => {
+export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading }) => {
 
     const location = useLocation();
-
-    const { deleteSave } = usePosts();
 
     const [isDeleteSaveClicked, setIsDeleteSaveClicked] = useState(false);
 
@@ -47,18 +44,17 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, setShowToast }) => 
 
                             {location.pathname === '/dashboard/saved-posts' &&
                                 <TextTooltip
-                                    tooltipText={!isDeleteSaveClicked ? 'Remove Save' : 'Removed'}>
+                                    tooltipText='Remove Save'>
                                     <Button
                                         type='button'
-                                        onClick={async () => {
-                                            console.log('this is id:', saveDocId);
-                                            await deleteSave(saveDocId);
-                                            setIsDeleteSaveClicked(true);
-                                            setShowToast(true);
-                                        }}
-                                        disabled={isDeleteSaveClicked}
+                                        onClick={() => onDeleteSaveClick(saveDocId)}
+                                        disabled={isDeleteSaveLoading}
                                     >
-                                        <i className='bi bi-x' />
+                                        {isDeleteSaveLoading ? (
+                                            <LoadingComponent loadingText=' ' />
+                                        ) : (
+                                            <i className='bi bi-x' />
+                                        )}
                                     </Button>
                                 </TextTooltip>
                             }
