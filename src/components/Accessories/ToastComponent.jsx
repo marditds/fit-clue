@@ -1,5 +1,5 @@
 import { Toast } from 'react-bootstrap';
-import { LayoutDashboard } from '../Dashboard/LayoutDashboard';
+import { DashboardLayout } from '../Dashboard/DashboardLayout';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 export const ToastComponent = ({ showToast, setShowToast, toastTitle, toastText }) => {
@@ -11,7 +11,7 @@ export const ToastComponent = ({ showToast, setShowToast, toastTitle, toastText 
     const isSmallScreen = isXs || isSm;
 
     return (
-        <LayoutDashboard
+        <DashboardLayout
             rowStyle={{ maxWidth: '1320px' }}
             colTwoClassName={`mt-5 ${isSmallScreen ? 'd-flex justify-content-start' : ''}`}
         >
@@ -37,6 +37,6 @@ export const ToastComponent = ({ showToast, setShowToast, toastTitle, toastText 
                     </strong>
                 </Toast.Header>
             </Toast>
-        </LayoutDashboard>
+        </DashboardLayout>
     );
 };

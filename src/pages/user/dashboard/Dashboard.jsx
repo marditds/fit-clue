@@ -2,7 +2,7 @@ import { useOutletContext, Outlet } from 'react-router-dom';
 import { useBreakpoints } from '../../../lib/hooks/useBreakpoints';
 import { Sidebar } from '../../../components/Dashboard/Sidebar';
 import { ScrollToTop } from '../../../components/ScrollToTop/ScrollToTop';
-import { LayoutDashboard } from '../../../components/Dashboard/LayoutDashboard';
+import { DashboardLayout } from '../../../components/Dashboard/DashboardLayout';
 
 const Dashboard = () => {
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
     const { isXs, isSm, isMd } = useBreakpoints();
 
     return (
-        <LayoutDashboard
+        <DashboardLayout
             colOneContent={
                 <Sidebar username={username} />
             }
@@ -31,7 +31,7 @@ const Dashboard = () => {
                 username, setUsername,
                 setIsLoggedIn, setIsSessionInProgress
             }} />
-        </LayoutDashboard>
+        </DashboardLayout>
     )
 }
 

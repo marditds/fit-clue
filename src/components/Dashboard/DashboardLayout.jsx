@@ -1,6 +1,6 @@
 import { Col, Container, Row } from 'react-bootstrap'
 
-export const LayoutDashboard = ({ rowClassName, rowStyle, colOneClassName, colOneStyle, colOneContent, colTwoClassName, colTwoStyle, children, scrollTop }) => {
+export const DashboardLayout = ({ rowClassName, rowStyle, colOneClassName, colOneStyle, colOneContent, colTwoClassName, colTwoStyle, children, scrollTop }) => {
     return (
         <Container>
             <Row className={rowClassName} style={rowStyle}>

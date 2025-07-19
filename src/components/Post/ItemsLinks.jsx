@@ -90,7 +90,10 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                         handleReportClick(itemLink);
                                     }}
                                 >
-                                    <Icon className='bi bi-flag' />Report
+                                    <Icon
+                                        className='bi bi-flag'
+                                        marginSize={'2'}
+                                    />Report
                                 </Button>
                             </Col>
                         </Row>

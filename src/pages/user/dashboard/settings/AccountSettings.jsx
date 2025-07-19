@@ -161,7 +161,11 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
                     <h3 className='fw-bold'>
-                        <Icon className='bi bi-gear me-3' />Account Settings
+                        <Icon
+                            className='bi bi-gear'
+                            marginSize={'3'}
+                        />
+                        Account Settings
                     </h3>
                     <p>
                         Manage your account information and security settings
@@ -175,7 +179,9 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <h4>
-                        <Icon className='bi bi-at' />Email
+                        <Icon className='bi bi-at'
+                            marginSize={'2'}
+                        />Email
                     </h4>
                     <p className='text-muted'>
                         This email is linked to your FitClue registration and cannot be changed.
@@ -202,7 +208,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <DashboardForm
-                        title={<><Icon className='bi bi-hash' />Username</>}
+                        title={<><Icon className='bi bi-hash' marginSize={'2'} />Username</>}
                         description='Your username must be unique. Your username will be visible to others.'
                         fields={updateUsernameFields}
                         onSubmit={(e) => {
@@ -229,7 +235,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <DashboardForm
-                        title={<><Icon className='bi bi-lock' />Password</>}
+                        title={<><Icon className='bi bi-lock' marginSize={'2'} />Password</>}
                         description='Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.'
                         fields={updatePasswordFields}
                         onSubmit={(e) => {
@@ -256,7 +262,7 @@ export const AccountSettings = () => {
                 <Col className='p-4 p-lg-5'>
 
                     <h4>
-                        <Icon className='bi bi-exclamation-square' />
+                        <Icon className='bi bi-exclamation-square' marginSize={'2'} />
                         Delete Account
                     </h4>
                     <p className='text-muted'>

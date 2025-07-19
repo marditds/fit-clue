@@ -147,9 +147,12 @@ export const SavedPosts = () => {
     return (
         <>
             <Row className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
-                <Col className=''>
+                <Col className='px-0'>
                     <h3 className='fw-bold'>
-                        <Icon className='bi bi-floppy me-3' />Your Saves ({userSavesTotal})
+                        <Icon
+                            className='bi bi-floppy'
+                            marginSize={'3'}
+                        />Your Saves ({userSavesTotal})
                     </h3>
                     <p>
                         Here is where your saved posts live.
@@ -172,7 +175,7 @@ export const SavedPosts = () => {
                             );
                         })
                     ) : (
-                        <p>You saved posts will appear here.</p>
+                        <p className='px-0'>You saved posts will appear here.</p>
                     )
                 }
             </Row>

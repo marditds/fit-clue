@@ -131,7 +131,10 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
 
                 {isViewCommentsClicked && !isCommentsFirstBatchLoading &&
                     <h4>
-                        <Icon className='bi bi-chat-left' />Comments ({commentsTotal})
+                        <Icon
+                            className='bi bi-chat-left'
+                            marginSize={'2'}
+                        />Comments ({commentsTotal})
                     </h4>
                 }
             </Col>
@@ -159,7 +162,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
                                                     className='py-1 px-2 bg-transparent text-muted'
                                                 >
                                                     <small>
-                                                        <Icon className='bi bi-flag' />Report
+                                                        <Icon className='bi bi-flag' marginSize={'2'} />Report
                                                     </small>
                                                 </Button>
                                             </Col>
