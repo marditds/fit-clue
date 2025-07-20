@@ -6,6 +6,7 @@ export const DashboardLayout = ({ rowClassName, rowStyle, colOneClassName, colOn
             <Row className={rowClassName} style={rowStyle}>
                 <Col
                     xs={12}
+                    sm={2}
                     md={5}
                     lg={4}
                     className={colOneClassName}

@@ -4,11 +4,14 @@ import { ItemLinkCol } from './ItemLinkCol'
 import { ReportModal } from '../Modals/Modals'
 import { reportCategories } from '../../lib/data/reportCategories'
 import { usePosts } from '../../lib/hooks/usePosts'
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import { Icon } from '../Accessories/Icon'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
     const { createReportLink } = usePosts();
+
+    const { isXs, isMd } = useBreakpoints();
 
     // Report user generated links
     const [showModal, setShowModal] = useState(false);
@@ -92,7 +95,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 >
                                     <Icon
                                         className='bi bi-flag'
-                                        marginSize={'2'}
+                                        marginSize={isMd ? '0' : '2'}
                                     />Report
                                 </Button>
                             </Col>

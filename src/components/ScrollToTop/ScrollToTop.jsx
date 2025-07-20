@@ -1,8 +1,11 @@
 import { Button } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { useEffect, useState } from 'react';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 export const ScrollToTop = () => {
+
+    const { isXs } = useBreakpoints();
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -37,8 +40,8 @@ export const ScrollToTop = () => {
                 onClick={handleClick}
                 style={{
                     position: 'fixed',
-                    bottom: '2rem',
-                    right: '2rem',
+                    bottom: '3rem',
+                    right: isXs ? '1rem' : '2rem',
                     cursor: 'pointer',
                     zIndex: 1500,
                 }}

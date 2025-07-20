@@ -6,3 +6,11 @@
     background-color: var(--main-accent-color-hover) !important;
     color: var(--main-accent-color) !important;
 }
+
+@media (max-width: 767px) {
+
+    .sidebar__link,
+    .sidebar__link:hover {
+        background-color: transparent !important;
+    }
+}

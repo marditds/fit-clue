@@ -18,10 +18,7 @@ const Dashboard = () => {
             colOneContent={
                 <Sidebar username={username} />
             }
-            colOneClassName='border'
-            colOneStyle={
-                { minHeight: !isXs && !isSm && !isMd ? 'calc(100vh - 112px)' : 'fit-content' }
-            }
+            colOneClassName={!isXs ? 'border border-end-0' : ''}
             colTwoClassName='border'
             scrollTop={<ScrollToTop />}
         >

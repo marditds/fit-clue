@@ -8,32 +8,37 @@ export const Sidebar = ({ username }) => {
 
     const location = useLocation();
 
-    const { isXs, isSm } = useBreakpoints();
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     const links = [
         {
             label: 'Account Settings',
             icon: 'bi bi-gear',
+            activeIcon: 'bi bi-gear-fill',
             to: 'settings',
         },
         {
             label: 'Saved Posts',
             icon: 'bi bi-floppy',
+            activeIcon: 'bi bi-floppy-fill',
             to: 'saved-posts',
         },
         {
             label: 'Help Center',
             icon: 'bi bi-question-square',
+            activeIcon: 'bi bi-question-square-fill',
             to: 'help-center',
         },
         {
             label: 'Privacy Policy',
             icon: 'bi bi-shield',
+            activeIcon: 'bi bi-shield-fill',
             to: 'privacy-policy',
         },
         {
             label: 'Terms of Use',
             icon: 'bi bi-file-earmark-text',
+            activeIcon: 'bi bi-file-earmark-text-fill',
             to: 'terms-of-use',
         },
     ].map(link => ({
@@ -41,31 +46,38 @@ export const Sidebar = ({ username }) => {
         isActive: location.pathname.startsWith(`/dashboard/${link.to}`)
     }));
 
-    const isScreenSmall = isXs || isSm;
+    const isScreenExtraSmall = isXs;
+    const isScreenSmall = isSm;
 
     return (
-        <Row className='sticky-top px-4 px-lg-4 pt-lg-5 flex-column'>
-            <Col className='text-center'>
+        <Row className='sticky-top px-2 px-lg-4 pt-lg-5 flex-column'>
+            <Col className='text-center d-none d-md-block'>
                 <h2>{username}</h2>
             </Col>
-            <Col className={isScreenSmall ? 'px-0' : ''}>
-                <div className={isScreenSmall ? 'fixed-bottom mt-5' : ''}>
-                    <ul className={`list-unstyled d-flex justify-content-evenly flex-md-column ${isScreenSmall ? 'bg-light mb-0' : ''}`}>
+            <Col className={isScreenExtraSmall ? 'px-0' : ''}>
+                <div className={isScreenExtraSmall ? 'fixed-bottom mt-5' : ''}>
+                    <ul className={`list-unstyled 
+                        d-flex justify-content-evenly 
+                        flex-sm-column ${isScreenExtraSmall ? 'bg-light mb-0' : ''}`}>
                         {links.map((link, idx) => (
                             <li key={idx}
                                 className='px-0 px-xl-3 py-2 py-md-3'
                             >
                                 <Link
                                     to={link.to}
-                                    className={`d-flex-column d-md-flex align-items-center text-decoration-none px-2 py-2 px-md-2 py-md-1 sidebar__link ${link.isActive ? 'fw-bold' : ''}`}
+                                    className={`d-flex-column d-md-flex  align-items-center text-decoration-none p-2 py-md-2 px-md-3 sidebar__link ${link.isActive ? 'fw-bold' : ''}`}
                                     style={{
                                         borderRadius: 'var(--main-border-radius)',
-                                        backgroundColor: link.isActive ? 'var(--main-accent-color)' : 'transparent'
+                                        backgroundColor: link.isActive && (!isScreenExtraSmall && !isScreenSmall) ? 'var(--main-accent-color)' : 'transparent'
                                     }}
                                 >
                                     <Icon
-                                        className={`${link.icon} fs-4`}
-                                        marginSize={isScreenSmall ? '0' : '3'}
+                                        className={`
+                                            ${!link.isActive ? link.icon : link.activeIcon} 
+                                            ${isScreenSmall ? 'd-flex justify-content-center align-items-center' : ''} 
+                                            ${isScreenExtraSmall ? 'my-auto' : ''} 
+                                        fs-4`}
+                                        marginSize={isScreenExtraSmall || isScreenSmall ? '0' : '3'}
                                     />
                                     <div className='d-none d-md-block'>
                                         {link.label}

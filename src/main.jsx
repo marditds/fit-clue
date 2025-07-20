@@ -1,6 +1,6 @@
 import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, Outlet, RouterProvider, useLocation } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -103,7 +103,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <AccountSettings />
+            element: <Navigate to='settings' replace />
           },
           {
             path: 'settings',
