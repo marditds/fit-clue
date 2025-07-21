@@ -340,9 +340,9 @@ export const deleteUserFromCollection = async (userId) => {
     }
 };
 
-export const makePost = async (productLinksData, url, userId, personalityName) => {
+export const makePost = async (personalityName, productLinksData, instaUrl, userId) => {
 
-    console.log({ personalityName, productLinksData, url });
+    console.log({ personalityName, productLinksData, instaUrl });
 
     try {
         const personality = await createPersonality(personalityName);
@@ -352,7 +352,6 @@ export const makePost = async (productLinksData, url, userId, personalityName) =
             return;
         }
 
-        // console.log('personality:', personality);
         var product_links = [];
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
@@ -369,7 +368,7 @@ export const makePost = async (productLinksData, url, userId, personalityName) =
             postsCollEnv,
             ID.unique(),
             {
-                url,
+                url: instaUrl,
                 personality_id: personality.$id,
                 product_links: product_links.map(product_link => product_link.$id),
                 user_id: userId,

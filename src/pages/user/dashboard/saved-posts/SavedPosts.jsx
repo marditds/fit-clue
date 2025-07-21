@@ -37,51 +37,51 @@ export const SavedPosts = () => {
         setIsSavesLoading(true);
 
         try {
-            // const userSavesDocs = await fetchSavesByUserId(userId, lastSave || null);
+            const userSavesDocs = await fetchSavesByUserId(userId, lastSave || null);
 
-            // if (!userSavesDocs || !userSavesDocs.documents?.length) {
-            //     console.log('No saves found.');
-            //     setHasMore(false);
-            //     return;
-            // }
+            if (!userSavesDocs || !userSavesDocs.documents?.length) {
+                console.log('No saves found.');
+                setHasMore(false);
+                return;
+            }
 
-            // setUserSavesTotal(userSavesDocs.total);
+            setUserSavesTotal(userSavesDocs.total);
 
-            // const usrSvsDcs = userSavesDocs.documents;
+            const usrSvsDcs = userSavesDocs.documents;
 
-            // console.log(`usrSvsDcs:`, usrSvsDcs);
+            console.log(`usrSvsDcs:`, usrSvsDcs);
 
-            // const fetchedInstaPosts = await Promise.all(
-            //     usrSvsDcs.map(async (usrSv) => {
-            //         const post = await fetchInstaPostById(usrSv.post_id);
-            //         return {
-            //             post,
-            //             saveDocId: usrSv.$id,
-            //         };
-            //     })
-            // );
+            const fetchedInstaPosts = await Promise.all(
+                usrSvsDcs.map(async (usrSv) => {
+                    const post = await fetchInstaPostById(usrSv.post_id);
+                    return {
+                        post,
+                        saveDocId: usrSv.$id,
+                    };
+                })
+            );
 
-            // console.log(`fetchedInstaPosts:`, fetchedInstaPosts);
+            console.log(`fetchedInstaPosts:`, fetchedInstaPosts);
 
-            // if (lastSave === null) {
-            //     setUserSaves(fetchedInstaPosts);
-            // } else {
-            //     setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
-            // }
+            if (lastSave === null) {
+                setUserSaves(fetchedInstaPosts);
+            } else {
+                setUserSaves(prevRes => [...prevRes, ...fetchedInstaPosts]);
+            }
 
-            // setLastSave(usrSvsDcs[usrSvsDcs.length - 1].$id || null);
+            setLastSave(usrSvsDcs[usrSvsDcs.length - 1].$id || null);
 
-            // setHasMore(usrSvsDcs.length === userSavesLoadLimit);
+            setHasMore(usrSvsDcs.length === userSavesLoadLimit);
 
-            // if (usrSvsDcs.length < userSavesLoadLimit) {
-            //     setHasMore(false);
-            // }
+            if (usrSvsDcs.length < userSavesLoadLimit) {
+                setHasMore(false);
+            }
 
             // Uncomment below for test data
-            const instaPosts = savesDashboardData;
-            setUserSaves(instaPosts);
-            setHasMore(false);
-            setUserSavesTotal(0);
+            // const instaPosts = savesDashboardData;
+            // setUserSaves(instaPosts);
+            // setHasMore(false);
+            // setUserSavesTotal(0);
 
         } catch (error) {
             console.error('Error getting saves:', error);
