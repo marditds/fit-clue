@@ -19,6 +19,7 @@ import Results from './pages/search/Results.jsx';
 import { More } from './pages/personality/More.jsx';
 import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';
 import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
+import TOS from './pages/tos/Tos.jsx';
 
 const MainLayout = () => {
 
@@ -133,7 +134,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'tos',
-        element: <SignIn />
+        element: <TOS />
       },
       {
         path: 'help',
