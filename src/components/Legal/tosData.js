@@ -49,7 +49,7 @@ export const tosData = [
     },
     {
         "title": "Visual and Media Assets",
-        "description": "Images and photos used on the Forms pages of FitClue are sourced from Pexels (https://www.pexels.com) and are subject to Pexels' licensing terms."
+        "description": "Images displayed on FitClue's sign-up and sign-in pages are sourced from Pexels (https://www.pexels.com) and are used in accordance with Pexels' licensing terms."
     },
     {
         "title": "Governing Law",
