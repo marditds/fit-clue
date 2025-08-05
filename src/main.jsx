@@ -21,6 +21,7 @@ import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings
 import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
 import TOS from './pages/tos/Tos.jsx';
 import Privacy from './pages/privacy/Privacy.jsx';
+import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuidelines.jsx';
 
 const MainLayout = () => {
 
@@ -143,7 +144,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'community-guidelines',
-        element: <Privacy />
+        element: <CommunityGuidelines />
       },
       {
         path: 'help',

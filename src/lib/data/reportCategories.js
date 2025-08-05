@@ -126,3 +126,17 @@ export const postReportCategories = [
         description: "Content involving prohibited items."
     }
 ];
+
+export const allReportCategories = [
+    {
+        title: 'Post Categories',
+        arr: postReportCategories
+    },
+    {
+        title: 'Links Categories', arr: reportCategories
+    },
+    {
+        title: 'Comments Categories',
+        arr: commentReportCategories
+    }
+]
