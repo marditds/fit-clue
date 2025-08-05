@@ -13,8 +13,8 @@ const Footer = () => {
                     </Col>
                     <Col xs='12' md='6' className='text-center text-md-end'>
                         <Link to='/tos' className='mx-2 text-decoration-none'>Terms of Service</Link>
-                        <Link to='/help' className='mx-2 text-decoration-none'>Help</Link>
-                        <Link to='/stuff' className='mx-2 text-decoration-none'>Stuff</Link>
+                        <Link to='/privacy' className='mx-2 text-decoration-none'>Privacy Policy</Link>
+                        <Link to='/community-guidelines' className='mx-2 text-decoration-none'>Community Guidelines</Link>
                     </Col>
                 </Row>
             </Container>

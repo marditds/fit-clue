@@ -9,8 +9,6 @@ const ReportCategoriesAccordion = ({ categories }) => {
 
     const [activeKey, setActiveKey] = useState('0');
 
-    const isOpen = activeKey
-
     const handleToggle = (key) => {
         setActiveKey(activeKey === key ? null : key);
     };
@@ -20,21 +18,26 @@ const ReportCategoriesAccordion = ({ categories }) => {
             {
                 categories.map((category, idx) => {
                     return (
-                        <Accordion.Item eventKey={`${idx}`} key={idx}>
+                        <Accordion.Item
+                            eventKey={`${idx}`}
+                            key={idx}
+                            className='my-2'
+                        >
                             <Accordion.Header
                                 onClick={() => handleToggle(`${idx}`)}
                             >
                                 {category.title}
                                 <span style={{ marginLeft: 'auto' }}>
                                     {
-                                        isOpen ?
-                                            <Icon className='bi bi-caret-down-square ms-auto' /> :
-                                            <Icon className={'bi bi-caret-up-square ms-auto'} />
+                                        activeKey === `${idx}` ?
+                                            <Icon className={'bi bi-caret-up-square ms-auto'} /> :
+                                            <Icon className='bi bi-caret-down-square ms-auto' />
+
                                     }
                                 </span>
                             </Accordion.Header>
                             <Accordion.Body>
-                                <ul>
+                                <ul className='list-unstyled'>
                                     {
                                         category.arr.map((c, idx) => {
                                             return (

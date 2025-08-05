@@ -15,9 +15,9 @@ const Privacy = () => {
                             return (
                                 <Col key={idx}>
                                     <h3>{data.title}</h3>
-                                    <p>
+                                    <div className='mb-3'>
                                         {data.description}
-                                    </p>
+                                    </div>
                                 </Col>
                             )
                         })

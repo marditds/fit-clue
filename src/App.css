@@ -135,6 +135,27 @@ div, p, button {
   font-size: 1rem !important;
 }
 
+.accordion-item {
+  border: 0;
+}
+
+.accordion-header>button {
+  /* background-color: black !important; */
+  box-shadow: none !important;
+}
+
+.accordion-header>button::after {
+  display: none;
+}
+
+.accordion-body {
+  margin-top: 0px;
+  border: 1px solid;
+  border-color: var(--main-border-color);
+  border-width: 1px !important;
+  border-radius: var(--main-border-radius) !important;
+}
+
 @keyframes loadingDots {
   0%, 100% {
     transform: translateY(0);
