@@ -1,17 +1,26 @@
-import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
+import { LegalTemplate } from '../../components/Legal/LegalTemplate';
+import { tosData } from '../../components/Legal/tosData';
 
 const TOS = () => {
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <h2>
-                        Terms of Use
-                    </h2>
-                </Col>
-            </Row>
-        </Container>
+        <LegalTemplate
+            title={'Terms of Service'}
+            content={
+                <>
+                    {
+                        tosData.map((term, idx) => {
+                            return (
+                                <Col key={idx}>
+                                    <h3>{term.title}</h3>
+                                    <p>{term.description}</p>
+                                </Col>
+                            )
+                        })
+                    }
+                </>
+            }
+        />
     )
 }
 

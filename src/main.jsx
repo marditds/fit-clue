@@ -20,6 +20,7 @@ import { More } from './pages/personality/More.jsx';
 import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';
 import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
 import TOS from './pages/tos/Tos.jsx';
+import Privacy from './pages/privacy/Privacy.jsx';
 
 const MainLayout = () => {
 
@@ -135,6 +136,14 @@ const router = createBrowserRouter([
       {
         path: 'tos',
         element: <TOS />
+      },
+      {
+        path: 'privacy',
+        element: <Privacy />
+      },
+      {
+        path: 'community-guidelines',
+        element: <Privacy />
       },
       {
         path: 'help',
