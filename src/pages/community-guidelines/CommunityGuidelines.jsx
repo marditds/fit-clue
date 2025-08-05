@@ -5,7 +5,7 @@ import { allReportCategories } from '../../lib/data/reportCategories';
 import { Icon } from '../../components/Accessories/Icon';
 import { useState } from 'react';
 
-const ReportCategoriesAccordion = ({ categories }) => {
+const ReportCategoriesAccordion = ({ categories, className }) => {
 
     const [activeKey, setActiveKey] = useState('0');
 
@@ -14,14 +14,14 @@ const ReportCategoriesAccordion = ({ categories }) => {
     };
 
     return (
-        <Accordion activeKey={activeKey}>
+        <Accordion activeKey={activeKey} className={className}>
             {
                 categories.map((category, idx) => {
                     return (
                         <Accordion.Item
                             eventKey={`${idx}`}
                             key={idx}
-                            className='my-2'
+                            className='mb-2'
                         >
                             <Accordion.Header
                                 onClick={() => handleToggle(`${idx}`)}
@@ -30,8 +30,8 @@ const ReportCategoriesAccordion = ({ categories }) => {
                                 <span style={{ marginLeft: 'auto' }}>
                                     {
                                         activeKey === `${idx}` ?
-                                            <Icon className={'bi bi-caret-up-square ms-auto'} /> :
-                                            <Icon className='bi bi-caret-down-square ms-auto' />
+                                            <Icon className={'bi bi-caret-up-square ms-auto d-flex align-items-center'} /> :
+                                            <Icon className='bi bi-caret-down-square ms-auto d-flex align-items-center' />
 
                                     }
                                 </span>
@@ -58,7 +58,6 @@ const ReportCategoriesAccordion = ({ categories }) => {
     )
 }
 
-
 export const CommunityGuidelines = () => {
 
     return (
@@ -66,12 +65,27 @@ export const CommunityGuidelines = () => {
             title={'Community Guidelines'}
             content={
                 <>
-                    <Col>{commGuideParags.intro}</Col>
-                    <Col>{commGuideParags.pargraph}</Col>
                     <Col>
-                        <ReportCategoriesAccordion categories={allReportCategories} />
+                        <p>
+                            {commGuideParags.intro}
+                        </p>
                     </Col>
-                    <Col>{commGuideParags.outro}</Col>
+                    <Col>
+                        <p>
+                            {commGuideParags.pargraph}
+                        </p>
+                    </Col>
+                    <Col>
+                        <ReportCategoriesAccordion
+                            categories={allReportCategories}
+                            className={'mb-3'}
+                        />
+                    </Col>
+                    <Col>
+                        <p>
+                            {commGuideParags.outro}
+                        </p>
+                    </Col>
                 </>
             }
         />

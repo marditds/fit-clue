@@ -28,6 +28,8 @@ export const SignForm = ({
     isReCaptchaVerficationLoading,
     reCaptchaErrorMessage,
     reCaptchaSuccessMessage,
+    agreementText,
+    onAgreementCheckboxChange
 }) => {
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
@@ -41,7 +43,7 @@ export const SignForm = ({
                     className={`form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100 ${backgroundColClass}`}
                 >
                     <Form className={(isXs) ? 'w-100' : 'w-75'}>
-                        <div className='text-center mb-4'>
+                        <div className='text-center my-4'>
                             <h3 className='mb-2'>{title}</h3>
                             {subtitle && <p className='text-muted'>{subtitle}</p>}
                         </div>
@@ -132,6 +134,18 @@ export const SignForm = ({
                             </Col>
                         )}
 
+                        {agreementText && (
+                            <Col className='mb-3'>
+                                <Form.Check
+                                    type='checkbox'
+                                    label={agreementText}
+                                    onChange={onAgreementCheckboxChange}
+                                    name='agreement'
+                                    id='agreementCheckbox'
+                                />
+                            </Col>
+                        )}
+
                         <Button
                             type='button'
                             onClick={onSubmit}
@@ -152,7 +166,7 @@ export const SignForm = ({
                         )}
 
                         {links.length > 0 && (
-                            <div className='text-center'>
+                            <div className='text-center mb-4'>
                                 {links.map(({ text, linkText, href }, idx) => (
                                     <div key={idx}>
                                         <span className='text-muted'>{text} </span>

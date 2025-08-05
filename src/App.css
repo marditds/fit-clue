@@ -67,6 +67,12 @@ input {
   max-height: 34px;
 }
 
+input[type="checkbox"] {
+  border-color: var(--main-title-color-hover) !important;
+  border-radius: var(--main-border-radius) !important;
+}
+
+input[type="checkbox"]:focus,
 input[type="radio"]:focus {
   border-color: var(--main-text-color) !important;
   border-width: 2px;
@@ -77,6 +83,7 @@ input:checked {
   border-color: var(--main-text-color) !important;
 }
 
+input:checked[type="checkbox"],
 input:checked[type="radio"] {
   background-color: var(--main-accent-color) !important;
   border-color: var(--main-text-color) !important;

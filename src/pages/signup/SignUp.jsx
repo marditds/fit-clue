@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '../../lib/hooks/useUser';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import signUpImg from '../../assets/sign-up.jpg'
 import { SignForm } from '../../components/Form/SignForm';
@@ -26,6 +26,9 @@ const SignUp = () => {
     const [isAccountBeingCreated, setIsAccountBeingCreated] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
+    // Agreement checkbox
+    const [isCheckboxClicked, setIsCheckBoxClicked] = useState(false);
+
     // ReCaptcha
     const [reCaptchaSiteKey, setReCaptchaSiteKey] = useState('');
     const [isReCaptchaVerficationLoading, setIsReCaptchaVerficationLoading] = useState(false);
@@ -33,6 +36,10 @@ const SignUp = () => {
     const [reCaptchaSuccessMessage, setReCaptchaSuccessMessage] = useState('');
     const [reCaptchaErrorMessage, setReCaptchaErrorMessage] = useState('');
 
+
+    const onAgreementCheckboxChange = () => {
+        setIsCheckBoxClicked(preVal => !preVal)
+    }
 
     const onCreateUserClick = async () => {
 
@@ -142,9 +149,26 @@ const SignUp = () => {
             fields={fields}
             onSubmit={onCreateUserClick}
             submitText={authText.signUp.button}
-            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword || !isReCaptchaVerified}
+            disabled={isAccountBeingCreated || !!easterWish || !username || !email || !password || !confirmPassword || !isReCaptchaVerified || isCheckboxClicked === false}
             loading={isAccountBeingCreated}
             loadingText={'Creating your account'}
+            agreementText={
+                <>
+                    I have read and agree to the{' '}
+                    <Link to='/tos' target='_blank'>
+                        Terms of Service
+                    </Link>,{' '}
+                    <Link to='/privacy' target='_blank'>
+                        Privacy Policy
+                    </Link>,
+                    {' '} and {' '}
+                    <Link to='/community-guidelines' target='_blank'>
+                        Community Guidelines
+                    </Link>
+                    .
+                </>
+            }
+            onAgreementCheckboxChange={onAgreementCheckboxChange}
             error={errorMsg}
             hiddenField={{
                 id: 'easterWish',

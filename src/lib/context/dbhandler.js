@@ -224,8 +224,11 @@ export const signInUser = async (email, password) => {
     } catch (error) {
 
         console.error('Error signing in user:', error);
-
-        if (error.code === 401) {
+        if (error.code === 400) {
+            if (error.toString().startsWith('Error signing in user: AppwriteException: Invalid `email` param:')) {
+                return 'Please enter a valid email address.'
+            }
+        } else if (error.code === 401) {
             return 'Invalid credentials. Please check the email and password.';
         } else {
             return 'Something went wrong. Please try again.'
