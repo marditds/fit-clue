@@ -5,7 +5,7 @@ export const LegalTemplate = ({ title, content }) => {
         <Container>
             <Row>
                 <Col>
-                    <h2>
+                    <h2 className='my-3'>
                         {title}
                     </h2>
                 </Col>
