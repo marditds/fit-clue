@@ -30,6 +30,8 @@ export default async ({ req, res, log, error }) => {
 
     log('profileId:', profileId);
 
+    await users.delete(userId);
+
     if (profileId) {
       await Promise.all([
         databases.deleteDocuments(
@@ -45,8 +47,6 @@ export default async ({ req, res, log, error }) => {
         )
       ]);
     }
-
-    await users.delete(userId);
 
     return res.json({ success: true, deletedProfileId: profileId });
   } catch (err) {
