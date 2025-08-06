@@ -30,21 +30,23 @@ export default async ({ req, res, log, error }) => {
 
     log('profileId:', profileId);
 
-    // await users.delete(userId);
+    if (profileId) {
+      await Promise.all([
+        databases.deleteDocuments(
+          process.env.VITE_DATABASE_ID,
+          process.env.VITE_SAVES_COLLECTION,
+          [Query.equal('userId', profileId)]
+        ),
 
-    // if (profileId) {
-    //   await databases.deleteDocuments(
-    //     process.env.VITE_DATABASE_ID,
-    //     process.env.VITE_SAVES_COLLECTION,
-    //     [Query.equal('userId', profileId)]
-    //   );
+        databases.deleteDocument(
+          process.env.VITE_DATABASE_ID,
+          process.env.VITE_USERNAMES_COLLECTION,
+          profileId
+        )
+      ]);
+    }
 
-    //   await databases.deleteDocument(
-    //     process.env.VITE_DATABASE_ID,
-    //     process.env.VITE_USERNAMES_COLLECTION,
-    //     profileId
-    //   );
-    // }
+    await users.delete(userId);
 
     return res.json({ success: true, deletedProfileId: profileId });
   } catch (err) {
