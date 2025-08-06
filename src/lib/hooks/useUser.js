@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform } from '../context/dbhandler';
 
 export const useUser = () => {
 
@@ -105,5 +105,13 @@ export const useUser = () => {
         }
     }
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection };
+    const deleteUserFromPlatform = async () => {
+        try {
+            const res = await removeUserFromPlatform();
+        } catch (error) {
+            console.error('Error deleting user from platform:', error);
+        }
+    }
+
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform };
 }

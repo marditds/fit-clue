@@ -1,4 +1,4 @@
-import { Client, Users, Databases } from 'node-appwrite';
+import { Client, Users, Databases, Query } from 'node-appwrite';
 
 export default async ({ req, res, log, error }) => {
   const client = new Client()
@@ -33,6 +33,12 @@ export default async ({ req, res, log, error }) => {
     await users.delete(userId);
 
     if (profileId) {
+      await databases.deleteDocuments(
+        process.env.VITE_DATABASE_ID,
+        process.env.VITE_SAVES_COLLECTION,
+        [Query.equal('userId', profileId)]
+      );
+
       await databases.deleteDocument(
         process.env.VITE_DATABASE_ID,
         process.env.VITE_USERNAMES_COLLECTION,

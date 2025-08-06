@@ -7,7 +7,7 @@ import { LoadingComponent } from '../../../components/Loading/LoadingComponent';
 
 export const Dashboard = () => {
 
-    const { updateUserPassword, updateUsernameInCollection } = useUser();
+    const { updateUserPassword, updateUsernameInCollection, deleteUserFromPlatform } = useUser();
 
     const { userId, email, username, setUsername } = useOutletContext();
 
@@ -87,6 +87,10 @@ export const Dashboard = () => {
         } finally {
             setIsUpdatingPassword(false);
         }
+    }
+
+    const onDeleteUserClick = async () => {
+        await deleteUserFromPlatform();
     }
 
     const updateUsernameFields = [
@@ -233,7 +237,10 @@ export const Dashboard = () => {
                                 This action is irreversible. You will not be able to recover your account.
                             </p>
 
-                            <Button className='w-100'>
+                            <Button
+                                onClick={onDeleteUserClick}
+                                className='w-100'
+                            >
                                 Delete Account
                             </Button>
                         </Col>
