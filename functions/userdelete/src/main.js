@@ -37,7 +37,7 @@ export default async ({ req, res, log, error }) => {
         databases.deleteDocuments(
           process.env.VITE_DATABASE_ID,
           process.env.VITE_SAVES_COLLECTION,
-          [Query.equal('userId', profileId)]
+          [Query.equal('user_id', profileId)]
         ),
 
         databases.deleteDocument(
