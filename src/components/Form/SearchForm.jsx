@@ -1,5 +1,6 @@
 import { Button, Form } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
+import { Icon } from '../Accessories/Icon';
 
 export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, className, isLoading }) => {
     return (
@@ -21,7 +22,7 @@ export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, cl
                 disabled={!searchTerm}
                 style={{ minHeight: '31px' }}
             >
-                {!isLoading ? 'Search' : <LoadingComponent loadingText={' '} />}
+                {!isLoading ? <Icon className='bi bi-search' /> : <LoadingComponent loadingText={' '} />}
             </Button>
         </>
     )

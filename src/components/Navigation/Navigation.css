@@ -1,3 +1,31 @@
 .back-button {
     min-width: max-content;
 }
+
+.navbar__btn {
+    max-height: 34px;
+    padding-block: 4px !important;
+    padding-inline: 8px !important;
+    border-radius: var(--main-border-radius) !important;
+    transition: var(--main-transition-speed) !important;
+}
+
+.navbar__btn.sign-up {
+    color: var(--main-text-color-hover) !important;
+    background-color: var(--main-accent-color-hover) !important;
+}
+
+.navbar__btn.sign-up:hover {
+    color: var(--main-text-color) !important;
+    background-color: var(--main-accent-color) !important;
+    border-color: var(--main-accent-color) !important;
+}
+
+.navbar__btn.sign-in:hover {
+    color: var(--main-text-color-hover) !important;
+    background-color: var(--main-accent-color-hover) !important;
+}
+
+.navbar__btn:hover {
+    border-color: var(--main-accent-color-hover) !important;
+}

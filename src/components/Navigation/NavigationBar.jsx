@@ -4,6 +4,7 @@ import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
 import { SearchForm } from '../Form/SearchForm';
+import './Navigation.css';
 
 const NavigationBar = () => {
 
@@ -57,8 +58,10 @@ const NavigationBar = () => {
                 <Navbar.Brand href='/'>React-Bootstrap</Navbar.Brand>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
-                    <Nav className='me-auto'>
+                    <Nav className='w-100 d-flex align-items-center'>
                         <Nav.Link as={Link} to='/'>Home</Nav.Link>
+
+                        <Nav.Link as={Link} to='/'>About</Nav.Link>
 
                         {
                             isLoggedIn &&
@@ -72,31 +75,41 @@ const NavigationBar = () => {
                         }
 
                         {
+                            !location.pathname.startsWith('/search') &&
+
+                            <Form className='d-flex align-items-center ms-auto' onSubmit={handleSearch}>
+                                <SearchForm
+                                    searchFieldPlacement='NavigationBar'
+                                    searchTerm={searchTerm}
+                                    setSearchTerm={setSearchTerm}
+                                />
+                            </Form>
+                        }
+
+                        {
                             !isLoggedIn ?
-                                <><Nav.Link as={Link} to='/sign-up'>
-                                    Create Free Account
-                                </Nav.Link>
-                                    <Nav.Link as={Link} to='/sign-in'>
+                                <>
+                                    <Nav.Link
+                                        as={Link}
+                                        to='/sign-up'
+                                        className='navbar__btn sign-up border ms-2'
+                                    >
+                                        Create Free Account
+                                    </Nav.Link>
+                                    <Nav.Link
+                                        as={Link}
+                                        to='/sign-in'
+                                        className='navbar__btn sign-in border ms-2'
+                                    >
                                         Sign in
-                                    </Nav.Link> </> :
+                                    </Nav.Link>
+                                </> :
                                 <Nav.Link as={Button} onClick={onSignOutClick}>
                                     Sign out
                                 </Nav.Link>
                         }
+
                     </Nav>
-
-                    {
-                        !location.pathname.startsWith('/search') &&
-
-                        <Form className='d-flex' onSubmit={handleSearch}>
-                            <SearchForm
-                                searchFieldPlacement='NavigationBar'
-                                searchTerm={searchTerm}
-                                setSearchTerm={setSearchTerm}
-                            />
-                        </Form>
-                    }
-
                 </Navbar.Collapse>
             </Container>
         </Navbar>
