@@ -33,13 +33,13 @@ export const Sidebar = ({ username }) => {
             label: 'Privacy Policy',
             icon: 'bi bi-shield',
             activeIcon: 'bi bi-shield-fill',
-            to: 'privacy-policy',
+            to: 'privacy',
         },
         {
             label: 'Terms of Use',
             icon: 'bi bi-file-earmark-text',
             activeIcon: 'bi bi-file-earmark-text-fill',
-            to: 'terms-of-use',
+            to: 'tos',
         },
     ].map(link => ({
         ...link,

@@ -117,3 +117,35 @@ export const ReportModal = ({
         </Modal>
     );
 };
+
+export const PlainModal = ({ modalTitle, modalText, showModal, handleClose, showModalFooter }) => {
+    return (
+        <Modal
+            show={showModal}
+            onHide={handleClose}
+            className='report-modal'
+        >
+            {
+                modalTitle &&
+                <Modal.Header closeButton>
+                    <Modal.Title>{modalTitle}</Modal.Title>
+                </Modal.Header>
+            }
+
+            <Modal.Body className='report-modal__body'>
+                {modalText}
+            </Modal.Body>
+
+            {
+                showModalFooter === true &&
+                <Modal.Footer>
+
+                    <Button onClick={handleClose}>
+                        Close
+                    </Button>
+
+                </Modal.Footer>
+            }
+        </Modal>
+    )
+}

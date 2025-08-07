@@ -115,6 +115,14 @@ const router = createBrowserRouter([
           {
             path: 'saved-posts',
             element: <SavedPosts />
+          },
+          {
+            path: 'tos',
+            element: <TOS />
+          },
+          {
+            path: 'privacy',
+            element: <Privacy />
           }
         ]
       },

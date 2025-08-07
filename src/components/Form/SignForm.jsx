@@ -1,5 +1,5 @@
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LoadingComponent } from '../Loading/Loading';
 import './SignPasswordForm.css';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -31,6 +31,9 @@ export const SignForm = ({
     agreementText,
     onAgreementCheckboxChange
 }) => {
+
+    const location = useLocation();
+
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='form__row w-100'>
@@ -38,7 +41,8 @@ export const SignForm = ({
 
                 <Col
                     style={{
-                        backgroundImage: (isXs || isSm) ? `url(${backgroundImage})` : ''
+                        backgroundImage: (isXs || isSm) ? `url(${backgroundImage})` : '',
+                        height: location.pathname === '/sign-up' ? 'fit-content' : '650px'
                     }}
                     className={`form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100 ${backgroundColClass}`}
                 >

@@ -4,6 +4,8 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useUser } from '../../../../lib/hooks/useUser';
 import { useState } from 'react';
 import { Icon } from '../../../../components/Accessories/Icon';
+import { PlainModal } from '../../../../components/Modals/Modals';
+import { LoadingComponent } from '../../../../components/Loading/Loading';
 
 export const AccountSettings = () => {
 
@@ -22,7 +24,7 @@ export const AccountSettings = () => {
     const [usrnmSuccessMsg, setUsrnmSuccessMsg] = useState(null);
     const [usrnmErrorMsg, setUsrnmErrorMsg] = useState(null);
 
-    // Passwprd
+    // Password
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -32,6 +34,8 @@ export const AccountSettings = () => {
 
     //Account delete
     const [isDeleteInProgress, setIsDeleteInProgress] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showModalFooter, setShowModalFooter] = useState(false);
 
     const onUpdateUsernameClick = async () => {
 
@@ -92,8 +96,10 @@ export const AccountSettings = () => {
     }
 
     const removeUserFromPlatform = async () => {
+
         setIsDeleteInProgress(true);
         try {
+
             const res = await deleteUserFromPlatform();
 
             console.log('res.success:', res.success);
@@ -105,16 +111,26 @@ export const AccountSettings = () => {
                 setIsSessionInProgress(false);
                 setUsername('');
                 setEmail('');
+                setShowModalFooter(false);
+                setShowModal(false);
 
                 localStorage.removeItem('authUserId');
 
                 navigate('/');
+            }
+
+            if (res.success === false) {
+                setShowModalFooter(true);
             }
         } catch (error) {
             console.error('Error removing user from platform:', error);
         } finally {
             setIsDeleteInProgress(false);
         }
+    }
+
+    const handleModalClose = () => {
+        setShowModal(false);
     }
 
     const updateUsernameFields = [
@@ -270,18 +286,28 @@ export const AccountSettings = () => {
                     </p>
 
                     <Button
-                        onClick={removeUserFromPlatform}
+                        onClick={async () => {
+                            setShowModal(true);
+                            await removeUserFromPlatform();
+                        }}
                         className='w-100'
                     >
-                        {
-                            !isDeleteInProgress ?
-                                'Delete Account' :
-                                <LoadingComponent />
-                        }
+                        Delete Account
                     </Button>
                 </Col>
             </Row>
 
+            <PlainModal
+                modalText={
+                    isDeleteInProgress ?
+                        <LoadingComponent loadingText='Deleting account' />
+                        :
+                        'Failed deleting account. Please try again later.'
+                }
+                showModal={showModal}
+                showModalFooter={showModalFooter}
+                handleClose={handleModalClose}
+            />
         </>
     )
 } 
