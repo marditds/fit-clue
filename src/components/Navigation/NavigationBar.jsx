@@ -55,6 +55,45 @@ const NavigationBar = () => {
         }
     }
 
+    // <Dropdown.Item
+    //     as={Link}
+    //     to='dashboard'
+    //     className='px-2'
+    // >
+    //     <span className='d-flex justify-content-between'>
+    //         Dashboard<Icon className='bi bi-grid-1x2' />
+    //     </span>
+    // </Dropdown.Item>
+    // <Dropdown.Item
+    //     as={Button}
+    //     onClick={onSignOutClick}
+    // >
+    //     <span className='d-flex justify-content-between'>
+    //         Sing out<Icon className='bi bi-box-arrow-left' />
+    //     </span>
+    // </Dropdown.Item>
+
+    const dropdownItems = [
+        {
+            as: Link,
+            to: 'dashboard',
+            onClick: () => console.log('Barev'),
+            dropdownItemClassName: 'px-2',
+            itemSpanClassName: 'd-flex justify-content-between',
+            title: 'Dashboard',
+            iconClassName: 'bi bi-grid-1x2',
+        },
+        {
+            as: Button,
+            to: '#',
+            onClick: onSignOutClick,
+            dropdownItemClassName: '',
+            itemSpanClassName: 'd-flex justify-content-between',
+            title: 'Sing out',
+            iconClassName: 'bi bi-box-arrow-left',
+        },
+    ]
+
     return (
         <Navbar expand='lg' className='bg-body-tertiary'>
             <Container>
@@ -71,6 +110,7 @@ const NavigationBar = () => {
                             {!isLoggedIn ? 'Home' : 'The Latest'}
                         </Nav.Link>
 
+                        {/* Pre-login */}
                         {!isLoggedIn &&
                             <>
                                 <Nav.Link
@@ -99,9 +139,9 @@ const NavigationBar = () => {
                             </>
                         }
 
+                        {/* Seach */}
                         {
                             !location.pathname.startsWith('/search') &&
-
                             <Form
                                 className={`d-flex align-items-center ${!isLoggedIn ? 'ms-auto w-25' : 'mx-auto w-50'}`}
                                 onSubmit={handleSearch}>
@@ -112,7 +152,7 @@ const NavigationBar = () => {
                                 />
                             </Form>
                         }
-
+                        {/* Post-login */}
                         {
                             isLoggedIn &&
                             <>
@@ -121,11 +161,12 @@ const NavigationBar = () => {
                                     to='/post/create'
                                     className='me-2 d-flex justify-content-center align-items-center'
                                 >
-                                    Create<i className='bi bi-plus-circle ms-1 d-flex justify-content-center align-items-center' />
+                                    Create
+                                    <Icon className='bi bi-plus-square ms-1 d-flex justify-content-center align-items-center' />
                                 </Nav.Link>
 
+                                {/* Dropdown */}
                                 <Dropdown drop='start' className='navbar__dropdown' >
-
                                     <Dropdown.Toggle id='dropdown-profile'>
                                         <Icon className='bi bi-person-circle fs-4 d-flex justify-content-center align-align-items-center' />
                                     </Dropdown.Toggle>
@@ -136,19 +177,24 @@ const NavigationBar = () => {
                                             to='dashboard'
                                             className='px-2'
                                         >
-                                            Dashboard
+                                            <span className='d-flex justify-content-between'>
+                                                Dashboard<Icon className='bi bi-grid-1x2' />
+                                            </span>
                                         </Dropdown.Item>
                                         <Dropdown.Item
                                             as={Button}
                                             onClick={onSignOutClick}
                                         >
-                                            Sing out
+                                            <span className='d-flex justify-content-between'>
+                                                Sing out<Icon className='bi bi-box-arrow-left' />
+                                            </span>
                                         </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </>
                         }
 
+                        {/* Sign up/in */}
                         {
                             !isLoggedIn &&
                             <>

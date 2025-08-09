@@ -57,3 +57,8 @@
     border-bottom-left-radius: 2px !important;
     border-bottom-right-radius: 2px !important;
 }
+
+.navbar__dropdown>div>a:hover {
+    color: var(--main-text-color-hover) !important;
+    background-color: var(--main-accent-color-hover);
+}
