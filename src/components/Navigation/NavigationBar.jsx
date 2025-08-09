@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Dropdown, Form, Nav, Navbar } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
 import { SearchForm } from '../Form/SearchForm';
@@ -115,40 +115,58 @@ const NavigationBar = () => {
 
                         {
                             isLoggedIn &&
-                            <><Nav.Link as={Link} to='/post/create'>
-                                Create <i className='bi bi-plus-circle' />
-                            </Nav.Link>
-                                <Nav.Link as={Link} to='/dashboard'>
-                                    <Icon className='bi bi-person-circle fs-4' />
+                            <>
+                                <Nav.Link
+                                    as={Link}
+                                    to='/post/create'
+                                    className='me-2 d-flex justify-content-center align-items-center'
+                                >
+                                    Create<i className='bi bi-plus-circle ms-1 d-flex justify-content-center align-items-center' />
                                 </Nav.Link>
+
+                                <Dropdown drop='start' className='navbar__dropdown' >
+
+                                    <Dropdown.Toggle id='dropdown-profile'>
+                                        <Icon className='bi bi-person-circle fs-4 d-flex justify-content-center align-align-items-center' />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item
+                                            as={Link}
+                                            to='dashboard'
+                                            className='px-2'
+                                        >
+                                            Dashboard
+                                        </Dropdown.Item>
+                                        <Dropdown.Item
+                                            as={Button}
+                                            onClick={onSignOutClick}
+                                        >
+                                            Sing out
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
                             </>
                         }
 
                         {
-                            !isLoggedIn ?
-                                <>
-                                    <Nav.Link
-                                        as={Link}
-                                        to='/sign-up'
-                                        className={`navbar__btn sign-up border ${location.pathname.startsWith('/search') ? 'ms-auto' : 'ms-2'}`}
-                                    >
-                                        Create Free Account
-                                    </Nav.Link>
-                                    <Nav.Link
-                                        as={Link}
-                                        to='/sign-in'
-                                        className='navbar__btn sign-in border ms-2'
-                                    >
-                                        Sign in
-                                    </Nav.Link>
-                                </> :
+                            !isLoggedIn &&
+                            <>
                                 <Nav.Link
-                                    as={Button}
-                                    onClick={onSignOutClick}
-                                    className='ms-2'
+                                    as={Link}
+                                    to='/sign-up'
+                                    className={`navbar__btn sign-up border ${location.pathname.startsWith('/search') ? 'ms-auto' : 'ms-2'}`}
                                 >
-                                    Sign out
+                                    Create Free Account
                                 </Nav.Link>
+                                <Nav.Link
+                                    as={Link}
+                                    to='/sign-in'
+                                    className='navbar__btn sign-in border ms-2'
+                                >
+                                    Sign in
+                                </Nav.Link>
+                            </>
                         }
 
                     </Nav>

@@ -29,3 +29,31 @@
 .navbar__btn:hover {
     border-color: var(--main-accent-color-hover) !important;
 }
+
+.navbar__dropdown>button::before,
+.navbar__dropdown>button::after {
+    display: none !important;
+}
+
+.navbar__dropdown>div {
+    margin-top: 40px !important;
+    margin-right: -42px !important;
+    padding-block: 0;
+    border-radius: var(--main-border-radius);
+    border-width: 1px;
+    border-color: var(--main-border-color) !important;
+}
+
+.navbar__dropdown>div>a {
+    border-radius: var(--main-border-radius) !important;
+}
+
+.navbar__dropdown>div>button {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.navbar__dropdown>div>button {
+    border-bottom-left-radius: 2px !important;
+    border-bottom-right-radius: 2px !important;
+}
