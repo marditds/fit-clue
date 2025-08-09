@@ -76,7 +76,7 @@ const NavigationBar = () => {
     const dropdownItems = [
         {
             as: Link,
-            to: 'dashboard',
+            to: '/dashboard',
             onClick: () => console.log('Barev'),
             dropdownItemClassName: 'px-2',
             itemSpanClassName: 'd-flex justify-content-between',
@@ -89,10 +89,10 @@ const NavigationBar = () => {
             onClick: onSignOutClick,
             dropdownItemClassName: '',
             itemSpanClassName: 'd-flex justify-content-between',
-            title: 'Sing out',
+            title: 'Sign out',
             iconClassName: 'bi bi-box-arrow-left',
         },
-    ]
+    ];
 
     return (
         <Navbar expand='lg' className='bg-body-tertiary'>
@@ -172,24 +172,22 @@ const NavigationBar = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item
-                                            as={Link}
-                                            to='dashboard'
-                                            className='px-2'
-                                        >
-                                            <span className='d-flex justify-content-between'>
-                                                Dashboard<Icon className='bi bi-grid-1x2' />
-                                            </span>
-                                        </Dropdown.Item>
-                                        <Dropdown.Item
-                                            as={Button}
-                                            onClick={onSignOutClick}
-                                        >
-                                            <span className='d-flex justify-content-between'>
-                                                Sing out<Icon className='bi bi-box-arrow-left' />
-                                            </span>
-                                        </Dropdown.Item>
+                                        {
+                                            dropdownItems.map((item, idx) => (
+                                                <Dropdown.Item
+                                                    key={idx}
+                                                    as={item.as}
+                                                    to={item.to}
+                                                    className={item.dropdownItemClassName}
+                                                >
+                                                    <span className={item.itemSpanClassName}>
+                                                        {item.title}<Icon className={item.iconClassName} />
+                                                    </span>
+                                                </Dropdown.Item>
+                                            ))
+                                        }
                                     </Dropdown.Menu>
+
                                 </Dropdown>
                             </>
                         }
