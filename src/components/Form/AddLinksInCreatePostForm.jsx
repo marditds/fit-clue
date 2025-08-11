@@ -117,7 +117,7 @@ export const AddLinksInCreatePostForm = ({
                     className='w-100'
                     onClick={addLinkField}>
                     <Icon className='bi bi-plus-square'
-                        marginSize={'2'}
+                        marginEndSize={'2'}
                     />Add Another Link
                 </Button>
             </Col>

@@ -77,7 +77,7 @@ export const Sidebar = ({ username }) => {
                                             ${isScreenSmall ? 'd-flex justify-content-center align-items-center' : ''} 
                                             ${isScreenExtraSmall ? 'my-auto' : ''} 
                                         fs-4`}
-                                        marginSize={isScreenExtraSmall || isScreenSmall ? '0' : '3'}
+                                        marginEndSize={isScreenExtraSmall || isScreenSmall ? '0' : '3'}
                                     />
                                     <div className='d-none d-md-block'>
                                         {link.label}

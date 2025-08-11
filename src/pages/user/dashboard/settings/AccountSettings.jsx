@@ -179,7 +179,7 @@ export const AccountSettings = () => {
                     <h3 className='fw-bold'>
                         <Icon
                             className='bi bi-gear'
-                            marginSize={'3'}
+                            marginEndSize={'3'}
                         />
                         Account Settings
                     </h3>
@@ -196,7 +196,7 @@ export const AccountSettings = () => {
                 <Col className='p-4 p-lg-5'>
                     <h4>
                         <Icon className='bi bi-at'
-                            marginSize={'2'}
+                            marginEndSize={'2'}
                         />Email
                     </h4>
                     <p className='text-muted'>
@@ -224,7 +224,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <DashboardForm
-                        title={<><Icon className='bi bi-hash' marginSize={'2'} />Username</>}
+                        title={<><Icon className='bi bi-hash' marginEndSize={'2'} />Username</>}
                         description='Your username must be unique. Your username will be visible to others.'
                         fields={updateUsernameFields}
                         onSubmit={(e) => {
@@ -251,7 +251,7 @@ export const AccountSettings = () => {
             <Row>
                 <Col className='p-4 p-lg-5'>
                     <DashboardForm
-                        title={<><Icon className='bi bi-lock' marginSize={'2'} />Password</>}
+                        title={<><Icon className='bi bi-lock' marginEndSize={'2'} />Password</>}
                         description='Keep your account secure with a strong password. We recommend using at least 8 characters with a mix of letters, numbers, and symbols.'
                         fields={updatePasswordFields}
                         onSubmit={(e) => {
@@ -278,7 +278,7 @@ export const AccountSettings = () => {
                 <Col className='p-4 p-lg-5'>
 
                     <h4>
-                        <Icon className='bi bi-exclamation-square' marginSize={'2'} />
+                        <Icon className='bi bi-exclamation-square' marginEndSize={'2'} />
                         Delete Account
                     </h4>
                     <p className='text-muted'>

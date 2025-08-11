@@ -25,7 +25,7 @@ export const CommentSection = ({ postId, username, userId, isLoggedIn }) => {
                     <h3>
                         <Icon
                             className='bi bi-chat-left-dots'
-                            marginSize={'2'}
+                            marginEndSize={'2'}
                         />
                         Leave a comment
                     </h3>

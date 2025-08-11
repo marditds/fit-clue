@@ -32,7 +32,7 @@ export const SharePost = () => {
                     <h3>
                         <Icon
                             className='bi bi-share'
-                            marginSize={'2'}
+                            marginEndSize={'2'}
                         />Share This Page
                     </h3>
                     <p className='mb-0'>

@@ -95,7 +95,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 >
                                     <Icon
                                         className='bi bi-flag'
-                                        marginSize={isMd ? '0' : '2'}
+                                        marginEndSize={isMd ? '0' : '2'}
                                     />Report
                                 </Button>
                             </Col>

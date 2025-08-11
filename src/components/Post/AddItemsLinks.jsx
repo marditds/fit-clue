@@ -76,7 +76,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                     <h3>
                         <Icon
                             className='bi bi-plus-lg'
-                            marginSize={'2'}
+                            marginEndSize={'2'}
                         />
                         Add New Shopping Link
                     </h3>

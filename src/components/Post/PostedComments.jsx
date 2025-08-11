@@ -133,7 +133,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
                     <h4>
                         <Icon
                             className='bi bi-chat-left'
-                            marginSize={'2'}
+                            marginEndSize={'2'}
                         />Comments ({commentsTotal})
                     </h4>
                 }
@@ -162,7 +162,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
                                                     className='py-1 px-2 bg-transparent text-muted'
                                                 >
                                                     <small>
-                                                        <Icon className='bi bi-flag' marginSize={'2'} />Report
+                                                        <Icon className='bi bi-flag' marginEndSize={'2'} />Report
                                                     </small>
                                                 </Button>
                                             </Col>

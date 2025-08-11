@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button, Container, Dropdown, Form, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Dropdown, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
 import { SearchForm } from '../Form/SearchForm';
 import './Navigation.css';
 import { Icon } from '../Accessories/Icon';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 const NavigationBar = () => {
 
@@ -22,6 +23,8 @@ const NavigationBar = () => {
 
     const { deleteUserSession } = useUser();
 
+    const { isXs, isSm, isMd } = useBreakpoints();
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = (e) => {
@@ -32,6 +35,8 @@ const NavigationBar = () => {
     };
 
     const onSignOutClick = async () => {
+
+        console.log('Sign out click.');
 
         setIsSignOutInProgress(true);
 
@@ -55,118 +60,186 @@ const NavigationBar = () => {
         }
     }
 
-    // <Dropdown.Item
-    //     as={Link}
-    //     to='dashboard'
-    //     className='px-2'
-    // >
-    //     <span className='d-flex justify-content-between'>
-    //         Dashboard<Icon className='bi bi-grid-1x2' />
-    //     </span>
-    // </Dropdown.Item>
-    // <Dropdown.Item
-    //     as={Button}
-    //     onClick={onSignOutClick}
-    // >
-    //     <span className='d-flex justify-content-between'>
-    //         Sing out<Icon className='bi bi-box-arrow-left' />
-    //     </span>
-    // </Dropdown.Item>
-
-    const dropdownItems = [
+    const preLoginNavbarItems = [
         {
             as: Link,
-            to: '/dashboard',
-            onClick: () => console.log('Barev'),
-            dropdownItemClassName: 'px-2',
-            itemSpanClassName: 'd-flex justify-content-between',
-            title: 'Dashboard',
-            iconClassName: 'bi bi-grid-1x2',
+            to: '/',
+            title: 'The Latest',
         },
         {
-            as: Button,
-            to: '#',
-            onClick: onSignOutClick,
-            dropdownItemClassName: '',
-            itemSpanClassName: 'd-flex justify-content-between',
-            title: 'Sign out',
-            iconClassName: 'bi bi-box-arrow-left',
+            as: Link,
+            to: '/about',
+            title: 'About',
         },
-    ];
+        {
+            as: Link,
+            to: '/contact',
+            title: 'Contact',
+        },
+    ]
+
+    const postLoginNavbarItems = [
+        {
+            as: Link,
+            to: '/',
+            navLinkClassName: 'me-5',
+            title: 'The Latest',
+            iconClassName: 'bi bi-lightning-charge',
+            activeIconClassName: 'bi bi-lightning-charge-fill',
+            iconMarginEndSize: '1',
+        },
+        {
+            as: Link,
+            to: 'dashboard',
+            navLinkClassName: 'me-5',
+            title: 'Dashboard',
+            iconClassName: 'bi bi-grid-1x2',
+            activeIconClassName: 'bi bi-grid-1x2-fill',
+            iconMarginEndSize: '1',
+        },
+    ].map(link => ({
+        ...link,
+        isActive: link.to === '/'
+            ? location.pathname === '/'
+            : location.pathname.startsWith(
+                link.to.startsWith('/') ? link.to : `/${link.to}`
+            )
+    }))
+
+    // const dropdownItems = [
+    //     {
+    //         as: Link,
+    //         to: '/dashboard',
+    //         onClick: () => console.log('Barev'),
+    //         dropdownItemClassName: 'px-2',
+    //         itemSpanClassName: 'd-flex justify-content-between',
+    //         title: 'Dashboard',
+    //         iconClassName: 'bi bi-grid-1x2',
+    //     },
+    //     {
+    //         as: Button,
+    //         to: '#',
+    //         onClick: () => onSignOutClick(),
+    //         dropdownItemClassName: '',
+    //         itemSpanClassName: 'd-flex justify-content-between',
+    //         title: 'Sign out',
+    //         iconClassName: 'bi bi-box-arrow-left',
+    //     },
+    // ];
+
+    const isScreenLargerThanMedium = !isSm && !isSm && !isMd;
 
     return (
         <Navbar expand='lg' className='bg-body-tertiary'>
             <Container>
-                <Navbar.Brand href='/'>React-Bootstrap</Navbar.Brand>
-                <Navbar.Toggle aria-controls='basic-navbar-nav' />
-                <Navbar.Collapse id='basic-navbar-nav'>
-                    <Nav className='w-100 d-flex align-items-center'>
+                <Navbar.Brand
+                    href='/'
+                    className={'me-4 me-xl-5'}
+                >
+                    FitClue
+                </Navbar.Brand>
+                <Navbar.Toggle
+                    aria-controls='navbar-nav'
+                />
+                <Navbar.Offcanvas
+                    id='navbar-nav'
+                    placement='end'
+                >
+                    <Offcanvas.Header closeButton>
+                        <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
+                            FitClue
+                        </Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                        <Nav className='w-100 h-100 flex-grow-1 d-lg-flex align-items-lg-center justify-content-between
+                        '>
 
-                        <Nav.Link
-                            as={Link}
-                            to='/'
-                            className='ms-5'
-                        >
-                            {!isLoggedIn ? 'Home' : 'The Latest'}
-                        </Nav.Link>
+                            <div className='w-100 h-25 d-flex flex-column flex-lg-row justify-content-between'>
+                                {/* Pre-login */}
+                                {!isLoggedIn &&
+                                    <>
+                                        {
+                                            preLoginNavbarItems.map((navLink, idx) => {
+                                                return (
+                                                    <Nav.Link
+                                                        key={idx}
+                                                        as={navLink.as}
+                                                        to={navLink.to}
+                                                        className='p-0'
+                                                    >
+                                                        {navLink.title}
+                                                    </Nav.Link>
+                                                )
+                                            })
+                                        }
+                                    </>
+                                }
 
-                        {/* Pre-login */}
-                        {!isLoggedIn &&
-                            <>
-                                <Nav.Link
-                                    as={Link}
-                                    to='/'
-                                    className='ms-5'
-                                >
-                                    Features
-                                </Nav.Link>
+                                {/* Post-login */}
+                                {isLoggedIn &&
+                                    <>
+                                        {
+                                            postLoginNavbarItems.map((navLink, idx) => {
+                                                return (
+                                                    <Nav.Link
+                                                        key={idx}
+                                                        as={navLink.as}
+                                                        to={navLink.to}
+                                                        className='p-0 d-flex align-items-center'
+                                                    >
+                                                        <Icon
+                                                            className={
+                                                                `d-flex align-items-center ${!navLink.isActive ?
+                                                                    navLink.iconClassName :
+                                                                    navLink.activeIconClassName}`
+                                                            }
+                                                            marginEndSize='2'
+                                                        />
+                                                        {navLink.title}
+                                                    </Nav.Link>
+                                                )
+                                            })
+                                        }
+                                    </>}
 
-                                <Nav.Link
-                                    as={Link}
-                                    to='/'
-                                    className='ms-5'
-                                >
-                                    About
-                                </Nav.Link>
+                                {/* Seach */}
+                                {
+                                    !location.pathname.startsWith('/search') &&
+                                    <Form
+                                        className={`d-flex align-items-center`}
+                                        style={{ width: isScreenLargerThanMedium ? '45%' : '100%' }}
+                                        onSubmit={handleSearch}>
+                                        <SearchForm
+                                            searchFieldPlacement='NavigationBar'
+                                            searchTerm={searchTerm}
+                                            setSearchTerm={setSearchTerm}
+                                        />
+                                    </Form>
+                                }
 
-                                <Nav.Link
-                                    as={Link}
-                                    to='/'
-                                    className='ms-5'
-                                >
-                                    Contact
-                                </Nav.Link>
-                            </>
-                        }
+                                {/* Post-login */}
+                                {
+                                    isLoggedIn &&
+                                    <>
+                                        <Nav.Link
+                                            as={Link}
+                                            to='/post/create'
+                                            className='p-0 d-flex justify-content-lg-center align-items-center'
+                                        >
+                                            <Icon className='bi bi-plus-square me-2 d-flex justify-content-center align-items-center' />
+                                            Create
+                                        </Nav.Link>
 
-                        {/* Seach */}
-                        {
-                            !location.pathname.startsWith('/search') &&
-                            <Form
-                                className={`d-flex align-items-center ${!isLoggedIn ? 'ms-auto w-25' : 'mx-auto w-50'}`}
-                                onSubmit={handleSearch}>
-                                <SearchForm
-                                    searchFieldPlacement='NavigationBar'
-                                    searchTerm={searchTerm}
-                                    setSearchTerm={setSearchTerm}
-                                />
-                            </Form>
-                        }
-                        {/* Post-login */}
-                        {
-                            isLoggedIn &&
-                            <>
-                                <Nav.Link
-                                    as={Link}
-                                    to='/post/create'
-                                    className='me-2 d-flex justify-content-center align-items-center'
-                                >
-                                    Create
-                                    <Icon className='bi bi-plus-square ms-1 d-flex justify-content-center align-items-center' />
-                                </Nav.Link>
+                                        <Nav.Link
+                                            as={Button}
+                                            onClick={onSignOutClick}
+                                            className='d-flex justify-content-center align-items-center'
+                                        >
+                                            Sign out
+                                            <Icon className='bi bi-box-arrow-right ms-2 d-flex justify-content-center align-items-center' />
+                                        </Nav.Link>
 
-                                {/* Dropdown */}
-                                <Dropdown drop='start' className='navbar__dropdown' >
+                                        {/* <Dropdown drop='start' className='navbar__dropdown' >
                                     <Dropdown.Toggle id='dropdown-profile'>
                                         <Icon className='bi bi-person-circle fs-4 d-flex justify-content-center align-align-items-center' />
                                     </Dropdown.Toggle>
@@ -179,6 +252,7 @@ const NavigationBar = () => {
                                                     as={item.as}
                                                     to={item.to}
                                                     className={item.dropdownItemClassName}
+                                                    onClick={item.onClick}
                                                 >
                                                     <span className={item.itemSpanClassName}>
                                                         {item.title}<Icon className={item.iconClassName} />
@@ -188,33 +262,42 @@ const NavigationBar = () => {
                                         }
                                     </Dropdown.Menu>
 
-                                </Dropdown>
-                            </>
-                        }
+                                </Dropdown> */}
+                                    </>
+                                }
 
-                        {/* Sign up/in */}
-                        {
-                            !isLoggedIn &&
-                            <>
-                                <Nav.Link
-                                    as={Link}
-                                    to='/sign-up'
-                                    className={`navbar__btn sign-up border ${location.pathname.startsWith('/search') ? 'ms-auto' : 'ms-2'}`}
-                                >
-                                    Create Free Account
-                                </Nav.Link>
-                                <Nav.Link
-                                    as={Link}
-                                    to='/sign-in'
-                                    className='navbar__btn sign-in border ms-2'
-                                >
-                                    Sign in
-                                </Nav.Link>
-                            </>
-                        }
+                                {/* Sign up/in */}
+                                {
+                                    !isLoggedIn &&
+                                    <>
+                                        <Nav.Link
+                                            as={Link}
+                                            to='/sign-up'
+                                            className={`navbar__btn sign-up border`}
+                                        >
+                                            Create Free Account
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            as={Link}
+                                            to='/sign-in'
+                                            className='navbar__btn sign-in border'
+                                        >
+                                            Sign in
+                                        </Nav.Link>
+                                    </>
+                                }
+                            </div>
 
-                    </Nav>
-                </Navbar.Collapse>
+                            <div className='d-flex flex-column d-lg-none mt-auto'>
+                                <a href="#">asdsa</a>
+                                <a href="#">asdsa</a>
+                                <a href="#">asdsa</a>
+                            </div>
+
+                        </Nav>
+
+                    </Offcanvas.Body>
+                </Navbar.Offcanvas>
             </Container>
         </Navbar>
     )

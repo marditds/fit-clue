@@ -151,7 +151,7 @@ export const SavedPosts = () => {
                     <h3 className='fw-bold'>
                         <Icon
                             className='bi bi-floppy'
-                            marginSize={'3'}
+                            marginEndSize={'3'}
                         />Your Saves ({userSavesTotal})
                     </h3>
                     <p>

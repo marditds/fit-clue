@@ -169,7 +169,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                                             className={`d-flex justify-content-center interaction__btn ${isLoggedIn && button.isClicked ? 'button-active' : ''}`}
                                         >
                                             <Icon className={`${button.icon}`}
-                                                marginSize={'2'}
+                                                marginEndSize={'2'}
                                             />
                                             {button.loadingComponent ?? button.name}
                                             {button.actionCount}

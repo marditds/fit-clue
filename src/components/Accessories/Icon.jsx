@@ -1,7 +1,7 @@
-export const Icon = ({ className, marginSize, style }) => {
+export const Icon = ({ className, marginEndSize, style }) => {
     return (
         <i
-            className={`${className} me-${marginSize}`}
+            className={`${className} me-${marginEndSize}`}
             style={style}
         />
     )
