@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button, Container, Dropdown, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
@@ -26,6 +26,8 @@ const NavigationBar = () => {
     const { isXs, isSm, isMd } = useBreakpoints();
 
     const [searchTerm, setSearchTerm] = useState('');
+
+    const isScreenWidthLargerThanMedium = !isXs && !isSm && !isMd;
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -106,6 +108,8 @@ const NavigationBar = () => {
             )
     }))
 
+
+
     // const dropdownItems = [
     //     {
     //         as: Link,
@@ -127,10 +131,12 @@ const NavigationBar = () => {
     //     },
     // ];
 
-    const isScreenLargerThanMedium = !isSm && !isSm && !isMd;
 
     return (
-        <Navbar expand='lg' className='bg-body-tertiary'>
+        <Navbar
+            expand='lg'
+            className='bg-light'
+        >
             <Container>
                 <Navbar.Brand
                     href='/'
@@ -150,11 +156,25 @@ const NavigationBar = () => {
                             FitClue
                         </Offcanvas.Title>
                     </Offcanvas.Header>
-                    <Offcanvas.Body>
-                        <Nav className='w-100 h-100 flex-grow-1 d-lg-flex align-items-lg-center justify-content-between
-                        '>
+                    <Offcanvas.Body
+                        className='pb-0'
+                        style={{
+                            height: !isScreenWidthLargerThanMedium ? '100vh' : 'auto',
+                        }}
+                    >
+                        <Nav
+                            className='w-100 h-100 flex-grow-1 d-lg-flex align-items-lg-center justify-content-between'
 
-                            <div className='w-100 h-25 d-flex flex-column flex-lg-row justify-content-between'>
+                            style={{
+                                maxHeight: '100vh',
+                                overflowY: 'auto'
+                            }}
+                        >
+                            <div className='w-100 d-flex flex-column flex-lg-row justify-content-between'
+                                style={{
+                                    minHeight: !isScreenWidthLargerThanMedium ? '195px' : 'auto'
+                                }}
+                            >
                                 {/* Pre-login */}
                                 {!isLoggedIn &&
                                     <>
@@ -207,7 +227,7 @@ const NavigationBar = () => {
                                     !location.pathname.startsWith('/search') &&
                                     <Form
                                         className={`d-flex align-items-center`}
-                                        style={{ width: isScreenLargerThanMedium ? '45%' : '100%' }}
+                                        style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }}
                                         onSubmit={handleSearch}>
                                         <SearchForm
                                             searchFieldPlacement='NavigationBar'
@@ -288,11 +308,11 @@ const NavigationBar = () => {
                                 }
                             </div>
 
-                            <div className='d-flex flex-column d-lg-none mt-auto'>
+                            {/* <div className='d-flex flex-column d-lg-none mt-auto'>
                                 <a href="#">asdsa</a>
                                 <a href="#">asdsa</a>
                                 <a href="#">asdsa</a>
-                            </div>
+                            </div> */}
 
                         </Nav>
 
