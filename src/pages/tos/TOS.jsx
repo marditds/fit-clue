@@ -1,8 +1,11 @@
 import { Col } from 'react-bootstrap';
 import { LegalTemplate } from '../../components/Legal/LegalTemplate';
-import { tosData } from '../../components/Legal/tosData';
+import TOSData from '../../components/Legal/TOSData';
 
 const TOS = () => {
+
+    const { tosData } = TOSData();
+
     return (
         <LegalTemplate
             title={'Terms of Service'}
@@ -13,7 +16,7 @@ const TOS = () => {
                             return (
                                 <Col key={idx}>
                                     <h3>{term.title}</h3>
-                                    <p>{term.description}</p>
+                                    {term.description}
                                 </Col>
                             )
                         })
