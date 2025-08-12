@@ -37,7 +37,7 @@ export const tosData = [
     },
     {
         "title": "Third-Party Affiliation and Services",
-        "description": "FitClue is not affiliated with or endorsed by Instagram. Any use of Meta's services (such as embedding Instagram posts) is subject to Meta's terms and policies. FitClue is also not affiliated with or endorsed by Google. Any use of Google services (such as reCAPTCHA or Google Gemini) is subject to Google's terms and policies. Google Gemini is integrated to scan users' links and comments to help ensure appropriateness before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. Users are solely responsible for reviewing and modifying content before posting. Additionally, FitClue relies on Appwrite for backend infrastructure, including data storage and management. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated third-party services are beyond FitClue's control. By using FitClue, users acknowledge that the platform's reliability partly depends on the performance of third-party services provided by Meta, Google, and Appwrite."
+        "description": "FitClue is not affiliated with or endorsed by Instagram or Meta. Any use of Instagram's embed functionality is subject to Instagram's and Meta's applicable terms of use and policies. FitClue is also not affiliated with or endorsed by Google. Any use of Google services (such as reCAPTCHA or Google Gemini) is subject to Google's terms and policies. Google Gemini is integrated to scan users' links and comments to help ensure appropriateness before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. Users are solely responsible for reviewing and modifying content before posting. Additionally, FitClue relies on Appwrite for backend infrastructure, including data storage and management. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated third-party services are beyond FitClue's control. By using FitClue, users acknowledge that the platform's reliability partly depends on the performance of third-party services provided by Meta, Google, and Appwrite."
     },
     {
         "title": "Limitation of Liability",
@@ -49,7 +49,7 @@ export const tosData = [
     },
     {
         "title": "Visual and Media Assets",
-        "description": "Images displayed on FitClue's sign-up and sign-in pages are sourced from Pexels (https://www.pexels.com) and are used in accordance with Pexels' licensing terms."
+        "description": "Images displayed on FitClue's sign-up and sign-in pages are sourced from Pexels (https://www.pexels.com) and are used in accordance with Pexels' licensing terms. Copyright in these images remains with their respective photographers. Some media displayed in the application is embedded directly from Instagram using Instagram's official embed functionality. All rights, title, and interest in such media remain the sole property of the original Instagram users."
     },
     {
         "title": "Governing Law",
