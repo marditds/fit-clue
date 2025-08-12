@@ -50,15 +50,20 @@ export const Sidebar = ({ username }) => {
     const isScreenSmall = isSm;
 
     return (
-        <Row className='sticky-top px-2 px-lg-4 pt-lg-5 flex-column'>
+        <Row
+            className='sticky-top px-2 px-lg-4 pt-md-5 flex-column'>
             <Col className='text-center d-none d-md-block'>
-                <h2>{username}</h2>
+                <h2 className='mt-0 mt-sm-2'>{username}</h2>
             </Col>
-            <Col className={isScreenExtraSmall ? 'px-0' : ''}>
+            <Col>
                 <div className={isScreenExtraSmall ? 'fixed-bottom mt-5' : ''}>
                     <ul className={`list-unstyled 
                         d-flex justify-content-evenly 
-                        flex-sm-column ${isScreenExtraSmall ? 'bg-light mb-0' : ''}`}>
+                        flex-sm-column ${isScreenExtraSmall ? 'bg-light mb-0' : ''}`}
+                        style={{
+                            paddingTop: isSm ? '56px' : '0px'
+                        }}
+                    >
                         {links.map((link, idx) => (
                             <li key={idx}
                                 className='px-0 px-xl-3 py-2 py-md-3'

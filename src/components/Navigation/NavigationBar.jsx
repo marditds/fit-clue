@@ -26,8 +26,21 @@ const NavigationBar = () => {
     const { isXs, isSm, isMd } = useBreakpoints();
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [showOffcanvas, setShowOffcanvas] = useState(false);
 
     const isScreenWidthLargerThanMedium = !isXs && !isSm && !isMd;
+
+    useEffect(() => {
+        setShowOffcanvas(false);
+    }, [location.pathname]);
+
+    const handleCloseOffcanvas = () => {
+        setShowOffcanvas(false)
+    };
+
+    const handleShowOffcanvas = () => {
+        setShowOffcanvas(true)
+    };
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -108,8 +121,6 @@ const NavigationBar = () => {
             )
     }))
 
-
-
     // const dropdownItems = [
     //     {
     //         as: Link,
@@ -131,48 +142,51 @@ const NavigationBar = () => {
     //     },
     // ];
 
-
     return (
         <Navbar
             expand='lg'
             className='bg-light'
+            sticky='top'
+        // style={{ zIndex: '9999' }}
         >
             <Container>
-                <Navbar.Brand
-                    href='/'
-                    className={'me-4 me-xl-5'}
-                >
+                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5'>
                     FitClue
                 </Navbar.Brand>
-                <Navbar.Toggle
-                    aria-controls='navbar-nav'
-                />
-                <Navbar.Offcanvas
-                    id='navbar-nav'
-                    placement='end'
+
+                {!isScreenWidthLargerThanMedium &&
+                    !location.pathname.startsWith('/search') &&
+                    <Form
+                        className={`d-flex align-items-center`}
+                        style={{ width: isXs ? '55%' : '70%' }}
+                        onSubmit={handleSearch}>
+                        <SearchForm
+                            searchFieldPlacement='SmallScreen'
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                        />
+                    </Form>
+                }
+
+                <Navbar.Toggle aria-controls='navbar-nav' className='sdada' onClick={handleShowOffcanvas} />
+                <Navbar.Offcanvas id='navbar-nav' placement='end' show={showOffcanvas} onHide={handleCloseOffcanvas}
                 >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
                             FitClue
                         </Offcanvas.Title>
                     </Offcanvas.Header>
-                    <Offcanvas.Body
-                        className='pb-0'
-                        style={{
-                            height: !isScreenWidthLargerThanMedium ? '100vh' : 'auto',
-                        }}
+                    <Offcanvas.Body className='pb-0' style={{ height: !isScreenWidthLargerThanMedium ? '100vh' : 'auto' }}
                     >
                         <Nav
                             className='w-100 h-100 flex-grow-1 d-lg-flex align-items-lg-center justify-content-between'
-
                             style={{
-                                maxHeight: '100vh',
-                                overflowY: 'auto'
+                                maxHeight: '100vh', overflowY: 'auto'
                             }}
                         >
-                            <div className='w-100 d-flex flex-column flex-lg-row justify-content-between'
+                            <div className='w-100 d-flex flex-column flex-lg-row justify-content-between align-items-lg-center'
                                 style={{
-                                    minHeight: !isScreenWidthLargerThanMedium ? '195px' : 'auto'
+                                    minHeight: !isScreenWidthLargerThanMedium ? '180px' : 'auto'
                                 }}
                             >
                                 {/* Pre-login */}
@@ -185,7 +199,8 @@ const NavigationBar = () => {
                                                         key={idx}
                                                         as={navLink.as}
                                                         to={navLink.to}
-                                                        className='p-0'
+                                                        className='p-0 mb-3 mb-lg-0'
+                                                        onClick={handleCloseOffcanvas}
                                                     >
                                                         {navLink.title}
                                                     </Nav.Link>
@@ -206,10 +221,11 @@ const NavigationBar = () => {
                                                         as={navLink.as}
                                                         to={navLink.to}
                                                         className='p-0 d-flex align-items-center'
+                                                        onClick={handleCloseOffcanvas}
                                                     >
                                                         <Icon
                                                             className={
-                                                                `d-flex align-items-center ${!navLink.isActive ?
+                                                                `d-flex align-items-center fs-5 ${!navLink.isActive ?
                                                                     navLink.iconClassName :
                                                                     navLink.activeIconClassName}`
                                                             }
@@ -223,14 +239,14 @@ const NavigationBar = () => {
                                     </>}
 
                                 {/* Seach */}
-                                {
+                                {isScreenWidthLargerThanMedium &&
                                     !location.pathname.startsWith('/search') &&
                                     <Form
-                                        className={`d-flex align-items-center`}
+                                        className={`d-none d-lg-flex align-items-center mb-3 mb-lg-0`}
                                         style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }}
                                         onSubmit={handleSearch}>
                                         <SearchForm
-                                            searchFieldPlacement='NavigationBar'
+                                            searchFieldPlacement='LargeScreen'
                                             searchTerm={searchTerm}
                                             setSearchTerm={setSearchTerm}
                                         />
@@ -246,7 +262,7 @@ const NavigationBar = () => {
                                             to='/post/create'
                                             className='p-0 d-flex justify-content-lg-center align-items-center'
                                         >
-                                            <Icon className='bi bi-plus-square me-2 d-flex justify-content-center align-items-center' />
+                                            <Icon className={`${location.pathname !== '/post/create' ? 'bi bi-plus-square' : 'bi bi-plus-square-fill'} me-2 d-flex justify-content-center align-items-center fs-5`} />
                                             Create
                                         </Nav.Link>
 
@@ -259,7 +275,44 @@ const NavigationBar = () => {
                                             <Icon className='bi bi-box-arrow-right ms-2 d-flex justify-content-center align-items-center' />
                                         </Nav.Link>
 
-                                        {/* <Dropdown drop='start' className='navbar__dropdown' >
+
+                                    </>
+                                }
+
+                                {/* Sign up/in */}
+                                {
+                                    !isLoggedIn &&
+                                    <>
+                                        <Nav.Link
+                                            as={Link}
+                                            to='/sign-up'
+                                            className='navbar__btn sign-up border mb-3 mb-lg-0'
+                                        >
+                                            Create Free Account
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            as={Link}
+                                            to='/sign-in'
+                                            className='navbar__btn sign-in border mb-3 mb-lg-0'
+                                        >
+                                            Sign in
+                                        </Nav.Link>
+                                    </>
+                                }
+                            </div>
+
+                        </Nav>
+
+                    </Offcanvas.Body>
+                </Navbar.Offcanvas>
+            </Container>
+        </Navbar>
+    )
+}
+
+export default NavigationBar;
+
+{/* <Dropdown drop='start' className='navbar__dropdown' >
                                     <Dropdown.Toggle id='dropdown-profile'>
                                         <Icon className='bi bi-person-circle fs-4 d-flex justify-content-center align-align-items-center' />
                                     </Dropdown.Toggle>
@@ -283,44 +336,3 @@ const NavigationBar = () => {
                                     </Dropdown.Menu>
 
                                 </Dropdown> */}
-                                    </>
-                                }
-
-                                {/* Sign up/in */}
-                                {
-                                    !isLoggedIn &&
-                                    <>
-                                        <Nav.Link
-                                            as={Link}
-                                            to='/sign-up'
-                                            className={`navbar__btn sign-up border`}
-                                        >
-                                            Create Free Account
-                                        </Nav.Link>
-                                        <Nav.Link
-                                            as={Link}
-                                            to='/sign-in'
-                                            className='navbar__btn sign-in border'
-                                        >
-                                            Sign in
-                                        </Nav.Link>
-                                    </>
-                                }
-                            </div>
-
-                            {/* <div className='d-flex flex-column d-lg-none mt-auto'>
-                                <a href="#">asdsa</a>
-                                <a href="#">asdsa</a>
-                                <a href="#">asdsa</a>
-                            </div> */}
-
-                        </Nav>
-
-                    </Offcanvas.Body>
-                </Navbar.Offcanvas>
-            </Container>
-        </Navbar>
-    )
-}
-
-export default NavigationBar;
