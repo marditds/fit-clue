@@ -1,14 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getUserFromCollectionById } from './dbhandler';
 
-// import { getUserById } from './dbhandler';
-// import { useLocation } from 'react-router-dom';
-
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-
-    // const location = useLocation();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
@@ -21,7 +16,7 @@ export const UserProvider = ({ children }) => {
     const [isCheckEmailExistanceLoading, setIsCheckEmailExistanceLoading] = useState(false);
     const [isSessionInProgress, setIsSessionInProgress] = useState(false);
     const [isSignOutInProgress, setIsSignOutInProgress] = useState(false);
-    const [isLogInBtnClicked, setIsLogInBtnClicked] = useState(false);
+    const [isSignInBtnClicked, setIsSignInBtnClicked] = useState(false);
 
     // Checkig Session Status
     useEffect(() => {
@@ -51,8 +46,6 @@ export const UserProvider = ({ children }) => {
                     return;
                 }
 
-                // const userEmailInSession = localStorage.getItem('authUserEmail');
-
                 console.log('userIdInSession', userIdInSession);
 
                 const user = await getUserFromCollectionById(userIdInSession);
@@ -73,42 +66,6 @@ export const UserProvider = ({ children }) => {
         checkingSessionStatus();
     }, [isSignOutInProgress])
 
-    // Fetch username, account type, and website by user Id
-    // useEffect(() => {
-    //     if (!isLoggedIn || !userId) return;
-
-    //     const fetchUserByUserId = async () => {
-    //         try {
-    //             console.log('START - Fetching user in Context...');
-    //             setIsFetchingUserinContextLoading(true);
-
-    //             const usr = await getUserById(userId);
-    //             console.log('usr in UserContext:', usr);
-
-    //             if (usr === 404) {
-    //                 if (location.pathname !== '/create-account') {
-    //                     navigate('/create-account');
-    //                 }
-    //             }
-
-    //             setUsername(usr.username);
-
-    //         } catch (error) {
-    //             console.log('Error fetching user by id', error);
-    //         }
-    //         finally {
-    //             console.log('FINISH - Fetching user in Context...');
-    //             setIsFetchingUserinContextLoading(false);
-    //         }
-    //     }
-
-    //     if (location.pathname !== '/create-account') {
-    //         fetchUserByUserId();
-    //     } else {
-    //         console.log('Bari galust.');
-    //     }
-    // }, [userId, isLoggedIn])
-
     return (
         <UserContext.Provider
             value={{
@@ -122,7 +79,7 @@ export const UserProvider = ({ children }) => {
                 user, setUser,
                 isSessionInProgress, setIsSessionInProgress,
                 isSignOutInProgress, setIsSignOutInProgress,
-                isLogInBtnClicked, setIsLogInBtnClicked
+                isSignInBtnClicked, setIsSignInBtnClicked
             }}>
             {children}
         </UserContext.Provider>

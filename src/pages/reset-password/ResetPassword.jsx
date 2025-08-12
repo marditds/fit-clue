@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../lib/hooks/useUser';
 import { Form } from 'react-bootstrap';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import resetImg from '../../assets/reset-password.jpg';
+import { LoadingPage } from '../../components/Loading/Loading';
 
 const ResetPassword = () => {
+
+    const navigate = useNavigate();
 
     const { updatePasswordFromRecoveryEmail } = useUser();
 
@@ -24,14 +27,17 @@ const ResetPassword = () => {
     // Get Reset Details
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
+
+        if (params.size === 0) {
+            navigate('/', { replace: true });
+            return;
+        }
+
         setUserId(params.get('userId'));
         setSecret(params.get('secret'));
 
         console.log('THESE ARE THE PARAMS:', params);
-
-        // if (params.size === 0) {
-        //     navigate('/');
-        // }
+        console.log('PARAMS SIZE:', params.size);
 
         const functionInResetPasswrodComponent = async () => {
             try {
@@ -96,6 +102,12 @@ const ResetPassword = () => {
         } finally {
             setIsResetPasswordLoading(false);
         }
+    }
+
+    if (!userId || !secret) {
+        return (
+            <LoadingPage loadingText='Reset Password' />
+        )
     }
 
     return (

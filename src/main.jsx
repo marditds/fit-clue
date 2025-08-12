@@ -22,6 +22,7 @@ import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
 import TOS from './pages/tos/Tos.jsx';
 import Privacy from './pages/privacy/Privacy.jsx';
 import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuidelines.jsx';
+import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';
 
 const MainLayout = () => {
 
@@ -102,6 +103,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'dashboard',
+        loader: () => redirectIfNotLoggedIn('sign-in'),
         element: <Dashboard />,
         children: [
           {
@@ -128,14 +130,17 @@ const router = createBrowserRouter([
       },
       {
         path: 'sign-up',
+        loader: redirectIfLoggedIn,
         element: <SignUp />
       },
       {
         path: 'sign-in',
+        loader: redirectIfLoggedIn,
         element: <SignIn />
       },
       {
         path: 'forgot-password',
+        loader: redirectIfLoggedIn,
         element: <ForgotPassword />
       },
       {
@@ -156,11 +161,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'help',
-        element: <SignIn />
+        element: <CommunityGuidelines />
       },
       {
         path: 'stuff',
-        element: <SignIn />
+        element: <CommunityGuidelines />
       },
     ]
   },
