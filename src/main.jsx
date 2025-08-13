@@ -14,7 +14,7 @@ import SignIn from './pages/signin/SignIn.jsx';
 import Dashboard from './pages/user/dashboard/Dashboard.jsx';
 import ForgotPassword from './pages/forgot-password/ForgotPassword.jsx';
 import ResetPassword from './pages/reset-password/ResetPassword';
-import Footer from './components/Footer/Footer.jsx';
+import Footer from './components/Navigation/Footer.jsx';
 import Results from './pages/search/Results.jsx';
 import { More } from './pages/personality/More.jsx';
 import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';

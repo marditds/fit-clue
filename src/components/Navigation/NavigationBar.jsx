@@ -149,9 +149,9 @@ const NavigationBar = () => {
     return (
         <Navbar
             expand='lg'
-            className='navbar__body'
+            className='navbar__body border border-1 border-top-0'
             sticky={isXs || isSm ? 'top' : ''}
-            style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '0' }}
+            style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '4' }}
         >
             <Container>
                 <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5'>

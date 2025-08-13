@@ -44,7 +44,7 @@ a:hover {
   text-decoration: none;
 }
 
-a:focus {
+a:focus-visible {
   outline-width: thin !important;
   outline-color: black !important;
   outline-style: solid !important;

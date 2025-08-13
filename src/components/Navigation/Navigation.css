@@ -4,7 +4,8 @@
 
 .navbar__body {
     background-color: var(--main-white-shade) !important;
-    border-bottom: 1px solid var(--main-border-color) !important;
+    border-color: var(--main-border-color) !important;
+    border-inline: 0px !important;
 }
 
 .navbar__btn {
@@ -37,7 +38,7 @@
     border-color: var(--main-accent-color-hover) !important;
 }
 
-.navbar__dropdown>button::before,
+/* .navbar__dropdown>button::before,
 .navbar__dropdown>button::after {
     display: none !important;
 }
@@ -68,4 +69,4 @@
 .navbar__dropdown>div>a:hover {
     color: var(--main-text-color-hover) !important;
     background-color: var(--main-accent-color-hover);
-}
+} */
