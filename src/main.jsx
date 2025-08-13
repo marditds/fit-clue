@@ -79,20 +79,6 @@ const router = createBrowserRouter([
         ]
       },
       {
-        path: 'personality',
-        children: [
-          {
-            path: ':personalityName',
-            children: [
-              {
-                path: 'more',
-                element: <More />
-              }
-            ]
-          }
-        ]
-      },
-      {
         path: 'search',
         children: [
           {

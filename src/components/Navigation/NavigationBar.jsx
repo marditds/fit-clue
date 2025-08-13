@@ -34,6 +34,10 @@ const NavigationBar = () => {
         setShowOffcanvas(false);
     }, [location.pathname]);
 
+    useEffect(() => {
+        setSearchTerm('');
+    }, [location.pathname])
+
     const handleCloseOffcanvas = () => {
         setShowOffcanvas(false)
     };
@@ -146,7 +150,7 @@ const NavigationBar = () => {
         <Navbar
             expand='lg'
             className='bg-light'
-            sticky='top'
+        // sticky='top'
         // style={{ zIndex: '9999' }}
         >
             <Container>
@@ -184,7 +188,7 @@ const NavigationBar = () => {
                                 maxHeight: '100vh', overflowY: 'auto'
                             }}
                         >
-                            <div className='w-100 d-flex flex-column flex-lg-row justify-content-between align-items-lg-center'
+                            <div className='w-100 d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center'
                                 style={{
                                     minHeight: !isScreenWidthLargerThanMedium ? '180px' : 'auto'
                                 }}
@@ -220,7 +224,7 @@ const NavigationBar = () => {
                                                         key={idx}
                                                         as={navLink.as}
                                                         to={navLink.to}
-                                                        className='p-0 d-flex align-items-center'
+                                                        className='p-0 mb-4 mb-lg-0 d-flex align-items-center'
                                                         onClick={handleCloseOffcanvas}
                                                     >
                                                         <Icon
@@ -240,7 +244,8 @@ const NavigationBar = () => {
 
                                 {/* Seach */}
                                 {isScreenWidthLargerThanMedium &&
-                                    !location.pathname.startsWith('/search') &&
+                                    !location.pathname.startsWith('/search')
+                                    ?
                                     <Form
                                         className={`d-none d-lg-flex align-items-center mb-3 mb-lg-0`}
                                         style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }}
@@ -251,6 +256,8 @@ const NavigationBar = () => {
                                             setSearchTerm={setSearchTerm}
                                         />
                                     </Form>
+                                    :
+                                    <div style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }} />
                                 }
 
                                 {/* Post-login */}
@@ -260,7 +267,7 @@ const NavigationBar = () => {
                                         <Nav.Link
                                             as={Link}
                                             to='/post/create'
-                                            className='p-0 d-flex justify-content-lg-center align-items-center'
+                                            className='p-0 mb-4 mb-lg-0 d-flex justify-content-lg-center align-items-center'
                                         >
                                             <Icon className={`${location.pathname !== '/post/create' ? 'bi bi-plus-square' : 'bi bi-plus-square-fill'} me-2 d-flex justify-content-center align-items-center fs-5`} />
                                             Create
@@ -274,8 +281,6 @@ const NavigationBar = () => {
                                             Sign out
                                             <Icon className='bi bi-box-arrow-right ms-2 d-flex justify-content-center align-items-center' />
                                         </Nav.Link>
-
-
                                     </>
                                 }
 
