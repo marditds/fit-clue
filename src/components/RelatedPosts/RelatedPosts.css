@@ -1,0 +1,6 @@
+.related-posts__div {
+    background-color: var(--main-white-shade) !important;
+    border-radius: var(--main-border-radius);
+    border: 1px solid var(--main-border-color);
+    margin-top: 12px;
+}

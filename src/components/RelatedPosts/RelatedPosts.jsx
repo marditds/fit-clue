@@ -1,27 +1,17 @@
-import { Button, Col, Row } from 'react-bootstrap'
-import BackButton from '../Navigation/BackButton'
-import { LoadingComponent } from '../Loading/Loading'
+import { Button, Col, Row } from 'react-bootstrap';
+import { LoadingComponent } from '../Loading/Loading';
+import './RelatedPosts.css';
 
 export const RelatedPosts = ({ headerText, children }) => {
     return (
-        <div className='sticky-top bg-white'>
-            <Row className='py-2 bg-white align-items-center'>
-                {/* <Col xs={12} md={1}>
-                    <BackButton />
-                </Col> */}
-                <Col xs={12} md={12}>
-                    <h3 className='text-center mb-0'>
-                        {headerText}
-                    </h3>
-                </Col>
-                <Col xs={12} md={1}></Col>
-            </Row>
-            <Row className='pb-2 bg-white'>
-                <Col>
-                    {children}
-                </Col>
-            </Row>
-        </div>
+        <Row className='sticky-top related-posts__div p-2'>
+            <Col>
+                <h3 className='text-center'>
+                    {headerText}
+                </h3>
+                {children}
+            </Col>
+        </Row>
     )
 }
 

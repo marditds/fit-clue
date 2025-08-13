@@ -44,12 +44,26 @@ a:hover {
   text-decoration: none;
 }
 
+a:focus {
+  outline-width: thin !important;
+  outline-color: black !important;
+  outline-style: solid !important;
+  outline-offset: 0px !important;
+  box-shadow: none !important;
+  border-radius: var(--main-border-radius) !important;
+}
+
 input,
 textarea,
 button,
 a[role="button"],
 select {
   border-radius: var(--main-border-radius) !important;
+}
+
+input,
+textarea {
+  border-color: var(--main-border-color) !important;
 }
 
 form, input, select {
@@ -110,6 +124,7 @@ a[role="button"]:hover {
 button:focus,
 a[role="button"]:focus {
   box-shadow: 0px 0px 0px 0.1rem rgba(var(--main-text-color-rgb-vals), 1) !important;
+  background-color: var(--main-accent-color-hover) !important;
 }
 
 button:active,

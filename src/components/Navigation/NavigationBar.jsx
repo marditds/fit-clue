@@ -149,7 +149,7 @@ const NavigationBar = () => {
     return (
         <Navbar
             expand='lg'
-            className='bg-light'
+            className='navbar__body'
             sticky={isXs || isSm ? 'top' : ''}
             style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '0' }}
         >
@@ -168,6 +168,7 @@ const NavigationBar = () => {
                             searchFieldPlacement='SmallScreen'
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
+                            className='navabr__search-bar'
                         />
                     </Form>
                 }

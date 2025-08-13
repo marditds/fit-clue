@@ -128,7 +128,10 @@ const Results = () => {
             <RelatedPosts
                 headerText='Search Results'
             >
-                <Form onSubmit={onSearchTermSubmit} className={(!isXs && !isSm && !isMd) ? 'w-50 mx-auto' : 'w-100'}>
+                <Form
+                    onSubmit={onSearchTermSubmit}
+                    className={(!isXs && !isSm && !isMd) ? 'w-50 mx-auto' : 'w-100'}
+                >
                     <div className='d-flex justify-content-center'>
                         <SearchForm
                             searchFieldPlacement='ResultsPage'

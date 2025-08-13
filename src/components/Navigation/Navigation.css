@@ -2,6 +2,11 @@
     min-width: max-content;
 }
 
+.navbar__body {
+    background-color: var(--main-white-shade) !important;
+    border-bottom: 1px solid var(--main-border-color) !important;
+}
+
 .navbar__btn {
     max-height: 34px;
     padding-block: 4px !important;
@@ -15,13 +20,15 @@
     background-color: var(--main-accent-color-hover) !important;
 }
 
-.navbar__btn.sign-up:hover {
+.navbar__btn.sign-up:hover,
+.navbar__btn.sign-up:focus {
     color: var(--main-text-color) !important;
     background-color: var(--main-accent-color) !important;
     border-color: var(--main-accent-color) !important;
 }
 
-.navbar__btn.sign-in:hover {
+.navbar__btn.sign-in:hover,
+.navbar__btn.sign-in:focus {
     color: var(--main-text-color-hover) !important;
     background-color: var(--main-accent-color-hover) !important;
 }
