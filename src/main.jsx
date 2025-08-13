@@ -16,13 +16,13 @@ import ForgotPassword from './pages/forgot-password/ForgotPassword.jsx';
 import ResetPassword from './pages/reset-password/ResetPassword';
 import Footer from './components/Navigation/Footer.jsx';
 import Results from './pages/search/Results.jsx';
-import { More } from './pages/personality/More.jsx';
 import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';
 import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
 import TOS from './pages/tos/Tos.jsx';
 import Privacy from './pages/privacy/Privacy.jsx';
 import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuidelines.jsx';
 import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';
+import { NotFound } from './pages/not-found/NotFound.jsx';
 
 const MainLayout = () => {
 
@@ -63,6 +63,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <NotFound />,
     children: [
       { index: true, element: <App /> },
       {
