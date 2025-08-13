@@ -4,7 +4,7 @@ import { LoadingComponent } from '../Loading/Loading'
 
 export const RelatedPosts = ({ headerText, children }) => {
     return (
-        <div className='sticky-top'>
+        <div className='sticky-top bg-white'>
             <Row className='py-2 bg-white align-items-center'>
                 {/* <Col xs={12} md={1}>
                     <BackButton />

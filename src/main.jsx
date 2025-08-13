@@ -74,6 +74,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'create',
+            loader: () => redirectIfNotLoggedIn('sign-in'),
             element: <CreatePost />
           },
         ]
@@ -116,17 +117,17 @@ const router = createBrowserRouter([
       },
       {
         path: 'sign-up',
-        loader: redirectIfLoggedIn,
+        loader: () => redirectIfLoggedIn(),
         element: <SignUp />
       },
       {
         path: 'sign-in',
-        loader: redirectIfLoggedIn,
+        loader: () => redirectIfLoggedIn(),
         element: <SignIn />
       },
       {
         path: 'forgot-password',
-        loader: redirectIfLoggedIn,
+        loader: () => redirectIfLoggedIn(),
         element: <ForgotPassword />
       },
       {
@@ -148,11 +149,7 @@ const router = createBrowserRouter([
       {
         path: 'help',
         element: <CommunityGuidelines />
-      },
-      {
-        path: 'stuff',
-        element: <CommunityGuidelines />
-      },
+      }
     ]
   },
 

@@ -60,9 +60,9 @@ export const Sidebar = ({ username }) => {
                     <ul className={`list-unstyled 
                         d-flex justify-content-evenly 
                         flex-sm-column ${isScreenExtraSmall ? 'bg-light mb-0' : ''}`}
-                        style={{
-                            paddingTop: isSm ? '56px' : '0px'
-                        }}
+                    // style={{
+                    //     paddingTop: isSm ? '56px' : '0px'
+                    // }}
                     >
                         {links.map((link, idx) => (
                             <li key={idx}

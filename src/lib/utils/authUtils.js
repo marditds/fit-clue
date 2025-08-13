@@ -4,9 +4,9 @@ export const isUserLoggedIn = () => {
     return !!localStorage.getItem('authUserId');
 }
 
-export const redirectIfLoggedIn = () => {
+export const redirectIfLoggedIn = (path = '') => {
     if (isUserLoggedIn()) {
-        return redirect('/');
+        return redirect(`/${path}`);
     }
     return null;
 }

@@ -150,8 +150,8 @@ const NavigationBar = () => {
         <Navbar
             expand='lg'
             className='bg-light'
-        // sticky='top'
-        // style={{ zIndex: '9999' }}
+            sticky={isXs || isSm ? 'top' : ''}
+            style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '0' }}
         >
             <Container>
                 <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5'>
@@ -173,7 +173,7 @@ const NavigationBar = () => {
                 }
 
                 <Navbar.Toggle aria-controls='navbar-nav' className='sdada' onClick={handleShowOffcanvas} />
-                <Navbar.Offcanvas id='navbar-nav' placement='end' show={showOffcanvas} onHide={handleCloseOffcanvas}
+                <Navbar.Offcanvas id='navbar-nav' placement='end' show={showOffcanvas} onHide={handleCloseOffcanvas} style={{ zIndex: '9000' }}
                 >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>

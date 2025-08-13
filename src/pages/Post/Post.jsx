@@ -14,6 +14,7 @@ import { LoadingPage } from '../../components/Loading/Loading';
 import { SharePost } from '../../components/Post/SharePost';
 import { Interaction } from '../../components/Post/Interaction';
 import { onePostData } from '../../lib/data/testData';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 const Post = () => {
 
@@ -22,6 +23,8 @@ const Post = () => {
     const params = useParams()
 
     const { fetchPostById } = usePosts();
+
+    const { isXs, isSm } = useBreakpoints();
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
@@ -36,8 +39,8 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                const post = await fetchPostById(params.postId);
-                // const post = onePostData;
+                // const post = await fetchPostById(params.postId);
+                const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
 
@@ -97,7 +100,10 @@ const Post = () => {
     return (
         <Container>
             <Row>
-                <h3 className='text-left'>
+                <h3
+                    className='text-left mt-3 mb-0 mb-md-3'
+                    style={{ paddingInline: !isXs ? '22px' : '10px' }}
+                >
                     {personalityName}
                 </h3>
             </Row>
