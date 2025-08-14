@@ -107,15 +107,15 @@ const NavigationBar = () => {
             activeIconClassName: 'bi bi-lightning-charge-fill',
             iconMarginEndSize: '1',
         },
-        {
-            as: Link,
-            to: 'dashboard',
-            navLinkClassName: 'me-5',
-            title: 'Dashboard',
-            iconClassName: 'bi bi-grid-1x2',
-            activeIconClassName: 'bi bi-grid-1x2-fill',
-            iconMarginEndSize: '1',
-        },
+        // {
+        //     as: Link,
+        //     to: 'dashboard',
+        //     navLinkClassName: 'me-5',
+        //     title: 'Dashboard',
+        //     iconClassName: 'bi bi-grid-1x2',
+        //     activeIconClassName: 'bi bi-grid-1x2-fill',
+        //     iconMarginEndSize: '1',
+        // },
     ].map(link => ({
         ...link,
         isActive: link.to === '/'
@@ -123,6 +123,43 @@ const NavigationBar = () => {
             : location.pathname.startsWith(
                 link.to.startsWith('/') ? link.to : `/${link.to}`
             )
+    }))
+
+    const userNavigationItems = [
+        {
+            as: Link,
+            to: '/post/create',
+            navLinkClassName: 'me-5',
+            title: 'Create',
+            iconClassName: 'bi bi-plus-square',
+            activeIconClassName: 'bi bi-plus-square-fill',
+            iconMarginEndSize: '1',
+            onClick: () => console.log('create'),
+        },
+        {
+            as: Link,
+            to: '/dashboard',
+            navLinkClassName: 'me-5',
+            title: 'Dashboard',
+            iconClassName: 'bi bi-grid-1x2',
+            activeIconClassName: 'bi bi-grid-1x2-fill',
+            iconMarginEndSize: '1',
+            onClick: () => console.log('dashboard'),
+
+        },
+        // {
+        //     as: Button,
+        //     to: '#',
+        //     navLinkClassName: 'me-5',
+        //     title: 'Sign out',
+        //     iconClassName: 'bi bi-box-arrow-right',
+        //     activeIconClassName: 'bi bi-box-arrow-right',
+        //     iconMarginEndSize: '1',
+        //     onClick: onSignOutClick,
+        // },
+    ].map(link => ({
+        ...link,
+        isActive: location.pathname.startsWith(link.to)
     }))
 
     // const dropdownItems = [
@@ -264,25 +301,35 @@ const NavigationBar = () => {
                                 {/* Post-login */}
                                 {
                                     isLoggedIn &&
-                                    <>
+                                    userNavigationItems.map((item, idx) => (
                                         <Nav.Link
-                                            as={Link}
-                                            to='/post/create'
-                                            className='p-0 mb-4 mb-lg-0 d-flex justify-content-lg-center align-items-center'
-                                        >
-                                            <Icon className={`${location.pathname !== '/post/create' ? 'bi bi-plus-square' : 'bi bi-plus-square-fill'} me-2 d-flex justify-content-center align-items-center fs-5`} />
-                                            Create
-                                        </Nav.Link>
-
-                                        <Nav.Link
-                                            as={Button}
-                                            onClick={onSignOutClick}
+                                            as={item.as}
+                                            to={item.to}
                                             className='d-flex justify-content-center align-items-center'
                                         >
-                                            Sign out
-                                            <Icon className='bi bi-box-arrow-right ms-2 d-flex justify-content-center align-items-center' />
+                                            <Icon className={!item.isActive ? item.iconClassName : item.activeIconClassName} marginEndSize={item.iconMarginEndSize} />
+                                            {item.title}
                                         </Nav.Link>
-                                    </>
+                                    ))
+                                    // <>
+                                    //     <Nav.Link
+                                    //         as={Link}
+                                    //         to='/post/create'
+                                    //         className='p-0 mb-4 mb-lg-0 d-flex justify-content-lg-center align-items-center'
+                                    //     >
+                                    //         <Icon className={`${location.pathname !== '/post/create' ? 'bi bi-plus-square' : 'bi bi-plus-square-fill'} me-2 d-flex justify-content-center align-items-center fs-5`} />
+                                    //         Create
+                                    //     </Nav.Link>
+
+                                    //     <Nav.Link
+                                    //         as={Button}
+                                    //         onClick={onSignOutClick}
+                                    //         className='d-flex justify-content-center align-items-center'
+                                    //     >
+                                    //         Sign out
+                                    //         <Icon className='bi bi-box-arrow-right ms-2 d-flex justify-content-center align-items-center' />
+                                    //     </Nav.Link>
+                                    // </>
                                 }
 
                                 {/* Sign up/in */}

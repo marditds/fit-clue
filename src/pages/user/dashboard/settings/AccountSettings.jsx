@@ -35,7 +35,7 @@ export const AccountSettings = () => {
     //Account delete
     const [isDeleteInProgress, setIsDeleteInProgress] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [showModalFooter, setShowModalFooter] = useState(false);
+    const [deleteModalTxt, setDeleteModalTxt] = useState('Are you sure you want to delete your account? This action is irreversible.');
 
     const onUpdateUsernameClick = async () => {
 
@@ -96,7 +96,6 @@ export const AccountSettings = () => {
     }
 
     const removeUserFromPlatform = async () => {
-
         setIsDeleteInProgress(true);
         try {
 
@@ -111,8 +110,7 @@ export const AccountSettings = () => {
                 setIsSessionInProgress(false);
                 setUsername('');
                 setEmail('');
-                setShowModalFooter(false);
-                setShowModal(false);
+                setDeleteModalTxt(<>Sad <Icon className='bi bi-emoji-frown' /> to see you go. Good bye.</>)
 
                 localStorage.removeItem('authUserId');
 
@@ -120,7 +118,7 @@ export const AccountSettings = () => {
             }
 
             if (res.success === false) {
-                setShowModalFooter(true);
+                setDeleteModalTxt('Failed deleting account. Please try again later.')
             }
         } catch (error) {
             console.error('Error removing user from platform:', error);
@@ -288,7 +286,7 @@ export const AccountSettings = () => {
                     <Button
                         onClick={async () => {
                             setShowModal(true);
-                            await removeUserFromPlatform();
+                            // await removeUserFromPlatform();
                         }}
                         className='w-100'
                     >
@@ -302,11 +300,15 @@ export const AccountSettings = () => {
                     isDeleteInProgress ?
                         <LoadingComponent loadingText='Deleting account' />
                         :
-                        'Failed deleting account. Please try again later.'
+                        deleteModalTxt
                 }
                 showModal={showModal}
-                showModalFooter={showModalFooter}
-                handleClose={handleModalClose}
+                showModalFooter={true}
+                handleFunction={removeUserFromPlatform}
+                firstBtnTxt={'Yes, delete my account.'}
+                addSecondBtn={true}
+                secondBtnTxt={'Close'}
+                handleSecondFunction={handleModalClose}
             />
         </>
     )
