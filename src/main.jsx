@@ -22,7 +22,7 @@ import TOS from './pages/tos/Tos.jsx';
 import Privacy from './pages/privacy/Privacy.jsx';
 import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuidelines.jsx';
 import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';
-import { NotFound } from './pages/not-found/NotFound.jsx';
+import NotFound from './pages/not-found/NotFound.jsx';
 
 const MainLayout = () => {
 

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
 import { LoadingComponent } from '../../components/Loading/Loading.jsx';
 
 const CreatePost = () => {
 
     const { userId } = useOutletContext();
+
+    const navigate = useNavigate();
 
     const { makePost } = usePosts();
 
@@ -74,11 +76,12 @@ const CreatePost = () => {
                 return;
             }
 
-            const response = await makePost(name, links, instaLink, userId);
-            if (response) {
+            const createdPost = await makePost(name, links, instaLink, userId);
+            if (createdPost) {
                 console.log('Post created successfully!');
                 setErrMsg('');
                 setSccssMsg('Post created successfully!');
+	navigate(`/post/${createdPost.$id}`);
                 setName('');
                 setInstaLink('');
                 setLinks([]);

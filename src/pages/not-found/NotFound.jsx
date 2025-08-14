@@ -6,7 +6,7 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconLinkOff } from '@tabler/icons-react';
 import '../../components/NotFound/NotFound.css';
 
-export const NotFound = () => {
+const NotFound = () => {
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
@@ -44,3 +44,5 @@ export const NotFound = () => {
         </Container>
     )
 }
+
+export default NotFound;
