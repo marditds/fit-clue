@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import './Navigation.css';
 
@@ -8,6 +8,7 @@ export const BackButton = ({ className }) => {
 
     return (
         <Button
+            // as={Link}
             onClick={() => navigate(-1)}
             style={{
                 position: 'relative'

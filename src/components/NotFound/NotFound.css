@@ -1,0 +1,21 @@
+.not-found__navigation-btns {
+    width: 25% !important;
+}
+
+@media (min-width: 992px) and (max-width: 1399px) {
+    .not-found__navigation-btns {
+        width: 35% !important;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+    .not-found__navigation-btns {
+        width: 55% !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .not-found__navigation-btns {
+        width: 100% !important;
+    }
+}

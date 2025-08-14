@@ -67,6 +67,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <App /> },
       {
+        path: '*',
+        element: <NotFound />
+      },
+      {
         path: 'post',
         children: [
           {
