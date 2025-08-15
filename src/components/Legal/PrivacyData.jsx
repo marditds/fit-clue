@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const PrivacyData = () => {
 
     const privacyPolicyData = [
@@ -35,7 +37,7 @@ const PrivacyData = () => {
                     <ul className='list-unstyled'>
                         <li>- Facilitate account creation.</li>
                         <li>- Display content and enable interactions within the platform.</li>
-                        <li>- To help ensure a safe environment, we use automated tools to screen user-submitted content (including comments and links) for violations of our Terms of Service and Community Guidelines. If content is deemed to violate our policies, it is not submitted to the platform and is not stored by us. No record of the user or the attempted submission is retained.</li>
+                        <li>- To help ensure a safe environment, we use automated tools to screen user-submitted content (including comments and links) for violations of our <Link to='/tos' target='_blank'>Terms of Service</Link> and <Link to='/community-guidelines' target='_blank'>Community Guidelines</Link>. If content is deemed to violate our policies, it is not submitted to the platform and is not stored by us. No record of the user or the attempted submission is retained.</li>
                         <li>- Improve platform functionality and user experience.</li>
                     </ul>
                 </div>

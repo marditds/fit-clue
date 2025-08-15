@@ -23,6 +23,7 @@ import Privacy from './pages/privacy/Privacy.jsx';
 import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuidelines.jsx';
 import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';
 import NotFound from './pages/not-found/NotFound.jsx';
+import SignOut from './pages/signout/SignOut.jsx';
 
 const MainLayout = () => {
 
@@ -63,7 +64,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-    errorElement: <NotFound />,
+    // errorElement: <NotFound />,
     children: [
       { index: true, element: <App /> },
       {
@@ -129,6 +130,11 @@ const router = createBrowserRouter([
         path: 'sign-in',
         loader: () => redirectIfLoggedIn(),
         element: <SignIn />
+      },
+      {
+        path: 'sign-out',
+        loader: () => redirectIfLoggedIn(),
+        element: <SignOut />
       },
       {
         path: 'forgot-password',

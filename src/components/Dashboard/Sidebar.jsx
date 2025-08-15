@@ -5,11 +5,9 @@ import './Sidebar.css';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { useUser } from '../../lib/hooks/useUser';
 
-export const Sidebar = ({ username }) => {
+export const Sidebar = ({ username, onSignOutClick }) => {
 
     const location = useLocation();
-
-    const { onSignOutClick } = useUser();
 
     const { isXs, isSm } = useBreakpoints();
 

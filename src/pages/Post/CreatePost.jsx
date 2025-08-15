@@ -3,11 +3,11 @@ import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
-import { LoadingComponent } from '../../components/Loading/Loading.jsx';
+import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading.jsx';
 
 const CreatePost = () => {
 
-    const { userId } = useOutletContext();
+    const { userId, isAppLoading } = useOutletContext();
 
     const navigate = useNavigate();
 
@@ -81,7 +81,7 @@ const CreatePost = () => {
                 console.log('Post created successfully!');
                 setErrMsg('');
                 setSccssMsg('Post created successfully!');
-	navigate(`/post/${createdPost.$id}`);
+                navigate(`/post/${createdPost.$id}`);
                 setName('');
                 setInstaLink('');
                 setLinks([]);
@@ -97,9 +97,13 @@ const CreatePost = () => {
         }
     };
 
-    useEffect(() => {
+    // useEffect(() => {
 
-    }, [isItemLinkFormatIncorrect])
+    // }, [isItemLinkFormatIncorrect])
+
+    if (isAppLoading) {
+        return <LoadingPage />
+    }
 
     return (
         <Container>

@@ -24,7 +24,7 @@ const Post = () => {
 
     const { fetchPostById } = usePosts();
 
-    const { isXs, isSm } = useBreakpoints();
+    const { isXs } = useBreakpoints();
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
