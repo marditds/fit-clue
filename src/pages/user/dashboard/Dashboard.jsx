@@ -11,7 +11,7 @@ const Dashboard = () => {
         username, setUsername,
         setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
 
-    const { isXs, isSm, isMd } = useBreakpoints();
+    const { isXs } = useBreakpoints();
 
     return (
         <DashboardLayout

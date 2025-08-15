@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button, Container, Dropdown, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
 import { SearchForm } from '../Form/SearchForm';
@@ -15,13 +15,10 @@ const NavigationBar = () => {
     const location = useLocation();
 
     const {
-        setUserId, setUsername, setEmail,
-        isLoggedIn, setIsLoggedIn,
-        setIsSessionInProgress,
-        setIsSignOutInProgress
+        isLoggedIn
     } = useUserContext();
 
-    const { deleteUserSession } = useUser();
+    const { onSignOutClick } = useUser();
 
     const { isXs, isSm, isMd } = useBreakpoints();
 
@@ -52,32 +49,6 @@ const NavigationBar = () => {
             navigate(`/search/${encodeURIComponent(searchTerm)}`);
         }
     };
-
-    const onSignOutClick = async () => {
-
-        console.log('Sign out click.');
-
-        setIsSignOutInProgress(true);
-
-        try {
-
-            setUserId(null);
-            setIsLoggedIn(false);
-            setIsSessionInProgress(false);
-            setUsername('');
-            setEmail('');
-
-            await deleteUserSession();
-
-            localStorage.removeItem('authUserId');
-
-        } catch (error) {
-            console.error('Error signing out:', error);
-        } finally {
-            setIsSignOutInProgress(false);
-            navigate('/');
-        }
-    }
 
     const preLoginNavbarItems = [
         {
@@ -129,34 +100,31 @@ const NavigationBar = () => {
         {
             as: Link,
             to: '/post/create',
-            navLinkClassName: 'me-5',
             title: 'Create',
             iconClassName: 'bi bi-plus-square',
             activeIconClassName: 'bi bi-plus-square-fill',
-            iconMarginEndSize: '1',
+            iconMarginEndSize: '2',
             onClick: () => console.log('create'),
         },
         {
             as: Link,
             to: '/dashboard',
-            navLinkClassName: 'me-5',
             title: 'Dashboard',
             iconClassName: 'bi bi-grid-1x2',
             activeIconClassName: 'bi bi-grid-1x2-fill',
-            iconMarginEndSize: '1',
+            iconMarginEndSize: '2',
             onClick: () => console.log('dashboard'),
 
         },
-        // {
-        //     as: Button,
-        //     to: '#',
-        //     navLinkClassName: 'me-5',
-        //     title: 'Sign out',
-        //     iconClassName: 'bi bi-box-arrow-right',
-        //     activeIconClassName: 'bi bi-box-arrow-right',
-        //     iconMarginEndSize: '1',
-        //     onClick: onSignOutClick,
-        // },
+        {
+            as: Button,
+            to: '#',
+            title: 'Sign out',
+            iconClassName: 'bi bi-box-arrow-right',
+            activeIconClassName: 'bi bi-box-arrow-right',
+            iconMarginEndSize: '2',
+            onClick: onSignOutClick,
+        },
     ].map(link => ({
         ...link,
         isActive: location.pathname.startsWith(link.to)
@@ -242,7 +210,6 @@ const NavigationBar = () => {
                                                         as={navLink.as}
                                                         to={navLink.to}
                                                         className='p-0 mb-3 mb-lg-0'
-                                                        onClick={handleCloseOffcanvas}
                                                     >
                                                         {navLink.title}
                                                     </Nav.Link>
@@ -262,8 +229,7 @@ const NavigationBar = () => {
                                                         key={idx}
                                                         as={navLink.as}
                                                         to={navLink.to}
-                                                        className='p-0 mb-4 mb-lg-0 d-flex align-items-center'
-                                                        onClick={handleCloseOffcanvas}
+                                                        className='mb-4 mb-lg-0 d-flex align-items-center px-2 py-1'
                                                     >
                                                         <Icon
                                                             className={
@@ -298,38 +264,21 @@ const NavigationBar = () => {
                                     <div style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }} />
                                 }
 
-                                {/* Post-login */}
+                                {/* Post-login user items */}
                                 {
                                     isLoggedIn &&
                                     userNavigationItems.map((item, idx) => (
                                         <Nav.Link
+                                            key={idx}
                                             as={item.as}
                                             to={item.to}
-                                            className='d-flex justify-content-center align-items-center'
+                                            className='d-flex justify-content-lg-center align-items-center mb-4 mb-lg-0 px-2 py-1'
+                                            onClick={item.onClick}
                                         >
                                             <Icon className={!item.isActive ? item.iconClassName : item.activeIconClassName} marginEndSize={item.iconMarginEndSize} />
                                             {item.title}
                                         </Nav.Link>
                                     ))
-                                    // <>
-                                    //     <Nav.Link
-                                    //         as={Link}
-                                    //         to='/post/create'
-                                    //         className='p-0 mb-4 mb-lg-0 d-flex justify-content-lg-center align-items-center'
-                                    //     >
-                                    //         <Icon className={`${location.pathname !== '/post/create' ? 'bi bi-plus-square' : 'bi bi-plus-square-fill'} me-2 d-flex justify-content-center align-items-center fs-5`} />
-                                    //         Create
-                                    //     </Nav.Link>
-
-                                    //     <Nav.Link
-                                    //         as={Button}
-                                    //         onClick={onSignOutClick}
-                                    //         className='d-flex justify-content-center align-items-center'
-                                    //     >
-                                    //         Sign out
-                                    //         <Icon className='bi bi-box-arrow-right ms-2 d-flex justify-content-center align-items-center' />
-                                    //     </Nav.Link>
-                                    // </>
                                 }
 
                                 {/* Sign up/in */}

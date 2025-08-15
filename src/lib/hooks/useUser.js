@@ -1,6 +1,17 @@
 import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform } from '../context/dbhandler';
+import { useUserContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export const useUser = () => {
+
+    const {
+        setUserId, setUsername, setEmail,
+        setIsLoggedIn,
+        setIsSessionInProgress,
+        setIsSignOutInProgress
+    } = useUserContext();
+
+    const navigate = useNavigate();
 
     const createUser = async (email, password, name) => {
         try {
@@ -105,6 +116,28 @@ export const useUser = () => {
         }
     }
 
+    const onSignOutClick = async () => {
+        setIsSignOutInProgress(true);
+        try {
+
+            setUserId(null);
+            setIsLoggedIn(false);
+            setIsSessionInProgress(false);
+            setUsername('');
+            setEmail('');
+
+            await deleteUserSession();
+
+            localStorage.removeItem('authUserId');
+
+        } catch (error) {
+            console.error('Error signing out:', error);
+        } finally {
+            setIsSignOutInProgress(false);
+            navigate('/');
+        }
+    }
+
     // Server-side functions
     const deleteUserFromPlatform = async () => {
         try {
@@ -116,5 +149,5 @@ export const useUser = () => {
     }
 
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick };
 }

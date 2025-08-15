@@ -35,7 +35,7 @@ const PrivacyData = () => {
                     <ul className='list-unstyled'>
                         <li>- Facilitate account creation.</li>
                         <li>- Display content and enable interactions within the platform.</li>
-                        <li>- Moderate and enforce our Terms of Service and Community Guidelines.</li>
+                        <li>- To help ensure a safe environment, we use automated tools to screen user-submitted content (including comments and links) for violations of our Terms of Service and Community Guidelines. If content is deemed to violate our policies, it is not submitted to the platform and is not stored by us. No record of the user or the attempted submission is retained.</li>
                         <li>- Improve platform functionality and user experience.</li>
                     </ul>
                 </div>
@@ -50,7 +50,7 @@ const PrivacyData = () => {
                             - Service Providers: We rely on Appwrite to provide backend infrastructure and database services. Appwrite processes and stores user data (including IP addresses) on our behalf. All data is stored securely within Appwrite's infrastructure.
                         </li>
                         <li>
-                            - AI-Powered Features: Certain features on the platform may be powered by third-party AI services, such as Google Gemini. When users interact with these features, their input (such as text and links) may be sent to Google for processing.
+                            - AI-Powered Features: We use the Google Gemini API, a third-party AI service, to screen user-submitted content in real-time. When you attempt to submit a comment or link, the content is sent to Google's API for a safety check. If the content is flagged by the API as potentially violating our policies, it is rejected and never posted to the platform. We do not store a copy of the rejected content or any data associated with that specific submission. This process helps us prevent harmful content from appearing on the platform while minimizing the data we retain. Please note that Google's policies govern their handling of any data sent to them for this purpose.
                         </li>
                         <li>
                             - Legal Requirements: If required by law, we may disclose user data to comply with legal processes.

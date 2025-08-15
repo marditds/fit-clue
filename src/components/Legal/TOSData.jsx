@@ -78,16 +78,19 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        FitClue is not affiliated with or endorsed by Instagram or Meta. Any use of Instagram's embed functionality is subject to Instagram's and Meta's applicable terms of use and policies.
+                        FitClue utilizes various third-party services to provide its features. By using FitClue, you acknowledge and agree to be bound by the terms and policies of these third-party providers.
                     </p>
                     <p>
-                        FitClue is also not affiliated with or endorsed by Google. Any use of Google services (such as reCAPTCHA or Google Gemini) is subject to Google's terms and policies.
+                        FitClue is not affiliated with or endorsed by Instagram or Meta. Any use of Instagram's embed functionality is subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
                     </p>
                     <p>
-                        Google Gemini is integrated to scan users' links and comments to help ensure appropriateness before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. Users are solely responsible for reviewing and modifying content before posting.
+                        FitClue is not affiliated with or endorsed by Google. FitClue uses Google services, such as reCAPTCHA for security and the Google Gemini API for content moderation.
                     </p>
                     <p>
-                        Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. You can review Appwrite's terms here: <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">https://appwrite.io/terms</a>.
+                        Google Gemini is integrated to scan users' links and comments to help ensure appropriateness before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. Users are solely responsible for reviewing and modifying content before posting. Any use of Google services is subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a> and their <a href='https://www.google.com/search?q=https://policies.google.com/terms/generative-ai/prohibited-use' target='_blank'>Generative AI Prohibited Use Policy</a>.
+                    </p>
+                    <p>
+                        Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. Any use of Appwrite's services is subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a>.
                     </p>
                 </>
             )
