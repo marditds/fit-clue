@@ -1,4 +1,4 @@
-import { StrictMode, useEffect } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
@@ -24,6 +24,8 @@ import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuide
 import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';
 import NotFound from './pages/not-found/NotFound.jsx';
 import SignOut from './pages/signout/SignOut.jsx';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { ToastGeneral } from './components/Accessories/ToastComponent.jsx';
 
 const MainLayout = () => {
 
@@ -32,14 +34,22 @@ const MainLayout = () => {
     username, setUsername,
     email, setEmail,
     isLoggedIn, setIsLoggedIn,
-    setIsSessionInProgress, setIsSignOutInProgress
+    setIsSessionInProgress, setIsSignOutInProgress,
+    isSignOutSucessfull, setIsSignOutSucessfull,
+    signOutSucessMsg, setSignOutSucessMsg
   } = useUserContext();
 
   const location = useLocation();
 
+  const [showToast, setShowToast] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
+  useEffect(() => {
+    setShowToast(true);
+  }, [isSignOutSucessfull])
 
   return (
     <>
@@ -52,8 +62,20 @@ const MainLayout = () => {
           username, setUsername,
           email, setEmail,
           isLoggedIn, setIsLoggedIn,
-          setIsSessionInProgress, setIsSignOutInProgress
+          setIsSessionInProgress, setIsSignOutInProgress,
+          isSignOutSucessfull, setIsSignOutSucessfull,
+          signOutSucessMsg, setSignOutSucessMsg
         }} />
+
+        {
+          isSignOutSucessfull &&
+          <ToastGeneral
+            signOutSucessMsg={signOutSucessMsg}
+            showToast={showToast}
+            setShowToast={setShowToast}
+          />
+        }
+
       </main>
       <Footer />
     </>
@@ -133,7 +155,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'sign-out',
-        loader: () => redirectIfLoggedIn(),
+        loader: () => redirectIfNotLoggedIn(),
         element: <SignOut />
       },
       {

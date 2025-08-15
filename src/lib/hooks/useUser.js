@@ -8,7 +8,8 @@ export const useUser = () => {
         setUserId, setUsername, setEmail,
         setIsLoggedIn,
         setIsSessionInProgress,
-        setIsSignOutInProgress
+        setIsSignOutSucessfull,
+        setSignOutSucessMsg
     } = useUserContext();
 
     const navigate = useNavigate();
@@ -110,31 +111,42 @@ export const useUser = () => {
 
     const deleteUserSession = async () => {
         try {
-            await removeUserSession();
+            const removeSessionRes = await removeUserSession();
+            return removeSessionRes;
         } catch (error) {
             console.error('Error getting user session details:', error);
         }
     }
 
-    const onSignOutClick = async () => {
-        setIsSignOutInProgress(true);
+    const onSignOutClick = () => {
+        navigate('/sign-out');
+    }
+
+    const onSignOut = async () => {
         try {
+            const deleteSessionRes = await deleteUserSession();
 
-            setUserId(null);
-            setIsLoggedIn(false);
-            setIsSessionInProgress(false);
-            setUsername('');
-            setEmail('');
+            if (deleteSessionRes.success === true) {
 
-            await deleteUserSession();
+                setSignOutSucessMsg('Signed out successfully.');
+                setIsSignOutSucessfull(true);
 
-            localStorage.removeItem('authUserId');
+                setUserId(null);
+                setIsLoggedIn(false);
+                setIsSessionInProgress(false);
+                setUsername('');
+                setEmail('');
+
+                localStorage.removeItem('authUserId');
+
+                navigate('/');
+            } else {
+                setSignOutSucessMsg('Failed to sign out. Please try again later.')
+                setIsSignOutSucessfull(false);
+            }
 
         } catch (error) {
             console.error('Error signing out:', error);
-        } finally {
-            setIsSignOutInProgress(false);
-            navigate('/');
         }
     }
 
@@ -149,5 +161,5 @@ export const useUser = () => {
     }
 
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick, onSignOut };
 }

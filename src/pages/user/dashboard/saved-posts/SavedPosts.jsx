@@ -6,7 +6,7 @@ import { LoadingPage } from '../../../../components/Loading/Loading';
 import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedCards ';
 import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
 import { Icon } from '../../../../components/Accessories/Icon';
-import { ToastComponent } from '../../../../components/Accessories/ToastComponent';
+import { ToastForDashboard } from '../../../../components/Accessories/ToastComponent';
 import { savesDashboardData } from '../../../../lib/data/testData';
 
 export const SavedPosts = () => {
@@ -147,7 +147,7 @@ export const SavedPosts = () => {
     return (
         <>
             <Row className='px-4 pt-4 pb-0 px-lg-5 pt-lg-5 pb-lg-0'>
-                <Col className='px-0 sticky-top'>
+                <Col className='px-0'>
                     <h3 className='fw-bold'>
                         <Icon
                             className='bi bi-floppy'
@@ -195,7 +195,7 @@ export const SavedPosts = () => {
             </Row>
 
             {/* Toast */}
-            <ToastComponent
+            <ToastForDashboard
                 showToast={showToast}
                 setShowToast={setShowToast}
                 toastTitle='Save Removed Successfully.'

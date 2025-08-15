@@ -12,11 +12,12 @@ export const UserProvider = ({ children }) => {
     const [username, setUsername] = useState('');
 
     const [isAppLoading, setIsAppLoading] = useState(false);
-    const [isFetchingUserinContextLoading, setIsFetchingUserinContextLoading] = useState(false);
     const [isCheckEmailExistanceLoading, setIsCheckEmailExistanceLoading] = useState(false);
     const [isSessionInProgress, setIsSessionInProgress] = useState(false);
     const [isSignOutInProgress, setIsSignOutInProgress] = useState(false);
     const [isSignInBtnClicked, setIsSignInBtnClicked] = useState(false);
+    const [isSignOutSucessfull, setIsSignOutSucessfull] = useState(false);
+    const [signOutSucessMsg, setSignOutSucessMsg] = useState('');
 
     // Checkig Session Status
     useEffect(() => {
@@ -75,11 +76,12 @@ export const UserProvider = ({ children }) => {
                 username, setUsername,
                 isAppLoading, setIsAppLoading,
                 isCheckEmailExistanceLoading, setIsCheckEmailExistanceLoading,
-                isFetchingUserinContextLoading,
                 user, setUser,
                 isSessionInProgress, setIsSessionInProgress,
                 isSignOutInProgress, setIsSignOutInProgress,
-                isSignInBtnClicked, setIsSignInBtnClicked
+                isSignInBtnClicked, setIsSignInBtnClicked,
+                isSignOutSucessfull, setIsSignOutSucessfull,
+                signOutSucessMsg, setSignOutSucessMsg
             }}>
             {children}
         </UserContext.Provider>

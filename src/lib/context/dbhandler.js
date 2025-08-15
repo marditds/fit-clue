@@ -329,9 +329,13 @@ export const updatePasswordFromRecoveryEmail = async (userId, secret, newPasswor
 
 export const deleteUserSession = async () => {
     try {
-        await account.deleteSession('current');
+        const resRemoveSession = await account.deleteSession('current');
+
+        return { success: resRemoveSession.message === '' }
+
     } catch (error) {
         console.error('Error removing session:', error);
+        return { success: false }
     }
 }
 

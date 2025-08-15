@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, ToastContainer, Toast } from 'react-bootstrap';
 import '../../components/Grid/Grid.css';
 import '../../components/Card/Card.css';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
@@ -50,8 +50,8 @@ const TheLatest = () => {
                     posts={posts}
                 />
             </Row>
-        </Container>
 
+        </Container>
 
     );
 };

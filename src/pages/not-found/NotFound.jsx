@@ -16,10 +16,10 @@ const NotFound = () => {
                 <Col className='d-flex flex-column justify-content-center align-items-center'>
                     <h2>
 
-	<span className='d-flex align-items-center'>
-                      <IconLinkOff size={42} className='me-2' />Not Found  
-	</span>
-  {/*
+                        <span className='d-flex align-items-center'>
+                            <IconLinkOff size={42} className='me-2' />Not Found
+                        </span>
+                        {/*
 	     <span className='d-flex align-items-center'>
 		<Icon className='bi bi-link-45deg fs-1' />{' '}
 		Not Found
@@ -31,10 +31,10 @@ const NotFound = () => {
                     </p>
                     <p
                         className='d-flex flex-column flex-sm-row justify-content-between not-found__navigation-btns'>
-                        
+
                         <BackButton className='mb-3 mb-sm-0' />
 
-	<Button as={Link} to='/' >
+                        <Button as={Link} to='/' >
                             The Latest
                         </Button>
                     </p>

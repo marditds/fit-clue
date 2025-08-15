@@ -1,12 +1,13 @@
-import { Toast } from 'react-bootstrap';
+import { Toast, ToastContainer } from 'react-bootstrap';
 import { DashboardLayout } from '../Dashboard/DashboardLayout';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { useState } from 'react';
 
-export const ToastComponent = ({ showToast, setShowToast, toastTitle, toastText }) => {
+export const ToastForDashboard = ({ showToast, setShowToast, toastTitle, toastText }) => {
 
     const { isXs, isSm } = useBreakpoints();
 
-    setTimeout(() => setShowToast(false), 3000);
+    setTimeout(() => setShowToast(false), 5000);
 
     const isSmallScreen = isXs || isSm;
 
@@ -40,3 +41,31 @@ export const ToastComponent = ({ showToast, setShowToast, toastTitle, toastText 
         </DashboardLayout>
     );
 };
+
+export const ToastGeneral = ({ signOutSucessMsg, showToast, setShowToast }) => {
+
+    const onCloseToast = () => {
+        setShowToast(false);
+    }
+
+    setTimeout(() => setShowToast(false), 5000);
+
+    return (
+        <ToastContainer
+            className='p-3 ms-auto fixed-bottom'
+            style={{ zIndex: 1 }}
+        >
+            <Toast show={showToast} onClose={onCloseToast}>
+                <Toast.Header>
+                    <img
+                        src='holder.js/20x20?text=%20'
+                        className='rounded me-2'
+                        alt=''
+                    />
+                    <strong className='me-auto'>Alert!</strong>
+                </Toast.Header>
+                <Toast.Body>{signOutSucessMsg}</Toast.Body>
+            </Toast>
+        </ToastContainer>
+    )
+}

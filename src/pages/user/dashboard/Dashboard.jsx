@@ -4,7 +4,6 @@ import { Sidebar } from '../../../components/Dashboard/Sidebar';
 import { ScrollToTop } from '../../../components/ScrollToTop/ScrollToTop';
 import { DashboardLayout } from '../../../components/Dashboard/DashboardLayout';
 import { LoadingPage } from '../../../components/Loading/Loading';
-import { useUser } from '../../../lib/hooks/useUser';
 
 const Dashboard = () => {
 
@@ -14,8 +13,6 @@ const Dashboard = () => {
         setIsLoggedIn, setIsSessionInProgress, isAppLoading, isSignOutInProgress } = useOutletContext();
 
     const { isXs } = useBreakpoints();
-
-    const { onSignOutClick } = useUser();
 
     if (isAppLoading) {
         return <LoadingPage loadingText='Loading your dashboard' />
@@ -32,7 +29,7 @@ const Dashboard = () => {
     return (
         <DashboardLayout
             colOneContent={
-                <Sidebar username={username} onSignOutClick={onSignOutClick} />
+                <Sidebar username={username} />
             }
             colOneClassName={!isXs ? 'border border-end-0' : ''}
             colTwoClassName='border'

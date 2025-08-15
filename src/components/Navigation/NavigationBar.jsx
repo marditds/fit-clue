@@ -78,15 +78,6 @@ const NavigationBar = () => {
             activeIconClassName: 'bi bi-lightning-charge-fill',
             iconMarginEndSize: '1',
         },
-        // {
-        //     as: Link,
-        //     to: 'dashboard',
-        //     navLinkClassName: 'me-5',
-        //     title: 'Dashboard',
-        //     iconClassName: 'bi bi-grid-1x2',
-        //     activeIconClassName: 'bi bi-grid-1x2-fill',
-        //     iconMarginEndSize: '1',
-        // },
     ].map(link => ({
         ...link,
         isActive: link.to === '/'
@@ -156,7 +147,7 @@ const NavigationBar = () => {
             expand='lg'
             className='navbar__body border border-1 border-top-0'
             sticky={isXs || isSm ? 'top' : ''}
-            style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '4' }}
+            style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '5' }}
         >
             <Container>
                 <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5'>
