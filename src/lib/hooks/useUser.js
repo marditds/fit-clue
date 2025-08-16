@@ -8,7 +8,7 @@ export const useUser = () => {
         setUserId, setUsername, setEmail,
         setIsLoggedIn,
         setIsSessionInProgress,
-        setIsSignOutSucessfull,
+        setIsSignOutSucessful,
         setSignOutSucessMsg
     } = useUserContext();
 
@@ -129,7 +129,7 @@ export const useUser = () => {
             if (deleteSessionRes.success === true) {
 
                 setSignOutSucessMsg('Signed out successfully.');
-                setIsSignOutSucessfull(true);
+                setIsSignOutSucessful(true);
 
                 setUserId(null);
                 setIsLoggedIn(false);
@@ -142,7 +142,7 @@ export const useUser = () => {
                 navigate('/');
             } else {
                 setSignOutSucessMsg('Failed to sign out. Please try again later.')
-                setIsSignOutSucessfull(false);
+                setIsSignOutSucessful(false);
             }
 
         } catch (error) {

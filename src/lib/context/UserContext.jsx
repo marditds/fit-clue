@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
     const [isSessionInProgress, setIsSessionInProgress] = useState(false);
     const [isSignOutInProgress, setIsSignOutInProgress] = useState(false);
     const [isSignInBtnClicked, setIsSignInBtnClicked] = useState(false);
-    const [isSignOutSucessfull, setIsSignOutSucessfull] = useState(false);
+    const [isSignOutSucessful, setIsSignOutSucessful] = useState(false);
     const [signOutSucessMsg, setSignOutSucessMsg] = useState('');
 
     // Checkig Session Status
@@ -80,7 +80,7 @@ export const UserProvider = ({ children }) => {
                 isSessionInProgress, setIsSessionInProgress,
                 isSignOutInProgress, setIsSignOutInProgress,
                 isSignInBtnClicked, setIsSignInBtnClicked,
-                isSignOutSucessfull, setIsSignOutSucessfull,
+                isSignOutSucessful, setIsSignOutSucessful,
                 signOutSucessMsg, setSignOutSucessMsg
             }}>
             {children}

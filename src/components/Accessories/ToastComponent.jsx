@@ -1,7 +1,8 @@
-import { Toast, ToastContainer } from 'react-bootstrap';
+import { Button, Toast, ToastContainer } from 'react-bootstrap';
 import { DashboardLayout } from '../Dashboard/DashboardLayout';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Icon } from './Icon';
 
 export const ToastForDashboard = ({ showToast, setShowToast, toastTitle, toastText }) => {
 
@@ -32,39 +33,66 @@ export const ToastForDashboard = ({ showToast, setShowToast, toastTitle, toastTe
                 }}
                 className='toast__full'
             >
-                <Toast.Header className='border-0' style={{ maxHeight: '42px' }}>
+                {/* <Toast.Header className='border-0' style={{ maxHeight: '42px' }}>
                     <strong className='me-auto'>
-                        {toastTitle}
+                        
                     </strong>
-                </Toast.Header>
+                </Toast.Header> */}
+                <Toast.Body className='w-100 d-flex justify-content-between align-items-center'>
+                    {toastTitle}
+                    <Button
+                        type='button'
+                        className='d-flex justify-content-center align-items-center'
+                        onClick={() => setShowToast(false)}
+                    >
+                        <Icon className='bi bi-x-lg d-flex justify-content-center align-items-center' />
+                    </Button>
+                </Toast.Body>
             </Toast>
         </DashboardLayout>
     );
 };
 
-export const ToastGeneral = ({ signOutSucessMsg, showToast, setShowToast }) => {
+export const ToastGeneral = ({ signOutSucessMsg, setIsSignOutSucessful }) => {
+
+    const [showToast, setShowToast] = useState(true);
 
     const onCloseToast = () => {
         setShowToast(false);
+        setIsSignOutSucessful(false);
     }
 
-    setTimeout(() => setShowToast(false), 5000);
+    useEffect(() => {
+        if (showToast) {
+            const timer = setTimeout(() => {
+                onCloseToast();
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, []);
 
     return (
         <ToastContainer
             className='p-3 ms-auto fixed-bottom'
             style={{ zIndex: 1 }}
         >
-            <Toast show={showToast} onClose={onCloseToast}>
-                <Toast.Header>
-                    <img
-                        src='holder.js/20x20?text=%20'
-                        className='rounded me-2'
-                        alt=''
-                    />
+            <Toast
+                show={true}
+                onClose={onCloseToast}
+            >
+                {/* <Toast.Header>
                     <strong className='me-auto'>Alert!</strong>
-                </Toast.Header>
-                <Toast.Body>{signOutSucessMsg}</Toast.Body>
+                </Toast.Header> */}
+                <Toast.Body className='w-100 d-flex justify-content-between align-items-center'>
+                    {signOutSucessMsg}
+                    <Button
+                        type='button'
+                        onClick={onCloseToast}
+                    >
+                        <Icon className='bi bi-x-lg' />
+                    </Button>
+                </Toast.Body>
             </Toast>
         </ToastContainer>
     )

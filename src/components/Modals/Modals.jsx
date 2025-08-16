@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import './Modals.css';
 import { LoadingComponent } from '../Loading/Loading';
+import { Icon } from '../Accessories/Icon';
 
 export const ReportModal = ({
     show,
@@ -45,8 +46,16 @@ export const ReportModal = ({
             style={{ zIndex: 1501 }}
             className='report-modal'
         >
-            <Modal.Header className='report-modal__header' closeButton>
-                <Modal.Title>Report</Modal.Title>
+            <Modal.Header className='report-modal__header d-flex justify-content-between'>
+                <Modal.Title>
+                    Report
+                </Modal.Title>
+                <Button
+                    type='button'
+                    onClick={onClose}
+                >
+                    <Icon className='bi bi-x-lg' />
+                </Button>
             </Modal.Header>
             <Modal.Body className='report-modal__body'>
                 {isReportSubmitted ? (

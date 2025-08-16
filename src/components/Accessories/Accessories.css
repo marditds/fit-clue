@@ -21,6 +21,13 @@
     border-color: var(--main-border-color) !important;
 }
 
+.toast {
+    border-radius: var(--main-border-radius) !important;
+    border-color: var(--main-accent-color-hover) !important;
+    background-color: var(--main-accent-color);
+    color: var(--main-text-color)
+}
+
 @media (max-width: 575px) {
     .tool-tip__custom>.tooltip-inner {
         max-width: 300px;

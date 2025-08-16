@@ -35,21 +35,15 @@ const MainLayout = () => {
     email, setEmail,
     isLoggedIn, setIsLoggedIn,
     setIsSessionInProgress, setIsSignOutInProgress,
-    isSignOutSucessfull, setIsSignOutSucessfull,
+    isSignOutSucessful, setIsSignOutSucessful,
     signOutSucessMsg, setSignOutSucessMsg
   } = useUserContext();
 
   const location = useLocation();
 
-  const [showToast, setShowToast] = useState(false);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-
-  useEffect(() => {
-    setShowToast(true);
-  }, [isSignOutSucessfull])
 
   return (
     <>
@@ -63,16 +57,15 @@ const MainLayout = () => {
           email, setEmail,
           isLoggedIn, setIsLoggedIn,
           setIsSessionInProgress, setIsSignOutInProgress,
-          isSignOutSucessfull, setIsSignOutSucessfull,
+          isSignOutSucessful, setIsSignOutSucessful,
           signOutSucessMsg, setSignOutSucessMsg
         }} />
 
         {
-          isSignOutSucessfull &&
+          isSignOutSucessful &&
           <ToastGeneral
             signOutSucessMsg={signOutSucessMsg}
-            showToast={showToast}
-            setShowToast={setShowToast}
+            setIsSignOutSucessful={setIsSignOutSucessful}
           />
         }
 
@@ -124,6 +117,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Navigate to='settings' replace />
+          },
+          {
+            path: '*',
+            element: <NotFound />
           },
           {
             path: 'settings',

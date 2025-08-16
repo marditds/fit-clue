@@ -1,6 +1,7 @@
 import { Col } from 'react-bootstrap';
 import { LegalTemplate } from '../../components/Legal/LegalTemplate';
 import TOSData from '../../components/Legal/TOSData';
+import { ToastGeneral } from '../../components/Accessories/ToastComponent';
 
 const TOS = () => {
 
@@ -21,6 +22,10 @@ const TOS = () => {
                             )
                         })
                     }
+
+                    <ToastGeneral
+                        signOutSucessMsg='Signed out successfully.'
+                    />
                 </>
             }
         />
