@@ -51,7 +51,7 @@ const Footer = () => {
     return (
         <FooterLayout>
             <Row className='align-items-center'>
-                <Col xs={12} lg={10} className='mb-2 mb-md-0 d-flex flex-column flex-md-row align-items-center'>
+                <Col xs={12} lg={10} className='mb-0 d-flex flex-column flex-md-row align-items-center'>
                     {!isXs && !isSm && <>
                         {copyright} <Icon className='ms-2 bi bi-dot' />
                     </>}
@@ -68,18 +68,28 @@ const Footer = () => {
                             </span>
                         ))
                     }
-                    {(isXs || isSm) && copyright}
                 </Col>
-                <Col xs={3} lg={2} className='ms-auto ms-md-auto d-flex justify-content-between'>
-                    {
-                        footerSocials.map((item, idx) => (
-                            <span key={idx}>
-                                <a href={item.link} target='_blank'>
-                                    <Icon className={`${item.icon} fs-5`} />
-                                </a>
-                            </span>
-                        ))
-                    }
+                <hr className='mb-2 mt-0 my-md-3 d-block d-lg-none' />
+
+                {!authPages.includes(location.pathname) &&
+                    <>
+                        <Col xs={5} sm={3} lg={2} className='ms-auto me-auto me-md-0 ms-md-auto d-flex justify-content-between'>
+                            {
+                                footerSocials.map((item, idx) => (
+                                    <span key={idx}>
+                                        <a href={item.link} target='_blank'>
+                                            <Icon className={`${item.icon} fs-5`} />
+                                        </a>
+                                    </span>
+                                ))
+                            }
+                        </Col>
+                        <hr className='my-2 mt-md-3 d-block d-md-none' />
+                    </>
+                }
+
+                <Col className='d-block d-md-none text-center'>
+                    {(isXs || isSm) && copyright}
                 </Col>
             </Row>
         </FooterLayout>
