@@ -1,11 +1,11 @@
-import { StrictMode, useEffect, useState } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider, useLocation } from 'react-router-dom';
 import { UserProvider, useUserContext } from './lib/context/UserContext.jsx';
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import App from './App.jsx'
+import App from './App.jsx';
 import Post from './pages/post/Post.jsx';
 import NavigationBar from './components/Navigation/NavigationBar.jsx';
 import CreatePost from './pages/post/CreatePost.jsx';
@@ -24,7 +24,6 @@ import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuide
 import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';
 import NotFound from './pages/not-found/NotFound.jsx';
 import SignOut from './pages/signout/SignOut.jsx';
-import { Toast, ToastContainer } from 'react-bootstrap';
 import { ToastGeneral } from './components/Accessories/ToastComponent.jsx';
 
 const MainLayout = () => {

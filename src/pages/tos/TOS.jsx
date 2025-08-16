@@ -22,10 +22,6 @@ const TOS = () => {
                             )
                         })
                     }
-
-                    <ToastGeneral
-                        signOutSucessMsg='Signed out successfully.'
-                    />
                 </>
             }
         />
