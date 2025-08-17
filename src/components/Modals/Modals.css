@@ -16,3 +16,14 @@
     margin-block: 0;
     border-radius: var(--main-border-radius) !important;
 }
+
+.plain-modal__btn {
+    background-color: var(--main-danger-color) !important;
+    color: var(--main-text-color-hover) !important;
+}
+
+.plain-modal__btn:hover,
+.plain-modal__btn:focus {
+    background-color: var(--main-danger-color-hover) !important;
+    color: var(--main-text-color-hover) !important;
+}

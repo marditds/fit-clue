@@ -30,10 +30,10 @@ export const AddLinksInCreatePostForm = ({
                     <Row>
                         <Col className='d-flex align-items-center mb-3'>
                             <h5 className='mb-0 me-2'>
-                                Link #{index + 1}
+                                <Icon className='bi bi-bag-plus' marginEndSize='2' />Link #{index + 1}
                             </h5>
                             <Button variant='danger' onClick={() => removeLinkField(index)}>
-                                Remove
+                                <Icon className='bi bi-trash3' marginEndSize='2' />Remove
                             </Button>
                         </Col>
                     </Row>
@@ -41,7 +41,10 @@ export const AddLinksInCreatePostForm = ({
 
                     <Row xs={1} md={2}>
                         <Form.Group as={Col} className='mb-3' controlId={`formProductLink-${index}`}>
-                            <Form.Label>Product Link</Form.Label>
+                            <Form.Label>
+                                <Icon className='bi bi-link-45deg fs-5' marginEndSize='2' />
+                                Product Link
+                            </Form.Label>
                             <Form.Control
                                 name='href'
                                 placeholder='https://shop.example.com/product'

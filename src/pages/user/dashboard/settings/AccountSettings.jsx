@@ -35,7 +35,7 @@ export const AccountSettings = () => {
     //Account delete
     const [isDeleteInProgress, setIsDeleteInProgress] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [deleteModalTxt, setDeleteModalTxt] = useState('Are you sure you want to delete your account? This action is irreversible.');
+    const [deleteModalTxt, setDeleteModalTxt] = useState(<span><Icon className='bi bi-exclamation-square fs-4' /> Are you sure you want to delete your account? This action is irreversible.</span>);
 
     const onUpdateUsernameClick = async () => {
 
@@ -309,6 +309,7 @@ export const AccountSettings = () => {
                 addSecondBtn={true}
                 secondBtnTxt={'Close'}
                 handleSecondFunction={handleModalClose}
+                footerClassName='border-top-0 pt-0'
             />
         </>
     )

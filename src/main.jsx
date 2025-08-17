@@ -18,7 +18,7 @@ import Footer from './components/Navigation/Footer.jsx';
 import Results from './pages/search/Results.jsx';
 import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';
 import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
-import TOS from './pages/tos/Tos.jsx';
+import TOS from './pages/tos/TOS.jsx';
 import Privacy from './pages/privacy/Privacy.jsx';
 import { CommunityGuidelines } from './pages/community-guidelines/CommunityGuidelines.jsx';
 import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils.js';

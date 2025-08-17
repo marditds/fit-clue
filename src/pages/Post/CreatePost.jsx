@@ -4,6 +4,7 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading.jsx';
+import { Icon } from '../../components/Accessories/Icon.jsx';
 
 const CreatePost = () => {
 
@@ -110,7 +111,7 @@ const CreatePost = () => {
             <Row>
                 <Col className='px-md-5 pt-3 pt-md-5'>
                     <h2>
-                        Create Post
+                        <Icon className='bi bi-plus-square' marginEndSize='2' />Create
                     </h2>
                     <p>
                         Please share the Instagram link. The post must be publicly accessible.
@@ -126,7 +127,10 @@ const CreatePost = () => {
                         <Row xs={1} md={2}>
                             <Col>
                                 <Form.Group className='mb-3' controlId='formName'>
-                                    <Form.Label>Personality Name</Form.Label>
+                                    <Form.Label>
+                                        <Icon className='bi bi-person fs-5' marginEndSize='1' />
+                                        Personality Name
+                                    </Form.Label>
                                     <Form.Control
                                         type='text'
                                         placeholder='Enter personality name'
@@ -138,7 +142,11 @@ const CreatePost = () => {
                             </Col>
                             <Col>
                                 <Form.Group className='mb-3' controlId='formPhotoLink'>
-                                    <Form.Label>Instagram Link</Form.Label>
+                                    <Form.Label>
+                                        <Icon className='bi bi-instagram fs-5' marginEndSize='2' />
+                                        <Icon className='bi bi-link fs-5' marginEndSize='2' />
+                                        Instagram Post Link
+                                    </Form.Label>
                                     <Form.Control
                                         type='text'
                                         placeholder='https://www.instagram.com/...'
@@ -155,7 +163,7 @@ const CreatePost = () => {
                             <Form.Group as={Col} controlId='formShowLinks'>
                                 <Form.Check
                                     type='checkbox'
-                                    label='Add Links'
+                                    label='Add Item Links'
                                     checked={showLinks}
                                     onChange={handleCheckboxChange}
                                     className='mb-0'

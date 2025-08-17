@@ -11,7 +11,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
     const { createReportLink } = usePosts();
 
-    const { isXs, isMd } = useBreakpoints();
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     // Report user generated links
     const [showModal, setShowModal] = useState(false);
@@ -87,7 +87,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                             <Col xs={3}
                                 className={`d-flex justify-content-center align-items-center link__report-btn-col ${!isLoggedIn ? 'd-none' : ''}`}>
                                 <Button
-                                    className='px-2 py-1 link__report-btn'
+                                    className='px-2 py-1 link__report-btn d-flex flex-column flex-lg-row'
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleReportClick(itemLink);
@@ -95,7 +95,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 >
                                     <Icon
                                         className='bi bi-flag'
-                                        marginEndSize={isMd ? '0' : '2'}
+                                        marginEndSize={isXs || isSm || isMd ? '0' : '2'}
                                     />Report
                                 </Button>
                             </Col>
