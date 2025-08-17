@@ -2,6 +2,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
+import { IconHanger, IconLinkPlus, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
 
 export const AddLinksInCreatePostForm = ({
     links,
@@ -28,12 +29,18 @@ export const AddLinksInCreatePostForm = ({
                 <Col key={index}>
                     <hr className='mt-0' />
                     <Row>
-                        <Col className='d-flex align-items-center mb-3'>
-                            <h5 className='mb-0 me-2'>
-                                <Icon className='bi bi-bag-plus' marginEndSize='2' />Link #{index + 1}
+                        <Col className='d-flex justify-content-between align-items-center mb-3'>
+                            <h5 className='mb-0 me-2 d-flex align-items-end'>
+                                <IconShoppingBag stroke={1.25} className='me-1' />Link #{index + 1}
                             </h5>
-                            <Button variant='danger' onClick={() => removeLinkField(index)}>
-                                <Icon className='bi bi-trash3' marginEndSize='2' />Remove
+                            <Button
+                                onClick={() => removeLinkField(index)}
+                            // className='ms-auto'
+                            >
+                                <Icon className='bi bi-trash3'
+                                // marginEndSize='2'
+                                />
+                                {/* Remove */}
                             </Button>
                         </Col>
                     </Row>
@@ -60,7 +67,10 @@ export const AddLinksInCreatePostForm = ({
                         </Form.Group>
 
                         <Form.Group as={Col} className='mb-3' controlId={`formBrandName-${index}`}>
-                            <Form.Label>Company name</Form.Label>
+                            <Form.Label>
+                                <Icon className='bi bi-buildings fs-5' marginEndSize='2' />
+                                Company name
+                            </Form.Label>
                             <Form.Control
                                 name='companyName'
                                 placeholder='Enter company Name'
@@ -73,7 +83,11 @@ export const AddLinksInCreatePostForm = ({
 
                     <Row xs={1} md={2} className='align-items-end'>
                         <Form.Group as={Col} className='mb-3' controlId={`formItemName-${index}`}>
-                            <Form.Label>Item</Form.Label>
+
+                            <Form.Label>
+                                <IconHanger stroke={1.25} className='me-2' />
+                                Item
+                            </Form.Label>
                             <Form.Control
                                 name='item'
                                 placeholder='Enter item name'
@@ -85,10 +99,16 @@ export const AddLinksInCreatePostForm = ({
 
                         <Form.Group as={Col} className='mb-3'>
                             <Form.Label htmlFor={`similarityLevelSelect-${index}`}>
-                                Similarity Level
+
+                                <span className=''>
+                                    <IconMetronome stroke={1.25} className='me-2' />
+                                    Similarity Level
+                                </span>
+
                             </Form.Label>
-                            <CustomTooltip tooltipText={similarityLevelOptions}
-                                iconClassName={'bi bi-question-square'}
+                            <CustomTooltip
+                                tooltipText={similarityLevelOptions}
+                                iconClassName='bi bi-question-square'
                             />
                             <Form.Select
                                 aria-label='Select similarity level'
@@ -117,11 +137,13 @@ export const AddLinksInCreatePostForm = ({
             <Col>
                 <Button
                     type='button'
-                    className='w-100'
+                    className='w-100 d-flex justify-content-center align-items-center'
                     onClick={addLinkField}>
-                    <Icon className='bi bi-plus-square'
+                    {/* <Icon className='bi bi-plus-square'
                         marginEndSize={'2'}
-                    />Add Another Link
+                    /> */}
+                    <IconLinkPlus stroke={1.25} className='me-2' />
+                    Add Another Link
                 </Button>
             </Col>
 

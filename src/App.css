@@ -81,7 +81,8 @@ select:focus {
   border-color: var(--main-accent-color-hover) !important;
 }
 
-input {
+input,
+select {
   max-height: 34px;
 }
 

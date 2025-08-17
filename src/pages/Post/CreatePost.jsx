@@ -186,7 +186,12 @@ const CreatePost = () => {
                             className='mt-3 w-100'
                             disabled={!name || !instaLink}
                         >
-                            {!isPostGettingCreated ? 'Create Post' : <LoadingComponent />}
+                            {!isPostGettingCreated ?
+                                <>
+                                    <Icon className='bi bi-plus-square' marginEndSize='2' />
+                                    Create Post
+                                </> :
+                                <LoadingComponent />}
                         </Button>
 
                         <Form.Text className={sccssMsg ? 'text-success' : 'text-danger'}>

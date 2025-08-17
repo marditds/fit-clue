@@ -5,6 +5,7 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
+import { IconHanger, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
 
 
 export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
@@ -73,12 +74,13 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
         <div>
             <Row className='post__add-link-row mx-auto py-4'>
                 <Col>
-                    <h3>
-                        <Icon
+                    <h3 className='d-flex align-items-center'>
+                        {/* <Icon
                             className='bi bi-plus-lg'
                             marginEndSize={'2'}
-                        />
-                        Add New Shopping Link
+                        /> */}
+                        <IconShoppingBag stroke={1} size={35} className='me-1' />
+                        Add Item Link
                     </h3>
                     {
                         !isLoggedIn &&
@@ -88,7 +90,10 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                     <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
 
                         <Form.Group className='mb-3' controlId='CompanyNameField'>
-                            <Form.Label>Company name</Form.Label>
+                            <Form.Label className='d-flex align-items-end'>
+                                <Icon className='bi bi-buildings fs-5' marginEndSize='2' />
+                                Company name
+                            </Form.Label>
                             <Form.Control
                                 type='text'
                                 value={companyName}
@@ -98,7 +103,10 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ItemNameField'>
-                            <Form.Label>Item</Form.Label>
+                            <Form.Label>
+                                <IconHanger stroke={1.25} size={27} className='me-2' />
+                                Item
+                            </Form.Label>
                             <Form.Control
                                 type='text'
                                 value={itemName}
@@ -108,7 +116,10 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ItemUrlField'>
-                            <Form.Label>Product Link</Form.Label>
+                            <Form.Label>
+                                <Icon className='bi bi-link-45deg fs-4' marginEndSize='2' />
+                                Product Link
+                            </Form.Label>
                             <Form.Control
                                 type='text'
                                 value={href}
@@ -120,9 +131,10 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
 
                             <Form.Label className='w-100'>
+                                <IconMetronome stroke={1.25} size={28} className='me-2' />
                                 Similarity Level:
                                 <CustomTooltip
-                                    iconClassName={'bi bi-question-square'}
+                                    iconClassName='bi bi-question-square'
                                     tooltipText={similarityLevelOptions}
                                 />
                             </Form.Label>
