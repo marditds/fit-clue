@@ -27,7 +27,12 @@ const Footer = () => {
             title: 'Community Guidelines',
             link: '/community-guidelines',
             decoration: ''
-        }
+        },
+        // {
+        //     title: 'FAQ',
+        //     link: '/faq',
+        //     decoration: ''
+        // }
     ]
 
     const footerSocials = [
@@ -57,7 +62,7 @@ const Footer = () => {
                     </>}
                     {
                         footerLinks.map((item, idx) => (
-                            <span key={idx} className='mb-2 mb-md-0'>
+                            <span key={idx} className='mb-2 mb-md-0 d-flex align-items-center'>
                                 <Link to={item.link} className='mx-2 text-decoration-none'>
                                     {item.title}
                                 </Link>

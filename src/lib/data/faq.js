@@ -5,11 +5,11 @@ export const faq = [
     },
     {
         title: 'Is there an age requirement for this platform?',
-        desc: 'Since the content on this platform is user-generated, we require all users to be of legal age to avoid exposure to inappropriate or potentially harmful material. If we discover that a user is underage, their account will be deleted without notice.',
+        desc: 'Since the content on this platform is user-generated, we require all users to be of legal age to avoid exposure to inappropriate or potentially harmful material. If we discover that a user is underage, their account will be terminated without notice.',
     },
     {
         title: 'Are you associated with Instagram?',
-        desc: 'FitClue is not associated, affiliated, sponsored, or promoted by Instagram or any other social media platform.',
+        desc: 'FitClue is not associated with, affiliated with, sponsored by, promoted by, or endorsed by Instagram or any other social media platform.',
     },
     {
         title: 'Can I sign in using Instagram or other social media accounts?',

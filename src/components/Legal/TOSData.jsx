@@ -8,6 +8,19 @@ const TOSData = () => {
                 </p>
         },
         {
+            title: 'Eligibility / Age Requirement',
+            description: (
+                <>
+                    <p>
+                        FitClue is intended only for users who are of legal age to form a binding contract in their jurisdiction (typically 18 years or older). By using FitClue, you represent and warrant that you meet this age requirement.
+                    </p>
+                    <p>
+                        If you do not meet the legal age requirement, you must not access or use this platform. FitClue does not allow minors to use the service, and accounts of underage users will be terminated if discovered.
+                    </p>
+                </>
+            )
+        },
+        {
             title: 'Scope of Service',
             description: (
                 <>

@@ -26,12 +26,12 @@ export const Sidebar = ({ username }) => {
             activeIcon: 'bi bi-floppy-fill',
             to: 'saved-posts',
         },
-        {
-            label: 'Help Center',
-            icon: 'bi bi-info-square',
-            activeIcon: 'bi bi-info-square-fill',
-            to: 'help-center',
-        },
+        // {
+        //     label: 'Help Center',
+        //     icon: 'bi bi-info-square',
+        //     activeIcon: 'bi bi-info-square-fill',
+        //     to: 'help-center',
+        // },
         {
             label: 'FAQ',
             icon: 'bi bi-question-square',
