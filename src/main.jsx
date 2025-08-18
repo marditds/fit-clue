@@ -25,6 +25,7 @@ import { redirectIfLoggedIn, redirectIfNotLoggedIn } from './lib/utils/authUtils
 import NotFound from './pages/not-found/NotFound.jsx';
 import SignOut from './pages/signout/SignOut.jsx';
 import { ToastGeneral } from './components/Accessories/ToastComponent.jsx';
+import { FAQ } from './pages/faq/FAQ.jsx';
 
 const MainLayout = () => {
 
@@ -136,6 +137,10 @@ const router = createBrowserRouter([
           {
             path: 'privacy',
             element: <Privacy />
+          },
+          {
+            path: 'faq',
+            element: <FAQ />
           }
         ]
       },

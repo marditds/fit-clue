@@ -28,9 +28,15 @@ export const Sidebar = ({ username }) => {
         },
         {
             label: 'Help Center',
+            icon: 'bi bi-info-square',
+            activeIcon: 'bi bi-info-square-fill',
+            to: 'help-center',
+        },
+        {
+            label: 'FAQ',
             icon: 'bi bi-question-square',
             activeIcon: 'bi bi-question-square-fill',
-            to: 'help-center',
+            to: 'faq',
         },
         {
             label: 'Privacy Policy',
