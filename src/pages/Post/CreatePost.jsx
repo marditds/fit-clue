@@ -183,7 +183,7 @@ const CreatePost = () => {
 
                         <Button
                             type='submit'
-                            className='mt-3 w-100'
+                            className='mt-3 w-100 mb-3'
                             disabled={!name || !instaLink}
                         >
                             {!isPostGettingCreated ?
