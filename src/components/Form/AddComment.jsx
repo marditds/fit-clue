@@ -75,7 +75,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
             style={{ maxWidth: (!isXs && !isSm && !isMd) ? '503px' : '100%' }}
             className='mx-auto'>
 
-            <Form.Group className='mb-3' controlId='userCommentEntryField'>
+            <Form.Group className={!geminiResult ? 'mb-3' : 'mb-2'} controlId='userCommentEntryField'>
                 <span className='d-flex justify-content-between align-items-center mb-2'>
                     <Form.Label className='mb-0'>
                         Comment
@@ -102,6 +102,14 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
                 <Form.Text id='commentHelpText' className='text-muted'>
                     FitClue utilizes AI to ensure a safe and respectful environment for all users and visitors.
                 </Form.Text>
+                <ul className='ps-3 mt-2 mb-0 text-muted'>
+                    <li>
+                        Please keep your discussions respectful.
+                    </li>
+                    <li>
+                        Posting links in the comments section is not allowed.
+                    </li>
+                </ul>
             </Form.Group>
 
             {
