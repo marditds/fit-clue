@@ -7,6 +7,7 @@ import { SearchForm } from '../Form/SearchForm';
 import './Navigation.css';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { IconMenu2 } from '@tabler/icons-react';
 
 const NavigationBar = () => {
 
@@ -20,7 +21,7 @@ const NavigationBar = () => {
 
     const { onSignOutClick } = useUser();
 
-    const { isXs, isSm, isMd } = useBreakpoints();
+    const { isXs, isSm, isMd, isLg } = useBreakpoints();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -55,16 +56,25 @@ const NavigationBar = () => {
             as: Link,
             to: '/',
             title: 'The Latest',
+            className: ''
         },
         {
             as: Link,
             to: '/about',
             title: 'About',
+            className: 'd-none'
+        },
+        {
+            as: Link,
+            to: '/faq',
+            title: 'FAQ',
+            className: ''
         },
         {
             as: Link,
             to: '/contact',
             title: 'Contact',
+            className: ''
         },
     ]
 
@@ -171,7 +181,9 @@ const NavigationBar = () => {
                     </Form>
                 }
 
-                <Navbar.Toggle aria-controls='navbar-nav' className='sdada' onClick={handleShowOffcanvas} />
+                <Navbar.Toggle aria-controls='navbar-nav' className='sdada' onClick={handleShowOffcanvas}>
+                    <IconMenu2 size={21} />
+                </Navbar.Toggle>
                 <Navbar.Offcanvas id='navbar-nav' placement='end' show={showOffcanvas} onHide={handleCloseOffcanvas} style={{ zIndex: '9000' }}
                 >
                     <Offcanvas.Header closeButton>
@@ -202,7 +214,9 @@ const NavigationBar = () => {
                                                         key={idx}
                                                         as={navLink.as}
                                                         to={navLink.to}
-                                                        className='p-0 mb-3 mb-lg-0'
+                                                        className={`p-0 mb-3 mb-lg-0 
+                                                            ${isLg ? navLink.className : ''}
+                                                        `}
                                                     >
                                                         {navLink.title}
                                                     </Nav.Link>

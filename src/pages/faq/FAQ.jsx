@@ -3,7 +3,7 @@ import { AccordionComponent } from '../../components/Accessories/AccordionCompon
 import { faq } from '../../lib/data/faq';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
-export const FAQ = () => {
+const FAQ = () => {
 
     const { isXs } = useBreakpoints();
 
@@ -51,3 +51,5 @@ export const FAQ = () => {
         </Container>
     )
 }
+
+export default FAQ;
