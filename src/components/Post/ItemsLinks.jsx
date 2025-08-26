@@ -72,8 +72,8 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 />
 
                                 <ItemLinkCol
-                                    displayText={itemLink.company_name}
-                                    tooltipText={itemLink.company_name}
+                                    displayText={itemLink.brand_name}
+                                    tooltipText={itemLink.brand_name}
                                     maxLength={8}
                                 />
 

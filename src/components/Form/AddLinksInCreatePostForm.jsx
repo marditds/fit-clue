@@ -45,8 +45,7 @@ export const AddLinksInCreatePostForm = ({
                         </Col>
                     </Row>
 
-
-                    <Row xs={1} md={2}>
+                    <Row xs={1} md={2} className='mb-0 mb-md-3'>
                         <Form.Group as={Col} className='mb-3' controlId={`formProductLink-${index}`}>
                             <Form.Label>
                                 <Icon className='bi bi-link-45deg fs-5' marginEndSize='2' />
@@ -69,19 +68,19 @@ export const AddLinksInCreatePostForm = ({
                         <Form.Group as={Col} className='mb-3' controlId={`formBrandName-${index}`}>
                             <Form.Label>
                                 <Icon className='bi bi-buildings fs-5' marginEndSize='2' />
-                                Company name
+                                Brand name
                             </Form.Label>
                             <Form.Control
-                                name='companyName'
-                                placeholder='Enter company Name'
-                                value={link.companyName}
+                                name='brandName'
+                                placeholder='Enter brand name'
+                                value={link.brandName}
                                 onChange={e => handleLinkChange(index, e)}
                                 required
                             />
                         </Form.Group>
                     </Row>
 
-                    <Row xs={1} md={2} className='align-items-end'>
+                    <Row xs={1} md={2} className='align-items-end mb-0 mb-md-3'>
                         <Form.Group as={Col} className='mb-3' controlId={`formItemName-${index}`}>
 
                             <Form.Label>

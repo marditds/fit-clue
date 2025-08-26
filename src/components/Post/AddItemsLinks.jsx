@@ -14,7 +14,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
 
     const { updatePost } = usePosts();
 
-    const [companyName, setCompanyName] = useState('');
+    const [brandName, setBrandName] = useState('');
     const [itemName, setItemName] = useState('');
     const [href, setHref] = useState('');
     const [similarityLevel, setSimilarityLevel] = useState('');
@@ -29,8 +29,8 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
 
     }, [similarityLevel])
 
-    const onCompanyNameCahnge = (e) => {
-        setCompanyName(e.target.value);
+    const onBrandNameCahnge = (e) => {
+        setBrandName(e.target.value);
     };
 
     const onItemNameChange = (e) => {
@@ -52,7 +52,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
         try {
             setIsAddingLink(true);
 
-            const newLink = await createLink(href, companyName, itemName, userId, similarityLevel);
+            const newLink = await createLink(href, brandName, itemName, userId, similarityLevel);
 
             const updatedPost = await updatePost(postId, newLink.$id);
 
@@ -64,7 +64,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
             console.error('Error onAddSubmitLink:', error);
         } finally {
             setIsAddingLink(false);
-            setCompanyName('');
+            setBrandName('');
             setItemName('');
             setHref('');
         }
@@ -89,17 +89,17 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
 
                     <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
 
-                        <Form.Group className='mb-3' controlId='CompanyNameField'>
+                        <Form.Group className='mb-3' controlId='BrandNameField'>
                             <Form.Label className='d-flex align-items-end'>
                                 <Icon className='bi bi-buildings fs-5' marginEndSize='2' />
-                                Company name
+                                Brand name
                             </Form.Label>
                             <Form.Control
                                 type='text'
-                                value={companyName}
+                                value={brandName}
                                 disabled={!isLoggedIn}
-                                onChange={onCompanyNameCahnge}
-                                placeholder='Enter company name' />
+                                onChange={onBrandNameCahnge}
+                                placeholder='Enter brand name' />
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='ItemNameField'>
@@ -161,7 +161,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         <Button
                             variant='primary'
                             type='submit'
-                            disabled={!companyName || !itemName || !href || !isLoggedIn}
+                            disabled={!brandName || !itemName || !href || !isLoggedIn}
                             className='mt-1'
                         >
                             {isAddningLink ? 'Adding link...' : 'Add Item Link'}

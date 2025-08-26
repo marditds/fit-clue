@@ -22,6 +22,7 @@ export const usePosts = () => {
             return res;
         } catch (error) {
             console.error('Error making post:', error);
+            return null;
         }
     }
 

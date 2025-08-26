@@ -26,6 +26,7 @@ import NotFound from './pages/not-found/NotFound.jsx';
 import SignOut from './pages/signout/SignOut.jsx';
 import { ToastGeneral } from './components/Accessories/ToastComponent.jsx';
 import FAQ from './pages/faq/FAQ.jsx';
+import About from './pages/about/About.jsx';
 
 const MainLayout = () => {
 
@@ -183,6 +184,10 @@ const router = createBrowserRouter([
       {
         path: 'faq',
         element: <FAQ />
+      },
+      {
+        path: 'about',
+        element: <About />
       }
     ]
   },

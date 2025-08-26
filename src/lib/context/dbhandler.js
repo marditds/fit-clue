@@ -361,19 +361,17 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
 
         if (!personality) {
             console.error('Error getting personality.');
-            return;
+            return null;
         }
 
         var product_links = [];
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
                 productLinksData.map(link =>
-                    createLink(link.href, link.companyName, link.item, userId, link.similarityLevel)
+                    createLink(link.href, link.brandName, link.item, userId, link.similarityLevel)
                 )
             );
         }
-
-        // console.log({ url, personality_id: personality.$id, links: links.map(link => link.$id) });
 
         const post = await databases.createDocument(
             dbEnv,
@@ -457,7 +455,7 @@ export const createPersonality = async (personalityName) => {
         return null;
     } catch (error) {
         console.error('Error creating personality:', error);
-
+        return null;
     }
 }
 
@@ -729,9 +727,9 @@ export const createPostReport = async (postId, reason) => {
 }
 
 // Links
-export const createLink = async (href, companyName, item, userId, similarityLevel) => {
+export const createLink = async (href, brandName, item, userId, similarityLevel) => {
 
-    console.log({ href, companyName, item, userId, similarityLevel });
+    console.log({ href, brandName, item, userId, similarityLevel });
 
     if (!href) {
         return;
@@ -744,7 +742,7 @@ export const createLink = async (href, companyName, item, userId, similarityLeve
             ID.unique(),
             {
                 href,
-                company_name: companyName,
+                brand_name: brandName,
                 item,
                 user_id: userId,
                 similarity_level: similarityLevel
