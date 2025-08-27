@@ -2,21 +2,25 @@ import { Col, Container, Image, Row } from 'react-bootstrap';
 import { LockComponent } from '../../components/Post/LockComponent';
 import { useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import aboutImg from '../../assets/about.jpg';
+import aboutColBg from '../../assets/aboutBg.jpg';
 
 const About = () => {
 
     const { isLoggedIn } = useOutletContext();
 
-    const { isXs, isSm } = useBreakpoints();
+    const { isXs, isSm, isMd, isLg } = useBreakpoints();
+
+    const isScreenLargeAndLarger = !isXs && !isSm && !isMd;
 
     return (
         <Container className='px-0' fluid>
 
             {/* Banner */}
             <Container fluid>
-                <Row className='py-4 py-sm-4 py-md-5'>
-                    <Col className='text-center my-4 my-sm-4 my-md-5'>
-                        <h1 className='mb-4 mb-sm-4 mb-md-5'>
+                <Row className='py-4 py-sm-3 py-lg-5'>
+                    <Col className='text-center my-4 my-sm-3 my-lg-5'>
+                        <h1 className='mb-4 mb-sm-3 mb-lg-5'>
                             About FitClue
                         </h1>
                         <h6>
@@ -29,9 +33,17 @@ const About = () => {
             {/* <hr className='my-0' /> */}
 
             {/* About text */}
-            <Container>
+            <Container fluid={isScreenLargeAndLarger ? false : true}>
                 <Row xs={1} lg={2}>
-                    <Col className='my-auto'>
+                    <Col
+                        className='my-auto'
+                        style={{
+                            backgroundImage: isScreenLargeAndLarger || isLg ? '' : `url(${aboutColBg})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: !isScreenLargeAndLarger ? 'center' : '',
+                            backgroundColor: 'var(--main-white-shade)',
+                        }}
+                    >
                         <p>
                             Fashion is everywhere — in the streets, on social media, and in the everyday outfits that catch our eye. But so often, when we see a piece we love, we are left wondering: What brand is that? Where can I find it?
                         </p>
@@ -49,7 +61,12 @@ const About = () => {
                         </p>
                     </Col>
                     <Col className='d-none d-lg-block'>
-                        <Image src='https://placehold.co/200x200' className='object-fit-cover w-100 h-100' />
+                        <Image
+                            src={aboutImg}
+                            className={`object-fit-cover w-100 ${!isScreenLargeAndLarger || !isLg ? '' : 'h-100'}`}
+                            height={'600'}
+                            width={'600'}
+                        />
                     </Col>
                 </Row>
             </Container>
@@ -58,8 +75,8 @@ const About = () => {
 
             {/* Quote */}
             <Container fluid>
-                <Row className='py-4 py-sm-4 py-md-5'>
-                    <Col className='text-center my-4 my-sm-4 my-md-5'>
+                <Row className='py-4 py-sm-3 py-lg-5'>
+                    <Col className='text-center my-4 my-sm-3 my-lg-5'>
                         <h3 className='mb-0'>
                             "Discovery is powered by people, not just algorithms."
                         </h3>
