@@ -29,13 +29,13 @@ const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
 
 export const testTbalesDBCreateRow = async () => {
     try {
-        const res = await tabelsDB.upsertRow({
+        const res = await tabelsDB.createRow({
             databaseId: dbEnv,
             tableId: reportsPostsCollEnv,
             rowId: ID.unique(),
             data: {
-                post_id: '11111111111111111111',
-                reason: 'Hakobos'
+                post_id: '12121212121212121212',
+                reason: 'EYEYEYEYE'
             }
         })
         return res;
@@ -44,20 +44,24 @@ export const testTbalesDBCreateRow = async () => {
     }
 }
 
-
 export const createUser = async (email, password, name) => {
     try {
         const user = await account.create(
-            ID.unique(),
-            email,
-            password,
-            name
+            {
+                userId: ID.unique(),
+                email: email,
+                password: password,
+                name: name
+            }
         );
 
         if (user) {
             console.log('User was created successfully:', user);
 
-            const session = await account.createEmailPasswordSession(email, password);
+            const session = await account.createEmailPasswordSession({
+                email: email,
+                password: password
+            });
 
             let userInColl = {};
 
@@ -65,10 +69,11 @@ export const createUser = async (email, password, name) => {
                 userInColl = await createUserInCollection(name, email);
 
                 await account.updatePrefs({
-                    profile_id: userInColl.$id,
+                    prefs: {
+                        profile_id: userInColl.$id,
+                    }
                 });
             }
-
             return userInColl;
         }
 
@@ -92,15 +97,15 @@ export const createUser = async (email, password, name) => {
 
 export const createUserInCollection = async (username, email) => {
     try {
-        const user = await databases.createDocument(
-            dbEnv,
-            usernamesCollEnv,
-            ID.unique(),
-            {
+        const user = await tabelsDB.createRow({
+            databaseId: dbEnv,
+            tableId: usernamesCollEnv,
+            rowId: ID.unique(),
+            data: {
                 username,
                 email
             }
-        )
+        })
 
         if (user) {
             console.log('User in collection created successfully.');
@@ -115,7 +120,9 @@ export const createUserInCollection = async (username, email) => {
 
 export const updateUsername = async (username) => {
     try {
-        const res = await account.updateName(username);
+        const res = await account.updateName({
+            name: username
+        });
 
         if (res) {
             console.log('Username updated successfully.');
@@ -137,14 +144,14 @@ export const updateUsernameInCollection = async (userId, username) => {
             return 'Username is taken. Your username must be unique.'
         }
 
-        const res = await databases.updateDocument(
-            dbEnv,
-            usernamesCollEnv,
-            userId,
-            {
+        const res = await tabelsDB.updateRow({
+            databaseId: dbEnv,
+            tableId: usernamesCollEnv,
+            rowId: userId,
+            data: {
                 username
             }
-        )
+        })
         if (res) {
             await updateUsername(username);
             console.log('Username in collection updated successfully.');
@@ -173,11 +180,11 @@ export const getUserFromCollectionById = async (userId) => {
     console.log('userId in getUserFromCollectionById:', userId);
 
     try {
-        const user = await databases.getDocument(
-            dbEnv,
-            usernamesCollEnv,
-            userId
-        )
+        const user = await tabelsDB.getRow({
+            databaseId: dbEnv,
+            tableId: usernamesCollEnv,
+            rowId: userId
+        })
 
         if (user) {
             return user;
@@ -192,13 +199,13 @@ export const getUserFromCollectionById = async (userId) => {
 export const getUserFromCollectionByUsername = async (username) => {
 
     try {
-        const userExists = await databases.listDocuments(
-            dbEnv,
-            usernamesCollEnv,
-            [
+        const userExists = await tabelsDB.listRows({
+            databaseId: dbEnv,
+            tableId: usernamesCollEnv,
+            queries: [
                 Query.equal('username', username)
             ]
-        )
+        })
 
         if (userExists.total > 0) {
             return userExists;
@@ -212,11 +219,11 @@ export const getUserFromCollectionByUsername = async (username) => {
 
 export const fetchUsersByIds = async (userIds) => {
     try {
-        const users = await databases.listDocuments(
-            dbEnv,
-            usernamesCollEnv,
-            [Query.equal('$id', userIds)]
-        )
+        const users = await tabelsDB.listRows({
+            databaseId: dbEnv,
+            tableId: usernamesCollEnv,
+            queries: [Query.equal('$id', userIds)]
+        })
 
         if (users) {
             return users;
@@ -230,10 +237,10 @@ export const fetchUsersByIds = async (userIds) => {
 
 export const signInUser = async (email, password) => {
     try {
-        const user = await account.createEmailPasswordSession(
-            email,
-            password
-        )
+        const user = await account.createEmailPasswordSession({
+            email: email,
+            password: password
+        })
 
         if (user) {
             console.log('User signed in successfully:', user);
@@ -258,7 +265,9 @@ export const signInUser = async (email, password) => {
 
 export const getUserSession = async () => {
     try {
-        const sessionDets = await account.getSession('current');
+        const sessionDets = await account.getSession({
+            sessionId: 'current',
+        });
 
         console.log('sessionDets:', sessionDets);
 
@@ -280,10 +289,10 @@ export const getUserAccount = async () => {
 
 export const updateUserPassword = async (newPassword, oldPassword) => {
     try {
-        const res = await account.updatePassword(
-            newPassword,
-            oldPassword
-        )
+        const res = await account.updatePassword({
+            password: newPassword,
+            oldPassword: oldPassword
+        })
 
         console.log(res);
         return res;
@@ -301,10 +310,10 @@ export const updateUserPassword = async (newPassword, oldPassword) => {
 
 export const createPasswordRecoveryEmail = async (email) => {
     try {
-        const res = await account.createRecovery(
-            email,
-            'http://localhost:5173/reset-password'
-        )
+        const res = await account.createRecovery({
+            email: email,
+            url: 'http://localhost:5173/reset-password'
+        })
         console.log('Success creating recovery.');
 
         return res;
@@ -323,11 +332,11 @@ export const createPasswordRecoveryEmail = async (email) => {
 
 export const updatePasswordFromRecoveryEmail = async (userId, secret, newPassword) => {
     try {
-        const result = await account.updateRecovery(
-            userId,
-            secret,
-            newPassword
-        );
+        const result = await account.updateRecovery({
+            userId: userId,
+            secret: secret,
+            password: newPassword
+        });
 
         console.log('Sccess updating passsword via recovery email.');
 
@@ -349,7 +358,9 @@ export const updatePasswordFromRecoveryEmail = async (userId, secret, newPasswor
 
 export const deleteUserSession = async () => {
     try {
-        const resRemoveSession = await account.deleteSession('current');
+        const resRemoveSession = await account.deleteSession({
+            sessionId: 'current'
+        });
 
         return { success: resRemoveSession.message === '' }
 
@@ -361,11 +372,11 @@ export const deleteUserSession = async () => {
 
 export const deleteUserFromCollection = async (userId) => {
     try {
-        await databases.deleteDocument(
-            dbEnv,
-            usernamesCollEnv,
-            userId,
-        );
+        await tabelsDB.deleteRow({
+            databaseId: dbEnv,
+            tableId: usernamesCollEnv,
+            rowId: userId,
+        });
         return 'User successfully deleted from the collection.';
     } catch (error) {
         console.error('Error deleting user form collection:', error);
@@ -377,13 +388,6 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
     console.log({ personalityName, productLinksData, instaUrl });
 
     try {
-        const personality = await createPersonality(personalityName);
-
-        if (!personality) {
-            console.error('Error getting personality.');
-            return null;
-        }
-
         var product_links = [];
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
@@ -393,18 +397,17 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             );
         }
 
-        const post = await databases.createDocument(
-            dbEnv,
-            postsCollEnv,
-            ID.unique(),
-            {
+        const post = await tabelsDB.createRow({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            rowId: ID.unique(),
+            data: {
                 url: instaUrl,
-                personality_id: personality.$id,
                 product_links: product_links.map(product_link => product_link.$id),
                 user_id: userId,
                 personality_name: personalityName
             }
-        );
+        });
 
         console.log('Post created successfully:', post);
 
@@ -419,24 +422,24 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
 export const updatePost = async (docId, newLinkId) => {
     try {
 
-        const doc = await databases.getDocument(
-            dbEnv,
-            postsCollEnv,
-            docId
-        );
+        const doc = await tabelsDB.getRow({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            rowId: docId
+        });
 
         const existingLinks = doc.product_links || [];
 
         const updatedLinks = [...existingLinks, newLinkId];
 
-        const res = await databases.updateDocument(
-            dbEnv,
-            postsCollEnv,
-            docId,
-            {
+        const res = await tabelsDB.updateRow({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            rowId: docId,
+            data: {
                 product_links: updatedLinks
             }
-        )
+        })
 
         console.log('Post updated successfully:', res);
 
@@ -446,49 +449,16 @@ export const updatePost = async (docId, newLinkId) => {
     }
 }
 
-export const createPersonality = async (personalityName) => {
-
-    try {
-        const personality = await databases.listDocuments(
-            dbEnv,
-            personalitiesCollEnv,
-            [Query.equal('personality_name', personalityName)]
-        )
-
-        if (personality.total > 0) {
-            return personality.documents[0];
-        }
-
-        const res = await databases.createDocument(
-            dbEnv,
-            personalitiesCollEnv,
-            ID.unique(),
-            {
-                personality_name: personalityName
-            }
-        )
-
-        if (res) {
-            return res;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error creating personality:', error);
-        return null;
-    }
-}
-
 export const fetchTheLatestPosts = async () => {
     try {
-        const postsRes = await databases.listDocuments(
-            dbEnv,
-            postsCollEnv,
-            [
+        const postsRes = await tabelsDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: [
                 Query.orderDesc('$createdAt'),
                 Query.limit(3)
             ]
-        );
+        });
 
         if (postsRes.total === 0) {
             console.log('No posts yet.');
@@ -508,11 +478,11 @@ export const fetchTheLatestPosts = async () => {
 export const fetchPostById = async (postId) => {
 
     try {
-        const postRes = await databases.getDocument(
-            dbEnv,
-            postsCollEnv,
-            postId
-        );
+        const postRes = await tabelsDB.getRow({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            rowId: postId
+        });
 
         console.log('postRes in fetchPostById:', postRes);
 
@@ -557,11 +527,11 @@ export const fetchPostById = async (postId) => {
 export const fetchInstaPostById = async (postId) => {
 
     try {
-        const postRes = await databases.getDocument(
-            dbEnv,
-            postsCollEnv,
-            postId
-        );
+        const postRes = await tabelsDB.getRow({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            rowId: postId
+        });
 
         if (!postRes) {
             console.log('No posts yet.');
@@ -726,15 +696,15 @@ export const fetchPersonalities = async () => {
 
 export const createPostReport = async (postId, reason) => {
     try {
-        const reportDoc = await databases.createDocument(
-            dbEnv,
-            reportsPostsCollEnv,
-            ID.unique(),
-            {
+        const reportDoc = await tabelsDB.createRow({
+            databaseId: dbEnv,
+            tableId: reportsPostsCollEnv,
+            rowId: ID.unique(),
+            data: {
                 post_id: postId,
                 reason
             }
-        )
+        })
 
         if (reportDoc) {
             console.log('Post report created successfully.');
@@ -829,11 +799,11 @@ export const fetchProductLinksByIds = async (productLinkId) => {
     }
 
     try {
-        const res = await databases.listDocuments(
-            dbEnv,
-            linksCollEnv,
-            [Query.equal('$id', productLinkId)]
-        )
+        const res = await tabelsDB.listRows({
+            databaseId: dbEnv,
+            tableId: linksCollEnv,
+            queries: [Query.equal('$id', productLinkId)]
+        })
         if (res.total > 0) {
             return res;
         }
