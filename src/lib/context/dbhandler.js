@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query, Functions, Account } from 'appwrite';
+import { Client, Databases, ID, Query, Functions, Account, TablesDB } from 'appwrite';
 import { dbFunctionKeysProvider } from './keysProvider';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
@@ -12,6 +12,8 @@ const account = new Account(client);
 
 const databases = new Databases(client);
 
+const tabelsDB = new TablesDB(client);
+
 const functions = new Functions(client);
 
 const dbEnv = import.meta.env.VITE_DATABASE_ID;
@@ -24,6 +26,24 @@ const savesCollEnv = import.meta.env.VITE_SAVES_COLLECTION;
 const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
+
+export const testTbalesDBCreateRow = async () => {
+    try {
+        const res = await tabelsDB.upsertRow({
+            databaseId: dbEnv,
+            tableId: reportsPostsCollEnv,
+            rowId: ID.unique(),
+            data: {
+                post_id: '11111111111111111111',
+                reason: 'Hakobos'
+            }
+        })
+        return res;
+    } catch (error) {
+        console.error('Error creating row:', error);
+    }
+}
+
 
 export const createUser = async (email, password, name) => {
     try {

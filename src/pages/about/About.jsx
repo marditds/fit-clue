@@ -26,6 +26,8 @@ const About = () => {
                 </Row>
             </Container>
 
+            {/* <hr className='my-0' /> */}
+
             {/* About text */}
             <Container>
                 <Row xs={1} lg={2}>
@@ -52,6 +54,8 @@ const About = () => {
                 </Row>
             </Container>
 
+            {/* <hr className='my-0' /> */}
+
             {/* Quote */}
             <Container fluid>
                 <Row className='py-4 py-sm-4 py-md-5'>
@@ -63,6 +67,8 @@ const About = () => {
                 </Row>
             </Container>
 
+            {/* <hr className='my-0' /> */}
+
             {/* CTA */}
             {
                 !isLoggedIn &&
@@ -73,7 +79,7 @@ const About = () => {
                                 btnText={`Sign in`}
                                 lockTitle='Ready to Explore?'
                                 lockText='Sign in to start curating your fashion shopping collection!'
-                                rowClassName='mb-0 mb-md-5'
+                                rowClassName='my-0 my-md-5'
                                 colClassName='text-center mb-5'
                                 btnClassName={!isXs && !isSm ? 'w-25' : 'w-50'}
                                 path='/sign-in'
