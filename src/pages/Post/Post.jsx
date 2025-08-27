@@ -151,7 +151,7 @@ const Post = () => {
                             <LockComponent
                                 btnText={`${authText.signIn.button}`}
                                 lockTitle='Sign in to Add Links'
-                                lockText='Sign in to start curating your own fashion shopping collection!'
+                                lockText='Sign in to start curating your fashion shopping collection!'
                                 divClassName='h-100'
                                 rowClassName='mx-auto post__div-no-links-row h-100 pt-0 pt-md-4'
                                 colClassName='text-center pb-4 pb-md-0 pt-4 pt-md-4'

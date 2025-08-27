@@ -1,21 +1,33 @@
 import { Col, Container, Image, Row } from 'react-bootstrap';
+import { LockComponent } from '../../components/Post/LockComponent';
+import { useOutletContext } from 'react-router-dom';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 const About = () => {
+
+    const { isLoggedIn } = useOutletContext();
+
+    const { isXs, isSm } = useBreakpoints();
+
     return (
-        <Container className='bg-success' fluid>
-            <Container className='bg-info'>
+        <Container className='px-0' fluid>
+
+            {/* Banner */}
+            <Container fluid>
                 <Row className='py-4 py-sm-4 py-md-5'>
-                    <Col className='my-4 my-sm-4 my-md-5'>
-                        <h1 className='text-center mb-4 mb-sm-4 mb-md-5'>
+                    <Col className='text-center my-4 my-sm-4 my-md-5'>
+                        <h1 className='mb-4 mb-sm-4 mb-md-5'>
                             About FitClue
                         </h1>
-                        <h6 className='text-center'>
+                        <h6>
                             "Fashion is everywhere. Let's discover it together."
                         </h6>
                     </Col>
                 </Row>
+            </Container>
 
-
+            {/* About text */}
+            <Container>
                 <Row xs={1} lg={2}>
                     <Col className='my-auto'>
                         <p>
@@ -30,18 +42,46 @@ const About = () => {
                         <p>
                             This is not just about clothes; it is about connection. By combining curiosity, expertise, and a passion for style, users help each other explore new trends, learn about different labels, and bring inspiration into their own wardrobes.
                         </p>
-                        <p>
-                            We believe fashion should be collaborative and fun. And with every image identified, we are building a space where discovery is powered by people, not just algorithms.
+                        <p className='mb-0'>
+                            We believe fashion should be collaborative and fun. And with every image identified, we are building a space where discovery is powered by people, not algorithms.
                         </p>
                     </Col>
                     <Col className='d-none d-lg-block'>
-                        <Image src='https://placehold.co/200x200' className='w-100' fluid />
+                        <Image src='https://placehold.co/200x200' className='object-fit-cover w-100 h-100' />
                     </Col>
                 </Row>
-
             </Container>
 
+            {/* Quote */}
+            <Container fluid>
+                <Row className='py-4 py-sm-4 py-md-5'>
+                    <Col className='text-center my-4 my-sm-4 my-md-5'>
+                        <h3 className='mb-0'>
+                            "Discovery is powered by people, not just algorithms."
+                        </h3>
+                    </Col>
+                </Row>
+            </Container>
 
+            {/* CTA */}
+            {
+                !isLoggedIn &&
+                <Container>
+                    <Row>
+                        <Col>
+                            <LockComponent
+                                btnText={`Sign in`}
+                                lockTitle='Ready to Explore?'
+                                lockText='Sign in to start curating your fashion shopping collection!'
+                                rowClassName='mb-0 mb-md-5'
+                                colClassName='text-center mb-5'
+                                btnClassName={!isXs && !isSm ? 'w-25' : 'w-50'}
+                                path='/sign-in'
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            }
 
         </Container >
     )
