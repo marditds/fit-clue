@@ -51,7 +51,7 @@ const About = () => {
                             Our app was built to answer those questions together. Instead of endless searching, users can upload or browse images of clothing and collaborate to identify the brands behind each item. Whether it is a pair of sneakers spotted in a photo, a jacket from a celebrity post, or a dress from a runway look, the community comes together to uncover the details.
                         </p>
                         <p>
-                            Every piece is enriched with shared information — brand names, product links, and other helpful insights. The more the community contributes, the stronger the collective knowledge grows, making it easier for everyone to discover fashion they love.
+                            Every piece is enriched with shared information — brand names, item links, and other helpful insights. The more the community contributes, the stronger the collective knowledge grows, making it easier for everyone to discover fashion they love.
                         </p>
                         <p>
                             This is not just about clothes; it is about connection. By combining curiosity, expertise, and a passion for style, users help each other explore new trends, learn about different labels, and bring inspiration into their own wardrobes.

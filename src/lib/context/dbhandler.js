@@ -435,6 +435,7 @@ export const updatePost = async (docId, newLinkId) => {
         return res;
     } catch (error) {
         console.error('Error updating post:', error);
+        return 'Error adding link. Please try again later.';
     }
 }
 
@@ -650,6 +651,7 @@ export const createLink = async (href, brandName, item, userId, similarityLevel)
         return null;
     } catch (error) {
         console.error('Error creating link:', error);
+        return 'Error adding link. Please try again later.';
     }
 }
 

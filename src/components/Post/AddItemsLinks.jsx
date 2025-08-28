@@ -7,7 +7,6 @@ import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { IconHanger, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
 
-
 export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
 
     const { createLink } = useShoppingLinks();
@@ -16,10 +15,13 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
 
     const [brandName, setBrandName] = useState('');
     const [itemName, setItemName] = useState('');
-    const [href, setHref] = useState('');
+    const [itemLink, setItemLink] = useState('');
     const [similarityLevel, setSimilarityLevel] = useState('');
     const [similarityLevelDesc, setSimilarityLevelDesc] = useState('');
     const [isAddningLink, setIsAddingLink] = useState(false);
+    const [isItemLinkFormatIncorrect, setIsItemLinkFormatIncorrect] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
+    const [sccssMsg, setSccssMsg] = useState('');
 
     // Display the description for each similarity level
     useEffect(() => {
@@ -38,7 +40,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
     };
 
     const onUrlCahnge = (e) => {
-        setHref(e.target.value);
+        setItemLink(e.target.value);
     };
 
     const onSimilarityLevelChange = (e) => {
@@ -52,21 +54,43 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
         try {
             setIsAddingLink(true);
 
-            const newLink = await createLink(href, brandName, itemName, userId, similarityLevel);
+            if (!itemLink.startsWith('https://')) {
+                setErrMsg('All links must begin with https://');
+                setIsItemLinkFormatIncorrect(true);
+                setSccssMsg('');
+                return;
+            }
+
+            const newLink = await createLink(itemLink, brandName, itemName, userId, similarityLevel);
+
+            if (typeof newLink === 'string') {
+                setErrMsg(newLink);
+                setSccssMsg('');
+                return;
+            }
 
             const updatedPost = await updatePost(postId, newLink.$id);
 
-            console.log('updatedPost in Post.jsx:', updatedPost);
+            if (typeof updatedPost === 'string') {
+                setErrMsg(updatedPost);
+                setSccssMsg('');
+                return;
+            } else {
+                setItemsLinks((prevLinks) => [...(prevLinks || []), newLink]);
 
-            setItemsLinks((prevLinks) => [...(prevLinks || []), newLink]);
+                setBrandName('');
+                setItemName('');
+                setItemLink('');
+                setErrMsg('');
+                setIsItemLinkFormatIncorrect(false);
+                setSccssMsg('Item link added successfully.');
 
+                console.log('updatedPost in Post.jsx:', updatedPost);
+            }
         } catch (error) {
             console.error('Error onAddSubmitLink:', error);
         } finally {
             setIsAddingLink(false);
-            setBrandName('');
-            setItemName('');
-            setHref('');
         }
     }
 
@@ -118,14 +142,15 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         <Form.Group className='mb-3' controlId='ItemUrlField'>
                             <Form.Label>
                                 <Icon className='bi bi-link-45deg fs-4' marginEndSize='2' />
-                                Product Link
+                                Item Link
                             </Form.Label>
                             <Form.Control
                                 type='text'
-                                value={href}
+                                value={itemLink}
                                 disabled={!isLoggedIn}
                                 onChange={onUrlCahnge}
-                                placeholder='https://shop.example.com/product' />
+                                className={!isItemLinkFormatIncorrect ? '' : 'border-danger'}
+                                placeholder='https://shop.example.com/item' />
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
@@ -161,11 +186,17 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         <Button
                             variant='primary'
                             type='submit'
-                            disabled={!brandName || !itemName || !href || !isLoggedIn}
-                            className='mt-1'
+                            disabled={!brandName || !itemName || !itemLink || !isLoggedIn}
+                            className='mt-1 mb-2'
                         >
                             {isAddningLink ? 'Adding link...' : 'Add Item Link'}
                         </Button>
+
+                        <Form.Text className={sccssMsg ? 'text-success' : 'text-danger'}>
+                            <br />
+                            {sccssMsg || errMsg}
+                        </Form.Text>
+
                     </Form>
                 </Col>
             </Row>

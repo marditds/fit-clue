@@ -43,6 +43,7 @@ export const usePosts = () => {
 
         } catch (error) {
             console.error('Error updating post:', error);
+            return 'Error adding link. Please try again later.'
         }
     }
 
@@ -82,8 +83,8 @@ export const usePosts = () => {
                 return [];
             }
 
-            const commentsTotal = commentsRes.total;
             const commentsTexts = commentsRes.rows;
+            const commentsTotal = commentsRes.total;
 
             console.log('commentsTexts', commentsTexts);
 
@@ -103,7 +104,7 @@ export const usePosts = () => {
             console.log('fullComments:', fullComments);
 
             return {
-                documents: fullComments,
+                rows: fullComments,
                 total: commentsTotal,
             };
             // setComments(prevComments => {

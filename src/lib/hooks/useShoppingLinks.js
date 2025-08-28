@@ -14,6 +14,7 @@ export const useShoppingLinks = () => {
       return res;
     } catch (error) {
       console.error('Error fetching links:', error);
+      return 'Error adding link. Please try again later.'
     }
   }
 

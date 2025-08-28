@@ -46,14 +46,14 @@ export const AddLinksInCreatePostForm = ({
                     </Row>
 
                     <Row xs={1} md={2} className='mb-0 mb-md-3'>
-                        <Form.Group as={Col} className='mb-3' controlId={`formProductLink-${index}`}>
+                        <Form.Group as={Col} className='mb-3' controlId={`formItemLink-${index}`}>
                             <Form.Label>
                                 <Icon className='bi bi-link-45deg fs-5' marginEndSize='2' />
-                                Product Link
+                                Item Link
                             </Form.Label>
                             <Form.Control
                                 name='href'
-                                placeholder='https://shop.example.com/product'
+                                placeholder='https://shop.example.com/item'
                                 value={link.href}
                                 onChange={(e) => {
                                     handleLinkChange(index, e);
