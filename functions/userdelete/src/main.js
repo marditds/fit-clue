@@ -1,4 +1,4 @@
-import { Client, Users, Databases, Query } from 'node-appwrite';
+import { Client, Users, Query, TablesDB } from 'node-appwrite';
 
 export default async ({ req, res, log, error }) => {
   const client = new Client()
@@ -7,7 +7,8 @@ export default async ({ req, res, log, error }) => {
     .setKey(req.headers['x-appwrite-key']);
 
   const users = new Users(client);
-  const databases = new Databases(client);
+
+  const tablesDB = new TablesDB(client);
 
   try {
     if (!req.body) throw new Error('Missing request body');
@@ -32,21 +33,23 @@ export default async ({ req, res, log, error }) => {
 
     if (profileId) {
       await Promise.all([
-        databases.deleteDocuments(
-          process.env.VITE_DATABASE_ID,
-          process.env.VITE_SAVES_COLLECTION,
-          [Query.equal('user_id', profileId)]
-        ),
+        tablesDB.deleteRows({
+          databaseId: process.env.VITE_DATABASE_ID,
+          tableId: process.env.VITE_SAVES_COLLECTION,
+          queries: [Query.equal('user_id', profileId)]
+        }),
 
-        databases.deleteDocument(
-          process.env.VITE_DATABASE_ID,
-          process.env.VITE_USERNAMES_COLLECTION,
-          profileId
-        )
+        tablesDB.deleteRow({
+          databaseId: process.env.VITE_DATABASE_ID,
+          tableId: process.env.VITE_USERNAMES_COLLECTION,
+          rowId: profileId
+        })
       ]);
     }
 
-    await users.delete(userId);
+    await users.delete({
+      userId: userId
+    });
 
     return res.json({ success: true, deletedProfileId: profileId });
   } catch (err) {
