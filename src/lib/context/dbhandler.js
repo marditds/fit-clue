@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query, Functions, Account, TablesDB } from 'appwrite';
+import { Client, ID, Query, Functions, Account, TablesDB } from 'appwrite';
 import { dbFunctionKeysProvider } from './keysProvider';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
@@ -10,16 +10,13 @@ const client = new Client()
 
 const account = new Account(client);
 
-const databases = new Databases(client);
-
-const tabelsDB = new TablesDB(client);
+const tablesDB = new TablesDB(client);
 
 const functions = new Functions(client);
 
 const dbEnv = import.meta.env.VITE_DATABASE_ID;
 const usernamesCollEnv = import.meta.env.VITE_USERNAMES_COLLECTION;
 const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
-const personalitiesCollEnv = import.meta.env.VITE_PERSONALITIES_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
 const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
 const savesCollEnv = import.meta.env.VITE_SAVES_COLLECTION;
@@ -29,7 +26,7 @@ const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
 
 export const testTbalesDBCreateRow = async () => {
     try {
-        const res = await tabelsDB.createRow({
+        const res = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: reportsPostsCollEnv,
             rowId: ID.unique(),
@@ -97,7 +94,7 @@ export const createUser = async (email, password, name) => {
 
 export const createUserInCollection = async (username, email) => {
     try {
-        const user = await tabelsDB.createRow({
+        const user = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             rowId: ID.unique(),
@@ -135,7 +132,6 @@ export const updateUsername = async (username) => {
 }
 
 export const updateUsernameInCollection = async (userId, username) => {
-
     try {
 
         const existingUser = await getUserFromCollectionByUsername(username);
@@ -144,7 +140,7 @@ export const updateUsernameInCollection = async (userId, username) => {
             return 'Username is taken. Your username must be unique.'
         }
 
-        const res = await tabelsDB.updateRow({
+        const res = await tablesDB.updateRow({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             rowId: userId,
@@ -176,11 +172,8 @@ export const getUserPreferences = async () => {
 }
 
 export const getUserFromCollectionById = async (userId) => {
-
-    console.log('userId in getUserFromCollectionById:', userId);
-
     try {
-        const user = await tabelsDB.getRow({
+        const user = await tablesDB.getRow({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             rowId: userId
@@ -197,9 +190,8 @@ export const getUserFromCollectionById = async (userId) => {
 }
 
 export const getUserFromCollectionByUsername = async (username) => {
-
     try {
-        const userExists = await tabelsDB.listRows({
+        const userExists = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             queries: [
@@ -219,7 +211,7 @@ export const getUserFromCollectionByUsername = async (username) => {
 
 export const fetchUsersByIds = async (userIds) => {
     try {
-        const users = await tabelsDB.listRows({
+        const users = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             queries: [Query.equal('$id', userIds)]
@@ -372,7 +364,7 @@ export const deleteUserSession = async () => {
 
 export const deleteUserFromCollection = async (userId) => {
     try {
-        await tabelsDB.deleteRow({
+        await tablesDB.deleteRow({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             rowId: userId,
@@ -384,9 +376,6 @@ export const deleteUserFromCollection = async (userId) => {
 };
 
 export const makePost = async (personalityName, productLinksData, instaUrl, userId) => {
-
-    console.log({ personalityName, productLinksData, instaUrl });
-
     try {
         var product_links = [];
         if (productLinksData.length > 0) {
@@ -397,7 +386,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             );
         }
 
-        const post = await tabelsDB.createRow({
+        const post = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: ID.unique(),
@@ -422,7 +411,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
 export const updatePost = async (docId, newLinkId) => {
     try {
 
-        const doc = await tabelsDB.getRow({
+        const doc = await tablesDB.getRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: docId
@@ -432,7 +421,7 @@ export const updatePost = async (docId, newLinkId) => {
 
         const updatedLinks = [...existingLinks, newLinkId];
 
-        const res = await tabelsDB.updateRow({
+        const res = await tablesDB.updateRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: docId,
@@ -451,7 +440,7 @@ export const updatePost = async (docId, newLinkId) => {
 
 export const fetchTheLatestPosts = async () => {
     try {
-        const postsRes = await tabelsDB.listRows({
+        const postsRes = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             queries: [
@@ -476,9 +465,8 @@ export const fetchTheLatestPosts = async () => {
 };
 
 export const fetchPostById = async (postId) => {
-
     try {
-        const postRes = await tabelsDB.getRow({
+        const postRes = await tablesDB.getRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: postId
@@ -525,9 +513,8 @@ export const fetchPostById = async (postId) => {
 };
 
 export const fetchInstaPostById = async (postId) => {
-
     try {
-        const postRes = await tabelsDB.getRow({
+        const postRes = await tablesDB.getRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: postId
@@ -549,27 +536,17 @@ export const fetchInstaPostById = async (postId) => {
 export const fetchPostsByPersonalityId = async (personalityId) => {
     try {
 
-        const postsByPersonalityId = await databases.listDocuments(
-            dbEnv,
-            postsCollEnv,
-            [
+        const postsByPersonalityId = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: [
                 Query.equal('personality_id', personalityId),
                 Query.orderDesc('$createdAt'),
                 Query.limit(3)
             ]
-        )
+        })
 
         const content = postsByPersonalityId.documents;
-
-        // const personality = await fetchPersonalityById(personalityId);
-
-        // Results for one personality
-        // const results = content.map(content => ({
-        //     content,
-        //     personality
-        // }));
-
-        console.log(content);
 
         return content;
 
@@ -581,15 +558,15 @@ export const fetchPostsByPersonalityId = async (personalityId) => {
 export const fetchPostsByPersonalityName = async (personalityName) => {
     try {
 
-        const postsByPersonalityName = await databases.listDocuments(
-            dbEnv,
-            postsCollEnv,
-            [
+        const postsByPersonalityName = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: [
                 Query.equal('personality_name', personalityName),
                 Query.orderDesc('$createdAt'),
                 Query.limit(3)
             ]
-        )
+        })
 
         return postsByPersonalityName;
 
@@ -610,11 +587,11 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
             queries.push(Query.cursorAfter(lastCursor));
         };
 
-        const postsByStr = await databases.listDocuments(
-            dbEnv,
-            postsCollEnv,
-            queries
-        );
+        const postsByStr = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: queries
+        });
 
         return postsByStr;
 
@@ -623,80 +600,9 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
     }
 }
 
-export const fetchPersonalitiesByIds = async (personalityId) => {
-    try {
-        const res = await databases.listDocuments(
-            dbEnv,
-            personalitiesCollEnv,
-            [Query.equal('$id', personalityId)]
-        )
-        if (res.total > 0) {
-            return res;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error fetching links:', error);
-
-    }
-}
-
-export const fetchPersonalityById = async (personalityId) => {
-    try {
-        const res = await databases.getDocument(
-            dbEnv,
-            personalitiesCollEnv,
-            personalityId
-        )
-        if (res) {
-            return res;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error fetching links:', error);
-
-    }
-}
-
-export const fetchPersonalityByName = async (name) => {
-    try {
-        const res = await databases.getDocument(
-            dbEnv,
-            personalitiesCollEnv,
-            name
-        )
-        if (res) {
-            return res;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error fetching links:', error);
-
-    }
-}
-
-export const fetchPersonalities = async () => {
-    try {
-        const res = await databases.listDocuments(
-            dbEnv,
-            personalitiesCollEnv
-        )
-        if (res.total > 0) {
-            return res;
-        }
-
-        return null;
-    } catch (error) {
-        console.error('Error fetching links:', error);
-
-    }
-}
-
 export const createPostReport = async (postId, reason) => {
     try {
-        const reportDoc = await tabelsDB.createRow({
+        const reportDoc = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: reportsPostsCollEnv,
             rowId: ID.unique(),
@@ -719,25 +625,23 @@ export const createPostReport = async (postId, reason) => {
 // Links
 export const createLink = async (href, brandName, item, userId, similarityLevel) => {
 
-    console.log({ href, brandName, item, userId, similarityLevel });
-
     if (!href) {
         return;
     }
 
     try {
-        const res = await databases.createDocument(
-            dbEnv,
-            linksCollEnv,
-            ID.unique(),
-            {
+        const res = await tablesDB.createRow({
+            databaseId: dbEnv,
+            tableId: linksCollEnv,
+            rowId: ID.unique(),
+            data: {
                 href,
                 brand_name: brandName,
                 item,
                 user_id: userId,
                 similarity_level: similarityLevel
             }
-        )
+        })
 
         if (res) {
             return res;
@@ -746,21 +650,20 @@ export const createLink = async (href, brandName, item, userId, similarityLevel)
         return null;
     } catch (error) {
         console.error('Error creating link:', error);
-
     }
 }
 
 export const createReportLink = async (linkId, reason) => {
     try {
-        const reportDoc = await databases.createDocument(
-            dbEnv,
-            reportsLinksCollEnv,
-            ID.unique(),
-            {
+        const reportDoc = await tablesDB.createRow({
+            databaseId: dbEnv,
+            tableId: reportsLinksCollEnv,
+            rowId: ID.unique(),
+            data: {
                 link_id: linkId,
                 reason
             }
-        )
+        })
 
         if (reportDoc) {
             console.log('Link report created successfully.');
@@ -772,34 +675,14 @@ export const createReportLink = async (linkId, reason) => {
     }
 }
 
-export const fetchLinks = async () => {
-    try {
-        const res = await databases.listDocuments(
-            dbEnv,
-            linksCollEnv
-        )
-        if (res.total > 0) {
-            return res;
-        }
-
-        return [];
-    } catch (error) {
-        console.error('Error fetching links:', error);
-
-    }
-}
-
 export const fetchProductLinksByIds = async (productLinkId) => {
-
-    console.log('linkId in fetchProductLinksByIds:', productLinkId);
-
 
     if (productLinkId.length === 0) {
         return [];
     }
 
     try {
-        const res = await tabelsDB.listRows({
+        const res = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: linksCollEnv,
             queries: [Query.equal('$id', productLinkId)]
@@ -816,19 +699,16 @@ export const fetchProductLinksByIds = async (productLinkId) => {
 
 // Saves 
 export const createSave = async (postId, userId) => {
-
-    console.log({ postId, userId });
-
     try {
-        const saveRes = await databases.createDocument(
-            dbEnv,
-            savesCollEnv,
-            ID.unique(),
-            {
+        const saveRes = await tablesDB.createRow({
+            databaseId: dbEnv,
+            tableId: savesCollEnv,
+            rowId: ID.unique(),
+            data: {
                 post_id: postId,
                 user_id: userId
             }
-        )
+        })
 
         if (saveRes) {
             return saveRes;
@@ -842,14 +722,14 @@ export const createSave = async (postId, userId) => {
 
 export const fetchSavesByPostId = async (postId) => {
     try {
-        const savesByPostId = await databases.listDocuments(
-            dbEnv,
-            savesCollEnv,
-            [
+        const savesByPostId = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: savesCollEnv,
+            queries: [
                 Query.equal('post_id', postId),
                 Query.limit(1)
             ],
-        );
+        });
 
         if (savesByPostId.total > 0) {
             console.log('savesByPostId:', savesByPostId);
@@ -874,11 +754,11 @@ export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor 
             queries.push(Query.cursorAfter(lastCursor));
         };
 
-        const savesByUserId = await databases.listDocuments(
-            dbEnv,
-            savesCollEnv,
-            queries
-        );
+        const savesByUserId = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: savesCollEnv,
+            queries: queries
+        });
 
         if (savesByUserId.total > 0) {
             return savesByUserId;
@@ -892,17 +772,17 @@ export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor 
 
 export const fetchUserSaveForPost = async (postId, userId) => {
     try {
-        const userSaveForPost = await databases.listDocuments(
-            dbEnv,
-            savesCollEnv,
-            [Query.and(
+        const userSaveForPost = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: savesCollEnv,
+            queries: [Query.and(
                 [
                     Query.equal('post_id', postId),
                     Query.equal('user_id', userId)
                 ]
             )
             ],
-        );
+        });
 
         if (userSaveForPost.total > 0) {
             console.log('userSaveForPost:', userSaveForPost);
@@ -916,15 +796,12 @@ export const fetchUserSaveForPost = async (postId, userId) => {
 }
 
 export const deleteSave = async (docId) => {
-
-    console.log('docId for deleteSave in dbhandler:', docId);
-
     try {
-        await databases.deleteDocument(
-            dbEnv,
-            savesCollEnv,
-            docId
-        )
+        await tablesDB.deleteRow({
+            databaseId: dbEnv,
+            tableId: savesCollEnv,
+            rowId: docId
+        })
     } catch (error) {
         console.error('Error deleting save:', error);
     }
@@ -933,15 +810,15 @@ export const deleteSave = async (docId) => {
 // Comments 
 export const createReportComment = async (commentId, reason) => {
     try {
-        const reportDoc = await databases.createDocument(
-            dbEnv,
-            reportsCommentsCollEnv,
-            ID.unique(),
-            {
+        const reportDoc = await tablesDB.createRow({
+            databaseId: dbEnv,
+            tableId: reportsCommentsCollEnv,
+            rowId: ID.unique(),
+            data: {
                 comment_id: commentId,
                 reason
             }
-        )
+        })
 
         if (reportDoc) {
             console.log('Comment report created successfully.');
@@ -955,16 +832,16 @@ export const createReportComment = async (commentId, reason) => {
 
 export const createComment = async (postId, commentText, userId) => {
     try {
-        const doc = await databases.createDocument(
-            dbEnv,
-            commentsCollEnv,
-            ID.unique(),
-            {
+        const doc = await tablesDB.createRow({
+            databaseId: dbEnv,
+            tableId: commentsCollEnv,
+            rowId: ID.unique(),
+            data: {
                 post_id: postId,
                 comment_text: commentText,
                 user_id: userId
             }
-        )
+        })
 
         if (doc) {
             console.log('Comment created successfully:', doc);
@@ -979,7 +856,6 @@ export const createComment = async (postId, commentText, userId) => {
 
 export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastCursor = null) => {
     try {
-
         const queries = [
             Query.equal('post_id', postId),
             Query.limit(commentsLoadLimit),
@@ -990,11 +866,11 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
             queries.push(Query.cursorAfter(lastCursor));
         }
 
-        const doc = await databases.listDocuments(
-            dbEnv,
-            commentsCollEnv,
-            queries
-        )
+        const doc = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: commentsCollEnv,
+            queries: queries
+        })
 
         if (doc.total > 0) {
             console.log('Comments fetched successfully:', doc);
@@ -1013,7 +889,6 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
 
 // Server-side functions
 export const reCaptchaVerification = async (token) => {
-
     try {
         const recaptcha_function_id = await dbFunctionKeysProvider('recaptcha_function');
 
@@ -1023,10 +898,10 @@ export const reCaptchaVerification = async (token) => {
 
         const payload = JSON.stringify({ token });
 
-        const res = await functions.createExecution(
-            recaptcha_function_id,
-            payload
-        )
+        const res = await functions.createExecution({
+            functionId: recaptcha_function_id,
+            body: payload
+        })
 
         if (res.status === 'completed') {
             try {
@@ -1047,7 +922,6 @@ export const reCaptchaVerification = async (token) => {
 }
 
 export const assessCommentWithGemini = async (commentText) => {
-
     try {
         const gemini_function_id = await dbFunctionKeysProvider('gemini_function');
 
@@ -1057,15 +931,14 @@ export const assessCommentWithGemini = async (commentText) => {
 
         const payload = JSON.stringify({ commentText });
 
-        const res = await functions.createExecution(
-            gemini_function_id,
-            payload
-        )
+        const res = await functions.createExecution({
+            functionId: gemini_function_id,
+            body: payload
+        })
 
         if (res.status === 'completed') {
             try {
                 const result = JSON.parse(res.responseBody);
-                // console.log(result);
                 return result;
             } catch (parseError) {
                 console.error('Error parsing response:', parseError);
@@ -1088,14 +961,13 @@ export const deleteUserFromPlatform = async () => {
 
         const delete_function_id = await dbFunctionKeysProvider('user_delete_function');
 
-        const res = await functions.createExecution(
-            delete_function_id,
-            payload
-        );
+        const res = await functions.createExecution({
+            functionId: delete_function_id,
+            body: payload
+        });
 
         if (res.status === 'completed') {
             const response = JSON.parse(res.responseBody);
-            console.log('Deletion result:', response);
             return response;
         } else {
             console.error('Function execution failed:', res);
