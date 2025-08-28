@@ -39,7 +39,7 @@ export const SavedPosts = () => {
         try {
             const userSavesDocs = await fetchSavesByUserId(userId, lastSave || null);
 
-            if (!userSavesDocs || !userSavesDocs.documents?.length) {
+            if (!userSavesDocs || !userSavesDocs.rows?.length) {
                 console.log('No saves found.');
                 setHasMore(false);
                 return;
@@ -47,7 +47,7 @@ export const SavedPosts = () => {
 
             setUserSavesTotal(userSavesDocs.total);
 
-            const usrSvsDcs = userSavesDocs.documents;
+            const usrSvsDcs = userSavesDocs.rows;
 
             console.log(`usrSvsDcs:`, usrSvsDcs);
 

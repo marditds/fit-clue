@@ -37,7 +37,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
 
             const res = await fetchComments(postId, lastComment?.$id || null);
 
-            const commentsDocs = res.documents;
+            const commentsDocs = res.rows;
             const commentsTotal = res.total;
 
             setCommentsTotal(commentsTotal);

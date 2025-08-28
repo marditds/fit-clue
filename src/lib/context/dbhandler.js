@@ -454,7 +454,7 @@ export const fetchTheLatestPosts = async () => {
             return null
         };
 
-        const content = postsRes.documents;
+        const content = postsRes.rows;
 
         return content;
 
@@ -492,7 +492,7 @@ export const fetchPostById = async (postId) => {
         let productLinksMap = {};
         if (productLinksRes.length !== 0) {
             productLinksMap = Object.fromEntries(
-                productLinksRes?.documents?.map(productLink => [productLink.$id, productLink])
+                productLinksRes?.rows?.map(productLink => [productLink.$id, productLink])
             );
         }
 
@@ -546,7 +546,7 @@ export const fetchPostsByPersonalityId = async (personalityId) => {
             ]
         })
 
-        const content = postsByPersonalityId.documents;
+        const content = postsByPersonalityId.rows;
 
         return content;
 

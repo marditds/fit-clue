@@ -46,7 +46,9 @@ const Results = () => {
             console.log('searchResults', searchResults);
 
             const total = searchResults.total;
-            const newDocuments = searchResults.documents;
+            const newDocuments = searchResults.rows;
+
+            console.log('newDocuments', newDocuments);
 
             setResultsTotal(total);
 
@@ -63,7 +65,7 @@ const Results = () => {
 
             setHasMore(newDocuments.length === searchResultLoadLimit);
 
-            if (searchResults.documents.length < searchResultLoadLimit) {
+            if (searchResults.rows.length < searchResultLoadLimit) {
                 {
                     setHasMore(false);
                 }

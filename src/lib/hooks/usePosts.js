@@ -83,7 +83,7 @@ export const usePosts = () => {
             }
 
             const commentsTotal = commentsRes.total;
-            const commentsTexts = commentsRes.documents;
+            const commentsTexts = commentsRes.rows;
 
             console.log('commentsTexts', commentsTexts);
 
@@ -93,7 +93,7 @@ export const usePosts = () => {
                 fetchUsersByIds(userIds)
             ]);
 
-            const userMap = new Map(allUsersData.documents.map(user => [user.$id, user]));
+            const userMap = new Map(allUsersData.rows.map(user => [user.$id, user]));
 
             const fullComments = commentsTexts.map(comment => ({
                 ...comment,

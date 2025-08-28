@@ -25,9 +25,9 @@ export const More = () => {
             try {
 
                 // const moreResults = await fetchPostsByPersonalityName(params.personalityName);
-                // setPosts(moreResults.documents);
+                // setPosts(moreResults.rows);
                 // setPostsTotal(moreResults.total);
-                // setPersonalityName(moreResults.documents[0]?.personality_name)
+                // setPersonalityName(moreResults.rows[0]?.personality_name)
 
                 const moreResults = morePersonalityData;
                 setPosts(moreResults);

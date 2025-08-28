@@ -62,7 +62,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                 const res = await fetchUserSaveForPost(postId, userId);
 
                 if (res) {
-                    setSavedDocId(res.documents[0].$id);
+                    setSavedDocId(res.rows[0].$id);
                     setIsPostSaved(true);
                 }
             } catch (error) {
