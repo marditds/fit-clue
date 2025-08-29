@@ -19,6 +19,8 @@ const Results = () => {
     const { isXs, isSm, isMd } = useBreakpoints();
 
     const [searchTerm, setSearchTerm] = useState(params.term);
+    const [searchCategory, setSearchCategory] = useState(params.category);
+
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
@@ -86,7 +88,11 @@ const Results = () => {
         const loadingResultsFirstBatch = async () => {
             setIsResultsFirstBatchLoading(true);
             try {
-                await fetchAllPostsByString(true);
+                if (searchCategory === 'personality') {
+                    await fetchAllPostsByString(true);
+                } else {
+                    console.log('Category is item.');
+                }
             } catch (error) {
                 console.error('Error loading search results.');
             } finally {
@@ -113,6 +119,10 @@ const Results = () => {
     const onLoadMoreResultsClick = async () => {
         await fetchAllPostsByString(false);
     }
+
+    useEffect(() => {
+        console.log('searchCategory:', searchCategory);
+    }, [searchCategory])
 
     if (isResultsFirstBatchLoading) {
         return (
@@ -146,6 +156,31 @@ const Results = () => {
                         Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
                     </Form.Text>
                 </Form>
+
+                <h6>Search By:</h6>
+                <Form>
+                    <Form.Check
+                        inline
+                        label='Personality Name'
+                        name='searchCategories'
+                        type='radio'
+                        id={`inline-radio-1`}
+                        value="personality"
+                        checked={searchCategory === 'personality'}
+                        onChange={(e) => setSearchCategory(e.target.value)}
+                    />
+                    <Form.Check
+                        inline
+                        label='Item Name'
+                        name='searchCategories'
+                        type='radio'
+                        id={`inline-radio-2`}
+                        value="item"
+                        checked={searchCategory === 'item'}
+                        onChange={(e) => setSearchCategory(e.target.value)}
+                    />
+                </Form>
+
             </RelatedPosts>
 
             <Row>

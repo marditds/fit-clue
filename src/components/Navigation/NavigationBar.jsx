@@ -8,6 +8,7 @@ import './Navigation.css';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconMenu2 } from '@tabler/icons-react';
+import { PlainModal } from '../Modals/Modals';
 
 const NavigationBar = () => {
 
@@ -24,6 +25,10 @@ const NavigationBar = () => {
     const { isXs, isSm, isMd, isLg } = useBreakpoints();
 
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchCategory, setSearchCategory] = useState('personality');
+
+    const [showSearchModal, setShowSearchModal] = useState(false);
+
     const [showOffcanvas, setShowOffcanvas] = useState(false);
 
     const isScreenWidthLargerThanMedium = !isXs && !isSm && !isMd;
@@ -46,10 +51,18 @@ const NavigationBar = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        if (searchTerm.trim()) {
-            navigate(`/search/${encodeURIComponent(searchTerm)}`);
+        if (searchCategory.trim() && searchTerm.trim()) {
+            navigate(`/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`);
         }
     };
+
+    useEffect(() => {
+        console.log('searchCategory:', searchCategory);
+    }, [searchCategory])
+
+    useEffect(() => {
+        setShowSearchModal(false);
+    }, [location.pathname])
 
     const preLoginNavbarItems = [
         {
@@ -257,6 +270,20 @@ const NavigationBar = () => {
                                 {isScreenWidthLargerThanMedium &&
                                     !location.pathname.startsWith('/search')
                                     ?
+                                    <Button
+                                        onClick={() => setShowSearchModal(true)}
+                                        className='text-start bg-light border'
+                                        style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }}
+                                    >
+                                        <Icon className='bi bi-search' marginEndSize='2' />
+                                        Search FitClue...
+                                    </Button>
+                                    :
+                                    <div style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }} />
+                                }
+                                {/* {isScreenWidthLargerThanMedium &&
+                                    !location.pathname.startsWith('/search')
+                                    ?
                                     <Form
                                         className={`d-none d-lg-flex align-items-center mb-3 mb-lg-0`}
                                         style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }}
@@ -269,7 +296,7 @@ const NavigationBar = () => {
                                     </Form>
                                     :
                                     <div style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }} />
-                                }
+                                } */}
 
                                 {/* Post-login user items */}
                                 {
@@ -314,6 +341,46 @@ const NavigationBar = () => {
 
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
+
+                <PlainModal
+                    showModal={showSearchModal}
+                    modalTitle='Search FitClue'
+                    headerClassName='border-bottom-0'
+                    handleFunction={() => setShowSearchModal(false)}
+                >
+                    <Form
+                        className={`d-none d-lg-flex align-items-center mb-3 mb-lg-0`}
+                        onSubmit={handleSearch}>
+                        <SearchForm
+                            searchFieldPlacement='LargeScreen'
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                        />
+                    </Form>
+                    <h6>Search By:</h6>
+                    <Form>
+                        <Form.Check
+                            inline
+                            label='Personality Name'
+                            name='searchCategories'
+                            type='radio'
+                            id={`inline-radio-1`}
+                            value="personality"
+                            checked={searchCategory === 'personality'}
+                            onChange={(e) => setSearchCategory(e.target.value)}
+                        />
+                        <Form.Check
+                            inline
+                            label='Item Name'
+                            name='searchCategories'
+                            type='radio'
+                            id={`inline-radio-2`}
+                            value="item"
+                            checked={searchCategory === 'item'}
+                            onChange={(e) => setSearchCategory(e.target.value)}
+                        />
+                    </Form>
+                </PlainModal>
             </Container>
         </Navbar>
     )

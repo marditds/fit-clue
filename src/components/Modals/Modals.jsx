@@ -127,7 +127,7 @@ export const ReportModal = ({
     );
 };
 
-export const PlainModal = ({ modalTitle, modalText, showModal, handleFunction, showModalFooter, firstBtnTxt, addSecondBtn, secondBtnTxt, handleSecondFunction, footerClassName }) => {
+export const PlainModal = ({ headerClassName, children, modalTitle, modalText, showModal, handleFunction, showModalFooter, firstBtnTxt, addSecondBtn, secondBtnTxt, handleSecondFunction, footerClassName }) => {
     return (
         <Modal
             show={showModal}
@@ -136,12 +136,13 @@ export const PlainModal = ({ modalTitle, modalText, showModal, handleFunction, s
         >
             {
                 modalTitle &&
-                <Modal.Header closeButton>
+                <Modal.Header className={headerClassName} closeButton>
                     <Modal.Title>{modalTitle}</Modal.Title>
                 </Modal.Header>
             }
 
             <Modal.Body className='report-modal__body'>
+                {children}
                 {modalText}
             </Modal.Body>
 

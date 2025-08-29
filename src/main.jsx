@@ -105,7 +105,7 @@ const router = createBrowserRouter([
         path: 'search',
         children: [
           {
-            path: ':term',
+            path: ':category/:term',
             element: <Results />
           },
         ]
