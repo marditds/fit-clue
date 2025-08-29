@@ -28,9 +28,12 @@ export const SavedPosts = () => {
     //Toast
     const [showToast, setShowToast] = useState(false);
 
-    const getSavesByPostId = async () => {
+    const getSavesByUserId = async () => {
+
+        console.log({ userId: userId, lastSave: lastSave });
 
         if (!userId) {
+            console.log('User is not found. Stop fetching saves.');
             return;
         }
 
@@ -100,7 +103,7 @@ export const SavedPosts = () => {
 
             setIsSavesFirstBatchLoading(true);
             try {
-                await getSavesByPostId();
+                await getSavesByUserId();
             } catch (error) {
                 console.error('Error loading saves.', error);
             } finally {
@@ -110,10 +113,10 @@ export const SavedPosts = () => {
         setUserSaves([]);
         setLastSave(null);
         loadingSavesFirstBatch();
-    }, [])
+    }, [userId])
 
     const onLoadMoreSavesClick = async () => {
-        await getSavesByPostId();
+        await getSavesByUserId();
     }
 
     const onDeleteSaveClick = async (saveDocIdToDelete) => {
@@ -189,7 +192,7 @@ export const SavedPosts = () => {
                         loadMoreText='Load more saves'
                         loadingText='Loading more saves'
                         noMoreText='No more saves'
-                        className='w-100'
+                        className='w-100 mt-2'
                     />
                 </Col>
             </Row>

@@ -78,7 +78,7 @@ const About = () => {
                 <Row className='py-4 py-sm-3 py-lg-5'>
                     <Col className='text-center my-4 my-sm-3 my-lg-5'>
                         <h3 className='mb-0'>
-                            "Discovery is powered by people, not just algorithms."
+                            "Discovery is powered by people, not algorithms."
                         </h3>
                     </Col>
                 </Row>

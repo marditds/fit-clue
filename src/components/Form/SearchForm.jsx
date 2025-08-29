@@ -1,6 +1,7 @@
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, FormText } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { Icon } from '../Accessories/Icon';
+import { Link } from 'react-router-dom';
 
 export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, className, isLoading }) => {
     return (
@@ -17,6 +18,7 @@ export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, cl
                     setSearchTerm(e.target.value)
                 }}
             />
+
             <Button
                 type='submit'
                 disabled={!searchTerm}
@@ -24,6 +26,12 @@ export const SearchForm = ({ searchTerm, setSearchTerm, searchFieldPlacement, cl
             >
                 {!isLoading ? <Icon className='bi bi-search' /> : <LoadingComponent loadingText={' '} />}
             </Button>
+
+            {/* <Link to='/advanced-search' className='ms-2'>
+                <Form.Text >
+                    Advanced Search
+                </Form.Text>
+            </Link> */}
         </>
     )
 }

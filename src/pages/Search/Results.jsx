@@ -165,7 +165,7 @@ const Results = () => {
                                             loadMoreText={`Load more results for for ${searchTerm}`}
                                             loadingText={`Loading more results for ${searchTerm}`}
                                             noMoreText='No more results'
-                                            className='w-100 mb-3'
+                                            className='w-100 mb-3 mt-1'
                                         />
                                     </Col>
                                 </Row>
