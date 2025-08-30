@@ -35,9 +35,9 @@ export const usePosts = () => {
         }
     }
 
-    const updatePost = async (docId, newLinkId) => {
+    const updatePost = async (docId, newLinkId, itemName) => {
         try {
-            const res = await update(docId, newLinkId);
+            const res = await update(docId, newLinkId, itemName);
 
             return res;
 

@@ -378,6 +378,7 @@ export const deleteUserFromCollection = async (userId) => {
 export const makePost = async (personalityName, productLinksData, instaUrl, userId) => {
     try {
         var product_links = [];
+
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
                 productLinksData.map(link =>
@@ -393,6 +394,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             data: {
                 url: instaUrl,
                 product_links: product_links.map(product_link => product_link.$id),
+                product_names: product_links.map(product_link => product_link.item),
                 user_id: userId,
                 personality_name: personalityName
             }
@@ -408,7 +410,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
     }
 }
 
-export const updatePost = async (docId, newLinkId) => {
+export const updatePost = async (docId, newLinkId, newProductName) => {
     try {
 
         const doc = await tablesDB.getRow({
@@ -418,15 +420,19 @@ export const updatePost = async (docId, newLinkId) => {
         });
 
         const existingLinks = doc.product_links || [];
+        const existingProducts = doc.product_names || [];
 
         const updatedLinks = [...existingLinks, newLinkId];
+
+        const updatedProducts = [...existingProducts, newProductName]
 
         const res = await tablesDB.updateRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: docId,
             data: {
-                product_links: updatedLinks
+                product_links: updatedLinks,
+                product_names: updatedProducts
             }
         })
 
