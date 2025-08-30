@@ -21,6 +21,7 @@ const Results = () => {
     const [searchTerm, setSearchTerm] = useState(params.term);
     const [searchCategory, setSearchCategory] = useState(params.category);
 
+    // Personality results
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
@@ -43,7 +44,18 @@ const Results = () => {
 
             console.log('Search term in fetchAllPostsByString:', searchTerm);
 
-            const searchResults = await fetchPostsByString(searchTerm, cursor);
+            let searchResults = null;
+
+            if (searchCategory === 'personality') {
+                searchResults = await fetchPostsByString(searchTerm, cursor);
+            }
+
+            if (searchCategory === 'item') {
+                console.log('Category is item.');
+                setResults([]);
+                setResultsTotal(0);
+                return;
+            }
 
             console.log('searchResults', searchResults);
 
@@ -88,11 +100,7 @@ const Results = () => {
         const loadingResultsFirstBatch = async () => {
             setIsResultsFirstBatchLoading(true);
             try {
-                if (searchCategory === 'personality') {
-                    await fetchAllPostsByString(true);
-                } else {
-                    console.log('Category is item.');
-                }
+                await fetchAllPostsByString(true);
             } catch (error) {
                 console.error('Error loading search results.');
             } finally {

@@ -601,6 +601,48 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
     }
 }
 
+export const fetchPostsByItem = async (itemName, searchResultLoadLimit, lastCursor = null) => {
+    try {
+        const queries = [
+            Query.contains('item', itemName),
+            Query.select(['$id']),
+            Query.limit(searchResultLoadLimit)
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        };
+
+        const linksByRowId = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: linksCollEnv,
+            queries: queries
+        });
+
+        const linksIdsArr = linksByRowId.rows.map((row) => row.$id);
+
+        const postQueries = [
+            Query.equal('product_links', linksIdsArr),
+            Query.orderDesc('$createdAt'),
+            Query.limit(searchResultLoadLimit)
+        ];
+
+        const postsByProductLinkId = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: postQueries
+        });
+
+        return {
+            rows: postsByProductLinkId.rows,
+            total: postsByProductLinkId.total
+        };
+
+    } catch (error) {
+        console.error('Error fetching posts by item name:', error);
+    }
+}
+
 export const createPostReport = async (postId, reason) => {
     try {
         const reportDoc = await tablesDB.createRow({
