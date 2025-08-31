@@ -382,7 +382,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
                 productLinksData.map(link =>
-                    createLink(link.href, link.brandName, link.item, userId, link.similarityLevel)
+                    createLink(link.href, link.brandName, link.item.toLowerCase(), userId, link.similarityLevel)
                 )
             );
         }
@@ -394,7 +394,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             data: {
                 url: instaUrl,
                 product_links: product_links.map(product_link => product_link.$id),
-                product_names: product_links.map(product_link => product_link.item),
+                product_names: product_links.map(product_link => product_link.item.toLowerCase()),
                 user_id: userId,
                 personality_name: personalityName
             }
@@ -583,6 +583,9 @@ export const fetchPostsByPersonalityName = async (personalityName) => {
 }
 
 export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor = null) => {
+
+    console.log({ personality_name: str });
+
     try {
         const queries = [
             Query.contains('personality_name', str),
@@ -607,11 +610,11 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
     }
 }
 
-export const fetchPostsByItem = async (itemName, searchResultLoadLimit, lastCursor = null) => {
+export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, lastCursor = null) => {
     try {
         const queries = [
-            Query.contains('item', itemName),
-            Query.select(['$id']),
+            Query.contains('product_names', itemName),
+            Query.orderDesc('$createdAt'),
             Query.limit(searchResultLoadLimit)
         ];
 
@@ -619,30 +622,13 @@ export const fetchPostsByItem = async (itemName, searchResultLoadLimit, lastCurs
             queries.push(Query.cursorAfter(lastCursor));
         };
 
-        const linksByRowId = await tablesDB.listRows({
+        const postsByItemName = await tablesDB.listRows({
             databaseId: dbEnv,
-            tableId: linksCollEnv,
+            tableId: postsCollEnv,
             queries: queries
         });
 
-        const linksIdsArr = linksByRowId.rows.map((row) => row.$id);
-
-        const postQueries = [
-            Query.equal('product_links', linksIdsArr),
-            Query.orderDesc('$createdAt'),
-            Query.limit(searchResultLoadLimit)
-        ];
-
-        const postsByProductLinkId = await tablesDB.listRows({
-            databaseId: dbEnv,
-            tableId: postsCollEnv,
-            queries: postQueries
-        });
-
-        return {
-            rows: postsByProductLinkId.rows,
-            total: postsByProductLinkId.total
-        };
+        return postsByItemName;
 
     } catch (error) {
         console.error('Error fetching posts by item name:', error);

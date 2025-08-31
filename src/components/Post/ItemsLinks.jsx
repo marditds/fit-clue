@@ -6,6 +6,7 @@ import { reportCategories } from '../../lib/data/reportCategories'
 import { usePosts } from '../../lib/hooks/usePosts'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import { Icon } from '../Accessories/Icon'
+import { capitalizeFirstLetter } from '../../lib/utils/capitalizeFirstLetter'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
@@ -66,14 +67,14 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 className={`d-flex align-items-start align-items-lg-center justify-content-center px-0 ${!isLoggedIn ? 'col' : 'col-9'}`}
                             >
                                 <ItemLinkCol
-                                    displayText={itemLink.item}
-                                    tooltipText={itemLink.item}
+                                    displayText={capitalizeFirstLetter(itemLink.item)}
+                                    tooltipText={capitalizeFirstLetter(itemLink.item)}
                                     maxLength={11}
                                 />
 
                                 <ItemLinkCol
-                                    displayText={itemLink.brand_name}
-                                    tooltipText={itemLink.brand_name}
+                                    displayText={capitalizeFirstLetter(itemLink.brand_name)}
+                                    tooltipText={capitalizeFirstLetter(itemLink.brand_name)}
                                     maxLength={8}
                                 />
 

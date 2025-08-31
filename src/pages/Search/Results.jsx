@@ -14,7 +14,7 @@ const Results = () => {
 
     const params = useParams();
 
-    const { searchResultLoadLimit, fetchPostsByString } = usePosts();
+    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName } = usePosts();
 
     const { isXs, isSm, isMd } = useBreakpoints();
 
@@ -31,7 +31,7 @@ const Results = () => {
     const [lastResult, setLastResult] = useState(null);
     const [hasMore, setHasMore] = useState(true);
 
-    const fetchAllPostsByString = async (isNewSearch = false) => {
+    const fetchAllPostsBySearchTerm = async (isNewSearch = false) => {
 
         if (isResultsLoading || (!hasMore && !isNewSearch)) {
             return;
@@ -42,7 +42,7 @@ const Results = () => {
         try {
             const cursor = isNewSearch ? null : lastResult;
 
-            console.log('Search term in fetchAllPostsByString:', searchTerm);
+            console.log('Search term in fetchAllPostsBySearchTerm:', searchTerm);
 
             let searchResults = null;
 
@@ -51,10 +51,11 @@ const Results = () => {
             }
 
             if (searchCategory === 'item') {
-                console.log('Category is item.');
-                setResults([]);
-                setResultsTotal(0);
-                return;
+                const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
+
+                console.log('normalizedSearchTerm:', normalizedSearchTerm);
+
+                searchResults = await fetchPostsByItemName(normalizedSearchTerm, cursor);
             }
 
             console.log('searchResults', searchResults);
@@ -100,7 +101,7 @@ const Results = () => {
         const loadingResultsFirstBatch = async () => {
             setIsResultsFirstBatchLoading(true);
             try {
-                await fetchAllPostsByString(true);
+                await fetchAllPostsBySearchTerm(true);
             } catch (error) {
                 console.error('Error loading search results.');
             } finally {
@@ -116,7 +117,7 @@ const Results = () => {
         e.preventDefault();
         setIsOnLoadMoreResultsClicked(true);
         try {
-            await fetchAllPostsByString(true);
+            await fetchAllPostsBySearchTerm(true);
         } catch (error) {
             console.error('Error onSearchTermSubmit', error);
         } finally {
@@ -125,7 +126,7 @@ const Results = () => {
     }
 
     const onLoadMoreResultsClick = async () => {
-        await fetchAllPostsByString(false);
+        await fetchAllPostsBySearchTerm(false);
     }
 
     useEffect(() => {

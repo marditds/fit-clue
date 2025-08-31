@@ -61,7 +61,9 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                 return;
             }
 
-            const newLink = await createLink(itemLink, brandName, itemName, userId, similarityLevel);
+            const notmalizedItemName = itemName.toLocaleLowerCase();
+
+            const newLink = await createLink(itemLink, brandName, notmalizedItemName, userId, similarityLevel);
 
             if (typeof newLink === 'string') {
                 setErrMsg(newLink);
@@ -69,7 +71,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                 return;
             }
 
-            const updatedPost = await updatePost(postId, newLink.$id, itemName);
+            const updatedPost = await updatePost(postId, newLink.$id, notmalizedItemName);
 
             if (typeof updatedPost === 'string') {
                 setErrMsg(updatedPost);
