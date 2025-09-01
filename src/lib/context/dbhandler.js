@@ -382,7 +382,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
                 productLinksData.map(link =>
-                    createLink(link.href, link.brandName, link.item.toLowerCase(), userId, link.similarityLevel)
+                    createLink(link.href, link.brandName.toLowerCase(), link.item.toLowerCase(), userId, link.similarityLevel)
                 )
             );
         }
@@ -394,7 +394,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             data: {
                 url: instaUrl,
                 product_links: product_links.map(product_link => product_link.$id),
-                product_names: product_links.map(product_link => product_link.item.toLowerCase()),
+                product_names: product_links.map(product_link => product_link.item),
                 user_id: userId,
                 personality_name: personalityName
             }
