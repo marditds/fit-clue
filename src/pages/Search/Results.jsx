@@ -8,6 +8,7 @@ import { LoadingPage } from '../../components/Loading/Loading';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { SearchForm } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
+import { IconAdjustments, IconAdjustmentsFilled, } from '@tabler/icons-react';
 import { searchResultsData } from '../../lib/data/testData';
 
 const Results = () => {
@@ -17,6 +18,8 @@ const Results = () => {
     const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName } = usePosts();
 
     const { isXs, isSm, isMd } = useBreakpoints();
+
+    const isScreenLargeAndLarger = !isXs && !isSm && !isMd;
 
     const [searchTerm, setSearchTerm] = useState(params.term);
     const [searchCategory, setSearchCategory] = useState(params.category);
@@ -123,6 +126,7 @@ const Results = () => {
             console.error('Error onSearchTermSubmit', error);
         } finally {
             setIsOnLoadMoreResultsClicked(false);
+            setShowCategories(false);
         }
     }
 
@@ -163,76 +167,53 @@ const Results = () => {
                         />
                     </div>
 
-                    <div className='my-2 w-100 d-flex algin-items-center'>
-                        <Form.Text className='mt-0'>
+                    <div className='mt-2 w-100 d-flex algin-items-center'>
+
+                        <Form.Text className='d-flex align-items-center'>
                             Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
                         </Form.Text>
 
                         <Button
                             onClick={() => setShowCategories(preVal => !preVal)}
-                            className='ms-auto bg-transparent p-0 m-0'
+                            className='ms-auto d-flex justify-content-center align-items-center py-0'
                         >
-                            {
-                                showCategories ?
-                                    'Hide Advanced Search Settings' :
-                                    'Show Advanced Search Settings'
+                            {!showCategories ?
+                                <IconAdjustments stroke={1} className={`slider-icon ${isScreenLargeAndLarger ? 'me-2' : 'me-0'}`} /> :
+                                <IconAdjustmentsFilled className={`slider-icon ${isScreenLargeAndLarger ? 'me-2' : 'me-0'}`} />
                             }
-
+                            {isScreenLargeAndLarger && 'Search Options'}
                         </Button>
                     </div>
 
                     {showCategories &&
-                        <>
-                            <h6 className='mb-0'>
+                        <div className='mt-2 d-flex align-items-center justify-content-end'>
+                            <h6 className='mb-0 me-3'>
                                 Search By:
                             </h6>
                             <Form.Check
                                 inline
-                                label='Personality Name'
+                                label='Personality'
                                 name='searchCategories'
                                 type='radio'
                                 id={`inline-radio-1`}
-                                value="personality"
+                                value='personality'
                                 checked={searchCategory === 'personality'}
                                 onChange={(e) => setSearchCategory(e.target.value)}
                             />
                             <Form.Check
                                 inline
-                                label='Item Name'
+                                label='Item'
                                 name='searchCategories'
                                 type='radio'
                                 id={`inline-radio-2`}
-                                value="item"
+                                value='item'
+                                className='me-0'
                                 checked={searchCategory === 'item'}
                                 onChange={(e) => setSearchCategory(e.target.value)}
                             />
-                        </>
+                        </div>
                     }
                 </Form>
-
-                {/* <Form>
-                    <Form.Check
-                        inline
-                        label='Personality Name'
-                        name='searchCategories'
-                        type='radio'
-                        id={`inline-radio-1`}
-                        value="personality"
-                        checked={searchCategory === 'personality'}
-                        onChange={(e) => setSearchCategory(e.target.value)}
-                    />
-                    <Form.Check
-                        inline
-                        label='Item Name'
-                        name='searchCategories'
-                        type='radio'
-                        id={`inline-radio-2`}
-                        value="item"
-                        checked={searchCategory === 'item'}
-                        onChange={(e) => setSearchCategory(e.target.value)}
-                    />
-                </Form> */}
-
             </RelatedPosts>
 
             <Row>
