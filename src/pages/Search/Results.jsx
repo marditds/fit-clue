@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useParams } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
@@ -20,6 +20,7 @@ const Results = () => {
 
     const [searchTerm, setSearchTerm] = useState(params.term);
     const [searchCategory, setSearchCategory] = useState(params.category);
+    const [showCategories, setShowCategories] = useState(false);
 
     // Personality results
     const [results, setResults] = useState([]);
@@ -161,13 +162,55 @@ const Results = () => {
                             setSearchTerm={setSearchTerm}
                         />
                     </div>
-                    <Form.Text>
-                        Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
-                    </Form.Text>
+
+                    <div className='my-2 w-100 d-flex algin-items-center'>
+                        <Form.Text className='mt-0'>
+                            Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
+                        </Form.Text>
+
+                        <Button
+                            onClick={() => setShowCategories(preVal => !preVal)}
+                            className='ms-auto bg-transparent p-0 m-0'
+                        >
+                            {
+                                showCategories ?
+                                    'Hide Advanced Search Settings' :
+                                    'Show Advanced Search Settings'
+                            }
+
+                        </Button>
+                    </div>
+
+                    {showCategories &&
+                        <>
+                            <h6 className='mb-0'>
+                                Search By:
+                            </h6>
+                            <Form.Check
+                                inline
+                                label='Personality Name'
+                                name='searchCategories'
+                                type='radio'
+                                id={`inline-radio-1`}
+                                value="personality"
+                                checked={searchCategory === 'personality'}
+                                onChange={(e) => setSearchCategory(e.target.value)}
+                            />
+                            <Form.Check
+                                inline
+                                label='Item Name'
+                                name='searchCategories'
+                                type='radio'
+                                id={`inline-radio-2`}
+                                value="item"
+                                checked={searchCategory === 'item'}
+                                onChange={(e) => setSearchCategory(e.target.value)}
+                            />
+                        </>
+                    }
                 </Form>
 
-                <h6>Search By:</h6>
-                <Form>
+                {/* <Form>
                     <Form.Check
                         inline
                         label='Personality Name'
@@ -188,7 +231,7 @@ const Results = () => {
                         checked={searchCategory === 'item'}
                         onChange={(e) => setSearchCategory(e.target.value)}
                     />
-                </Form>
+                </Form> */}
 
             </RelatedPosts>
 
