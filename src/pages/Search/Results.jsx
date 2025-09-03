@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
-import { SearchForm } from '../../components/Form/SearchForm';
+import { SearchComponent, SearchField } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
-import { IconAdjustments, IconAdjustmentsFilled, } from '@tabler/icons-react';
+import { IconAdjustments, IconAdjustmentsFilled, IconHanger, } from '@tabler/icons-react';
 import { searchResultsData } from '../../lib/data/testData';
+import { Icon } from '../../components/Accessories/Icon';
 
 const Results = () => {
 
     const params = useParams();
+
+    const navigate = useNavigate();
 
     const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName } = usePosts();
 
@@ -121,6 +124,11 @@ const Results = () => {
         e.preventDefault();
         setIsOnLoadMoreResultsClicked(true);
         try {
+            if (searchCategory.trim() && searchTerm.trim()) {
+                navigate(
+                    `/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`
+                );
+            };
             await fetchAllPostsBySearchTerm(true);
         } catch (error) {
             console.error('Error onSearchTermSubmit', error);
@@ -154,12 +162,21 @@ const Results = () => {
             <RelatedPosts
                 headerText='Search Results'
             >
-                <Form
+                <SearchComponent
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    onSubmit={onSearchTermSubmit}
+                    setSearchCategory={setSearchCategory}
+                    searchCategory={searchCategory}
+                    resultsTotal={resultsTotal}
+                    setResultsTotal={setResultsTotal}
+                />
+                {/* <Form
                     onSubmit={onSearchTermSubmit}
                     className={(!isXs && !isSm && !isMd) ? 'w-50 mx-auto' : 'w-100'}
                 >
                     <div className='d-flex justify-content-center'>
-                        <SearchForm
+                        <SearchField
                             searchFieldPlacement='ResultsPage'
                             searchTerm={searchTerm}
                             isLoading={isResultsLoading}
@@ -192,17 +209,18 @@ const Results = () => {
                             </h6>
                             <Form.Check
                                 inline
-                                label='Personality'
+                                label={<><Icon className='bi bi-person fs-5' marginEndSize='2' />Personality</>}
                                 name='searchCategories'
                                 type='radio'
                                 id={`inline-radio-1`}
                                 value='personality'
+                                className='searchChkBx'
                                 checked={searchCategory === 'personality'}
                                 onChange={(e) => setSearchCategory(e.target.value)}
                             />
                             <Form.Check
                                 inline
-                                label='Item'
+                                label={<><IconHanger stroke={1.25} className='me-2' />Item</>}
                                 name='searchCategories'
                                 type='radio'
                                 id={`inline-radio-2`}
@@ -213,7 +231,7 @@ const Results = () => {
                             />
                         </div>
                     }
-                </Form>
+                </Form> */}
             </RelatedPosts>
 
             <Row>

@@ -3,11 +3,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button, Container, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
-import { SearchForm } from '../Form/SearchForm';
+import { SearchComponent, SearchField } from '../Form/SearchForm';
 import './Navigation.css';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { IconMenu2 } from '@tabler/icons-react';
+import { IconAdjustments, IconAdjustmentsFilled, IconHanger, IconMenu2 } from '@tabler/icons-react';
 import { PlainModal } from '../Modals/Modals';
 
 const NavigationBar = () => {
@@ -26,6 +26,7 @@ const NavigationBar = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCategory, setSearchCategory] = useState('personality');
+    // const [showCategories, setShowCategories] = useState(false);
 
     const [showSearchModal, setShowSearchModal] = useState(false);
 
@@ -55,10 +56,6 @@ const NavigationBar = () => {
             navigate(`/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`);
         }
     };
-
-    useEffect(() => {
-        console.log('searchCategory:', searchCategory);
-    }, [searchCategory])
 
     useEffect(() => {
         setShowSearchModal(false);
@@ -185,12 +182,12 @@ const NavigationBar = () => {
                         className={`d-flex align-items-center`}
                         style={{ width: isXs ? '55%' : '70%' }}
                         onSubmit={handleSearch}>
-                        <SearchForm
+                        {/* <SearchField
                             searchFieldPlacement='SmallScreen'
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
                             className='navabr__search-bar'
-                        />
+                        /> */}
                     </Form>
                 }
 
@@ -281,22 +278,6 @@ const NavigationBar = () => {
                                     :
                                     <div style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }} />
                                 }
-                                {/* {isScreenWidthLargerThanMedium &&
-                                    !location.pathname.startsWith('/search')
-                                    ?
-                                    <Form
-                                        className={`d-none d-lg-flex align-items-center mb-3 mb-lg-0`}
-                                        style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }}
-                                        onSubmit={handleSearch}>
-                                        <SearchForm
-                                            searchFieldPlacement='LargeScreen'
-                                            searchTerm={searchTerm}
-                                            setSearchTerm={setSearchTerm}
-                                        />
-                                    </Form>
-                                    :
-                                    <div style={{ width: isScreenWidthLargerThanMedium ? '45%' : '100%' }} />
-                                } */}
 
                                 {/* Post-login user items */}
                                 {
@@ -342,44 +323,20 @@ const NavigationBar = () => {
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
 
+                {/* Search modal */}
                 <PlainModal
                     showModal={showSearchModal}
                     modalTitle='Search FitClue'
                     headerClassName='border-bottom-0'
                     handleFunction={() => setShowSearchModal(false)}
                 >
-                    <Form
-                        className={`d-none d-lg-flex align-items-center mb-3 mb-lg-0`}
-                        onSubmit={handleSearch}>
-                        <SearchForm
-                            searchFieldPlacement='LargeScreen'
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
-                        />
-                    </Form>
-                    <h6>Search By:</h6>
-                    <Form>
-                        <Form.Check
-                            inline
-                            label='Personality Name'
-                            name='searchCategories'
-                            type='radio'
-                            id={`inline-radio-1`}
-                            value="personality"
-                            checked={searchCategory === 'personality'}
-                            onChange={(e) => setSearchCategory(e.target.value)}
-                        />
-                        <Form.Check
-                            inline
-                            label='Item Name'
-                            name='searchCategories'
-                            type='radio'
-                            id={`inline-radio-2`}
-                            value="item"
-                            checked={searchCategory === 'item'}
-                            onChange={(e) => setSearchCategory(e.target.value)}
-                        />
-                    </Form>
+                    <SearchComponent
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        onSubmit={handleSearch}
+                        setSearchCategory={setSearchCategory}
+                        searchCategory={searchCategory}
+                    />
                 </PlainModal>
             </Container>
         </Navbar>
