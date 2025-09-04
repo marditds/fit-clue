@@ -12,7 +12,7 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
             <Form.Control
                 id={`searchIn${searchFieldPlacement}`}
                 type='search'
-                className={`me-2 ${className || ''} border`}
+                className={`me-3 ${className || ''} border`}
                 placeholder={`Search${placeholder ? ` ` + placeholder : ''}`}
                 aria-label='Search'
                 value={searchTerm}
@@ -43,9 +43,9 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
 
     const [showCategories, setShowCategories] = useState(false);
 
-    useEffect(() => {
-        setShowCategories(false);
-    }, [location.pathname])
+    // useEffect(() => {
+    //     setShowCategories(false);
+    // }, [location.pathname])
 
     useEffect(() => {
         console.log('searchCategory:', searchCategory);
@@ -54,7 +54,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
 
     return (
         <Form
-            onSubmit={onSubmit}
+            onSubmit={(e) => { e.preventDefault(); onSubmit(); setShowCategories(false); }}
         // className={isScreenLargeAndLarger ? 'w-50 mx-auto' : 'w-100'}
         >
             <div className='d-flex justify-content-center'>
@@ -66,18 +66,18 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                 />
             </div>
 
-            <div className='mt-2 w-100 d-flex algin-items-center'>
+            <div className='mt-3 w-100 d-flex algin-items-center'>
 
                 {
                     location.pathname.startsWith('/search') &&
-                    <Form.Text className='d-flex align-items-center'>
+                    <Form.Text className='d-flex align-items-center mt-0'>
                         Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
                     </Form.Text>
                 }
 
                 <Button
                     onClick={() => setShowCategories(preVal => !preVal)}
-                    className='ms-auto d-flex justify-content-center align-items-center py-0'
+                    className='ms-auto d-flex justify-content-center align-items-center '
                 >
                     {!showCategories ?
                         <IconAdjustments stroke={1} className={`slider-icon ${isScreenLargeAndLarger ? 'me-2' : 'me-0'}`} /> :
@@ -88,7 +88,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
             </div>
 
             {showCategories &&
-                <div className='mt-2 d-flex align-items-center justify-content-end'>
+                <div className='styled-radio mt-3 d-flex align-items-center justify-content-end'>
                     <h6 className='mb-0 me-3'>
                         Search By:
                     </h6>
@@ -99,7 +99,6 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                         value='personality'
                         checked={searchCategory === 'personality'}
                         onChange={(e) => setSearchCategory(e.target.value)}
-                        className='search-form__radio'
                     >
                         <Icon className='bi bi-person' marginEndSize='2' />
                         Personality
@@ -112,7 +111,6 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                         value='item'
                         checked={searchCategory === 'item'}
                         onChange={(e) => setSearchCategory(e.target.value)}
-                        className='search-form__radio'
                     >
                         <IconHanger stroke={1.25} size={20} className='me-2' />
                         Item

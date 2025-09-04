@@ -32,6 +32,7 @@
 body {
   font-family: var(--primary-font-family);
   line-height: 1.6;
+  transition: var(--main-transition-speed) !important;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -130,10 +131,35 @@ a[role="button"] {
   transition: var(--main-transition-speed) !important;
 }
 
+.styled-radio>label {
+  background-color: transparent;
+  color: var(--main-accent-color-active);
+  border-color: var(--main-border-color);
+  border-radius: var(--main-border-radius);
+  padding-inline: 8px;
+  padding-block: 4px;
+}
+
+.styled-radio>label:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.styled-radio>label:hover,
 button:hover,
 a[role="button"]:hover {
   background-color: var(--main-accent-color-hover) !important;
   color: var(--main-text-color-hover) !important;
+}
+
+.styled-radio>label:hover,
+.styled-radio>label:focus {
+  border-color: var(--main-accent-color-hover) !important;
+}
+
+.styled-radio>input:checked+label {
+  background-color: var(--main-white-shade) !important;
+  color: var(--main-text-color) !important;
+  border-color: var(--main-accent-color-active) !important;
 }
 
 button:focus,
@@ -204,8 +230,13 @@ div, p, button {
 }
 
 @media (max-width: 991px) {
-  div, p, button, a[role="button"], input, select, a {
+  div, p, button, a[role="button"], input, select, a, label, h6 {
     font-size: 0.875rem !important;
+  }
+
+  svg {
+    max-height: 1.0rem;
+    max-width: 1.0rem;
   }
 
   input {
