@@ -133,7 +133,7 @@ a[role="button"] {
 
 .styled-radio>label {
   background-color: transparent;
-  color: var(--main-accent-color-active);
+  color: var(--main-text-color);
   border-color: var(--main-border-color);
   border-radius: var(--main-border-radius);
   padding-inline: 8px;
@@ -157,7 +157,7 @@ a[role="button"]:hover {
 }
 
 .styled-radio>input:checked+label {
-  background-color: var(--main-white-shade) !important;
+  background-color: var(--main-accent-color) !important;
   color: var(--main-text-color) !important;
   border-color: var(--main-accent-color-active) !important;
 }
@@ -241,5 +241,11 @@ div, p, button {
 
   input {
     max-height: 31px;
+  }
+}
+
+@media (max-width: 575px) {
+  .styled-radio>label:not(:last-child) {
+    margin-right: 0.5rem;
   }
 }

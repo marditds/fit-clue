@@ -1,10 +1,10 @@
-import { Button, Form, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Button, Form, ToggleButton } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { IconAdjustments, IconAdjustmentsFilled, IconHanger, IconUser } from '@tabler/icons-react';
+import { IconAdjustments, IconAdjustmentsFilled, IconHanger } from '@tabler/icons-react';
 
 export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, className, isLoading, placeholder }) => {
     return (
@@ -12,8 +12,8 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
             <Form.Control
                 id={`searchIn${searchFieldPlacement}`}
                 type='search'
-                className={`me-3 ${className || ''} border`}
-                placeholder={`Search${placeholder ? ` ` + placeholder : ''}`}
+                className={`me-2 me-sm-3 ${className || ''} border`}
+                placeholder={`Search${placeholder ? ` ` + placeholder + '...' : ''}`}
                 aria-label='Search'
                 value={searchTerm}
                 onChange={(e) => {
@@ -43,19 +43,13 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
 
     const [showCategories, setShowCategories] = useState(false);
 
-    // useEffect(() => {
-    //     setShowCategories(false);
-    // }, [location.pathname])
-
     useEffect(() => {
-        console.log('searchCategory:', searchCategory);
-
-    }, [searchCategory])
+        setShowCategories(false);
+    }, [location.pathname])
 
     return (
         <Form
-            onSubmit={(e) => { e.preventDefault(); onSubmit(); setShowCategories(false); }}
-        // className={isScreenLargeAndLarger ? 'w-50 mx-auto' : 'w-100'}
+            onSubmit={onSubmit}
         >
             <div className='d-flex justify-content-center'>
                 <SearchField
@@ -63,10 +57,11 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                     searchTerm={searchTerm}
                     isLoading={isResultsLoading}
                     setSearchTerm={setSearchTerm}
+                    placeholder={searchCategory}
                 />
             </div>
 
-            <div className='mt-3 w-100 d-flex algin-items-center'>
+            <div className='mt-2 mt-sm-3 w-100 d-flex algin-items-center'>
 
                 {
                     location.pathname.startsWith('/search') &&
@@ -88,8 +83,8 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
             </div>
 
             {showCategories &&
-                <div className='styled-radio mt-3 d-flex align-items-center justify-content-end'>
-                    <h6 className='mb-0 me-3'>
+                <div className='styled-radio mt-2 mt-sm-3 d-flex align-items-center justify-content-end'>
+                    <h6 className='mb-0 me-2 me-sm-3'>
                         Search By:
                     </h6>
                     <ToggleButton
@@ -100,7 +95,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                         checked={searchCategory === 'personality'}
                         onChange={(e) => setSearchCategory(e.target.value)}
                     >
-                        <Icon className='bi bi-person' marginEndSize='2' />
+                        <Icon className='bi bi-person me-0 me-sm-2' />
                         Personality
                     </ToggleButton>
 
@@ -112,7 +107,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                         checked={searchCategory === 'item'}
                         onChange={(e) => setSearchCategory(e.target.value)}
                     >
-                        <IconHanger stroke={1.25} size={20} className='me-2' />
+                        <IconHanger stroke={1.25} size={20} className='me-0 me-sm-2' />
                         Item
                     </ToggleButton>
 

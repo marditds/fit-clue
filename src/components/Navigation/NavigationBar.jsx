@@ -3,11 +3,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button, Container, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
-import { SearchComponent, SearchField } from '../Form/SearchForm';
+import { SearchComponent } from '../Form/SearchForm';
 import './Navigation.css';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { IconAdjustments, IconAdjustmentsFilled, IconHanger, IconMenu2 } from '@tabler/icons-react';
+import { IconMenu2 } from '@tabler/icons-react';
 import { PlainModal } from '../Modals/Modals';
 
 const NavigationBar = () => {
@@ -178,17 +178,14 @@ const NavigationBar = () => {
 
                 {!isScreenWidthLargerThanMedium &&
                     !location.pathname.startsWith('/search') &&
-                    <Form
-                        className={`d-flex align-items-center`}
-                        style={{ width: isXs ? '55%' : '70%' }}
-                        onSubmit={handleSearch}>
-                        {/* <SearchField
-                            searchFieldPlacement='SmallScreen'
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
-                            className='navabr__search-bar'
-                        /> */}
-                    </Form>
+                    <Button
+                        onClick={() => setShowSearchModal(true)}
+                        className='text-start bg-light border'
+                        style={{ width: isScreenWidthLargerThanMedium ? '0px' : '95%' }}
+                    >
+                        <Icon className='bi bi-search' marginEndSize='2' />
+                        Search FitClue...
+                    </Button>
                 }
 
                 <Navbar.Toggle aria-controls='navbar-nav' className='sdada' onClick={handleShowOffcanvas}>
