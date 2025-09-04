@@ -1,7 +1,7 @@
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { LoadingComponent } from '../Loading/Loading';
-import './SignPasswordForm.css';
+import './Form.css';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export const SignForm = ({

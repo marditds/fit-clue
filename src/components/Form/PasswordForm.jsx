@@ -1,5 +1,5 @@
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import './SignPasswordForm.css';
+import './Form.css';
 
 export const PasswordForm = ({
     isXs,

@@ -63,6 +63,10 @@
     height: 650px;
 }
 
+.search-form__radio {
+    background-color: var(--main-accent-color) !important;
+}
+
 @media (max-width: 767px) {
 
     .form__col-background-overlay {

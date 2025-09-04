@@ -1,4 +1,4 @@
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
@@ -47,6 +47,11 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
         setShowCategories(false);
     }, [location.pathname])
 
+    useEffect(() => {
+        console.log('searchCategory:', searchCategory);
+
+    }, [searchCategory])
+
     return (
         <Form
             onSubmit={onSubmit}
@@ -87,7 +92,33 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                     <h6 className='mb-0 me-3'>
                         Search By:
                     </h6>
-                    <Form.Check
+                    <ToggleButton
+                        name='searchCategories'
+                        type="radio"
+                        id={`inline-radio-1`}
+                        value='personality'
+                        checked={searchCategory === 'personality'}
+                        onChange={(e) => setSearchCategory(e.target.value)}
+                        className='search-form__radio'
+                    >
+                        <Icon className='bi bi-person' marginEndSize='2' />
+                        Personality
+                    </ToggleButton>
+
+                    <ToggleButton
+                        name='searchCategories'
+                        type='radio'
+                        id={`inline-radio-2`}
+                        value='item'
+                        checked={searchCategory === 'item'}
+                        onChange={(e) => setSearchCategory(e.target.value)}
+                        className='search-form__radio'
+                    >
+                        <IconHanger stroke={1.25} size={20} className='me-2' />
+                        Item
+                    </ToggleButton>
+
+                    {/* <Form.Check
                         inline
                         label={<>
                             <Icon className='bi bi-person fs-5 ms-2' marginEndSize='2' />
@@ -114,7 +145,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                         // className='d-flex justify-content-center align-items-center'
                         checked={searchCategory === 'item'}
                         onChange={(e) => setSearchCategory(e.target.value)}
-                    />
+                    /> */}
                 </div>
             }
         </Form>
