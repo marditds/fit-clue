@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button, Container, Form, Nav, Navbar, Offcanvas } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
 import { SearchComponent } from '../Form/SearchForm';
@@ -181,7 +181,7 @@ const NavigationBar = () => {
                     <Button
                         onClick={() => setShowSearchModal(true)}
                         className='text-start bg-light border'
-                        style={{ width: isScreenWidthLargerThanMedium ? '0px' : '95%' }}
+                        style={{ width: isScreenWidthLargerThanMedium ? '0px' : '65%' }}
                     >
                         <Icon className='bi bi-search' marginEndSize='2' />
                         Search FitClue...
@@ -335,6 +335,7 @@ const NavigationBar = () => {
                         searchCategory={searchCategory}
                     />
                 </PlainModal>
+
             </Container>
         </Navbar>
     )

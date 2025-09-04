@@ -156,6 +156,14 @@ a[role="button"]:hover {
   border-color: var(--main-accent-color-hover) !important;
 }
 
+.styled-radio>label:focus,
+.styled-radio>input:focus,
+.styled-radio>input:focus+label {
+  color: var(--main-text-color) !important;
+  box-shadow: 0px 0px 0px 0.1rem rgba(var(--main-text-color-rgb-vals), 1) !important;
+  background-color: var(--main-accent-color) !important;
+}
+
 .styled-radio>input:checked+label {
   background-color: var(--main-accent-color) !important;
   color: var(--main-text-color) !important;

@@ -1,11 +1,10 @@
-export const LoadingComponent = ({ loadingText }) => {
+export const LoadingComponent = ({ loadingText, className }) => {
     return (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className={`d-flex justify-content-center align-items-center ${className}`}>
             {!loadingText ? 'Loading' : loadingText}
             <i className='bi bi-dot loading__i d-flex justify-content-center align-items-center' />
             <i className='bi bi-dot loading__i d-flex justify-content-center align-items-center' />
             <i className='bi bi-dot loading__i d-flex justify-content-center align-items-center' />
-
         </div>
     );
 };

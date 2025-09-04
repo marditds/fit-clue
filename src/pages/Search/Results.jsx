@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
-import { LoadingPage } from '../../components/Loading/Loading';
+import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading';
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
-import { SearchComponent, SearchField } from '../../components/Form/SearchForm';
+import { SearchComponent } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
-import { IconAdjustments, IconAdjustmentsFilled, IconHanger, } from '@tabler/icons-react';
-import { searchResultsData } from '../../lib/data/testData';
-import { Icon } from '../../components/Accessories/Icon';
 
 const Results = () => {
 
@@ -20,31 +16,26 @@ const Results = () => {
 
     const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName } = usePosts();
 
-    const { isXs, isSm, isMd } = useBreakpoints();
-
-    const isScreenLargeAndLarger = !isXs && !isSm && !isMd;
-
     const [searchTerm, setSearchTerm] = useState(params.term);
     const [searchCategory, setSearchCategory] = useState(params.category);
-    const [showCategories, setShowCategories] = useState(false);
 
-    // Personality results
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
-    const [isResultsLoading, setIsResultsLoading] = useState(false);
+
+    const [isMoreResultsLoading, setIsMoreResultsLoading] = useState(false);
     const [isOnLoadMoreResultsClicked, setIsOnLoadMoreResultsClicked] = useState(false);
+
+    const [isNewTermSearched, setIsNewTermSearched] = useState(false);
 
     const [lastResult, setLastResult] = useState(null);
     const [hasMore, setHasMore] = useState(true);
 
     const fetchAllPostsBySearchTerm = async (isNewSearch = false) => {
 
-        if (isResultsLoading || (!hasMore && !isNewSearch)) {
+        if (isMoreResultsLoading || (!hasMore && !isNewSearch)) {
             return;
         }
-
-        setIsResultsLoading(true);
 
         try {
             const cursor = isNewSearch ? null : lastResult;
@@ -96,13 +87,13 @@ const Results = () => {
         } catch (error) {
             console.error('Error loading more results:', error);
         } finally {
-            setIsResultsLoading(false);
+            setIsMoreResultsLoading(false);
         }
     }
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [isOnLoadMoreResultsClicked]);
+    }, [isNewTermSearched]);
 
     useEffect(() => {
         const loadingResultsFirstBatch = async () => {
@@ -122,7 +113,7 @@ const Results = () => {
 
     const onSearchTermSubmit = async (e) => {
         e.preventDefault();
-        setIsOnLoadMoreResultsClicked(true);
+        setIsNewTermSearched(true);
         try {
             if (searchCategory.trim() && searchTerm.trim()) {
                 navigate(
@@ -133,18 +124,20 @@ const Results = () => {
         } catch (error) {
             console.error('Error onSearchTermSubmit', error);
         } finally {
-            setIsOnLoadMoreResultsClicked(false);
-            setShowCategories(false);
+            setIsNewTermSearched(false);
         }
     }
 
     const onLoadMoreResultsClick = async () => {
-        await fetchAllPostsBySearchTerm(false);
+        setIsOnLoadMoreResultsClicked(true);
+        try {
+            await fetchAllPostsBySearchTerm(false);
+        } catch (error) {
+            console.error('Error onSearchTermSubmit', error);
+        } finally {
+            setIsOnLoadMoreResultsClicked(false);
+        }
     }
-
-    useEffect(() => {
-        console.log('searchCategory:', searchCategory);
-    }, [searchCategory])
 
     if (isResultsFirstBatchLoading) {
         return (
@@ -159,6 +152,7 @@ const Results = () => {
             }}
         >
 
+            {/* Search container */}
             <RelatedPosts
                 headerText='Search Results'
             >
@@ -173,28 +167,33 @@ const Results = () => {
                 />
             </RelatedPosts>
 
+            {/* Search results */}
             <Row>
                 {
                     results.length === 0 ? (
                         null
                     ) : (
                         <>
-                            <InstagramEmbedCards posts={results} />
-                            <Col xs={12}>
-                                <Row className='mx-auto'>
-                                    <Col className='px-0 justify-content-center'>
-                                        <LoadMoreButton
-                                            hasMore={hasMore}
-                                            onClick={onLoadMoreResultsClick}
-                                            isLoading={isResultsLoading}
-                                            loadMoreText={`Load more results for for ${searchTerm}`}
-                                            loadingText={`Loading more results for ${searchTerm}`}
-                                            noMoreText='No more results'
-                                            className='w-100 mb-3 mt-1'
-                                        />
+                            {!isNewTermSearched ?
+                                <> <InstagramEmbedCards posts={results} />
+                                    <Col xs={12}>
+                                        <Row className='mx-auto'>
+                                            <Col className='px-0 justify-content-center'>
+                                                <LoadMoreButton
+                                                    hasMore={hasMore}
+                                                    onClick={onLoadMoreResultsClick}
+                                                    isLoading={isOnLoadMoreResultsClicked}
+                                                    loadMoreText={`Load more results for for ${searchTerm}`}
+                                                    loadingText={`Loading more results for ${searchTerm}`}
+                                                    noMoreText='No more results'
+                                                    className='w-100 mb-3 mt-1'
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Col>
-                                </Row>
-                            </Col>
+                                </> :
+                                <LoadingComponent loadingText={`Loading results for ${searchTerm}`} className='mt-5' />
+                            }
                         </>
                     )
                 }
