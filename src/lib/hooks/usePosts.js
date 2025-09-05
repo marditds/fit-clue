@@ -107,13 +107,6 @@ export const usePosts = () => {
                 rows: fullComments,
                 total: commentsTotal,
             };
-            // setComments(prevComments => {
-            //     const nonDuplicateComments = fullComments.filter(newComment =>
-            //         !prevComments?.some(existingComment => existingComment.$id === newComment.$id)
-            //     );
-            //     return [...prevComments, ...nonDuplicateComments];
-            // })
-
         } catch (error) {
             console.error('Error fetching comments by id:', error);
         }

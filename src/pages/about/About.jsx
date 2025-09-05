@@ -18,7 +18,7 @@ const About = () => {
 
             {/* Banner */}
             <Container fluid>
-                <Row className='py-4 py-sm-3 py-lg-5'>
+                <Row className='py-4 py-sm-3 py-lg-4'>
                     <Col className='text-center my-4 my-sm-3 my-lg-5'>
                         <h1 className='mb-4 mb-sm-3 mb-lg-5'>
                             About FitClue
@@ -36,7 +36,7 @@ const About = () => {
             <Container fluid={isScreenLargeAndLarger ? false : true}>
                 <Row xs={1} lg={2}>
                     <Col
-                        className='my-auto'
+                        className='my-auto py-4 py-lg-0'
                         style={{
                             backgroundImage: isScreenLargeAndLarger || isLg ? '' : `url(${aboutColBg})`,
                             backgroundSize: 'cover',
@@ -48,7 +48,7 @@ const About = () => {
                             Fashion is everywhere — in the streets, on social media, and in the everyday outfits that catch our eye. But so often, when we see a piece we love, we are left wondering: What brand is that? Where can I find it?
                         </p>
                         <p>
-                            Our app was built to answer those questions together. Instead of endless searching, users can upload or browse images of clothing and collaborate to identify the brands behind each item. Whether it is a pair of sneakers spotted in a photo, a jacket from a celebrity post, or a dress from a runway look, the community comes together to uncover the details.
+                            Our platform was built to answer those questions together. Instead of endless searching, users can upload or browse images of clothing and collaborate to identify the brands behind each item. Whether it is a pair of sneakers spotted in a photo, a jacket from a celebrity post, or a dress from a runway look, the community comes together to uncover the details.
                         </p>
                         <p>
                             Every piece is enriched with shared information — brand names, item links, and other helpful insights. The more the community contributes, the stronger the collective knowledge grows, making it easier for everyone to discover fashion they love.
