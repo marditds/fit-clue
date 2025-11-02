@@ -121,7 +121,7 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                     location.pathname.startsWith('/post') &&
                     <p className='cta mt-3 text-center w-100'>
                         <Link
-                            to={`/search/${encodeURIComponent(personalityName)}`}
+                            to={`/search/personality/${encodeURIComponent(personalityName)}`}
                             className='fw-bolder'
                         >
                             Get more style inspiration from {personalityName} →
