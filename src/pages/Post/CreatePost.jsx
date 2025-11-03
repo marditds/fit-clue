@@ -63,8 +63,8 @@ const CreatePost = () => {
                 return;
             }
 
-            if (!instaLink.startsWith('https://www.instagram.com/p/')) {
-                setErrMsg('The instagram link must be in the following format: https://www.instagram.com/p/...');
+            if (!instaLink.startsWith('https://www.instagram.com/p/') && !instaLink.startsWith('https://www.instagram.com/reel/')) {
+                setErrMsg('The instagram link must be in the following format: https://www.instagram.com/p/ or https://www.instagram.com/reel/...');
                 setIsInstaLinkFormatIncorrect(true);
                 setSccssMsg('');
                 return;
@@ -139,7 +139,7 @@ const CreatePost = () => {
                                     </Form.Label>
                                     <Form.Control
                                         type='text'
-                                        placeholder='https://www.instagram.com/p/...'
+                                        placeholder='https://www.instagram.com/...'
                                         value={instaLink}
                                         className={`border ${!isInstaLinkFormatIncorrect ? '' : 'border-danger'}`}
                                         onChange={onInstagramLinkChange}

@@ -38,15 +38,23 @@ const Footer = () => {
     const footerSocials = [
         {
             icon: 'bi bi-instagram',
-            link: 'https://www.instagram.com/'
+            link: 'https://www.instagram.com/fitclueapp/'
         },
         {
             icon: 'bi bi-twitter-x',
-            link: 'https://www.x.com/'
+            link: 'https://x.com/fitclueapp'
+        },
+        // {
+        //     icon: 'bi bi-facebook',
+        //     link: 'https://www.facebook.com/'
+        // },
+        {
+            icon: 'bi bi-threads',
+            link: 'https://www.threads.com/@fitclueapp'
         },
         {
-            icon: 'bi bi-facebook',
-            link: 'https://www.facebook.com/'
+            icon: 'bi bi-youtube',
+            link: 'http://www.youtube.com/@FitClueApp'
         },
     ]
 

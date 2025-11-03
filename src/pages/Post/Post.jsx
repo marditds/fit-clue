@@ -39,7 +39,7 @@ const Post = () => {
             setIsPostLoading(true);
 
             try {
-                 const post = await fetchPostById(params.postId);
+                const post = await fetchPostById(params.postId);
                 // const post = onePostData;
 
                 console.log('post in Post.jsx:', post);
@@ -54,12 +54,32 @@ const Post = () => {
                         const url = new URL(rawUrl);
                         const parts = url.pathname.split('/').filter(Boolean);
 
-                        const postIndex = parts.indexOf('p');
-                        if (postIndex !== -1 && parts[postIndex + 1]) {
-                            const postId = parts[postIndex + 1];
-                            const cleanUrl = `https://www.instagram.com/p/${postId}/`;
-                            setIUrl(cleanUrl);
+                        console.log('parts', parts);
+
+                        if (parts[0] === 'p') {
+                            const postIndex = parts.indexOf('p');
+
+                            console.log('postIndex', postIndex);
+
+                            if (postIndex !== -1 && parts[postIndex + 1]) {
+                                const postId = parts[postIndex + 1];
+                                const cleanUrl = `https://www.instagram.com/p/${postId}/`;
+                                setIUrl(cleanUrl);
+                            }
                         }
+
+                        if (parts[0] === 'reel') {
+                            const postIndex = parts.indexOf('reel');
+
+                            console.log('postIndex', postIndex);
+
+                            if (postIndex !== -1 && parts[postIndex + 1]) {
+                                const postId = parts[postIndex + 1];
+                                const cleanUrl = `https://www.instagram.com/reel/${postId}/`;
+                                setIUrl(cleanUrl);
+                            }
+                        }
+
                     } catch (error) {
                         console.error('Invalid URL', error);
                     }
