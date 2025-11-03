@@ -5,6 +5,7 @@ import { useOutletContext, useNavigate } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading.jsx';
 import { Icon } from '../../components/Accessories/Icon.jsx';
+import { capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters.js';
 
 const CreatePost = () => {
 
@@ -70,7 +71,9 @@ const CreatePost = () => {
                 return;
             }
 
-            const createdPost = await makePost(name, links, instaLink, userId);
+            const formattedPersonalityName = capitalizeFirstLetterOfEachWord(name);
+
+            const createdPost = await makePost(formattedPersonalityName, links, instaLink, userId);
 
             if (createdPost) {
                 console.log('Post created successfully!');

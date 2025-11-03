@@ -6,7 +6,7 @@ import { reportCategories } from '../../lib/data/reportCategories'
 import { usePosts } from '../../lib/hooks/usePosts'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import { Icon } from '../Accessories/Icon'
-import { capitalizeAllLetters, capitalizeFirstLetter } from '../../lib/utils/capitalizeFirstLetter'
+import { capitalizeAllLetters, capitalizeFirstLetter } from '../../lib/utils/capitalizeLetters'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
@@ -66,18 +66,21 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 target='_blank'
                                 className={`d-flex align-items-start align-items-lg-center justify-content-center px-0 ${!isLoggedIn ? 'col' : 'col-9'}`}
                             >
+                                {/* Item */}
                                 <ItemLinkCol
                                     displayText={capitalizeFirstLetter(itemLink.item)}
                                     tooltipText={capitalizeFirstLetter(itemLink.item)}
                                     maxLength={11}
                                 />
 
+                                {/* Link */}
                                 <ItemLinkCol
                                     displayText={capitalizeAllLetters(itemLink.brand_name)}
                                     tooltipText={capitalizeAllLetters(itemLink.brand_name)}
                                     maxLength={8}
                                 />
 
+                                {/* Similarity level */}
                                 <ItemLinkCol
                                     displayText={itemLink.similarity_level}
                                     tooltipText={itemLink.similarity_level}
