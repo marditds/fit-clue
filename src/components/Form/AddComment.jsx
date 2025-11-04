@@ -125,7 +125,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
             <Button
                 type='submit'
-                disabled={!isLoggedIn || !commentText}
+                disabled={!isLoggedIn || !commentText || isAddningComment}
                 className='mb-3'
             >
                 {

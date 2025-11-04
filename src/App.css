@@ -238,7 +238,7 @@ div, p, button {
 }
 
 @media (max-width: 991px) {
-  div, p, button, a[role="button"], input, select, a, label, h6 {
+  div, p, button, a[role="button"], input, textarea, select, a, label, h6 {
     font-size: 0.875rem !important;
   }
 

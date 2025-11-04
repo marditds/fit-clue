@@ -15,6 +15,7 @@ import { SharePost } from '../../components/Post/SharePost';
 import { Interaction } from '../../components/Post/Interaction';
 import { onePostData } from '../../lib/data/testData';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { UserNote } from '../../components/Post/UserNote';
 
 const Post = () => {
 
@@ -30,6 +31,7 @@ const Post = () => {
     const [personalityName, setPersonalityName] = useState(null);
     const [personalityId, setPersonalityId] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
+    const [userNote, setUserNote] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
 
     // Get the post
@@ -95,6 +97,8 @@ const Post = () => {
         getPosts();
     }, []);
 
+
+    // Instagram embed.js
     useEffect(() => {
         if (!iUrl) return;
 
@@ -140,6 +144,9 @@ const Post = () => {
 
                 <Col className='post__col d-flex justify-content-center w-100'>
                     <div className={`post__div-links w-100 h-100 ${!isLoggedIn ? ' d-flex flex-column justify-content-between' : ''}`}>
+
+                        {/* User's note */}
+                        <UserNote userNote={userNote} />
 
                         {/* Items lists */}
                         <ItemsLinks

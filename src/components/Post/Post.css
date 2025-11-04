@@ -56,9 +56,9 @@
     max-width: 721px;
 }
 
-.post__div-no-links-row {
+/* .post__div-no-links-row {
     padding-inline: 12px;
-}
+} */
 
 .post__div-link-item:hover {
     background-color: var(--main-accent-color);

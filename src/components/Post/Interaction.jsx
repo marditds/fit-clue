@@ -47,7 +47,9 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                 setIsGettingSaveStatus(false);
             }
         };
-        getSavesByPostId();
+        if (isLoggedIn) {
+            getSavesByPostId();
+        }
     }, [])
 
     // Fech save status for one post
@@ -60,6 +62,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 
             try {
                 const res = await fetchUserSaveForPost(postId, userId);
+                console.log('status for save is fetched.');
 
                 if (res) {
                     setSavedDocId(res.rows[0].$id);
@@ -125,10 +128,11 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
         //     func: () => { setIsShareClicked(preVal => !preVal) },
         // },
         {
-            name: !isPostSaved ? 'Save ' + '(' + savesCount + ')' : (!isUpdatingSaveStatus && isPostSaved ? 'Saved ' + '(' + savesCount + ')' : ''),
+            name: !isPostSaved ? 'Save' + ` ${isLoggedIn ? '(' + savesCount + ')' : ''}` : (!isUpdatingSaveStatus && isPostSaved ? 'Saved ' + '(' + savesCount + ')' : ''),
             icon: !isPostSaved ? 'bi bi-floppy' : 'bi bi-floppy-fill',
             loadingComponent: (isUpdatingSaveStatus || isGettingSaveStatus) ? <LoadingComponent loadingText=' ' /> : null,
             isClicked: isPostSaved,
+            isDisabled: isUpdatingSaveStatus,
             func: async () => {
                 if (isLoggedIn) {
                     if (isPostSaved) {
@@ -144,6 +148,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
             icon: 'bi bi-flag',
             loadingComponent: null,
             isClicked: isReportClicked,
+            isDisabled: null,
             func: () => {
                 if (isLoggedIn) {
                     handleReportClick();
@@ -167,6 +172,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                                         <Button
                                             onClick={button.func}
                                             className={`d-flex justify-content-center interaction__btn ${isLoggedIn && button.isClicked ? 'button-active' : ''}`}
+                                            disabled={button.isDisabled}
                                         >
                                             <Icon className={`${button.icon}`}
                                                 marginEndSize={'2'}

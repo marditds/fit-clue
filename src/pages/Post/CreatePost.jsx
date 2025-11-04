@@ -17,6 +17,7 @@ const CreatePost = () => {
 
     const [name, setName] = useState('');
     const [instaLink, setInstaLink] = useState('');
+    const [userNote, setUserNote] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [sccssMsg, setSccssMsg] = useState('');
     const [links, setLinks] = useState([]);
@@ -146,6 +147,27 @@ const CreatePost = () => {
                                         value={instaLink}
                                         className={`border ${!isInstaLinkFormatIncorrect ? '' : 'border-danger'}`}
                                         onChange={onInstagramLinkChange}
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
+                        {/* User's note */}
+                        <Row>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formNote'>
+                                    <Form.Label>
+                                        <Icon className='bi bi-file-earmark-text fs-5' marginEndSize='1' />
+                                        Note <small>(optional)</small>
+                                    </Form.Label>
+                                    <Form.Control
+                                        type='text'
+                                        as='textarea'
+                                        rows={3}
+                                        placeholder='I would like to know the brand of the shoes in the third slide.'
+                                        value={userNote}
+                                        onChange={e => setUserNote(e.target.value)}
+                                        required
                                     />
                                 </Form.Group>
                             </Col>

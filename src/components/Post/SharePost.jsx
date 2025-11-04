@@ -9,7 +9,6 @@ export const SharePost = () => {
     const location = useLocation();
 
     const currentUrl = window.location.origin + location.pathname;
-    const [copyBtnTxt, setCopyBtnTxt] = useState('copy');
     const [isUrlCopied, setIsUrlCopied] = useState(false);
 
     const handleCopy = () => {
@@ -54,7 +53,7 @@ export const SharePost = () => {
                                         type='button'
                                         onClick={handleCopy}
                                     >
-                                        {copyBtnTxt}
+                                        copy
                                     </Button>
                                 </TextTooltipOnClick>
                             </InputGroup>
