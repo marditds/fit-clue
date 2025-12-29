@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useOutletContext } from 'react-router-dom';
+import { useParams, useOutletContext, useLocation } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Card/Card';
 import '../../components/Post/Post.css';
@@ -23,15 +23,18 @@ const Post = () => {
 
     const params = useParams()
 
-    const { fetchPostById } = usePosts();
+    const location = useLocation();
+
+    const { fetchPostById, updateUserNote: updateNote } = usePosts();
 
     const { isXs } = useBreakpoints();
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
-    const [personalityId, setPersonalityId] = useState(null);
     const [itemsLinks, setItemsLinks] = useState(null);
     const [userNote, setUserNote] = useState(null);
+    const [newUserNote, setNewUserNote] = useState(null);
+    const [postUserId, setPostUserId] = useState(null);
     const [isPostLoading, setIsPostLoading] = useState(false);
 
     // Get the post
@@ -47,8 +50,9 @@ const Post = () => {
                 console.log('post in Post.jsx:', post);
 
                 setPersonalityName(post?.content.personality_name);
-                setPersonalityId(post?.content.personality_id);
                 setItemsLinks(post?.links);
+                setPostUserId(post?.content.user_id)
+                setUserNote(post?.content.user_note);
                 const rawUrl = post?.content.url;
 
                 if (rawUrl) {
@@ -97,7 +101,6 @@ const Post = () => {
         getPosts();
     }, []);
 
-
     // Instagram embed.js
     useEffect(() => {
         if (!iUrl) return;
@@ -112,6 +115,16 @@ const Post = () => {
         };
         document.body.appendChild(script);
     }, [iUrl]);
+
+    const updateUserNote = () => {
+
+        console.log('post id:', params.postId);
+        console.log('userNote:', userNote);
+        console.log('the new note:', newUserNote);
+
+
+        updateNote(params.postId, userNote, newUserNote);
+    }
 
     if (isPostLoading) {
         return (
@@ -138,7 +151,6 @@ const Post = () => {
                 {/* image */}
                 <Card
                     personalityName={personalityName}
-                    personalityId={personalityId}
                     iUrl={iUrl}
                 />
 
@@ -146,7 +158,13 @@ const Post = () => {
                     <div className={`post__div-links w-100 h-100 ${!isLoggedIn ? ' d-flex flex-column justify-content-between' : ''}`}>
 
                         {/* User's note */}
-                        <UserNote userNote={userNote} />
+                        <UserNote
+                            userNote={newUserNote}
+                            userId={postUserId === userId}
+                            locationPathname={location.pathname}
+                            setUserNote={setNewUserNote}
+                            updateUserNote={updateUserNote}
+                        />
 
                         {/* Items lists */}
                         <ItemsLinks

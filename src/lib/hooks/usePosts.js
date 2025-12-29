@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByPersonalityName as getPostsByPersonalityName, fetchPostsByString as getPostsByString, updatePost as update, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName } from '../context/dbhandler';
+import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByPersonalityName as getPostsByPersonalityName, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 export const usePosts = () => {
@@ -16,9 +16,9 @@ export const usePosts = () => {
         console.log('user id in usePosts.jsx:', userId);
     }, [userId])
 
-    const makePost = async (name, productLinksData, instaUrl, userId) => {
+    const makePost = async (name, productLinksData, instaUrl, userId, user_note) => {
         try {
-            const res = await composePost(name, productLinksData, instaUrl, userId);
+            const res = await composePost(name, productLinksData, instaUrl, userId, user_note);
             return res;
         } catch (error) {
             console.error('Error making post:', error);
@@ -44,6 +44,15 @@ export const usePosts = () => {
         } catch (error) {
             console.error('Error updating post:', error);
             return 'Error adding link. Please try again later.'
+        }
+    }
+
+    const updateUserNote = async (docId, oldNote, newNote) => {
+        try {
+            const res = await updateNote(docId, oldNote, newNote);
+            return res;
+        } catch (error) {
+            console.error('Erro updating user note:', error);
         }
     }
 
@@ -249,5 +258,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit, fetchPostsByItemName }
+    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, updateUserNote, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit, fetchPostsByItemName }
 }

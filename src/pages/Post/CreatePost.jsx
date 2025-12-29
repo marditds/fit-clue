@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext, useNavigate, useLocation } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading.jsx';
 import { Icon } from '../../components/Accessories/Icon.jsx';
 import { capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters.js';
+import { UserNoteForm } from '../../components/Form/UserNoteForm.jsx';
 
 const CreatePost = () => {
 
     const { userId, isAppLoading } = useOutletContext();
 
     const navigate = useNavigate();
+
+    const location = useLocation();
 
     const { makePost } = usePosts();
 
@@ -74,7 +77,7 @@ const CreatePost = () => {
 
             const formattedPersonalityName = capitalizeFirstLetterOfEachWord(name);
 
-            const createdPost = await makePost(formattedPersonalityName, links, instaLink, userId);
+            const createdPost = await makePost(formattedPersonalityName, links, instaLink, userId, userNote);
 
             if (createdPost) {
                 console.log('Post created successfully!');
@@ -155,21 +158,11 @@ const CreatePost = () => {
                         {/* User's note */}
                         <Row>
                             <Col>
-                                <Form.Group className='mb-3' controlId='formNote'>
-                                    <Form.Label>
-                                        <Icon className='bi bi-file-earmark-text fs-5' marginEndSize='1' />
-                                        Note <small>(optional)</small>
-                                    </Form.Label>
-                                    <Form.Control
-                                        type='text'
-                                        as='textarea'
-                                        rows={3}
-                                        placeholder='I would like to know the brand of the shoes in the third slide.'
-                                        value={userNote}
-                                        onChange={e => setUserNote(e.target.value)}
-                                        required
-                                    />
-                                </Form.Group>
+                                <UserNoteForm
+                                    userNote={userNote}
+                                    setUserNote={setUserNote}
+                                    locationPathname={location.pathname}
+                                />
                             </Col>
                         </Row>
 

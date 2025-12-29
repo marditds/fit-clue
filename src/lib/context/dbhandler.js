@@ -1,4 +1,4 @@
-import { Client, ID, Query, Functions, Account, TablesDB } from 'appwrite';
+import { Client, ID, Query, Functions, Account, TablesDB, Operator } from 'appwrite';
 import { dbFunctionKeysProvider } from './keysProvider';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
@@ -375,7 +375,7 @@ export const deleteUserFromCollection = async (userId) => {
     }
 };
 
-export const makePost = async (personalityName, productLinksData, instaUrl, userId) => {
+export const makePost = async (personalityName, productLinksData, instaUrl, userId, user_note) => {
     try {
         var product_links = [];
 
@@ -396,7 +396,8 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
                 product_links: product_links.map(product_link => product_link.$id),
                 product_names: product_links.map(product_link => product_link.item),
                 user_id: userId,
-                personality_name: personalityName
+                personality_name: personalityName,
+                user_note: user_note
             }
         });
 
@@ -442,6 +443,24 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
     } catch (error) {
         console.error('Error updating post:', error);
         return 'Error adding link. Please try again later.';
+    }
+}
+
+export const updateUserNote = async (docId, oldNote, newNote) => {
+    try {
+        const res = await tablesDB.updateRow({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            rowId: docId,
+            data: {
+                user_note: oldNote === null ? Operator.stringConcat(newNote) : Operator.stringReplace(oldNote, newNote)
+            }
+        })
+
+        return res;
+
+    } catch (error) {
+        console.error('Error updating user\'s note:', error);
     }
 }
 
@@ -493,8 +512,6 @@ export const fetchPostById = async (postId) => {
 
         // Fetch links  
         const productLinksRes = await fetchProductLinksByIds(productLinkIds);
-
-        // console.log('productLinksRes in fetchPosts:', productLinksRes);
 
         let productLinksMap = {};
         if (productLinksRes.length !== 0) {
