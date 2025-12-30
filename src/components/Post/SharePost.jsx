@@ -26,7 +26,7 @@ export const SharePost = () => {
 
     return (
         <div>
-            <Row className='mx-auto w-100'>
+            <Row className='mx-auto w-100 post__share-page-row'>
                 <Col className='py-4 border border-bottom-1 border-top-0 border-start-0 border-end-0'>
                     <h3>
                         <Icon

@@ -116,14 +116,13 @@ const Post = () => {
         document.body.appendChild(script);
     }, [iUrl]);
 
-    const updateUserNote = () => {
-
-        console.log('post id:', params.postId);
-        console.log('userNote:', userNote);
-        console.log('the new note:', newUserNote);
-
-
-        updateNote(params.postId, userNote, newUserNote);
+    const updateUserNote = async () => {
+        try {
+            const res = await updateNote(params.postId, userNote, newUserNote);
+            return res;
+        } catch (error) {
+            console.error('Error updating user note.');
+        }
     }
 
     if (isPostLoading) {
@@ -159,10 +158,12 @@ const Post = () => {
 
                         {/* User's note */}
                         <UserNote
-                            userNote={newUserNote}
+                            userNote={userNote}
+                            newUserNote={newUserNote}
                             userId={postUserId === userId}
                             locationPathname={location.pathname}
-                            setUserNote={setNewUserNote}
+                            setUserNote={setUserNote}
+                            setNewUserNote={setNewUserNote}
                             updateUserNote={updateUserNote}
                         />
 

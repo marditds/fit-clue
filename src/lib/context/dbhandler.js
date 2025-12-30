@@ -457,10 +457,17 @@ export const updateUserNote = async (docId, oldNote, newNote) => {
             }
         })
 
-        return res;
+        console.log('this is updated note:', res);
+
+        if (res) {
+            return 'success';
+        } else {
+            return 'error'
+        }
 
     } catch (error) {
         console.error('Error updating user\'s note:', error);
+        return 'error'
     }
 }
 

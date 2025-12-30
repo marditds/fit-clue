@@ -19,7 +19,7 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname }) => {
                 as='textarea'
                 rows={3}
                 placeholder='I would like to know the brand of the shoes in the third slide.'
-                value={userNote || ''}
+                value={userNote === 'Not provided' ? '' : userNote}
                 onChange={e => setUserNote(e.target.value)}
                 required
                 maxLength={userNoteCharCount}
@@ -27,7 +27,7 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname }) => {
 
             <div className='d-flex justify-content-end mt-1'>
                 <small className={userNote?.length >= userNoteCharCount ? 'text-danger' : 'text-muted'}>
-                    {userNote ? userNote.length : 0} / {userNoteCharCount}
+                    {userNote === 'Not provided' ? 0 : userNote?.length} / {userNoteCharCount}
                 </small>
             </div>
         </Form.Group>
