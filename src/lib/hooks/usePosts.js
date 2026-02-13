@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByPersonalityName as getPostsByPersonalityName, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName } from '../context/dbhandler';
+import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 
 export const usePosts = () => {
@@ -157,15 +157,6 @@ export const usePosts = () => {
         }
     }
 
-    const fetchPostsByPersonalityName = async (personalityName) => {
-        try {
-            const res = await getPostsByPersonalityName(personalityName);
-            return res;
-        } catch (error) {
-            console.error('Error fetching post by id:', error);
-        }
-    }
-
     const fetchPostsByString = async (str, lastCursor) => {
         try {
             const res = await getPostsByString(str, searchResultLoadLimit, lastCursor);
@@ -258,5 +249,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByPersonalityName, fetchPostsByString, updatePost, updateUserNote, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit, fetchPostsByItemName }
+    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByString, updatePost, updateUserNote, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit, fetchPostsByItemName }
 }

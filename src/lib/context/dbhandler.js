@@ -582,26 +582,6 @@ export const fetchPostsByPersonalityId = async (personalityId) => {
     }
 }
 
-export const fetchPostsByPersonalityName = async (personalityName) => {
-    try {
-
-        const postsByPersonalityName = await tablesDB.listRows({
-            databaseId: dbEnv,
-            tableId: postsCollEnv,
-            queries: [
-                Query.equal('personality_name', personalityName),
-                Query.orderDesc('$createdAt'),
-                Query.limit(3)
-            ]
-        })
-
-        return postsByPersonalityName;
-
-    } catch (error) {
-        console.error('Error fetching posts by personality id:', error);
-    }
-}
-
 export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor = null) => {
 
     console.log({ personality_name: str });
