@@ -21,7 +21,6 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname }) => {
                 placeholder='I would like to know the brand of the shoes in the third slide.'
                 value={userNote === 'Not provided' ? '' : userNote}
                 onChange={e => setUserNote(e.target.value)}
-                required
                 maxLength={userNoteCharCount}
             />
 

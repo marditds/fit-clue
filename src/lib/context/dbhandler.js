@@ -505,8 +505,6 @@ export const fetchPostById = async (postId) => {
             rowId: postId
         });
 
-        console.log('postRes in fetchPostById:', postRes);
-
         if (!postRes) {
             console.log('No posts yet.');
             return null
@@ -532,8 +530,6 @@ export const fetchPostById = async (postId) => {
             content,
             links: (content.product_links || []).map(id => productLinksMap[id]).filter(Boolean)
         };
-
-        console.log('result in fetchPostById:', result);
 
         return result;
 
@@ -745,9 +741,11 @@ export const fetchProductLinksByIds = async (productLinkId) => {
         const res = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: linksCollEnv,
-            queries: [Query.equal('$id', productLinkId)]
+            queries: [Query.equal('$id', productLinkId)],
+            total: false
         })
-        if (res.total > 0) {
+
+        if (res.rows.length > 0) {
             return res;
         }
 

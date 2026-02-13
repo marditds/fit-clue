@@ -4,7 +4,7 @@ import { Icon } from '../Accessories/Icon'
 import { UserNoteForm } from '../Form/UserNoteForm';
 import { LoadingComponent } from '../Loading/Loading';
 
-export const UserNote = ({ userNote, setUserNote, newUserNote, setNewUserNote, locationPathname, userId, updateUserNote }) => {
+export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locationPathname, userId, updateUserNote }) => {
 
     const [showEditNoteField, setShowEditNoteField] = useState(false);
     const [isSavingNewNote, setIsSavingNewNote] = useState(false);
@@ -51,7 +51,7 @@ export const UserNote = ({ userNote, setUserNote, newUserNote, setNewUserNote, l
                                 <Icon
                                     className='bi bi-file-earmark-text'
                                     marginEndSize={'2'}
-                                />User's Note
+                                />Note
                             </h3>
                             {userId &&
                                 <span className='ms-auto'>

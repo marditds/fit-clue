@@ -15,7 +15,7 @@ import { SharePost } from '../../components/Post/SharePost';
 import { Interaction } from '../../components/Post/Interaction';
 import { onePostData } from '../../lib/data/testData';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
-import { UserNote } from '../../components/Post/UserNote';
+import { Note } from '../../components/Post/Note';
 
 const Post = () => {
 
@@ -157,7 +157,7 @@ const Post = () => {
                     <div className={`post__div-links w-100 h-100 ${!isLoggedIn ? ' d-flex flex-column justify-content-between' : ''}`}>
 
                         {/* User's note */}
-                        <UserNote
+                        <Note
                             userNote={userNote}
                             newUserNote={newUserNote}
                             userId={postUserId === userId}

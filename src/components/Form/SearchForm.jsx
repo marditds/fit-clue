@@ -20,6 +20,7 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
                     console.log('Search term in navbar:', e.target.value);
                     setSearchTerm(e.target.value)
                 }}
+                autoFocus
             />
 
             <Button
