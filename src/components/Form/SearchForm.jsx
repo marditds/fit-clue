@@ -61,6 +61,12 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
             icon: <IconHanger stroke={1.25} size={20} className='me-0 me-sm-2' />,
             id: '2'
         },
+        {
+            name: 'Brand',
+            value: 'brand',
+            icon: <Icon className='bi bi-tag me-0 me-sm-2' />,
+            id: '3'
+        }
     ]
 
     return (

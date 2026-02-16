@@ -611,9 +611,12 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
 }
 
 export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, lastCursor = null) => {
+
+    console.log('itemName:', itemName);
+
     try {
         const queries = [
-            Query.contains('product_names', itemName),
+            Query.contains('product_names', [itemName]),
             Query.orderDesc('$createdAt'),
             Query.limit(searchResultLoadLimit)
         ];
@@ -628,10 +631,74 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
             queries: queries
         });
 
+        console.log('postsByItemName:', postsByItemName);
+
+
         return postsByItemName;
 
     } catch (error) {
         console.error('Error fetching posts by item name:', error);
+    }
+}
+
+export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, lastCursor = null, cachedLinksIds = null) => {
+
+    console.log('brandName:', brandName);
+    console.log('cachedLinksIds:', cachedLinksIds);
+
+    try {
+
+        let linksIds = cachedLinksIds;
+
+        if (linksIds.length === 0) {
+            const queries = [
+                Query.contains('brand_name', brandName),
+                Query.orderDesc('$createdAt'),
+            ];
+
+            const linksByBrandName = await tablesDB.listRows({
+                databaseId: dbEnv,
+                tableId: linksCollEnv,
+                queries: queries,
+                total: false
+            });
+
+            console.log('linksByBrandName:', linksByBrandName);
+
+            // links ids in links table
+            linksIds = linksByBrandName.rows.map((link) => link.$id);
+
+            console.log('linksIds:', linksIds);
+
+            // no matching strings with brand names
+            if (!linksIds.length) {
+                return { rows: [], total: 0 };
+            }
+        }
+
+        // look up for link ids in post table
+        const postQueries = [
+            Query.contains('product_links', linksIds),
+            Query.orderDesc('$createdAt'),
+            Query.limit(searchResultLoadLimit)
+        ];
+
+        if (lastCursor) {
+            postQueries.push(Query.cursorAfter(lastCursor));
+        };
+
+        const postsByBrandName = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: postQueries,
+        });
+
+        console.log(`Posts for ${brandName}:`, postsByBrandName);
+
+        return { ...postsByBrandName, linksIds };
+
+    } catch (error) {
+        console.error('Error fetching posts by brand name:', error);
     }
 }
 

@@ -14,12 +14,13 @@ const Results = () => {
 
     const navigate = useNavigate();
 
-    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName } = usePosts();
+    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName } = usePosts();
 
     const [searchTerm, setSearchTerm] = useState(params.term);
     const [searchCategory, setSearchCategory] = useState(params.category);
 
     const [results, setResults] = useState([]);
+    const [cachedLinksIds, setCachedLinksIds] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
 
@@ -54,6 +55,21 @@ const Results = () => {
                 console.log('normalizedSearchTerm:', normalizedSearchTerm);
 
                 searchResults = await fetchPostsByItemName(normalizedSearchTerm, cursor);
+            }
+
+            if (searchCategory === 'brand') {
+                const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
+
+                console.log('normalizedSearchTerm:', normalizedSearchTerm);
+                console.log('cachedLinksIds:', cachedLinksIds);
+
+                searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor, cachedLinksIds);
+
+                console.log('searchResults:', searchResults);
+
+                if (isNewSearch) {
+                    setCachedLinksIds(searchResults.linksIds);
+                }
             }
 
             console.log('searchResults', searchResults);
@@ -113,6 +129,7 @@ const Results = () => {
 
     const onSearchTermSubmit = async (e) => {
         e.preventDefault();
+        setCachedLinksIds([]);
         setIsNewTermSearched(true);
         try {
             if (searchCategory.trim() && searchTerm.trim()) {
