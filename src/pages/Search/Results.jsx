@@ -20,7 +20,6 @@ const Results = () => {
     const [searchCategory, setSearchCategory] = useState(params.category);
 
     const [results, setResults] = useState([]);
-    const [cachedLinksIds, setCachedLinksIds] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
 
@@ -39,9 +38,9 @@ const Results = () => {
         }
 
         try {
-            const cursor = isNewSearch ? null : lastResult;
+            console.log('isNewSearch:', isNewSearch);
 
-            console.log('Search term in fetchAllPostsBySearchTerm:', searchTerm);
+            const cursor = isNewSearch ? null : lastResult;
 
             let searchResults = null;
 
@@ -51,25 +50,12 @@ const Results = () => {
 
             if (searchCategory === 'item') {
                 const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
-
-                console.log('normalizedSearchTerm:', normalizedSearchTerm);
-
                 searchResults = await fetchPostsByItemName(normalizedSearchTerm, cursor);
             }
 
             if (searchCategory === 'brand') {
                 const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
-
-                console.log('normalizedSearchTerm:', normalizedSearchTerm);
-                console.log('cachedLinksIds:', cachedLinksIds);
-
-                searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor, cachedLinksIds);
-
-                console.log('searchResults:', searchResults);
-
-                if (isNewSearch) {
-                    setCachedLinksIds(searchResults.linksIds);
-                }
+                searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor);
             }
 
             console.log('searchResults', searchResults);
@@ -99,7 +85,6 @@ const Results = () => {
                     setHasMore(false);
                 }
             }
-
         } catch (error) {
             console.error('Error loading more results:', error);
         } finally {
@@ -111,10 +96,12 @@ const Results = () => {
         window.scrollTo(0, 0);
     }, [isNewTermSearched]);
 
+    // fetches the results on first navigation to /search
     useEffect(() => {
         const loadingResultsFirstBatch = async () => {
             setIsResultsFirstBatchLoading(true);
             try {
+                console.log('loadingResultsFirstBatch');
                 await fetchAllPostsBySearchTerm(true);
             } catch (error) {
                 console.error('Error loading search results.');
@@ -127,11 +114,12 @@ const Results = () => {
         loadingResultsFirstBatch();
     }, []);
 
+    // fetches the results when searched in /search
     const onSearchTermSubmit = async (e) => {
         e.preventDefault();
-        setCachedLinksIds([]);
         setIsNewTermSearched(true);
         try {
+            console.log('onSearchTermSubmit');
             if (searchCategory.trim() && searchTerm.trim()) {
                 navigate(
                     `/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`

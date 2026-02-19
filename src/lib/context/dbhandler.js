@@ -24,6 +24,8 @@ const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
 
+const brandLinksCache = new Map();
+
 export const testTbalesDBCreateRow = async () => {
     try {
         const res = await tablesDB.createRow({
@@ -641,16 +643,16 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
     }
 }
 
-export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, lastCursor = null, cachedLinksIds = null) => {
-
-    console.log('brandName:', brandName);
-    console.log('cachedLinksIds:', cachedLinksIds);
+export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, lastCursor = null) => {
 
     try {
 
-        let linksIds = cachedLinksIds;
+        let linksIds = brandLinksCache.get(brandName);
 
-        if (linksIds.length === 0) {
+        if (!linksIds) {
+
+            console.log('NEW LOOK-UP');
+
             const queries = [
                 Query.contains('brand_name', brandName),
                 Query.orderDesc('$createdAt'),
@@ -663,12 +665,11 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
                 total: false
             });
 
-            console.log('linksByBrandName:', linksByBrandName);
-
-            // links ids in links table
             linksIds = linksByBrandName.rows.map((link) => link.$id);
 
             console.log('linksIds:', linksIds);
+
+            brandLinksCache.set(brandName, linksIds);
 
             // no matching strings with brand names
             if (!linksIds.length) {
@@ -692,8 +693,6 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
             tableId: postsCollEnv,
             queries: postQueries,
         });
-
-        console.log(`Posts for ${brandName}:`, postsByBrandName);
 
         return { ...postsByBrandName, linksIds };
 

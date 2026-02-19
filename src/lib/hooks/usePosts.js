@@ -175,9 +175,9 @@ export const usePosts = () => {
         }
     }
 
-    const fetchPostsByBrandName = async (brandName, lastCursor, cachedLinksIds) => {
+    const fetchPostsByBrandName = async (brandName, lastCursor) => {
         try {
-            const res = await getPostsByBrandName(brandName, searchResultLoadLimit, lastCursor, cachedLinksIds);
+            const res = await getPostsByBrandName(brandName, searchResultLoadLimit, lastCursor);
             return res;
         } catch (error) {
             console.error('Error fetching post by brand name:', error);
