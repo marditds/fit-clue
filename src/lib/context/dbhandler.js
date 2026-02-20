@@ -670,11 +670,11 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
             console.log('linksIds:', linksIds);
 
             brandLinksCache.set(brandName, linksIds);
+        }
 
-            // no matching strings with brand names
-            if (!linksIds.length) {
-                return { rows: [], total: 0 };
-            }
+        // no matching strings with brand names
+        if (!linksIds.length) {
+            return { rows: [], total: 0 };
         }
 
         // look up for link ids in post table
