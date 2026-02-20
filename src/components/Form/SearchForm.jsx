@@ -15,14 +15,13 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
                 className={`me-2 me-sm-3 ${className || ''} border`}
                 placeholder={`Search${placeholder ? ` ` + placeholder + '...' : ''}`}
                 aria-label='Search'
-                value={searchTerm}
+                value={searchTerm || ''}
                 onChange={(e) => {
                     console.log('Search term in navbar:', e.target.value);
                     setSearchTerm(e.target.value)
                 }}
                 autoFocus
             />
-
             <Button
                 type='submit'
                 disabled={!searchTerm}
@@ -34,7 +33,7 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
     )
 }
 
-export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResultsLoading, setSearchTerm, resultsTotal, searchCategory, setSearchCategory }) => {
+export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResultsLoading, setSearchTerm, params, resultsTotal, searchCategory, setSearchCategory }) => {
 
     const location = useLocation();
 
@@ -42,10 +41,12 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
 
     const isScreenLargeAndLarger = !isXs && !isSm && !isMd;
 
-    const [showCategories, setShowCategories] = useState(false);
+    const [showCategories, setShowCategories] = useState(false || location.pathname === '/search');
 
     useEffect(() => {
-        setShowCategories(false);
+        if (location.pathname !== '/search') {
+            setShowCategories(false);
+        }
     }, [location.pathname])
 
     const searchCategories = [
@@ -87,10 +88,10 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
             {/*  Results count and options btn */}
             <div className='mt-2 mt-sm-3 w-100 d-flex algin-items-center'>
                 {
-                    location.pathname.startsWith('/search') &&
-                    <Form.Text className='d-flex align-items-center mt-0'>
-                        Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
-                    </Form.Text>
+                    !location.pathname.startsWith('/search/') ? null :
+                        <Form.Text className='d-flex align-items-center mt-0'>
+                            Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
+                        </Form.Text>
                 }
                 <Button
                     onClick={() => setShowCategories(preVal => !preVal)}

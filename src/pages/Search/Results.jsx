@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading';
@@ -14,10 +14,13 @@ const Results = () => {
 
     const navigate = useNavigate();
 
+    const location = useLocation();
+
     const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName } = usePosts();
 
     const [searchTerm, setSearchTerm] = useState(params.term);
-    const [searchCategory, setSearchCategory] = useState(params.category);
+    const [searchedTerm, setSearchedTerm] = useState('');
+    const [searchCategory, setSearchCategory] = useState(params.category || 'personality');
 
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
@@ -39,10 +42,19 @@ const Results = () => {
 
         try {
             console.log('isNewSearch:', isNewSearch);
+            console.log('searchTerm:', searchTerm);
 
             const cursor = isNewSearch ? null : lastResult;
 
             let searchResults = null;
+
+            if (searchTerm === undefined) {
+                return;
+            }
+
+            if (isNewSearch) {
+                setSearchedTerm(searchTerm);
+            }
 
             if (searchCategory === 'personality') {
                 searchResults = await fetchPostsByString(searchTerm, cursor);
@@ -159,7 +171,7 @@ const Results = () => {
 
             {/* Search container */}
             <RelatedPosts
-                headerText='Search Results'
+                headerText={location.pathname === '/search' ? `Search ${searchCategory.charAt(0).toUpperCase() + searchCategory.slice(1)}` : `Showing results for "${searchedTerm}"`}
             >
                 <SearchComponent
                     searchTerm={searchTerm}
@@ -167,6 +179,7 @@ const Results = () => {
                     onSubmit={onSearchTermSubmit}
                     setSearchCategory={setSearchCategory}
                     searchCategory={searchCategory}
+                    params={params}
                     resultsTotal={resultsTotal}
                     setResultsTotal={setResultsTotal}
                 />
