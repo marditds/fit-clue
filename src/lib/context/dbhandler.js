@@ -646,7 +646,6 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
 export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, lastCursor = null) => {
 
     try {
-
         let linksIds = brandLinksCache.get(brandName);
 
         if (!linksIds) {
@@ -666,8 +665,6 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
             });
 
             linksIds = linksByBrandName.rows.map((link) => link.$id);
-
-            console.log('linksIds:', linksIds);
 
             brandLinksCache.set(brandName, linksIds);
         }

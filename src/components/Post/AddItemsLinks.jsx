@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { usePosts } from '../../lib/hooks/usePosts';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
@@ -12,6 +13,8 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
     const { createLink } = useShoppingLinks();
 
     const { updatePost } = usePosts();
+
+    const { isXs, isSm, isMd } = useBreakpoints();
 
     const [brandName, setBrandName] = useState('');
     const [itemName, setItemName] = useState('');
@@ -105,8 +108,8 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         {/* <Icon
                             className='bi bi-plus-lg'
                             marginEndSize={'2'}
-                        /> */}
-                        <IconShoppingBag stroke={1} size={35} className='me-1' />
+                        />  */}
+                        <IconShoppingBag stroke={1} size={35} className='me-1 shopping-bag-svg' />
                         Add Item Link
                     </h3>
                     {
@@ -117,8 +120,8 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                     <Form onSubmit={onAddLinkSubmit} style={{ marginBottom: '0px' }}>
 
                         <Form.Group className='mb-3' controlId='BrandNameField'>
-                            <Form.Label className='d-flex align-items-end'>
-                                <Icon className='bi bi-buildings fs-5' marginEndSize='2' />
+                            <Form.Label className='d-flex align-items-center'>
+                                <Icon className={`bi bi-tag fs-${(isXs || isSm || isMd) ? '6' : '5'}`} marginEndSize='2' />
                                 Brand name
                             </Form.Label>
                             <Form.Control
@@ -144,7 +147,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
 
                         <Form.Group className='mb-3' controlId='ItemUrlField'>
                             <Form.Label>
-                                <Icon className='bi bi-link-45deg fs-4' marginEndSize='2' />
+                                <Icon className={`bi bi-link-45deg fs-${(isXs || isSm || isMd) ? '6' : '5'}`} marginEndSize='2' />
                                 Item Link
                             </Form.Label>
                             <Form.Control

@@ -242,7 +242,7 @@ div, p, button {
     font-size: 0.875rem !important;
   }
 
-  svg {
+  svg:not(.shopping-bag-svg) {
     max-height: 1.0rem;
     max-width: 1.0rem;
   }
