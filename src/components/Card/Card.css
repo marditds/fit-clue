@@ -10,11 +10,11 @@
     background-color: var(--main-white-shade);
 }
 
-.card__div-latest {
+.card__div-featured {
     border: 1px solid var(--card-border-color);
 }
 
-.card__div-latest:hover {
+.card__div-featured:hover {
     transform: scale(1.02);
     box-shadow: 0px 0px 3px var(--card-border-color);
 }

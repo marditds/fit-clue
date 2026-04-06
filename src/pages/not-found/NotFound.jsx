@@ -35,7 +35,7 @@ const NotFound = () => {
                         <BackButton className='mb-3 mb-sm-0' />
 
                         <Button as={Link} to='/' >
-                            The Latest
+                            Featured
                         </Button>
                     </p>
 

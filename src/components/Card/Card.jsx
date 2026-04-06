@@ -2,13 +2,13 @@ import { useLocation, Link } from 'react-router-dom';
 import { Button, Col } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { LoadingComponent } from '../Loading/Loading';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading }) => {
 
     const location = useLocation();
 
-    const [isDeleteSaveClicked, setIsDeleteSaveClicked] = useState(false);
+    // const [isDeleteSaveClicked, setIsDeleteSaveClicked] = useState(false);
 
     return (
         <Col
@@ -25,7 +25,7 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
         >
             <div className={` 
                 ${!location.pathname.startsWith('/post') ?
-                    'card__div card__div-latest h-100 d-flex flex-column justify-content-between' :
+                    'card__div card__div-featured h-100 d-flex flex-column justify-content-between' :
                     'd-flex flex-column justify-content-center align-items-start post__div sticky-top'}`
             }>
 

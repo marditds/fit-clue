@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 import './App.css';
 import { LoadingPage } from './components/Loading/Loading';
-import TheLatest from './pages/the-latest/TheLatest';
+import Featured from './pages/featured/Featured';
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <TheLatest />
+      <Featured />
     </>
 
   )

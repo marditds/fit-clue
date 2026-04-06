@@ -65,7 +65,7 @@ const NavigationBar = () => {
         {
             as: Link,
             to: '/',
-            title: 'The Latest',
+            title: 'Featured',
             className: ''
         },
         {
@@ -93,7 +93,7 @@ const NavigationBar = () => {
             as: Link,
             to: '/',
             navLinkClassName: 'me-5',
-            title: 'The Latest',
+            title: 'Featured',
             iconClassName: 'bi bi-lightning-charge',
             activeIconClassName: 'bi bi-lightning-charge-fill',
             iconMarginEndSize: '1',

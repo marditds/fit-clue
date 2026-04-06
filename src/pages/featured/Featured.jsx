@@ -6,7 +6,7 @@ import '../../components/Card/Card.css';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { theLatestData } from '../../lib/data/testData';
 
-const TheLatest = () => {
+const Featured = () => {
 
     const { fetchTheLatestPosts } = usePosts();
 
@@ -41,7 +41,7 @@ const TheLatest = () => {
             <Row className='justify-content-start'>
                 <Col className=''>
                     <h2 className='latest__page-title'>
-                        THE LATEST
+                        FEATURED
                     </h2>
                 </Col>
             </Row>
@@ -56,4 +56,4 @@ const TheLatest = () => {
     );
 };
 
-export default TheLatest;
+export default Featured;
