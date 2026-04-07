@@ -12,6 +12,8 @@ dist
 dist-ssr
 .env
 *.local
+*.development
+*.production
 testData.js
 
 # Editor directories and files

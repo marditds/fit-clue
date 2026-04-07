@@ -65,7 +65,7 @@ const NavigationBar = () => {
         {
             as: Link,
             to: '/',
-            title: 'Featured',
+            title: 'Home',
             className: ''
         },
         {
@@ -79,13 +79,7 @@ const NavigationBar = () => {
             to: '/faq',
             title: 'FAQ',
             className: ''
-        },
-        {
-            as: Link,
-            to: '/contact',
-            title: 'Contact',
-            className: ''
-        },
+        }
     ]
 
     const postLoginNavbarItems = [
@@ -93,9 +87,9 @@ const NavigationBar = () => {
             as: Link,
             to: '/',
             navLinkClassName: 'me-5',
-            title: 'Featured',
-            iconClassName: 'bi bi-lightning-charge',
-            activeIconClassName: 'bi bi-lightning-charge-fill',
+            title: 'Home',
+            iconClassName: 'bi bi-house',
+            activeIconClassName: 'bi bi-house-fill',
             iconMarginEndSize: '1',
         },
     ].map(link => ({

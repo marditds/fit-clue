@@ -20,6 +20,8 @@
   --main-transition-speed: 0.3s;
   --main-white-shade: rgb(255, 255, 255);
   --main-white-shade-vals: 255, 255, 255;
+  --main-success-color: rgb(39, 129, 50);
+  --main-success-color-hover: rgb(31, 98, 38);
   --main-danger-color: rgb(220, 53, 69);
   --main-danger-color-hover: rgb(200, 35, 51);
   --main-danger-color-light: rgb(248, 215, 218);
@@ -225,6 +227,10 @@ div, p, button {
   border-color: var(--main-border-color);
   border-width: 1px !important;
   border-radius: var(--main-border-radius) !important;
+}
+
+.success-text {
+  color: var(--main-success-color);
 }
 
 @keyframes loadingDots {

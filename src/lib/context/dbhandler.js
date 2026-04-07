@@ -1,5 +1,6 @@
 import { Client, ID, Query, Functions, Account, TablesDB, Operator } from 'appwrite';
 import { dbFunctionKeysProvider } from './keysProvider';
+import { ROUTES } from '../../routes/routes';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -306,7 +307,7 @@ export const createPasswordRecoveryEmail = async (email) => {
     try {
         const res = await account.createRecovery({
             email: email,
-            url: 'http://localhost:5173/reset-password'
+            url: ROUTES.RESET_PASSWORD
         })
         console.log('Success creating recovery.');
 

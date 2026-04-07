@@ -44,19 +44,19 @@ const About = () => {
                             backgroundColor: 'var(--main-white-shade)',
                         }}
                     >
-                        <p>
-                            Fashion is everywhere — in the streets, on social media, and in the everyday outfits that catch our eye. But so often, when we see a piece we love, we are left wondering: What brand is that? Where can I find it?
+                        <p style={{ textIndent: '1em' }}>
+                            Fashion is everywhere. It is in the streets, on social media, and in the everyday outfits that catch our eye. But so often, when we see a piece we love, we are left wondering: What brand is that? Where can I find it?
                         </p>
-                        <p>
+                        <p style={{ textIndent: '1em' }}>
                             Our platform was built to answer those questions together. Instead of endless searching, users can upload or browse images of clothing and collaborate to identify the brands behind each item. Whether it is a pair of sneakers spotted in a photo, a jacket from a celebrity post, or a dress from a runway look, the community comes together to uncover the details.
                         </p>
-                        <p>
-                            Every piece is enriched with shared information — brand names, item links, and other helpful insights. The more the community contributes, the stronger the collective knowledge grows, making it easier for everyone to discover fashion they love.
+                        <p style={{ textIndent: '1em' }}>
+                            Every piece is enriched with shared information such as brand names, item links, and other helpful insights. The more the community contributes, the stronger the collective knowledge grows, making it easier for everyone to discover fashion they love.
                         </p>
-                        <p>
+                        <p style={{ textIndent: '1em' }}>
                             This is not just about clothes; it is about connection. By combining curiosity, expertise, and a passion for style, users help each other explore new trends, learn about different labels, and bring inspiration into their own wardrobes.
                         </p>
-                        <p className='mb-0'>
+                        <p className='mb-0' style={{ textIndent: '1em' }}>
                             We believe fashion should be collaborative and fun. And with every image identified, we are building a space where discovery is powered by people, not algorithms.
                         </p>
                     </Col>

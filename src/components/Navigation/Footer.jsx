@@ -26,13 +26,18 @@ const Footer = () => {
         {
             title: 'Community Guidelines',
             link: '/community-guidelines',
-            decoration: ''
+            decoration: <Icon className='bi bi-dot' />
         },
-        // {
-        //     title: 'FAQ',
-        //     link: '/faq',
-        //     decoration: ''
-        // }
+        {
+            title: 'FAQ',
+            link: '/faq',
+            decoration: <Icon className='bi bi-dot' />
+        },
+        {
+            title: 'Support',
+            link: '/support',
+            decoration: <Icon className='bi bi-dot' />
+        }
     ]
 
     const footerSocials = [
@@ -41,16 +46,8 @@ const Footer = () => {
             link: 'https://www.instagram.com/fitclueapp/'
         },
         {
-            icon: 'bi bi-twitter-x',
-            link: 'https://x.com/fitclueapp'
-        },
-        // {
-        //     icon: 'bi bi-facebook',
-        //     link: 'https://www.facebook.com/'
-        // },
-        {
-            icon: 'bi bi-threads',
-            link: 'https://www.threads.com/@fitclueapp'
+            icon: 'bi bi-facebook',
+            link: '#'
         },
         {
             icon: 'bi bi-youtube',
@@ -64,29 +61,33 @@ const Footer = () => {
     return (
         <FooterLayout>
             <Row className='align-items-center'>
-                <Col xs={12} lg={10} className='mb-0 d-flex flex-column flex-md-row align-items-center'>
-                    {!isXs && !isSm && <>
-                        {copyright} <Icon className='ms-2 bi bi-dot' />
-                    </>}
-                    {
-                        footerLinks.map((item, idx) => (
-                            <span key={idx} className='mb-2 mb-md-0 d-flex align-items-center'>
-                                <Link to={item.link} className='mx-2 text-decoration-none'>
-                                    {item.title}
-                                </Link>
-                                {
-                                    (!isXs && !isSm) &&
-                                    item.decoration
-                                }
-                            </span>
-                        ))
-                    }
+                <Col className='mb-0 d-flex flex-column flex-md-row align-items-center'>
+                    {!isXs && !isSm &&
+                        <span className='me-2'>
+                            {copyright}
+                        </span>}
+
+                    <Row>
+                        {
+                            footerLinks.map((item, idx) => (
+                                <Col key={idx} xs={12} md={4} className='mb-2 mb-md-0 d-flex align-items-center justify-content-md-start justify-content-center'>
+                                    {
+                                        (!isXs && !isSm) &&
+                                        item.decoration
+                                    }
+                                    <Link to={item.link} className='mx-2 text-decoration-none'>
+                                        {item.title}
+                                    </Link>
+                                </Col>
+                            ))
+                        }
+                    </Row>
                 </Col>
                 <hr className='mb-2 mt-0 my-md-3 d-block d-lg-none' />
 
                 {!authPages.includes(location.pathname) &&
                     <>
-                        <Col xs={5} sm={3} lg={2} className='ms-auto me-auto me-md-0 ms-md-auto d-flex justify-content-between'>
+                        <Col xs={5} sm={3} lg={2} className='ms-auto me-auto me-md-0 ms-md-auto d-flex justify-content-evenly'>
                             {
                                 footerSocials.map((item, idx) => (
                                     <span key={idx}>

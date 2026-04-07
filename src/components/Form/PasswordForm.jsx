@@ -1,5 +1,6 @@
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import './Form.css';
+import { Link, useLocation } from 'react-router-dom';
 
 export const PasswordForm = ({
     isXs,
@@ -44,8 +45,11 @@ export const PasswordForm = ({
                         </Button>
 
                         {successMsg && (
-                            <div className='text-center mb-3'>
+                            <div className='text-center mb-3 success-text'>
                                 {successMsg}
+                                <Link to='/sign-in' className={`text-decoration-none fw-medium ms-2 ${useLocation().pathname === '/reset-password' ? 'd-block' : 'd-none'}`}>
+                                    Sign in
+                                </Link>
                             </div>
                         )}
 

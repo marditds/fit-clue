@@ -143,7 +143,7 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        Images displayed on FitClue's sign-up and sign-in pages are sourced from Pexels (<a href='https://www.pexels.com' target='_blank' rel="noopener noreferrer">https://www.pexels.com</a>) and are used in accordance with Pexels' licensing terms. Copyright in these images remains with their respective photographers.
+                        Images displayed on FitClue's sign-up, sign-in, password recovery, and support pages are sourced from Pexels (<a href='https://www.pexels.com' target='_blank' rel="noopener noreferrer">https://www.pexels.com</a>) and are used in accordance with Pexels' licensing terms. Copyright in these images remains with their respective photographers.
                     </p>
                     <p>
                         Some media displayed in the application is embedded directly from Instagram using Instagram's official embed functionality. All rights, title, and interest in such media remain the sole property of the original Instagram users.

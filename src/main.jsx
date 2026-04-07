@@ -27,6 +27,7 @@ import SignOut from './pages/signout/SignOut.jsx';
 import { ToastGeneral } from './components/Accessories/ToastComponent.jsx';
 import FAQ from './pages/faq/FAQ.jsx';
 import About from './pages/about/About.jsx';
+import Support from './pages/support/Support.jsx';
 
 const MainLayout = () => {
 
@@ -181,6 +182,10 @@ const router = createBrowserRouter([
       {
         path: 'community-guidelines',
         element: <CommunityGuidelines />
+      },
+      {
+        path: 'support',
+        element: <Support />
       },
       {
         path: 'faq',
