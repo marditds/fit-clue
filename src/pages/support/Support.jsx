@@ -1,11 +1,10 @@
 import { Col, Container, Row } from 'react-bootstrap'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import support from '../../assets/support.jpg'
 
 const Support = () => {
 
-    const location = useLocation();
     const { isXs, isSm } = useBreakpoints();
 
     return (
@@ -32,9 +31,13 @@ const Support = () => {
                         <div className='mb-3'>
                             <p className='mb-1 fw-semibold'>Contact us</p>
                             <p className='mb-0'>
-                                📧{' '}
-                                <a href='mailto:email@emails.com' className='text-decoration-none'>
-                                    email@emails.com
+                                <i class='bi bi-envelope me-2 fs-5'></i>
+                                <a
+                                    href='mailto:fitclue@altmails.com'
+                                    className='text-decoration-none'
+                                    style={{ fontSize: '1.25rem' }}
+                                >
+                                    fitclue@altmails.com
                                 </a>
                             </p>
                         </div>
