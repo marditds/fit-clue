@@ -17,7 +17,9 @@ const Support = () => {
                         backgroundImage: (isXs || isSm) ? `url(${support})` : '',
                         height: '650px'
                     }}
-                    className={`form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100 `}
+                    className={`form__col 
+                        form__col-background-overlay
+                         d-flex justify-content-center align-items-center w-100 `}
                 >
                     <div style={{ zIndex: '2', maxWidth: '450px' }}>
                         <h2 className='mb-3 text-center'>Support</h2>
