@@ -8,6 +8,14 @@ const TOSData = () => {
                 </p>
         },
         {
+            title: 'Privacy',
+            description: (
+                <p>
+                    Your use of FitClue is also governed by our Privacy Policy, which explains how we collect, use, and store your data, including through cookies, local storage, and third-party services.
+                </p>
+            )
+        },
+        {
             title: 'Eligibility / Age Requirement',
             description: (
                 <>
@@ -94,13 +102,16 @@ const TOSData = () => {
                         FitClue utilizes various third-party services to provide its features. By using FitClue, you acknowledge and agree to be bound by the terms and policies of these third-party providers.
                     </p>
                     <p>
+                        Once data is shared with third-party services, its handling is subject to their respective policies and practices, which FitClue does not control.
+                    </p>
+                    <p>
                         FitClue is not affiliated with or endorsed by Instagram or Meta. Any use of Instagram's embed functionality is subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
                     </p>
                     <p>
                         FitClue is not affiliated with or endorsed by Google. FitClue uses Google services, such as reCAPTCHA for security and the Google Gemini API for content moderation.
                     </p>
                     <p>
-                        Google Gemini is integrated to scan users' links and comments to help ensure appropriateness before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. Users are solely responsible for reviewing and modifying content before posting. Any use of Google services is subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a> and their <a href='https://policies.google.com/terms/generative-ai/use-policy' target='_blank'>Generative AI Prohibited Use Policy</a>.
+                        Google Gemini is used to review user-submitted content (including links and comments) for compliance with platform policies. When you submit content, it is sent to the Google Gemini API for analysis before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. You remain solely responsible for the content you submit. Any use of Google services is subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a> and their <a href='https://policies.google.com/terms/generative-ai/use-policy' target='_blank'>Generative AI Prohibited Use Policy</a>.
                     </p>
                     <p>
                         Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. Any use of Appwrite's services is subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a>.
@@ -133,7 +144,7 @@ const TOSData = () => {
                         Users may also choose to stop using the platform at any time. Termination may result in the deletion of all associated user data, including account credentials.
                     </p>
                     <p>
-                        However, user-generated content, such as comments and posted links, may remain visible on the platform after account deletion, and the associated username will be replaced with 'Deleted User'. FitClue is under no obligation to remove such content unless required by law.
+                        However, user-generated content, such as comments and posted links, may remain visible on the platform after account deletion, and the associated account identifiers may be removed or anonymized (e.g., replaced with "Deleted User"). FitClue is under no obligation to remove such content unless required by law.
                     </p>
                 </>
             )
