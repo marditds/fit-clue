@@ -26,12 +26,14 @@ const SignIn = () => {
     const [isSigningInInProgress, setIsSigningInInProgress] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
-    const onSignInUserClick = async () => {
+    const onSignInUserClick = async (e) => {
 
         if (christmasWish) {
             setErrorMsg('Something went wrong.');
             return;
         };
+
+        e.preventDefault();
 
         setIsSigningInInProgress(true);
         try {

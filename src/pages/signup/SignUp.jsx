@@ -41,7 +41,7 @@ const SignUp = () => {
         setIsCheckBoxClicked(preVal => !preVal)
     }
 
-    const onCreateUserClick = async () => {
+    const onCreateUserClick = async (e) => {
 
         if (easterWish) {
             setErrorMsg('Something went wrong.');
@@ -52,6 +52,8 @@ const SignUp = () => {
             setErrorMsg('Your password\s do not match. Please try again.')
             return;
         }
+
+        e.preventDefault();
 
         setIsAccountBeingCreated(true);
         try {

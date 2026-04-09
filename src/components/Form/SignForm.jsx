@@ -46,7 +46,7 @@ export const SignForm = ({
                     }}
                     className={`form__col form__col-background-overlay d-flex justify-content-center align-items-center w-100 ${backgroundColClass}`}
                 >
-                    <Form className={(isXs) ? 'w-100' : 'w-75'}>
+                    <Form onSubmit={onSubmit} className={(isXs) ? 'w-100' : 'w-75'}>
                         <div className='text-center my-4'>
                             <h3 className='mb-2'>{title}</h3>
                             {subtitle && <p className='text-muted'>{subtitle}</p>}
@@ -151,8 +151,9 @@ export const SignForm = ({
                         )}
 
                         <Button
-                            type='button'
-                            onClick={onSubmit}
+                            type='submit'
+                            // onClick={onSubmit}
+                            // onKeyDown={onSubmit}
                             disabled={disabled}
                             className='w-100 mb-3 position-relative form__btn'
                         >

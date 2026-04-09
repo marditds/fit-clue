@@ -31,7 +31,7 @@ const Support = () => {
                         <div className='mb-3'>
                             <p className='mb-1 fw-semibold'>Contact us</p>
                             <p className='mb-0'>
-                                <i class='bi bi-envelope me-2 fs-5'></i>
+                                <i className='bi bi-envelope me-2 fs-5'></i>
                                 <a
                                     href='mailto:fitclue@altmails.com'
                                     className='text-decoration-none'
