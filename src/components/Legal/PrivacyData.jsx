@@ -5,7 +5,7 @@ const PrivacyData = () => {
     const privacyPolicyData = [
         {
             title: "Introduction",
-            description: "This Privacy Policy outlines how FitClue ('we,' 'us,' or 'our') collects, uses, shares, and protects your data. By using FitClue, you agree to the practices described in this policy."
+            description: "This Privacy Policy outlines how FitClue ('we,' 'us,' or 'our') collects, uses, shares, and protects your data. FitClue is a personal project and does not provide enterprise-level infrastructure or security. By using FitClue, you agree to the practices described in this policy."
         },
         {
             title: "Data Collection",
@@ -29,6 +29,9 @@ const PrivacyData = () => {
                             - Technical Data: IP addresses and usage logs are collected by Appwrite on our behalf and are used for security, debugging, and maintaining platform performance.
                         </li>
                     </ul>
+<p>
+FitClue does not sell personal information to third parties.
+</p>
                 </div>
             )
         },
@@ -62,7 +65,7 @@ const PrivacyData = () => {
                             - Service Providers: We use Appwrite to provide backend infrastructure and database services. Appwrite processes and stores data (including IP addresses) on our behalf as part of providing the platform.
                         </li>
                         <li>
-                            - AI-Powered Features: We use the Google Gemini API to review user-submitted content for compliance with our policies. When you submit content, it is sent to the API for analysis. Content flagged as violating our policies is not stored or published by FitClue. This process helps prevent harmful content from appearing on the platform while minimizing the data we retain. The handling of this data is governed by Google's policies.
+                            - AI-Powered Features: We use the Google Gemini API to review user-submitted content for compliance with our policies. When you submit content, it is sent to the API for analysis. Automated moderation systems may not be fully accurate and may incorrectly flag or allow content. FitClue does not store content that is rejected, but processing by third-party services is subject to their own data handling practices. This process helps prevent harmful content from appearing on the platform while minimizing the data we retain. The handling of this data is governed by Google's policies.
                         </li>
                         <li>
                             - Legal Requirements: We may disclose data if required to do so by law or in response to valid legal requests.
@@ -82,11 +85,11 @@ const PrivacyData = () => {
             description:
                 <div>
                     <p>
-                        Your data is stored on servers managed by Appwrite. While we take reasonable steps to protect your information, FitClue is a personal project and does not implement advanced security measures such as end-to-end encryption or multi-factor authentication. You are encouraged to:
+                        Your data is stored on servers managed by Appwrite. While we take reasonable steps to protect your information, FitClue is a personal project and does not implement advanced security measures such as end-to-end encryption or multi-factor authentication. No method of transmission over the internet or electronic storage is completely secure. Therefore, we cannot guarantee absolute security of your data. You agree to:
                     </p>
                     <ul className='list-unstyled'>
                         <li>- Use strong passwords for your account.</li>
-                        <li>- Avoid sharing sensitive or personal information on the platform.</li>
+                        <li>- Avoid sharing sensitive personal information (such as financial information, government identification numbers, or private contact details) on the platform, as content may be visible to others and is not protected by advanced security measures.</li>
                     </ul>
                 </div>
         },
@@ -100,7 +103,14 @@ const PrivacyData = () => {
                     <ul className='list-unstyled'>
                         <li>- Request correction of your data.</li>
                         <li>- Report privacy concerns or violations through the platform.</li>
+<li>- Request deletion of your account and associated personal data, subject to technical limitations and legal obligations.</li>
                     </ul>
+<p>
+When an account is deleted, personal identifiers are removed from posts, but the substantive content of the post remains as part of the community's public record.
+</p>
+<p>
+Depending on your location, you may have additional rights under applicable data protection laws, including the right to request access to or deletion of your personal data. We will make reasonable efforts to honor such requests where technically feasible and legally required.
+</p>
                 </div>
         },
         {
@@ -117,6 +127,9 @@ const PrivacyData = () => {
                         <li>
                             - Local Storage: FitClue stores a unique user identifier (generated by Appwrite) in your browser's local storage to maintain session persistence. This data remains on your device and is used only within the platform.
                         </li>
+<li>
+- Abuse protection: FitClue utilizes reCAPTCHA to prevent spam and is subject to Google’s Privacy Policy.
+</li>
                         <li>
                             - Third-Party Content: FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with Instagram's and Meta's privacy policies. FitClue does not control these cookies and does not access the data collected by them.
                         </li>
@@ -125,6 +138,12 @@ const PrivacyData = () => {
                         FitClue does not use cookies or similar technologies for advertising or tracking you across other websites.
                     </p>
                 </div>
+        },
+{
+            title: "Monetization",
+            description: `
+      We reserve the right to introduce paid features or advertisements in the future, and this policy will be updated to reflect any new data practices.
+    `
         },
         {
             title: "Children's Privacy",

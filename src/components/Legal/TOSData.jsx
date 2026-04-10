@@ -11,7 +11,7 @@ const TOSData = () => {
             title: 'Privacy',
             description: (
                 <p>
-                    Your use of FitClue is also governed by our Privacy Policy, which explains how we collect, use, and store your data, including through cookies, local storage, and third-party services.
+                    Your use of FitClue is also governed by our Privacy Policy, which explains how we collect, use, and store your data, including cookies, local storage, embedded third-party content and services, and AI-based processing.
                 </p>
             )
         },
@@ -144,7 +144,7 @@ const TOSData = () => {
                         You may also choose to stop using the platform at any time. Termination may result in the deletion of all associated user data, including account credentials.
                     </p>
                     <p>
-                        However, user-generated content, such as comments and posted links, may remain visible on the platform after account deletion, and the associated account identifiers may be removed or anonymized (e.g., replaced with "Deleted User"). FitClue is under no obligation to remove such content unless required by law.
+                        However, user-generated content, such as comments and posted links, may remain visible on the platform after account deletion, and the associated account identifiers may be removed or may be anonymized (e.g., replaced with "Deleted User"). FitClue is under no obligation to remove such content unless required by law.
                     </p>
                 </>
             )
@@ -167,7 +167,7 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        These Terms of Service are governed by and construed in accordance with the laws of the jurisdiction in which the creator of FitClue resides, without regard to its conflict of law provisions.
+                        These Terms of Service are governed by and construed in accordance with the laws of the State of California, United States, without regard to its conflict of law provisions.
                     </p>
                     <p>
                         By using the platform, you agree to submit to the personal and exclusive jurisdiction of the local courts in that jurisdiction for any disputes arising out of or relating to these terms.
