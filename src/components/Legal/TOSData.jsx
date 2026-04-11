@@ -1,3 +1,5 @@
+import {Link} from 'react-router-dom';
+
 const TOSData = () => {
     const tosData = [
         {
@@ -11,7 +13,7 @@ const TOSData = () => {
             title: 'Privacy',
             description: (
                 <p>
-                    Your use of FitClue is also governed by our Privacy Policy, which explains how we collect, use, and store your data, including cookies, local storage, embedded third-party content and services, and AI-based processing.
+                    Your use of FitClue is also governed by our <Link to='/privacy'>Privacy Policy</Link>, which explains how we collect, use, and store your data, including cookies, local storage, embedded third-party content and services, and AI-based processing.
                 </p>
             )
         },
@@ -81,9 +83,17 @@ const TOSData = () => {
         {
             title: 'Content Moderation',
             description: (
+<>
                 <p>
                     FitClue reserves the right to remove content or suspend accounts at its sole discretion if it deems the content inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
                 </p>
+<p>
+Users may report specific comments, links, or embedded Instagram posts that violate our policies by using the report button associated with that content. Reports include the content ID and the reason for the report. Please note that while we provide tools to report individual pieces of content, we do not currently provide a feature to report user accounts directly.
+</p>
+<p>
+As a platform host, we act expeditiously to remove content that is found to be illegal or in violation of our terms. However, FitClue is a personal project and does not guarantee specific response times for every report.
+</p>
+</>
             )
         },
         {
