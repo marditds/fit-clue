@@ -98,16 +98,6 @@ export const SavedPosts = () => {
     }, [userSaves])
 
     useEffect(() => {
-        if (!userSaves.length) return;
-
-        const timeout = setTimeout(() => {
-            window.instgrm?.Embeds.process();
-        }, 0);
-
-        return () => clearTimeout(timeout);
-    }, [userSaves]);
-
-    useEffect(() => {
         const loadingSavesFirstBatch = async () => {
             console.log('Loading first batch of saves.');
 

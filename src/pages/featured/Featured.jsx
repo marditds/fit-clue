@@ -32,16 +32,6 @@ const Featured = () => {
         getPosts();
     }, []);
 
-    useEffect(() => {
-        if (!posts.length) return;
-
-        const timeout = setTimeout(() => {
-            window.instgrm?.Embeds.process();
-        }, 0);
-
-        return () => clearTimeout(timeout);
-    }, [posts]);
-
     if (isGridLoading) return <div>Loading the latest…</div>;
 
     return (

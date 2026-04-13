@@ -1,19 +1,24 @@
 import { useEffect } from 'react';
+import { loadInstagramEmbedScript, processInstagramEmbeds } from '../utils/instagramEmbed';
 
-export const useInstagramEmbedLoader = (posts) => {
-
+export const useInstagramEmbedLoader = (dependency = []) => {
     useEffect(() => {
-        if (!window.instgrm) {
-            const script = document.createElement('script');
-            script.src = 'https://www.instagram.com/embed.js';
-            script.async = true;
-            script.onload = () => {
-                window.instgrm?.Embeds.process();
-            };
-            document.body.appendChild(script);
-        } else {
-            window.instgrm.Embeds.process();
-        }
-    }, []);
+        let isReady = true;
 
-}
+        const init = async () => {
+            await loadInstagramEmbedScript();
+
+            if (isReady) {
+                requestAnimationFrame(() => {
+                    processInstagramEmbeds();
+                });
+            }
+        };
+
+        init();
+
+        return () => {
+            isReady = false;
+        };
+    }, dependency);
+};

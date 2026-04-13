@@ -3,7 +3,7 @@ import { Card } from '../Card/Card';
 
 export const InstagramEmbedCards = ({ posts, saveDocId, onDeleteSaveClick, isDeleteSaveLoading }) => {
 
-    useInstagramEmbedLoader(posts);
+    useInstagramEmbedLoader([posts.length]);
 
     return (
         <>
