@@ -105,6 +105,16 @@ const Results = () => {
     }
 
     useEffect(() => {
+        if (!results.length) return;
+
+        const timeout = setTimeout(() => {
+            window.instgrm?.Embeds.process();
+        }, 0);
+
+        return () => clearTimeout(timeout);
+    }, [results]);
+
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, [isNewTermSearched]);
 

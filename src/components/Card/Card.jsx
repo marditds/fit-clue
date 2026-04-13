@@ -76,37 +76,7 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                             width: '100%',
                             padding: '0',
                         }}
-                    >
-                        <div style={{ padding: '16px' }}>
-                            <a
-                                href={iUrl}
-                                style={{
-                                    background: '#FFFFFF',
-                                    lineHeight: 0,
-                                    padding: '0 0',
-                                    textAlign: 'center',
-                                    textDecoration: 'none',
-                                    width: '100%',
-                                }}
-                                target='_blank'
-                                rel='noreferrer'
-                            >
-                                <div style={{ paddingTop: '8px' }}>
-                                    <div
-                                        style={{
-                                            color: '#3897f0',
-                                            fontFamily: 'Arial,sans-serif',
-                                            fontSize: '14px',
-                                            fontWeight: 550,
-                                            lineHeight: '18px',
-                                        }}
-                                    >
-                                        View this post on Instagram
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </blockquote>
+                    />
                 </div>
 
                 {
