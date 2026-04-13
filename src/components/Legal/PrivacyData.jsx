@@ -25,16 +25,16 @@ const PrivacyData = () => {
                         <li>
                             - Content Shared: This includes any text, comments, or links you post on the platform. Such content may remain visible to other users even after account deletion, unless it is removed or required to be deleted by law.
                         </li>
-<li>
-- Reporting Data:When you report content (comments, links, or embedded posts), we collect the unique ID of the reported item and the reason provided for the report. This information is used solely to investigate potential violations of our policies and to maintain platform safety.
-</li>
+                        <li>
+                            - Reporting Data:When you report content (comments, links, or embedded posts), we collect the unique ID of the reported item and the reason provided for the report. This information is used solely to investigate potential violations of our policies and to maintain platform safety.
+                        </li>
                         <li>
                             - Technical Data: IP addresses and usage logs are collected by Appwrite on our behalf and are used for security, debugging, and maintaining platform performance.
                         </li>
                     </ul>
-<p>
-FitClue does not sell personal information to third parties.
-</p>
+                    <p>
+                        FitClue does not sell personal information to third parties.
+                    </p>
                 </div>
             )
         },
@@ -68,7 +68,7 @@ FitClue does not sell personal information to third parties.
                             - Service Providers: We use Appwrite to provide backend infrastructure and database services. Appwrite processes and stores data (including IP addresses) on our behalf as part of providing the platform.
                         </li>
                         <li>
-                            - AI-Powered Features: We use the Google Gemini API to review user-submitted content for compliance with our policies. When you submit content, it is sent to the API for analysis. Automated moderation systems may not be fully accurate and may incorrectly flag or allow content. FitClue does not store content that is rejected, but processing by third-party services is subject to their own data handling practices. This process helps prevent harmful content from appearing on the platform while minimizing the data we retain. The handling of this data is governed by Google's policies.
+                            - AI-Powered Features: We use the Google Gemini API to review user-submitted content for compliance with our policies. When you submit content, it is sent to the API for analysis. Automated moderation systems may not be fully accurate and may incorrectly flag or allow content. FitClue does not store content that is rejected, but processing by third-party services is subject to their own data handling practices. This process helps prevent harmful content from appearing on the platform while minimizing the data we retain. The handling of this data is governed by Google's policies, which we do not control.
                         </li>
                         <li>
                             - Legal Requirements: We may disclose data if required to do so by law or in response to valid legal requests.
@@ -106,14 +106,14 @@ FitClue does not sell personal information to third parties.
                     <ul className='list-unstyled'>
                         <li>- Request correction of your data.</li>
                         <li>- Report privacy concerns or violations through the platform.</li>
-<li>- Request deletion of your account and associated personal data, subject to technical limitations and legal obligations.</li>
+                        <li>- Request deletion of your account and associated personal data, subject to technical limitations and legal obligations.</li>
                     </ul>
-<p>
-When an account is deleted, personal identifiers are removed from posts, but the substantive content of the post remains as part of the community's public record.
-</p>
-<p>
-Depending on your location, you may have additional rights under applicable data protection laws, including the right to request access to or deletion of your personal data. We will make reasonable efforts to honor such requests where technically feasible and legally required.
-</p>
+                    <p>
+                        When an account is deleted, personal identifiers are removed from posts, but the substantive content of the post remains as part of the community's public record.
+                    </p>
+                    <p>
+                        Depending on your location, you may have additional rights under applicable data protection laws, including the right to request access to or deletion of your personal data. We will make reasonable efforts to honor such requests where technically feasible and legally required.
+                    </p>
                 </div>
         },
         {
@@ -130,11 +130,11 @@ Depending on your location, you may have additional rights under applicable data
                         <li>
                             - Local Storage: FitClue stores a unique user identifier (generated by Appwrite) in your browser's local storage to maintain session persistence. This data remains on your device and is used only within the platform.
                         </li>
-<li>
-- Security & Anti-Abuse: We use Google reCAPTCHA to protect the platform from spam and automated abuse. This service may collect hardware and software information, such as device and browser data, and send it to Google for analysis. Its use is subject to Google’s Privacy Policy.
-</li>
                         <li>
-                            - Third-Party Content: FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with Instagram's and Meta's privacy policies. FitClue does not control these cookies and does not access the data collected by them.
+                            - Security & Anti-Abuse: We use Google reCAPTCHA to protect the platform from spam and automated abuse. This service may collect hardware and software information, such as device and browser data, and send it to Google for analysis. Its use is subject to Google's Privacy Policy and Terms of Service.
+                        </li>
+                        <li>
+                            - Third-Party Content: FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with Instagram's and Meta's privacy policies which we do not control or access. FitClue does not control these cookies and does not access the data collected by them.
                         </li>
                     </ul>
                     <p>
@@ -142,7 +142,7 @@ Depending on your location, you may have additional rights under applicable data
                     </p>
                 </div>
         },
-{
+        {
             title: "Monetization",
             description: `
       We reserve the right to introduce paid features or advertisements in the future, and this policy will be updated to reflect any new data practices.

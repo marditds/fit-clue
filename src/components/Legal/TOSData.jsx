@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const TOSData = () => {
     const tosData = [
@@ -83,17 +83,17 @@ const TOSData = () => {
         {
             title: 'Content Moderation',
             description: (
-<>
-                <p>
-                    FitClue reserves the right to remove content or suspend accounts at its sole discretion if it deems the content inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
-                </p>
-<p>
-Users may report specific comments, links, or embedded Instagram posts that violate our policies by using the report button associated with that content. Reports include the content ID and the reason for the report. Please note that while we provide tools to report individual pieces of content, we do not currently provide a feature to report user accounts directly.
-</p>
-<p>
-As a platform host, we act expeditiously to remove content that is found to be illegal or in violation of our terms. However, FitClue is a personal project and does not guarantee specific response times for every report.
-</p>
-</>
+                <>
+                    <p>
+                        FitClue reserves the right to remove content or suspend accounts at its sole discretion if it deems the content inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
+                    </p>
+                    <p>
+                        Users may report specific comments, links, or embedded Instagram posts that violate our policies by using the report button associated with that content. Reports include the content ID and the reason for the report. Please note that while we provide tools to report individual pieces of content, we do not currently provide a feature to report user accounts directly.
+                    </p>
+                    <p>
+                        As a platform host, we act expeditiously to remove content that is found to be illegal or in violation of our terms. However, FitClue is a personal project and does not guarantee specific response times for every report.
+                    </p>
+                </>
             )
         },
         {
@@ -109,22 +109,33 @@ As a platform host, we act expeditiously to remove content that is found to be i
             description: (
                 <>
                     <p>
-                        FitClue utilizes various third-party services to provide its features. By using FitClue, you acknowledge and agree to be bound by the terms and policies of these third-party providers.
+                        FitClue relies on various third-party services to provide core functionality, including backend infrastructure, security features, content moderation, and embedded media.
                     </p>
                     <p>
-                        Once data is shared with third-party services, its handling is subject to their respective policies and practices, which FitClue does not control.
+                        By using FitClue, you acknowledge that your data may be processed by these third-party providers on our behalf. Such processing is subject to the respective terms, privacy policies, and acceptable use policies of those providers, which are independent of and not controlled by FitClue.
                     </p>
                     <p>
-                        FitClue is not affiliated with or endorsed by Instagram or Meta. Any use of Instagram's embed functionality is subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
+                        We encourage you to review the terms and privacy policies of the third-party services used by FitClue:
+                    </p>
+                    <ul>
+                        <li>Instagram and Meta (embedded content)</li>
+                        <li>Google (reCAPTCHA for spam and abuse prevention, Gemini API for content moderation)</li>
+                        <li>Appwrite (backend infrastructure, authentication, and data storage)</li>
+                    </ul>
+                    <p>
+                        FitClue is not affiliated with or endorsed by Instagram, Meta, Google, or Appwrite.
                     </p>
                     <p>
-                        FitClue is not affiliated with or endorsed by Google. FitClue uses Google services, such as reCAPTCHA for security and the Google Gemini API for content moderation.
+                        Embedded Instagram content may be subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
                     </p>
                     <p>
-                        Google Gemini is used to review user-submitted content (including links and comments) for compliance with platform policies. When you submit content, it is sent to the Google Gemini API for analysis before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. You remain solely responsible for the content you submit. Any use of Google services is subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a> and their <a href='https://policies.google.com/terms/generative-ai/use-policy' target='_blank'>Generative AI Prohibited Use Policy</a>.
+                        Google Gemini is used to review user-submitted content (including links and comments) for compliance with platform policies. When you submit content, may be sent to the Google Gemini API for analysis before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. You remain solely responsible for the content you submit. Any use of Google services may be subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a>, <a href='https://policies.google.com/privacy' target='_blank'>Google Privacy Policy</a>, and their <a href='https://policies.google.com/terms/generative-ai/use-policy' target='_blank'>Generative AI Prohibited Use Policy</a>.
                     </p>
                     <p>
-                        Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. Any use of Appwrite's services is subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a>.
+                        Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a>.
+                    </p>
+                    <p>
+                        These third-party terms and policies may change from time to time, and FitClue is not responsible for those changes.
                     </p>
                 </>
             )
