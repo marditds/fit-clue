@@ -1023,7 +1023,7 @@ export const reCaptchaVerification = async (token) => {
     }
 }
 
-export const assessLinkWithGemini = async (link) => {
+export const assessLinkSafety = async (link) => {
     try {
         const scanlink_function_id = await dbFunctionKeysProvider('scanLink_function');
 
