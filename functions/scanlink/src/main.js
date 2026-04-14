@@ -194,7 +194,7 @@ export default async ({ req, res, log, error }) => {
       verdict = 'not_valid_shopping_link';
     }
 
-    log(res.json())
+    log(JSON.stringify(res));
 
     return res.json({
       success: true,
