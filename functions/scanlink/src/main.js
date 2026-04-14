@@ -64,7 +64,12 @@ export default async ({ req, res, log, error }) => {
     log('after blockedDomains check');
 
     try {
+
+      log('start dns.lookup');
+
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
+
+      log('store dns.lookup ips');
 
       const isPrivateIP = (ip) =>
         ip.startsWith('10.') ||
@@ -74,6 +79,9 @@ export default async ({ req, res, log, error }) => {
         ip === '::1';
 
       if (addresses.some(a => isPrivateIP(a.address))) {
+
+        log('checking private addresses');
+
         return res.json({
           success: false,
           message: 'Not a valid shopping link'
