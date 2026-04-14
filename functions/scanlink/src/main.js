@@ -8,6 +8,8 @@ export default async ({ req, res, log, error }) => {
       ? JSON.parse(req.body)
       : req.body;
 
+    log(body)
+
     const rawLink = body?.link;
 
     if (!rawLink) {
