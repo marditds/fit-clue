@@ -192,6 +192,16 @@ export default async ({ req, res, log, error }) => {
       verdict = 'not_valid_shopping_link';
     }
 
+    log(res.json({
+      success: true,
+      message: verdict,
+      debug: {
+        domain,
+        score,
+        reason
+      }
+    }))
+
     return res.json({
       success: true,
       message: verdict,
@@ -201,6 +211,7 @@ export default async ({ req, res, log, error }) => {
         reason
       }
     });
+
 
   } catch (err) {
     error(`Unhandled error: ${err.message}`);
