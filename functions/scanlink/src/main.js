@@ -4,6 +4,7 @@ import dns from 'dns/promises';
 
 export default async ({ req, res, log, error }) => {
   try {
+    log('A: function start');
     const body = typeof req.body === 'string'
       ? JSON.parse(req.body)
       : req.body;
@@ -12,6 +13,7 @@ export default async ({ req, res, log, error }) => {
 
     const rawLink = body?.link;
 
+    log('B: after body parse');
     if (!rawLink) {
       return res.json({
         success: false,
@@ -26,6 +28,7 @@ export default async ({ req, res, log, error }) => {
       return url;
     };
 
+    log('C: after URL parse');
     const link = normalizeUrl(rawLink);
 
     let urlObj;
@@ -78,6 +81,7 @@ export default async ({ req, res, log, error }) => {
         message: 'Failed to resolve domain'
       });
     }
+    log('E: after DNS');
 
     const shoppingDomains = new Set([
       'amazon.com',
@@ -101,6 +105,8 @@ export default async ({ req, res, log, error }) => {
     let content = '';
 
     const isSpecialPlatform = nonShoppingPlatforms.has(domain);
+
+    log('G: after axios');
 
     if (!isSpecialPlatform) {
       try {
@@ -139,6 +145,8 @@ export default async ({ req, res, log, error }) => {
     let reason = [];
 
     const text = content.toLowerCase();
+
+    log('H: before scoring');
 
     if (shoppingDomains.has(domain)) {
       score += 4;
@@ -193,6 +201,10 @@ export default async ({ req, res, log, error }) => {
     } else {
       verdict = 'not_valid_shopping_link';
     }
+
+    log('I: before response');
+
+    log(verdict);
 
     log(JSON.stringify({
       success: true,
