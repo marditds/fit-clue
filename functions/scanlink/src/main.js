@@ -64,36 +64,63 @@ export default async ({ req, res, log, error }) => {
     log('after blockedDomains check');
 
     try {
-
       log('start dns.lookup');
 
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
 
-      log('store dns.lookup ips');
+      log('DNS raw result:', JSON.stringify(addresses));
 
-      const isPrivateIP = (ip) =>
-        ip.startsWith('10.') ||
-        ip.startsWith('172.') ||
-        ip.startsWith('192.168.') ||
-        ip === '127.0.0.1' ||
-        ip === '::1';
+      const ipList = addresses
+        .map((a) => a?.address)
+        .filter((ip) => typeof ip === 'string' && ip.length > 0);
 
-      if (addresses.some(a => isPrivateIP(a.address))) {
+      log('Normalized IP list:', JSON.stringify(ipList));
 
-        log('checking private addresses');
+      const isPrivateIP = (ip) => {
+        if (!ip) return false;
+
+        if (ip.startsWith('10.')) return true;
+        if (ip.startsWith('192.168.')) return true;
+        if (ip === '127.0.0.1') return true;
+
+        if (ip.startsWith('172.')) {
+          const second = Number(ip.split('.')[1]);
+          if (second >= 16 && second <= 31) return true;
+        }
+
+        if (
+          ip === '::1' ||
+          ip.startsWith('fc') ||
+          ip.startsWith('fd')
+        ) {
+          return true;
+        }
+
+        return false;
+      };
+
+      const hasPrivateIP = ipList.some(isPrivateIP);
+
+      if (hasPrivateIP) {
+        log('Blocked due to private IP detection');
 
         return res.json({
           success: false,
           message: 'Not a valid shopping link'
         });
       }
+
+      log('E: DNS check passed');
+
     } catch (err) {
       log(`DNS error: ${err.message}`);
+
       return res.json({
         success: false,
         message: 'Failed to resolve domain'
       });
     }
+
     log('E: after DNS');
 
     const shoppingDomains = new Set([
