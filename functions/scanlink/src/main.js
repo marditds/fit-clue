@@ -8,9 +8,7 @@ export default async ({ req, res, log, error }) => {
       ? JSON.parse(req.body)
       : req.body;
 
-    log(body)
-
-    const rawLink = body?.body;
+    const rawLink = body?.link;
 
     if (!rawLink) {
       return res.json({
@@ -56,23 +54,48 @@ export default async ({ req, res, log, error }) => {
     }
 
     try {
+
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
 
-      const isPrivateIP = (ip) =>
-        ip.startsWith('10.') ||
-        ip.startsWith('172.') ||
-        ip.startsWith('192.168.') ||
-        ip === '127.0.0.1' ||
-        ip === '::1';
+      const ipList = addresses
+        .map(a => a?.address)
+        .filter(ip => typeof ip === 'string' && ip.length > 0);
 
-      if (addresses.some(a => isPrivateIP(a.address))) {
+      const isPrivateIP = (ip) => {
+        if (!ip) return false;
+
+        if (ip.startsWith('10.')) return true;
+        if (ip.startsWith('192.168.')) return true;
+        if (ip.startsWith('127.')) return true;
+
+        if (ip.startsWith('172.')) {
+          const second = Number(ip.split('.')[1]);
+          if (second >= 16 && second <= 31) return true;
+        }
+
+        if (
+          ip === '::1' ||
+          ip.startsWith('fc') ||
+          ip.startsWith('fd')
+        ) {
+          return true;
+        }
+
+        return false;
+      };
+
+      const privateIps = ipList.filter(isPrivateIP);
+
+      if (privateIps.length > 0) {
         return res.json({
           success: false,
           message: 'Not a valid shopping link'
         });
       }
+
     } catch (err) {
       log(`DNS error: ${err.message}`);
+
       return res.json({
         success: false,
         message: 'Failed to resolve domain'
@@ -194,7 +217,7 @@ export default async ({ req, res, log, error }) => {
       verdict = 'not_valid_shopping_link';
     }
 
-    log(res.json())
+    log(verdict);
 
     return res.json({
       success: true,
