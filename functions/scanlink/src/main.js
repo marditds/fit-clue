@@ -4,16 +4,12 @@ import dns from 'dns/promises';
 
 export default async ({ req, res, log, error }) => {
   try {
-    log('A: function start');
     const body = typeof req.body === 'string'
       ? JSON.parse(req.body)
       : req.body;
 
-    log(body)
-
     const rawLink = body?.link;
 
-    log('B: after body parse');
     if (!rawLink) {
       return res.json({
         success: false,
@@ -28,11 +24,7 @@ export default async ({ req, res, log, error }) => {
       return url;
     };
 
-    log('C: after URL parse');
-
     const link = normalizeUrl(rawLink);
-
-    log(' after normalized URL');
 
     let urlObj;
 
@@ -61,10 +53,7 @@ export default async ({ req, res, log, error }) => {
       });
     }
 
-    log('after blockedDomains check');
-
     try {
-      log('start dns.lookup');
 
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
 
@@ -97,16 +86,12 @@ export default async ({ req, res, log, error }) => {
 
       const privateIps = ipList.filter(isPrivateIP);
 
-      log('Private IPs detected');
-
       if (privateIps.length > 0) {
         return res.json({
           success: false,
           message: 'Not a valid shopping link'
         });
       }
-
-      log('E: DNS check passed');
 
     } catch (err) {
       log(`DNS error: ${err.message}`);
@@ -116,8 +101,6 @@ export default async ({ req, res, log, error }) => {
         message: 'Failed to resolve domain'
       });
     }
-
-    log('E: after DNS');
 
     const shoppingDomains = new Set([
       'amazon.com',
@@ -141,8 +124,6 @@ export default async ({ req, res, log, error }) => {
     let content = '';
 
     const isSpecialPlatform = nonShoppingPlatforms.has(domain);
-
-    log('G: after axios');
 
     if (!isSpecialPlatform) {
       try {
@@ -181,8 +162,6 @@ export default async ({ req, res, log, error }) => {
     let reason = [];
 
     const text = content.toLowerCase();
-
-    log('H: before scoring');
 
     if (shoppingDomains.has(domain)) {
       score += 4;
@@ -238,15 +217,7 @@ export default async ({ req, res, log, error }) => {
       verdict = 'not_valid_shopping_link';
     }
 
-    log(JSON.stringify({
-      success: true,
-      message: verdict,
-      debug: {
-        domain,
-        score,
-        reason
-      }
-    }, null, 2));
+    log(verdict);
 
     return res.json({
       success: true,
