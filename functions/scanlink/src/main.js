@@ -23,7 +23,13 @@ export default async ({ req, res, log, error }) => {
     };
 
     const link = normalizeUrl(data.link);
+
+    log('link:', link);
+
     const urlObj = new URL(link);
+
+    log('urlObj:', urlObj);
+
     const domain = urlObj.hostname.replace(/^www\./, '');
 
     const specialDomains = [
@@ -157,6 +163,8 @@ Content: ${specialDomains.includes(domain) ? '[No content available]' : content}
         responseMimeType: 'text/plain'
       }
     });
+
+    log('response:', response);
 
     const result = response.text.trim();
     log('Model response:', result);
