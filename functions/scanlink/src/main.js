@@ -10,7 +10,7 @@ export default async ({ req, res, log, error }) => {
 
     log(body)
 
-    const rawLink = body?.link;
+    const rawLink = body?.body;
 
     if (!rawLink) {
       return res.json({
