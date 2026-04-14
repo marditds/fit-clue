@@ -1,178 +1,214 @@
-import { GoogleGenAI } from '@google/genai';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import dns from 'dns/promises';
 
 export default async ({ req, res, log, error }) => {
-  const GeminiApiKey = process.env.SCAN_LINK_API_KEY;
-
   try {
-    let data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const body = typeof req.body === 'string'
+      ? JSON.parse(req.body)
+      : req.body;
 
-    log('data.link:', data.link);
+    const rawLink = body?.link;
 
-    if (!data.link) {
-      return res.json({ success: false, message: 'Missing link' });
+    if (!rawLink) {
+      return res.json({
+        success: false,
+        message: 'Missing link'
+      });
     }
 
     const normalizeUrl = (url) => {
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        return 'https://' + url;
+      if (!/^https?:\/\//i.test(url)) {
+        return `https://${url}`;
       }
       return url;
     };
 
-    const link = normalizeUrl(data.link);
+    const link = normalizeUrl(rawLink);
 
-    log('link:', link);
+    let urlObj;
 
-    const urlObj = new URL(link);
-
-    log('urlObj:', urlObj);
+    try {
+      urlObj = new URL(link);
+    } catch {
+      return res.json({
+        success: false,
+        message: 'Invalid URL'
+      });
+    }
 
     const domain = urlObj.hostname.replace(/^www\./, '');
 
-    const specialDomains = [
-      'x.com',
-      'twitter.com',
-      'linkedin.com',
-      'youtube.com'
-    ];
+    const blockedDomains = new Set([
+      'localhost',
+      '127.0.0.1',
+      'example.internal',
+      'malicious.com'
+    ]);
 
-    const blockedDomains = ['localhost', 'example.internal', 'malicious.com'];
-    if (blockedDomains.includes(domain)) {
-      return res.json({ success: false, message: 'Not a valid shopping link.' });
+    if (blockedDomains.has(domain)) {
+      return res.json({
+        success: false,
+        message: 'Not a valid shopping link'
+      });
     }
 
     try {
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
-      const isPrivateIP = (ip) => {
-        return (
-          ip.startsWith('10.') ||
-          ip.startsWith('172.') ||
-          ip.startsWith('192.168.') ||
-          ip === '127.0.0.1' ||
-          ip === '::1'
-        );
-      };
-      const ipList = addresses.map((a) => a.address);
-      if (ipList.some(isPrivateIP)) {
-        return res.json({ success: false, message: 'Not a valid shopping link.' });
+
+      const isPrivateIP = (ip) =>
+        ip.startsWith('10.') ||
+        ip.startsWith('172.') ||
+        ip.startsWith('192.168.') ||
+        ip === '127.0.0.1' ||
+        ip === '::1';
+
+      if (addresses.some(a => isPrivateIP(a.address))) {
+        return res.json({
+          success: false,
+          message: 'Not a valid shopping link'
+        });
       }
-    } catch (dnsErr) {
-      log(`DNS resolution failed: ${dnsErr.message}`);
-      return res.json({ success: false, message: 'Failed to resolve domain.' });
+    } catch (err) {
+      log(`DNS error: ${err.message}`);
+      return res.json({
+        success: false,
+        message: 'Failed to resolve domain'
+      });
     }
 
-    const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
+    const shoppingDomains = new Set([
+      'amazon.com',
+      'ebay.com',
+      'etsy.com',
+      'walmart.com',
+      'target.com',
+      'nike.com',
+      'zara.com'
+    ]);
+
+    const nonShoppingPlatforms = new Set([
+      'x.com',
+      'twitter.com',
+      'youtube.com',
+      'linkedin.com',
+      'tiktok.com',
+      'instagram.com'
+    ]);
 
     let content = '';
 
-    if (!specialDomains.includes(domain)) {
+    const isSpecialPlatform = nonShoppingPlatforms.has(domain);
+
+    if (!isSpecialPlatform) {
       try {
-        const responseFromLink = await axios.get(link, {
-          timeout: 7000,           // 7-second timeout
+        const response = await axios.get(link, {
+          timeout: 7000,
           maxRedirects: 3,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1'
+            'User-Agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
+            'Accept': 'text/html'
           }
         });
 
-        const rawHtml = responseFromLink.data;
-        const $ = cheerio.load(rawHtml);
+        const $ = cheerio.load(response.data);
 
-        const title = $('title').text();
-        const h1 = $('h1').map((_, el) => $(el).text()).get().join('\n');
+        const title = $('title').text() || '';
+        const h1 = $('h1')
+          .map((_, el) => $(el).text())
+          .get()
+          .join(' ');
+
         const paragraphs = $('p')
           .map((_, el) => $(el).text())
           .get()
           .slice(0, 10)
-          .join('\n');
+          .join(' ');
 
-        content = `${title}\n${h1}\n${paragraphs}`.trim().slice(0, 8000);
-
-      } catch (axiosErr) {
-        const status = axiosErr.response?.status;
-        if (axiosErr.code === 'ECONNABORTED' || status === 403) {
-          log(`Blocked or timed out fetching ${link} (status: ${status || 'timeout'}). Proceeding with no content.`);
-          content = '[No content available]';
-        } else {
-          log(`Failed to fetch link: ${axiosErr.message}`);
-          return res.json({ success: false, message: 'Failed to fetch the link.', error: axiosErr.message });
-        }
+        content = `${title} ${h1} ${paragraphs}`.trim().slice(0, 8000);
+      } catch (err) {
+        log(`Fetch error: ${err.message}`);
+        content = '';
       }
     }
 
-    const safetyCheckPrompt = `
-You are a strict content safety assistant. Your task is to classify the safety and validity of a webpage link and its content. You must return **exactly one** of the following responses — nothing else.
+    let score = 0;
+    let reason = [];
 
-- unsafe
-- ok
-- Not a valid shopping link
+    const text = content.toLowerCase();
 
-Follow the steps below:
+    if (shoppingDomains.has(domain)) {
+      score += 4;
+      reason.push('known_shopping_domain');
+    }
 
-Step 1: Check if the domain is well-known and can be classified based on your existing knowledge.
+    if (nonShoppingPlatforms.has(domain)) {
+      score -= 5;
+      reason.push('non_shopping_platform');
+    }
 
-- If the domain is a known non-shopping platform (e.g., twitter.com, x.com), respond with:
-Not a valid shopping link
+    const shoppingSignals = [
+      { regex: /add to cart/i, weight: 2 },
+      { regex: /buy now/i, weight: 2 },
+      { regex: /checkout/i, weight: 2 },
+      { regex: /\$\s?\d+/, weight: 2 },
+      { regex: /shipping/i, weight: 1 },
+      { regex: /product/i, weight: 1 }
+    ];
 
-- If the domain is a known shopping platform (e.g., amazon.com, prada.com), respond with:
-ok
+    for (const signal of shoppingSignals) {
+      if (signal.regex.test(text)) {
+        score += signal.weight;
+        reason.push(signal.regex.toString());
+      }
+    }
 
-- If the domain is associated with adult or other NSFW content, respond with:
-unsafe
+    const unsafePatterns = [
+      /porn/i,
+      /xxx/i,
+      /nsfw/i,
+      /sex/i,
+      /nude/i,
+      /fuck/i,
+      /escort/i,
+      /violence/i
+    ];
 
-If the domain is not familiar or you cannot confidently classify it, proceed to Step 2.
+    if (unsafePatterns.some(r => r.test(text))) {
+      score -= 10;
+      reason.push('unsafe_content_detected');
+    }
 
-Step 2: If the content is not in English, translate it into English internally. Do not include any translation labels or indicate that translation occurred.
+    let verdict = 'review';
 
-Step 3: Analyze the content.
+    if (score <= -5) {
+      verdict = 'unsafe';
+    } else if (score >= 4) {
+      verdict = 'ok';
+    } else if (score >= 1) {
+      verdict = 'ok';
+    } else {
+      verdict = 'not_valid_shopping_link';
+    }
 
-- If it contains any NSFW material (e.g., nudity, explicit language, gore, hate speech, or illegal activity), respond with:
-unsafe
-
-- If the content is clean and safe for work **and** it appears to be from a legitimate shopping site, respond with:
-ok
-
-- If the content is clean but does not relate to online shopping, respond with:
-Not a valid shopping link
-
-You must return only one of the three valid responses: "unsafe", "ok", or "Not a valid shopping link".
-
----
-
-Link: ${link}
-
-Content: ${specialDomains.includes(domain) ? '[No content available]' : content}
-`.trim();
-
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-001',
-      contents: safetyCheckPrompt,
-      config: {
-        temperature: 0.0,
-        topP: 0.7,
-        maxOutputTokens: 100,
-        responseMimeType: 'text/plain'
+    return res.json({
+      success: true,
+      message: verdict,
+      debug: {
+        domain,
+        score,
+        reason
       }
     });
 
-    log('response:', response);
-
-    const result = response.text.trim();
-    log('Model response:', result);
-
-    return res.json({ success: false, message: result });
-
   } catch (err) {
-    error('Unhandled Error: ' + err.message);
-    return res.json({ success: false, message: 'Server error', error: err.message });
+    error(`Unhandled error: ${err.message}`);
+
+    return res.json({
+      success: false,
+      message: 'Server error',
+      error: err.message
+    });
   }
 };
