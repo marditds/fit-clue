@@ -68,20 +68,16 @@ export default async ({ req, res, log, error }) => {
 
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
 
-      log('DNS raw result:', JSON.stringify(addresses));
-
       const ipList = addresses
-        .map((a) => a?.address)
-        .filter((ip) => typeof ip === 'string' && ip.length > 0);
-
-      log('Normalized IP list:', JSON.stringify(ipList));
+        .map(a => a?.address)
+        .filter(ip => typeof ip === 'string' && ip.length > 0);
 
       const isPrivateIP = (ip) => {
         if (!ip) return false;
 
         if (ip.startsWith('10.')) return true;
         if (ip.startsWith('192.168.')) return true;
-        if (ip === '127.0.0.1') return true;
+        if (ip.startsWith('127.')) return true;
 
         if (ip.startsWith('172.')) {
           const second = Number(ip.split('.')[1]);
@@ -99,11 +95,11 @@ export default async ({ req, res, log, error }) => {
         return false;
       };
 
-      const hasPrivateIP = ipList.some(isPrivateIP);
+      const privateIps = ipList.filter(isPrivateIP);
 
-      if (hasPrivateIP) {
-        log('Blocked due to private IP detection');
+      log('Private IPs detected');
 
+      if (privateIps.length > 0) {
         return res.json({
           success: false,
           message: 'Not a valid shopping link'
@@ -241,10 +237,6 @@ export default async ({ req, res, log, error }) => {
     } else {
       verdict = 'not_valid_shopping_link';
     }
-
-    log('I: before response');
-
-    log(verdict);
 
     log(JSON.stringify({
       success: true,
