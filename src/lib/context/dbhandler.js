@@ -1023,6 +1023,38 @@ export const reCaptchaVerification = async (token) => {
     }
 }
 
+export const assessLinkWithGemini = async (link) => {
+    try {
+        const scanlink_function_id = await dbFunctionKeysProvider('scanLink_function');
+
+        if (!scanlink_function_id) {
+            throw new Error('Failed to load function ID');
+        }
+
+        const payload = JSON.stringify({ link });
+
+        const res = await functions.createExecution({
+            functionId: scanlink_function_id,
+            body: payload
+        })
+
+        if (res.status === 'completed') {
+            try {
+                const result = JSON.parse(res.responseBody);
+                return result;
+            } catch (parseError) {
+                console.error('Error parsing response:', parseError);
+                return false;
+            }
+        } else {
+            console.error("Failed to complete comment assessment.");
+        }
+
+    } catch (error) {
+        console.log('Error assessing comment with Gemini:', error);
+    }
+}
+
 export const assessCommentWithGemini = async (commentText) => {
     try {
         const gemini_function_id = await dbFunctionKeysProvider('gemini_function');
