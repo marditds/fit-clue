@@ -29,7 +29,10 @@ export default async ({ req, res, log, error }) => {
     };
 
     log('C: after URL parse');
+
     const link = normalizeUrl(rawLink);
+
+    log(' after normalized URL');
 
     let urlObj;
 
@@ -57,6 +60,8 @@ export default async ({ req, res, log, error }) => {
         message: 'Not a valid shopping link'
       });
     }
+
+    log('after blockedDomains check');
 
     try {
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
