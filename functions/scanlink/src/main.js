@@ -8,7 +8,7 @@ const client = new Client()
 
 const db = new TablesDB(client);
 
-const DATABASE_ID = process.env.APPWRITE_DB_ID;
+const DATABASE_ID = process.env.DATABASE_ID;
 const REVIEWS_LINKS_COLLECTION = process.env.REVIEWS_LINKS_COLLECTION;
 const LEARNING_LINKS_COLLECTION = process.env.LEARNING_LINKS_COLLECTION;
 
