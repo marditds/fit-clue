@@ -436,6 +436,7 @@ export default async ({ req, res, log, error }) => {
 
     return res.json({
       success: true,
+      domain: domain,
       message: verdict
     });
 
