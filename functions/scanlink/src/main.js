@@ -1,5 +1,3 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
 import dns from 'dns/promises';
 
 export default async ({ req, res, log, error }) => {
@@ -37,29 +35,40 @@ export default async ({ req, res, log, error }) => {
       });
     }
 
-    const domain = urlObj.hostname.replace(/^www\./, '');
+    const domain = urlObj.hostname.replace(/^www\./, '').toLowerCase();
 
     const blockedDomains = new Set([
       'localhost',
       '127.0.0.1',
-      'example.internal',
-      'malicious.com'
+      'example.internal'
     ]);
 
+    const bannedTlds = ['.xxx', '.porn', '.adult', '.sex'];
+
+    const unsafePatterns = [
+      /porn/i,
+      /xxx/i,
+      /nsfw/i,
+      /sex/i,
+      /fuck/i,
+      /nude/i,
+      /escort/i
+    ];
+
     if (blockedDomains.has(domain)) {
-      return res.json({
-        success: false,
-        message: 'Not a valid shopping link'
-      });
+      return res.json({ success: true, message: 'unsafe' });
+    }
+
+    if (bannedTlds.some(tld => domain.endsWith(tld))) {
+      return res.json({ success: true, message: 'unsafe' });
+    }
+
+    if (unsafePatterns.some(r => r.test(link))) {
+      return res.json({ success: true, message: 'unsafe' });
     }
 
     try {
-
       const addresses = await dns.lookup(urlObj.hostname, { all: true });
-
-      const ipList = addresses
-        .map(a => a?.address)
-        .filter(ip => typeof ip === 'string' && ip.length > 0);
 
       const isPrivateIP = (ip) => {
         if (!ip) return false;
@@ -84,13 +93,10 @@ export default async ({ req, res, log, error }) => {
         return false;
       };
 
-      const privateIps = ipList.filter(isPrivateIP);
+      const privateIpFound = addresses.some(a => isPrivateIP(a.address));
 
-      if (privateIps.length > 0) {
-        return res.json({
-          success: false,
-          message: 'Not a valid shopping link'
-        });
+      if (privateIpFound) {
+        return res.json({ success: true, message: 'unsafe' });
       }
 
     } catch (err) {
@@ -102,136 +108,101 @@ export default async ({ req, res, log, error }) => {
       });
     }
 
-    const shoppingDomains = new Set([
+    const trustedRetailers = new Set([
       'amazon.com',
       'ebay.com',
       'etsy.com',
       'walmart.com',
       'target.com',
       'nike.com',
-      'zara.com'
+      'zara.com',
+      'macys.com',
+      'bestbuy.com',
+      'asos.com',
+      'hm.com'
     ]);
+
+    const isTrustedDomain = (domain) =>
+      [...trustedRetailers].some(d =>
+        domain === d || domain.endsWith(`.${d}`)
+      );
+
+    if (isTrustedDomain(domain)) {
+      log(`ALLOW: trusted domain (${domain})`);
+      return res.json({ success: true, message: 'ok' });
+    }
 
     const nonShoppingPlatforms = new Set([
       'x.com',
       'twitter.com',
       'youtube.com',
-      'linkedin.com',
+      'instagram.com',
       'tiktok.com',
-      'instagram.com'
+      'linkedin.com'
     ]);
 
-    let content = '';
+    const isPlatform = (domain) =>
+      [...nonShoppingPlatforms].some(d =>
+        domain === d || domain.endsWith(`.${d}`)
+      );
 
-    const isSpecialPlatform = nonShoppingPlatforms.has(domain);
-
-    if (!isSpecialPlatform) {
-      try {
-        const response = await axios.get(link, {
-          timeout: 7000,
-          maxRedirects: 3,
-          headers: {
-            'User-Agent':
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
-            'Accept': 'text/html'
-          }
-        });
-
-        const $ = cheerio.load(response.data);
-
-        const title = $('title').text() || '';
-        const h1 = $('h1')
-          .map((_, el) => $(el).text())
-          .get()
-          .join(' ');
-
-        const paragraphs = $('p')
-          .map((_, el) => $(el).text())
-          .get()
-          .slice(0, 10)
-          .join(' ');
-
-        content = `${title} ${h1} ${paragraphs}`.trim().slice(0, 8000);
-      } catch (err) {
-        log(`Fetch error: ${err.message}`);
-        content = '';
-      }
+    if (isPlatform(domain)) {
+      log(`REJECT: non-shopping platform (${domain})`);
+      return res.json({
+        success: true,
+        message: 'not_valid_shopping_link'
+      });
     }
 
-    let score = 0;
-    let reason = [];
-
-    const text = content.toLowerCase();
-
-    if (shoppingDomains.has(domain)) {
-      score += 4;
-      reason.push('known_shopping_domain');
-    }
-
-    if (nonShoppingPlatforms.has(domain)) {
-      score -= 5;
-      reason.push('non_shopping_platform');
-    }
-
-    const shoppingSignals = [
-      { regex: /add to cart/i, weight: 2 },
-      { regex: /buy now/i, weight: 2 },
-      { regex: /checkout/i, weight: 2 },
-      { regex: /\$\s?\d+/, weight: 2 },
-      { regex: /shipping/i, weight: 1 },
-      { regex: /product/i, weight: 1 }
+    const productPatterns = [
+      /\/product\//i,
+      /\/p\//i,
+      /\/item\//i,
+      /\/dp\//i,
+      /\/gp\/product\//i,
+      /\/shop\//i
     ];
 
-    for (const signal of shoppingSignals) {
-      if (signal.regex.test(text)) {
-        score += signal.weight;
-        reason.push(signal.regex.toString());
-      }
-    }
-
-    const unsafePatterns = [
-      /porn/i,
-      /xxx/i,
-      /nsfw/i,
-      /sex/i,
-      /nude/i,
-      /fuck/i,
-      /escort/i,
-      /violence/i
+    const querySignals = [
+      'product_id',
+      'sku',
+      'item',
+      'variant'
     ];
 
-    if (unsafePatterns.some(r => r.test(text))) {
-      score -= 10;
-      reason.push('unsafe_content_detected');
+    const hasProductPath = productPatterns.some(r =>
+      r.test(urlObj.pathname)
+    );
+
+    const hasProductQuery = querySignals.some(param =>
+      urlObj.searchParams.has(param)
+    );
+
+    if (hasProductPath || hasProductQuery) {
+      log(`ALLOW: structural shopping signal (${link})`);
+      return res.json({ success: true, message: 'ok' });
     }
 
-    let verdict = 'review';
+    const domainSignals = ['shop', 'store', 'boutique'];
 
-    if (score <= -5) {
-      verdict = 'unsafe';
-    } else if (score >= 4) {
-      verdict = 'ok';
-    } else if (score >= 1) {
-      verdict = 'ok';
-    } else {
-      verdict = 'not_valid_shopping_link';
+    const looksLikeStore = domainSignals.some(s =>
+      domain.includes(s)
+    );
+
+    if (looksLikeStore) {
+      log(`REVIEW: heuristic match (${domain})`);
+      return res.json({
+        success: true,
+        message: 'review'
+      });
     }
 
-    log(JSON.stringify({
-      success: true,
-      message: verdict,
-      debug: {
-        domain,
-        score,
-        reason
-      }
-    }), null, 2);
+    log(`REJECT: no shopping signals (${link})`);
 
     return res.json({
       success: true,
-      message: verdict,
+      message: 'not_valid_shopping_link'
     });
-
 
   } catch (err) {
     error(`Unhandled error: ${err.message}`);
