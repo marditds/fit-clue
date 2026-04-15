@@ -126,7 +126,7 @@ const CONFIG = {
   },
 
   // -------------------------
-  // ⏱ DNS timeout (ms)     (Fix #6)
+  // ⏱ DNS timeout (ms)
   // -------------------------
   dnsTimeoutMs: 3000
 };
@@ -142,7 +142,7 @@ const normalizeUrl = (url) => {
   return url;
 };
 
-// Fix #5: Covers all private/reserved ranges including
+// Covers all private/reserved ranges including
 // 169.254.x.x (AWS metadata), 0.x.x.x, and CGNAT 100.64–127.x.x
 const isPrivateIP = (ip) => {
   if (!ip) return false;
@@ -180,7 +180,7 @@ const isPlatform = (domain) =>
     domain === d || domain.endsWith(`.${d}`)
   );
 
-// Fix #6: Prevents function hangs if DNS is unresponsive
+// Prevents function hangs if DNS is unresponsive
 const dnsLookupWithTimeout = (hostname, timeoutMs) => {
   return Promise.race([
     dns.lookup(hostname, { all: true }),
@@ -266,7 +266,7 @@ export default async ({ req, res, log, error }) => {
 
     const domain = urlObj.hostname.replace(/^www\./, '').toLowerCase();
 
-    // Fix #1: Decode once up front so all signal checks work against
+    // Decode once up front so all signal checks work against
     // the human-readable form (e.g. %24 → $, %2F → /)
     const decodedLink = (() => {
       try {
@@ -302,7 +302,7 @@ export default async ({ req, res, log, error }) => {
 
     // DNS / SSRF protection
     try {
-      // Fix #6: timeout-wrapped lookup prevents function hangs
+      // timeout-wrapped lookup prevents function hangs
       const addresses = await dnsLookupWithTimeout(
         urlObj.hostname,
         CONFIG.dnsTimeoutMs
@@ -353,7 +353,7 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.strong.checkoutPath;
     }
 
-    // Fix #1: test decoded URL so percent-encoded "$" (%24) is caught
+    // test decoded URL so percent-encoded "$" (%24) is caught
     if (/\$\s?\d+/.test(decodedLink)) {
       score += CONFIG.signals.strong.priceInUrl;
     }
@@ -372,9 +372,6 @@ export default async ({ req, res, log, error }) => {
     // -------------------------
     // 🟣 Weak editorial commerce signals
     // -------------------------
-
-    // Fix #2: removed query.toString().length > 0 — matched any URL with
-    // any query param (?lang=en, ?page=2), causing false positives.
     const looksLikeEditorialCommerce =
       path.length > 10 &&
       (path.includes('fashion') ||
@@ -386,7 +383,6 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.weak.editorialCommerceHint;
     }
 
-    // Fix #4: slug-style product URL weak signal
     // Catches paths like /t/air-max-270-react or /en/clothing/blue-dress-12345
     // that major retailers (Nike, Zara, ASOS, H&M, etc.) commonly use.
     const slugSegments = path.split('/').filter(s => /^[a-z0-9][a-z0-9-]{2,}$/.test(s));
@@ -407,7 +403,6 @@ export default async ({ req, res, log, error }) => {
       'farfetch.com',
       'editorialist.com',
       'ssense.com',
-      // Fix #4: added widely-used retailers missing from original list
       'nike.com',
       'asos.com',
       'zara.com',
@@ -429,7 +424,7 @@ export default async ({ req, res, log, error }) => {
     // ======================================================
     // 🎯 FINAL DECISION ENGINE
     //
-    // Fix #3: 'review' is treated as a rejection because there is no
+    // 'review' is treated as a rejection because there is no
     // moderation queue.
     // ======================================================
 
