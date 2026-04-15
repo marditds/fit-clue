@@ -159,6 +159,8 @@ export default async ({ req, res, log, error }) => {
     if (score >= 5) verdict = 'ok';
     else if (score >= 2) verdict = 'review';
 
+    log(`${link}, ${domain}, ${score}, ${verdict}, ${resolved}`)
+
     const reviewDoc = await db.createRow({
       databaseId: DATABASE_ID,
       tableId: REVIEWS_LINKS_COLLECTION,
