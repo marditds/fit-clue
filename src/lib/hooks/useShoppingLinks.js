@@ -12,17 +12,20 @@ export const useShoppingLinks = () => {
 
       console.log('assessmentRes:', assessmentRes);
 
+      const MESSAGE_MAP = {
+        unsafe: 'The link violates our community guidelines.',
+        not_valid_shopping_link: 'Not a valid shopping link.',
+        invalid_url: 'The submitted link is not valid.'
+      }
+
       if (assessmentRes.message !== 'ok') {
+        return (MESSAGE_MAP[assessmentRes.message] ||
+          'Error adding link. Please try again later.');
+      }
 
-        if (assessmentRes.message === 'unsafe') {
-          console.log(assessmentRes);
-          return 'The link violates our community guidelines.';
-        }
-
-        if (assessmentRes.message === 'not_valid_shopping_link') {
-          console.log(assessmentRes);
-          return 'Not a valid shopping link.';
-        }
+      if (!assessmentRes || !assessmentRes.message) {
+        console.error('Invalid assessment response:', assessmentRes);
+        return 'Error adding link. Please try again later.';
       }
 
       const res = await makeLink(href, brandName, item, userId, similarityLevel);

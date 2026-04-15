@@ -384,9 +384,17 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
 
         if (productLinksData.length > 0) {
             product_links = await Promise.all(
-                productLinksData.map(link =>
-                    createLink(link.href, link.brandName.toLowerCase(), link.item.toLowerCase(), userId, link.similarityLevel)
-                )
+                productLinksData
+                    .filter(link => assessLinkSafety(link.href).message === 'ok')
+                    .map(link =>
+                        createLink(
+                            link.href,
+                            link.brandName.toLowerCase(),
+                            link.item.toLowerCase(),
+                            userId,
+                            link.similarityLevel
+                        )
+                    )
             );
         }
 
