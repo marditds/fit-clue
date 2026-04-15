@@ -1,4 +1,108 @@
 import dns from 'dns/promises';
+import { Client, TablesDB, ID, Query } from 'node-appwrite';
+
+const client = new Client()
+  .setEndpoint(process.env.ENDPOINT)
+  .setProject(process.env.PROJECT_ID)
+  .setKey(process.env.APPWRITE_API_KEY);
+
+const db = new TablesDB(client);
+
+const DATABASE_ID = process.env.APPWRITE_DB_ID;
+const REVIEWS_LINKS_COLLECTION = process.env.REVIEWS_LINKS_COLLECTION;
+const LEARNING_LINKS_COLLECTION = process.env.LEARNING_LINKS_COLLECTION;
+
+const CONFIG = {
+  blockedDomains: new Set(['localhost', '127.0.0.1']),
+  unsafePatterns: [/porn/i, /xxx/i, /sex/i, /nude/i],
+  nonShoppingPlatforms: new Set([
+    'x.com',
+    'twitter.com',
+    'youtube.com',
+    'instagram.com',
+    'tiktok.com',
+    'linkedin.com'
+  ])
+};
+
+const normalizeUrl = (url) =>
+  /^https?:\/\//i.test(url) ? url : `https://${url}`;
+
+const isPrivateIP = (ip) =>
+  ip.startsWith('10.') ||
+  ip.startsWith('192.168.') ||
+  ip.startsWith('127.') ||
+  ip === '::1' ||
+  ip.startsWith('fc') ||
+  ip.startsWith('fd');
+
+const isPlatform = (domain) =>
+  [...CONFIG.nonShoppingPlatforms].some(
+    d => domain === d || domain.endsWith(`.${d}`)
+  );
+
+async function getDomainTrust(domain) {
+  try {
+    const result = await db.listRows({
+      databaseId: DATABASE_ID,
+      tableId: LEARNING_LINKS_COLLECTION,
+      queries: [Query.equal('domain', domain)]
+    });
+
+    if (result.rows.length === 0) {
+      return 0.5;
+    }
+
+    return result.rows[0].trustScore;
+  } catch {
+    return 0.5;
+  }
+}
+
+async function updateDomainLearning(domain, verdict) {
+  try {
+    const existing = await db.listRows({
+      databaseId: DATABASE_ID,
+      tableId: LEARNING_LINKS_COLLECTION,
+      queries: [Query.equal('domain', domain)]
+    });
+
+    let doc = existing.rows[0];
+
+    if (!doc) {
+      await db.createRow({
+        databaseId: DATABASE_ID,
+        tableId: LEARNING_LINKS_COLLECTION,
+        rowId: ID.unique(),
+        data: {
+          domain,
+          approvedCount: verdict === 'ok' ? 1 : 0,
+          rejectedCount: verdict === 'ok' ? 0 : 1,
+          trustScore: verdict === 'ok' ? 0.6 : 0.4,
+        }
+      });
+      return;
+    }
+
+    const approved = doc.approvedCount + (verdict === 'ok' ? 1 : 0);
+    const rejected = doc.rejectedCount + (verdict !== 'ok' ? 1 : 0);
+
+    const trustScore = approved / (approved + rejected);
+
+    await db.updateRow({
+      databaseId: DATABASE_ID,
+      tableId: LEARNING_LINKS_COLLECTION,
+      rowId: doc.$id,
+      data: {
+        approvedCount: approved,
+        rejectedCount: rejected,
+        trustScore,
+      }
+    });
+  } catch (err) {
+    console.error('Learning update failed:', err.message);
+  }
+}
 
 export default async ({ req, res, log, error }) => {
   try {
@@ -9,203 +113,77 @@ export default async ({ req, res, log, error }) => {
     const rawLink = body?.link;
 
     if (!rawLink) {
-      return res.json({
-        success: false,
-        message: 'Missing link'
-      });
+      return res.json({ success: false, message: 'Missing link' });
     }
-
-    const normalizeUrl = (url) => {
-      if (!/^https?:\/\//i.test(url)) {
-        return `https://${url}`;
-      }
-      return url;
-    };
 
     const link = normalizeUrl(rawLink);
+    const urlObj = new URL(link);
+    const domain = urlObj.hostname.replace(/^www\./, '');
 
-    let urlObj;
-
-    try {
-      urlObj = new URL(link);
-    } catch {
-      return res.json({
-        success: false,
-        message: 'Invalid URL'
-      });
-    }
-
-    const domain = urlObj.hostname.replace(/^www\./, '').toLowerCase();
-
-    const blockedDomains = new Set([
-      'localhost',
-      '127.0.0.1',
-      'example.internal'
-    ]);
-
-    const bannedTlds = ['.xxx', '.porn', '.adult', '.sex'];
-
-    const unsafePatterns = [
-      /porn/i,
-      /xxx/i,
-      /nsfw/i,
-      /sex/i,
-      /fuck/i,
-      /nude/i,
-      /escort/i
-    ];
-
-    if (blockedDomains.has(domain)) {
+    if (CONFIG.blockedDomains.has(domain)) {
       return res.json({ success: true, message: 'unsafe' });
     }
 
-    if (bannedTlds.some(tld => domain.endsWith(tld))) {
+    if (CONFIG.unsafePatterns.some(r => r.test(link))) {
       return res.json({ success: true, message: 'unsafe' });
     }
 
-    if (unsafePatterns.some(r => r.test(link))) {
+    const addresses = await dns.lookup(urlObj.hostname, { all: true });
+
+    if (addresses.some(a => isPrivateIP(a.address))) {
       return res.json({ success: true, message: 'unsafe' });
     }
-
-    try {
-      const addresses = await dns.lookup(urlObj.hostname, { all: true });
-
-      const isPrivateIP = (ip) => {
-        if (!ip) return false;
-
-        if (ip.startsWith('10.')) return true;
-        if (ip.startsWith('192.168.')) return true;
-        if (ip.startsWith('127.')) return true;
-
-        if (ip.startsWith('172.')) {
-          const second = Number(ip.split('.')[1]);
-          if (second >= 16 && second <= 31) return true;
-        }
-
-        if (
-          ip === '::1' ||
-          ip.startsWith('fc') ||
-          ip.startsWith('fd')
-        ) {
-          return true;
-        }
-
-        return false;
-      };
-
-      const privateIpFound = addresses.some(a => isPrivateIP(a.address));
-
-      if (privateIpFound) {
-        return res.json({ success: true, message: 'unsafe' });
-      }
-
-    } catch (err) {
-      log(`DNS error: ${err.message}`);
-
-      return res.json({
-        success: false,
-        message: 'Failed to resolve domain'
-      });
-    }
-
-    const trustedRetailers = new Set([
-      'amazon.com',
-      'ebay.com',
-      'etsy.com',
-      'walmart.com',
-      'target.com',
-      'nike.com',
-      'zara.com',
-      'macys.com',
-      'bestbuy.com',
-      'asos.com',
-      'hm.com'
-    ]);
-
-    const isTrustedDomain = (domain) =>
-      [...trustedRetailers].some(d =>
-        domain === d || domain.endsWith(`.${d}`)
-      );
-
-    if (isTrustedDomain(domain)) {
-      log(`ALLOW: trusted domain (${domain})`);
-      return res.json({ success: true, message: 'ok' });
-    }
-
-    const nonShoppingPlatforms = new Set([
-      'x.com',
-      'twitter.com',
-      'youtube.com',
-      'instagram.com',
-      'tiktok.com',
-      'linkedin.com'
-    ]);
-
-    const isPlatform = (domain) =>
-      [...nonShoppingPlatforms].some(d =>
-        domain === d || domain.endsWith(`.${d}`)
-      );
 
     if (isPlatform(domain)) {
-      log(`REJECT: non-shopping platform (${domain})`);
       return res.json({
         success: true,
         message: 'not_valid_shopping_link'
       });
     }
 
-    const productPatterns = [
-      /\/product\//i,
-      /\/p\//i,
-      /\/item\//i,
-      /\/dp\//i,
-      /\/gp\/product\//i,
-      /\/shop\//i
-    ];
+    const trust = await getDomainTrust(domain);
 
-    const querySignals = [
-      'product_id',
-      'sku',
-      'item',
-      'variant'
-    ];
+    let score = 0;
 
-    const hasProductPath = productPatterns.some(r =>
-      r.test(urlObj.pathname)
-    );
+    const path = urlObj.pathname.toLowerCase();
 
-    const hasProductQuery = querySignals.some(param =>
-      urlObj.searchParams.has(param)
-    );
+    if (/\/product\/|\/p\/|\/item\/|\/dp\//i.test(path)) score += 5;
+    if (domain.includes('shop')) score += 2;
+    if (domain.includes('store')) score += 2;
+    if (/\$\s?\d+/.test(link)) score += 2;
 
-    if (hasProductPath || hasProductQuery) {
-      log(`ALLOW: structural shopping signal (${link})`);
-      return res.json({ success: true, message: 'ok' });
-    }
+    score += trust * 3; // adaptive boost
 
-    const domainSignals = ['shop', 'store', 'boutique'];
+    let verdict = 'not_valid_shopping_link';
 
-    const looksLikeStore = domainSignals.some(s =>
-      domain.includes(s)
-    );
+    if (score >= 5) verdict = 'ok';
+    else if (score >= 2) verdict = 'review';
 
-    if (looksLikeStore) {
-      log(`REVIEW: heuristic match (${domain})`);
-      return res.json({
-        success: true,
-        message: 'review'
-      });
-    }
+    const reviewDoc = await db.createRow({
+      databaseId: DATABASE_ID,
+      tableId: REVIEWS_LINKS_COLLECTION,
+      rowId: ID.unique(),
+      data: {
+        link,
+        domain,
+        score,
+        verdict,
+        createdAt: new Date().toISOString(),
+        resolved: false
+      }
+    });
 
-    log(`REJECT: no shopping signals (${link})`);
+    log(`Stored review: ${reviewDoc.$id}`);
+
+    await updateDomainLearning(domain, verdict);
 
     return res.json({
       success: true,
-      message: 'not_valid_shopping_link'
+      message: verdict
     });
 
   } catch (err) {
-    error(`Unhandled error: ${err.message}`);
+    error(err.message);
 
     return res.json({
       success: false,
