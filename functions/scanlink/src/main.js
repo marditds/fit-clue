@@ -430,9 +430,7 @@ export default async ({ req, res, log, error }) => {
     // 🎯 FINAL DECISION ENGINE
     //
     // Fix #3: 'review' is treated as a rejection because there is no
-    // moderation queue in this app. If you add one later, restore the
-    // ternary below to a three-way if/else that emits 'review' for
-    // scores between thresholds.review and thresholds.allow.
+    // moderation queue.
     // ======================================================
 
     const verdict = score >= CONFIG.thresholds.allow
