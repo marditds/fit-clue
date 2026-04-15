@@ -168,7 +168,6 @@ export default async ({ req, res, log, error }) => {
         domain,
         score,
         verdict,
-        createdAt: new Date().toISOString(),
         resolved: false
       }
     });
