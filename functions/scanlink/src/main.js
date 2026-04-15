@@ -248,7 +248,7 @@ export default async ({ req, res, log, error }) => {
     if (!rawLink) {
       return res.json({
         success: false,
-        message: 'Missing link'
+        message: 'missing_link'
       });
     }
 
@@ -260,7 +260,7 @@ export default async ({ req, res, log, error }) => {
     } catch {
       return res.json({
         success: false,
-        message: 'Invalid URL'
+        message: 'invalid_url'
       });
     }
 
