@@ -14,6 +14,9 @@ const CONFIG = {
     'example.internal'
   ]),
 
+  // Quick raw-URL check. Kept as a first-pass defense in depth.
+  // The comprehensive adult check (isAdultContent) runs separately below
+  // and covers obfuscated/leet-encoded variants of these same terms.
   unsafePatterns: [
     /porn/i,
     /xxx/i,
@@ -32,6 +35,52 @@ const CONFIG = {
   ],
 
   // -------------------------
+  // 🔞 Adult content detection
+  // (two-layer: keyword list + obfuscation patterns)
+  // -------------------------
+
+  // Checked against the leet-NORMALIZED domain + path.
+  // Catches: p0rn → porn, s3x → sex, 0nlyfans → onlyfans, etc.
+  adultKeywords: [
+    // Core explicit terms
+    'porn', 'sex', 'xxx', 'nude', 'naked', 'nsfw', 'erotic',
+    'escort', 'hentai', 'fetish', 'bdsm', 'milf', 'dilf', 'onlyfans',
+    // Explicit acts/anatomy — only realistic at domain/path level in adult contexts
+    'cumshot', 'gangbang', 'hardcore',
+    // Known adult platforms (also catches leet variants after normalization)
+    'pornhub', 'xvideos', 'xnxx', 'brazzers', 'bangbros',
+    'redtube', 'youporn', 'spankbang', 'xhamster', 'chaturbate',
+    'livejasmin', 'stripchat', 'myfreecams',
+  ],
+
+  // Checked on BOTH the raw string and the leet-normalized string.
+  // Catches disguised terms that digit-only normalization can't fully resolve:
+  //   cornhub  → /cornhub/i
+  //   pr0n     → /pr[o0]n/i
+  //   p-o-r-n  → /p[\W_]?o[\W_]?r[\W_]?n/i
+  //   x.x.x    → /x[\W_]?x[\W_]?x/i
+  //   wh0re    → /wh[\W_]?[o0][\W_]?r[\W_]?e/i
+  //   etc.
+  adultObfuscationPatterns: [
+    // Brand obfuscations (letter swap: p ↔ c/k)
+    /cornhub/i,
+    /kornhub/i,
+    // Separated or digit-substituted core terms
+    /pr[o0]n/i,                               // pron, pr0n
+    /p[\W_]?o[\W_]?r[\W_]?n/i,               // p-o-r-n, p.o.r.n
+    /n[\W_]?u[\W_]?d[\W_]?e/i,               // n-u-d-e
+    /s[\W_]?e[\W_]?x/i,                       // s-e-x, s.e.x
+    /x[\W_]?x[\W_]?x/i,                       // x-x-x, x.x.x
+    /h[\W_]?e[\W_]?n[\W_]?t[\W_]?a[\W_]?i/i, // h-e-n-t-a-i
+    /er[\W_]?[o0][\W_]?t[\W_]?[i1][\W_]?c/i, // er0t1c, er-o-t-i-c
+    /wh[\W_]?[o0][\W_]?r[\W_]?e/i,           // wh0re, wh-o-r-e
+    /sl[\W_]?[u4][\W_]?t/i,                   // sl4t, sl-u-t
+    /h[\W_]?[o0][\W_]?r[\W_]?n[\W_]?[yi]/i,  // h0rny, h-o-r-n-y
+    /f[\W_]?[u4][\W_]?c[\W_]?k/i,            // f4ck, f-u-c-k
+    /ph[\W_]?[u4][\W_]?c[\W_]?k/i,           // phuck, ph4ck
+  ],
+
+  // -------------------------
   // 🔵 Platform suppression
   // -------------------------
   nonShoppingPlatforms: new Set([
@@ -45,28 +94,24 @@ const CONFIG = {
 
   // -------------------------
   // 🟢 Commerce signal weights
-  // (THIS is the core system)
   // -------------------------
   signals: {
     strong: {
       productPath: 5,
       skuOrProductId: 4,
       checkoutPath: 4,
-      priceInUrl: 3       // FIX #1: now tested against decoded URL
+      priceInUrl: 3       // Tested against decoded URL (Fix #1)
     },
-
     medium: {
       shopKeyword: 2,
       storeKeyword: 2,
       boutiqueKeyword: 2,
       affiliatePattern: 2
     },
-
     weak: {
       editorialCommerceHint: 2,
-      slugProductPath: 1  // FIX #4: new signal for slug-style product URLs
+      slugProductPath: 1  // Slug-style product paths e.g. /t/air-max-270 (Fix #4)
     },
-
     boosts: {
       trustedRetailer: 2
     }
@@ -81,9 +126,9 @@ const CONFIG = {
   },
 
   // -------------------------
-  // ⏱ DNS timeout (ms)
+  // ⏱ DNS timeout (ms)     (Fix #6)
   // -------------------------
-  dnsTimeoutMs: 3000      // FIX #6: DNS lookup timeout
+  dnsTimeoutMs: 3000
 };
 
 // ======================================================
@@ -97,7 +142,8 @@ const normalizeUrl = (url) => {
   return url;
 };
 
-// FIX #5: Added missing SSRF-relevant ranges (169.254.x.x, 0.x.x.x, 100.64.x.x)
+// Fix #5: Covers all private/reserved ranges including
+// 169.254.x.x (AWS metadata), 0.x.x.x, and CGNAT 100.64–127.x.x
 const isPrivateIP = (ip) => {
   if (!ip) return false;
 
@@ -134,7 +180,7 @@ const isPlatform = (domain) =>
     domain === d || domain.endsWith(`.${d}`)
   );
 
-// FIX #6: Wraps dns.lookup with a configurable timeout to prevent function hangs
+// Fix #6: Prevents function hangs if DNS is unresponsive
 const dnsLookupWithTimeout = (hostname, timeoutMs) => {
   return Promise.race([
     dns.lookup(hostname, { all: true }),
@@ -145,6 +191,46 @@ const dnsLookupWithTimeout = (hostname, timeoutMs) => {
       )
     )
   ]);
+};
+
+// Reverses common leet-speak substitutions used to disguise adult content.
+// Digits and symbols ONLY — intentionally no letter-to-letter substitutions
+// (e.g. no c→p rule) to prevent turning innocent words like "cornerstone"
+// into false positives. The adultObfuscationPatterns list handles
+// letter-swap obfuscations like cornhub explicitly instead.
+const normalizeLeet = (str) => str
+  .toLowerCase()
+  .replace(/0/g, 'o')
+  .replace(/1/g, 'i')
+  .replace(/3/g, 'e')
+  .replace(/4/g, 'a')
+  .replace(/5/g, 's')
+  .replace(/7/g, 't')
+  .replace(/8/g, 'b')
+  .replace(/\$/g, 's')
+  .replace(/@/g, 'a')
+  .replace(/!/g, 'i')
+  .replace(/ph/g, 'f');
+
+// Three-layer adult content check:
+//   Layer 1 — Keyword match on leet-normalized string
+//             Catches: p0rn→porn, s3x→sex, 0nlyfans→onlyfans
+//   Layer 2 — Obfuscation patterns on raw string
+//             Catches: cornhub, pr0n, p-o-r-n, x.x.x, wh0re
+//   Layer 3 — Obfuscation patterns on normalized string
+//             Catches: mixed obfuscations like c0rnhub (0→o first, then /cornhub/)
+const isAdultContent = (domain, path) => {
+  const rawTarget = `${domain}${path}`;
+  const normalizedTarget = normalizeLeet(rawTarget);
+
+  // Layer 1: keyword match on normalized string
+  if (CONFIG.adultKeywords.some(kw => normalizedTarget.includes(kw))) return true;
+
+  // Layers 2 & 3: obfuscation patterns on both raw and normalized
+  if (CONFIG.adultObfuscationPatterns.some(p => p.test(rawTarget))) return true;
+  if (CONFIG.adultObfuscationPatterns.some(p => p.test(normalizedTarget))) return true;
+
+  return false;
 };
 
 // ======================================================
@@ -169,7 +255,6 @@ export default async ({ req, res, log, error }) => {
     const link = normalizeUrl(rawLink);
 
     let urlObj;
-
     try {
       urlObj = new URL(link);
     } catch {
@@ -181,8 +266,8 @@ export default async ({ req, res, log, error }) => {
 
     const domain = urlObj.hostname.replace(/^www\./, '').toLowerCase();
 
-    // FIX #1: Decode the URL once up front so all signal checks work against
-    // the human-readable form (e.g. %24 → $, %2F → /, etc.)
+    // Fix #1: Decode once up front so all signal checks work against
+    // the human-readable form (e.g. %24 → $, %2F → /)
     const decodedLink = (() => {
       try {
         return decodeURIComponent(link);
@@ -203,13 +288,21 @@ export default async ({ req, res, log, error }) => {
       return res.json({ success: true, message: 'unsafe' });
     }
 
+    // Quick raw-string check (first-pass, defense in depth)
     if (CONFIG.unsafePatterns.some(r => r.test(link))) {
+      return res.json({ success: true, message: 'unsafe' });
+    }
+
+    // Comprehensive adult content check:
+    // covers leet-speak, character substitution, separator insertion,
+    // and known obfuscated brand names (cornhub, pr0n, x-x-x, wh0re, etc.)
+    if (isAdultContent(domain, urlObj.pathname)) {
       return res.json({ success: true, message: 'unsafe' });
     }
 
     // DNS / SSRF protection
     try {
-      // FIX #6: Use timeout-wrapped DNS lookup instead of bare dns.lookup
+      // Fix #6: timeout-wrapped lookup prevents function hangs
       const addresses = await dnsLookupWithTimeout(
         urlObj.hostname,
         CONFIG.dnsTimeoutMs
@@ -260,7 +353,7 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.strong.checkoutPath;
     }
 
-    // FIX #1: Test the decoded URL so percent-encoded "$" (%24) is caught
+    // Fix #1: test decoded URL so percent-encoded "$" (%24) is caught
     if (/\$\s?\d+/.test(decodedLink)) {
       score += CONFIG.signals.strong.priceInUrl;
     }
@@ -278,12 +371,10 @@ export default async ({ req, res, log, error }) => {
 
     // -------------------------
     // 🟣 Weak editorial commerce signals
-    // (important for Farfetch / Editorialist type sites)
     // -------------------------
 
-    // FIX #2: Removed `query.toString().length > 0` — it matched any URL with
-    // any query param (e.g. ?lang=en), causing false positives on non-commerce sites.
-    // Only fire on explicit commerce-flavored path keywords now.
+    // Fix #2: removed query.toString().length > 0 — matched any URL with
+    // any query param (?lang=en, ?page=2), causing false positives.
     const looksLikeEditorialCommerce =
       path.length > 10 &&
       (path.includes('fashion') ||
@@ -295,17 +386,16 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.weak.editorialCommerceHint;
     }
 
-    // FIX #4: Slug-style product URL weak signal
+    // Fix #4: slug-style product URL weak signal
     // Catches paths like /t/air-max-270-react or /en/clothing/blue-dress-12345
     // that major retailers (Nike, Zara, ASOS, H&M, etc.) commonly use.
-    // Two or more dash-separated slug segments = weak commerce hint.
     const slugSegments = path.split('/').filter(s => /^[a-z0-9][a-z0-9-]{2,}$/.test(s));
     if (slugSegments.length >= 2) {
       score += CONFIG.signals.weak.slugProductPath;
     }
 
     // -------------------------
-    // 🟢 Trusted domain boost (optional, not required)
+    // 🟢 Trusted domain boost
     // -------------------------
     const trustedBoostDomains = new Set([
       'amazon.com',
@@ -317,7 +407,7 @@ export default async ({ req, res, log, error }) => {
       'farfetch.com',
       'editorialist.com',
       'ssense.com',
-      // FIX #4: Added widely-used retailers missing from original list
+      // Fix #4: added widely-used retailers missing from original list
       'nike.com',
       'asos.com',
       'zara.com',
@@ -339,26 +429,17 @@ export default async ({ req, res, log, error }) => {
     // ======================================================
     // 🎯 FINAL DECISION ENGINE
     //
-    // FIX #3: 'review' is now treated as a rejection ('not_valid_shopping_link')
-    // because there is no moderation queue in this app. If you add one later,
-    // restore the 'review' verdict and route it to your queue instead.
+    // Fix #3: 'review' is treated as a rejection because there is no
+    // moderation queue in this app. If you add one later, restore the
+    // ternary below to a three-way if/else that emits 'review' for
+    // scores between thresholds.review and thresholds.allow.
     // ======================================================
 
-    let verdict;
+    const verdict = score >= CONFIG.thresholds.allow
+      ? 'ok'
+      : 'not_valid_shopping_link';
 
-    if (score >= CONFIG.thresholds.allow) {
-      verdict = 'ok';
-    } else {
-      // Both 'review' and sub-threshold scores are rejected at the gate.
-      // Change this to `verdict = 'review'` if you add a moderation queue.
-      verdict = 'not_valid_shopping_link';
-    }
-
-    log(JSON.stringify({
-      domain,
-      score,
-      verdict
-    }, null, 2));
+    log(JSON.stringify({ domain, score, verdict }, null, 2));
 
     return res.json({
       success: true,
