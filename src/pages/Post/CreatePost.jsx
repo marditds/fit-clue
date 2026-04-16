@@ -82,7 +82,7 @@ const CreatePost = () => {
             if (createdPost.isDuplicate) {
                 setErrMsg(
                     <span>
-                        A post with this Instagram link already exists. <Link to={`/post/${createdPost.postId}`}>Click here</Link>
+                        A post with this Instagram link already exists. <Link to={`/post/${createdPost.postId}`}>View it here</Link>
                     </span>
                 );
                 setSccssMsg('');

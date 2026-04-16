@@ -380,6 +380,17 @@ export const deleteUserFromCollection = async (userId) => {
 
 export const makePost = async (personalityName, productLinksData, instaUrl, userId, user_note) => {
     try {
+
+        const duplicateLink = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: [Query.equal('url', instaUrl)]
+        });
+
+        if (duplicateLink.total > 0) {
+            return { isDuplicate: true, postId: duplicateLink.rows[0].$id };
+        }
+
         var product_links = [];
 
         if (productLinksData.length > 0) {
@@ -396,16 +407,6 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
                         )
                     )
             );
-        }
-
-        const duplicateLink = await tablesDB.listRows({
-            databaseId: dbEnv,
-            tableId: postsCollEnv,
-            queries: [Query.equal('url', instaUrl)]
-        });
-
-        if (duplicateLink.total > 0) {
-            return { isDuplicate: true, postId: duplicateLink.rows[0].$id };
         }
 
         const post = await tablesDB.createRow({
