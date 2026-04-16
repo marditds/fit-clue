@@ -259,7 +259,7 @@ export default async ({ req, res, log, error }) => {
     try {
       urlObj = new URL(link);
     } catch {
-      log(invalid_url);
+      log('invalid_url');
       return res.json({
         success: false,
         message: 'invalid_url'
@@ -283,18 +283,18 @@ export default async ({ req, res, log, error }) => {
     // ======================================================
 
     if (CONFIG.blockedDomains.has(domain)) {
-      log(JSON.stringify({ domain }, 'unsafe'))
+      log(JSON.stringify({ domain, verdict: 'unsafe' }, null, 2))
       return res.json({ success: true, message: 'unsafe' });
     }
 
     if (CONFIG.bannedTlds.some(tld => domain.endsWith(tld))) {
-      log(JSON.stringify({ domain }, 'unsafe'))
+      log(JSON.stringify({ domain, verdict: 'unsafe' }, null, 2))
       return res.json({ success: true, message: 'unsafe' });
     }
 
     // Quick raw-string check (first-pass, defense in depth)
     if (CONFIG.unsafePatterns.some(r => r.test(link))) {
-      log(JSON.stringify({ domain }, 'unsafe'))
+      log(JSON.stringify({ domain, verdict: 'unsafe' }, null, 2))
       return res.json({ success: true, message: 'unsafe' });
     }
 
@@ -302,7 +302,7 @@ export default async ({ req, res, log, error }) => {
     // covers leet-speak, character substitution, separator insertion,
     // and known obfuscated brand names (cornhub, pr0n, x-x-x, wh0re, etc.)
     if (isAdultContent(domain, urlObj.pathname)) {
-      log(JSON.stringify({ domain }, 'unsafe'))
+      log(JSON.stringify({ domain, verdict: 'unsafe' }, null, 2))
       return res.json({ success: true, message: 'unsafe' });
     }
 
@@ -315,7 +315,7 @@ export default async ({ req, res, log, error }) => {
       );
 
       if (addresses.some(a => isPrivateIP(a.address))) {
-        log(JSON.stringify({ domain }, 'unsafe'))
+        log(JSON.stringify({ domain, verdict: 'unsafe' }, null, 2))
         return res.json({ success: true, message: 'unsafe' });
       }
     } catch (err) {
