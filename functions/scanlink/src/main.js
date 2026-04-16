@@ -400,6 +400,21 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.strong.productPath;
     }
 
+    // Flat root-level product slugs used by small boutiques and independent stores
+    // e.g. /strapless-embroidered-floral-dress-yellow/
+    // Requires: single path segment + 3+ hyphenated parts + known product term
+    const fashionTerms = /\b(dress|shirt|pants|jeans|jacket|blouse|skirt|sweater|hoodie|coat|shorts|suit|boots|shoes|sneakers|sandals|top|leggings?|cardigan|blazer|bag|handbag|purse|wallet|belt|hat|cap|scarf|gloves|sunglasses|necklace|bracelet|earrings?|ring|watch|tee|polo|sweatshirt|vest|romper|jumpsuit|bikini|swimsuit|socks|denim)\b/i;
+
+    const pathSegments = path.split('/').filter(Boolean);
+    const isFlatProductSlug =
+      pathSegments.length === 1 &&
+      pathSegments[0].split('-').length >= 3 &&
+      fashionTerms.test(pathSegments[0]);
+
+    if (isFlatProductSlug) {
+      score += CONFIG.signals.strong.productPath; // +5
+    }
+
     // -------------------------
     // 🟢 Trusted domain boost
     // -------------------------
