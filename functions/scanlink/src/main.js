@@ -385,9 +385,17 @@ export default async ({ req, res, log, error }) => {
 
     // Catches paths like /t/air-max-270-react or /en/clothing/blue-dress-12345
     // that major retailers (Nike, Zara, ASOS, H&M, etc.) commonly use.
-    const slugSegments = path.split('/').filter(s => /^[a-z0-9][a-z0-9-]{2,}$/.test(s));
+    const slugSegments = path
+      .split('/')
+      .map(s => s.replace(/\.[a-z]{2,4}$/, ''))     // strip file extensions
+      .filter(s => /^[a-z0-9][a-z0-9-]{1,}$/.test(s)); // min 2 chars
     if (slugSegments.length >= 2) {
       score += CONFIG.signals.weak.slugProductPath;
+    }
+
+    // Zara-style embedded product IDs e.g. /washed-polo-p06987435.html
+    if (/-p\d{5,}/i.test(path)) {
+      score += CONFIG.signals.strong.productPath;
     }
 
     // -------------------------
