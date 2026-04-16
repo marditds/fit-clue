@@ -62,7 +62,7 @@ const CreatePost = () => {
             setIncorrectlyFormattedLinks(wronglyFormattedLinks);
 
             if (itemLinkInIncorrectFormat) {
-                setErrMsg('At least one item link is incorrectly formatted. All links must begin with https://');
+                setErrMsg('One or more item links are formatted incorrectly. All links must begin with https://');
                 setIsItemLinkFormatIncorrect(true);
                 setSccssMsg('');
                 return;
