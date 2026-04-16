@@ -100,7 +100,7 @@ const CONFIG = {
       productPath: 5,
       skuOrProductId: 4,
       checkoutPath: 4,
-      priceInUrl: 3       // Tested against decoded URL (Fix #1)
+      priceInUrl: 3       // Tested against decoded URL
     },
     medium: {
       shopKeyword: 2,
@@ -110,7 +110,7 @@ const CONFIG = {
     },
     weak: {
       editorialCommerceHint: 2,
-      slugProductPath: 1  // Slug-style product paths e.g. /t/air-max-270 (Fix #4)
+      slugProductPath: 1  // Slug-style product paths e.g. /t/air-max-270
     },
     boosts: {
       trustedRetailer: 2
@@ -365,6 +365,8 @@ export default async ({ req, res, log, error }) => {
     if (domain.includes('store')) score += CONFIG.signals.medium.storeKeyword;
     if (domain.includes('boutique')) score += CONFIG.signals.medium.boutiqueKeyword;
 
+    if (/\/shop\//i.test(path)) score += CONFIG.signals.medium.shopKeyword;
+
     if (/ref=|affiliate|utm_/i.test(link)) {
       score += CONFIG.signals.medium.affiliatePattern;
     }
@@ -408,6 +410,11 @@ export default async ({ req, res, log, error }) => {
       'walmart.com',
       'target.com',
       'macys.com',
+      'jcpenney.com',
+      'bloomingdales.com',
+      'neimanmarcus.com',
+      'saksfifthavenue.com',
+      'poshmark.com',
       'farfetch.com',
       'editorialist.com',
       'ssense.com',
@@ -415,6 +422,11 @@ export default async ({ req, res, log, error }) => {
       'asos.com',
       'zara.com',
       'hm.com',
+      'anthropologie.com',
+      'urbanoutfitters.com',
+      'freepeople.com',
+      'ralphlauren.com',
+      'coach.com',
       'nordstrom.com',
       'zappos.com',
       'gap.com',
