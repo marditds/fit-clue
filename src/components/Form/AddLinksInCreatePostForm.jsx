@@ -48,7 +48,7 @@ export const AddLinksInCreatePostForm = ({
                     <Row xs={1} md={2} className='mb-0 mb-md-3'>
                         <Form.Group as={Col} className='mb-3' controlId={`formItemLink-${index}`}>
                             <Form.Label>
-                                <Icon className='bi bi-link-45deg fs-5' marginEndSize='2' />
+                                <Icon className='bi bi-link-45deg' marginEndSize='2' />
                                 Item Link
                             </Form.Label>
                             <Form.Control

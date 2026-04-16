@@ -379,34 +379,41 @@ export const deleteUserFromCollection = async (userId) => {
 };
 
 export const makePost = async (personalityName, productLinksData, instaUrl, userId, user_note) => {
+
     try {
 
-        const duplicateLink = await tablesDB.listRows({
+        const duplicateInstaUrl = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             queries: [Query.equal('url', instaUrl)]
         });
 
-        if (duplicateLink.total > 0) {
-            return { isDuplicate: true, postId: duplicateLink.rows[0].$id };
+        if (duplicateInstaUrl.total > 0) {
+            return { isDuplicate: true, postId: duplicateInstaUrl.rows[0].$id };
         }
 
         var product_links = [];
 
         if (productLinksData.length > 0) {
-            product_links = await Promise.all(
-                productLinksData
-                    .filter(link => assessLinkSafety(link.href).message === 'ok')
-                    .map(link =>
-                        createLink(
+            const results = await Promise.all(
+                productLinksData.map(async (link) => {
+                    const result = await assessLinkSafety(link.href);
+
+                    if (result?.message === 'ok') {
+                        return await createLink(
                             link.href,
                             link.brandName.toLowerCase(),
                             link.item.toLowerCase(),
                             userId,
                             link.similarityLevel
-                        )
-                    )
+                        );
+                    }
+
+                    return null;
+                })
             );
+
+            product_links = results.filter(Boolean);
         }
 
         const post = await tablesDB.createRow({
