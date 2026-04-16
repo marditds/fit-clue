@@ -100,7 +100,7 @@ const CONFIG = {
       productPath: 5,
       skuOrProductId: 4,
       checkoutPath: 4,
-      priceInUrl: 3       // Tested against decoded URL (Fix #1)
+      priceInUrl: 3       // Tested against decoded URL
     },
     medium: {
       shopKeyword: 2,
@@ -110,7 +110,7 @@ const CONFIG = {
     },
     weak: {
       editorialCommerceHint: 2,
-      slugProductPath: 1  // Slug-style product paths e.g. /t/air-max-270 (Fix #4)
+      slugProductPath: 1  // Slug-style product paths e.g. /t/air-max-270
     },
     boosts: {
       trustedRetailer: 2
@@ -341,7 +341,7 @@ export default async ({ req, res, log, error }) => {
     // -------------------------
     // 🟢 Strong signals
     // -------------------------
-    if (/\/product\/|\/p\/|\/item\/|\/dp\/|\/gp\/product\//i.test(path)) {
+    if (/\/products?\/|\/p\/|\/item\/|\/dp\/|\/gp\/product\//i.test(path)) {
       score += CONFIG.signals.strong.productPath;
     }
 
@@ -364,6 +364,8 @@ export default async ({ req, res, log, error }) => {
     if (domain.includes('shop')) score += CONFIG.signals.medium.shopKeyword;
     if (domain.includes('store')) score += CONFIG.signals.medium.storeKeyword;
     if (domain.includes('boutique')) score += CONFIG.signals.medium.boutiqueKeyword;
+
+    if (/\/shop\//i.test(path)) score += CONFIG.signals.medium.shopKeyword;
 
     if (/ref=|affiliate|utm_/i.test(link)) {
       score += CONFIG.signals.medium.affiliatePattern;
@@ -398,6 +400,21 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.strong.productPath;
     }
 
+    // Flat root-level product slugs used by small boutiques and independent stores
+    // e.g. /strapless-embroidered-floral-dress-yellow/
+    // Requires: single path segment + 3+ hyphenated parts + known product term
+    const fashionTerms = /\b(dress|shirt|pants|jeans|jacket|blouse|skirt|sweater|hoodie|coat|shorts|suit|boots|shoes|sneakers|sandals|top|leggings?|cardigan|blazer|bag|handbag|purse|wallet|belt|hat|cap|scarf|gloves|sunglasses|necklace|bracelet|earrings?|ring|watch|tee|polo|sweatshirt|vest|romper|jumpsuit|bikini|swimsuit|socks|denim)\b/i;
+
+    const pathSegments = path.split('/').filter(Boolean);
+    const isFlatProductSlug =
+      pathSegments.length === 1 &&
+      pathSegments[0].split('-').length >= 3 &&
+      fashionTerms.test(pathSegments[0]);
+
+    if (isFlatProductSlug) {
+      score += CONFIG.signals.strong.productPath; // +5
+    }
+
     // -------------------------
     // 🟢 Trusted domain boost
     // -------------------------
@@ -408,6 +425,11 @@ export default async ({ req, res, log, error }) => {
       'walmart.com',
       'target.com',
       'macys.com',
+      'jcpenney.com',
+      'bloomingdales.com',
+      'neimanmarcus.com',
+      'saksfifthavenue.com',
+      'poshmark.com',
       'farfetch.com',
       'editorialist.com',
       'ssense.com',
@@ -415,6 +437,11 @@ export default async ({ req, res, log, error }) => {
       'asos.com',
       'zara.com',
       'hm.com',
+      'anthropologie.com',
+      'urbanoutfitters.com',
+      'freepeople.com',
+      'ralphlauren.com',
+      'coach.com',
       'nordstrom.com',
       'zappos.com',
       'gap.com',
