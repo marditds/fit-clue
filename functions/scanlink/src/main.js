@@ -341,7 +341,7 @@ export default async ({ req, res, log, error }) => {
     // -------------------------
     // 🟢 Strong signals
     // -------------------------
-    if (/\/product\/|\/p\/|\/item\/|\/dp\/|\/gp\/product\//i.test(path)) {
+    if (/\/products?\/|\/p\/|\/item\/|\/dp\/|\/gp\/product\//i.test(path)) {
       score += CONFIG.signals.strong.productPath;
     }
 
