@@ -4,6 +4,7 @@ import { useShoppingLinks } from '../../lib/hooks/useShoppingLinks';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { similarityLevelOptions } from '../../lib/data/similarityLevelOptions';
+import { LoadingComponent } from '../Loading/Loading';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { IconHanger, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
@@ -193,13 +194,15 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                             variant='primary'
                             type='submit'
                             disabled={!brandName || !itemName || !itemLink || !isLoggedIn}
-                            className='mt-1 mb-2'
+                            className='mt-1 mb-2 d-flex'
                         >
-                            {isAddningLink ? 'Adding link...' : 'Add Item Link'}
+                            {isAddningLink ?
+                                <>Adding link <LoadingComponent loadingText=' ' /></>
+                                : 'Add Item Link'}
                         </Button>
 
                         <Form.Text className={sccssMsg ? 'text-success' : 'text-danger'}>
-                            <br />
+                            {/* <br /> */}
                             {sccssMsg || errMsg}
                         </Form.Text>
 

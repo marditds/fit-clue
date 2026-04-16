@@ -398,6 +398,16 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             );
         }
 
+        const duplicateLink = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: [Query.equal('url', instaUrl)]
+        });
+
+        if (duplicateLink.total > 0) {
+            return { isDuplicate: true, postId: duplicateLink.rows[0].$id };
+        }
+
         const post = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,

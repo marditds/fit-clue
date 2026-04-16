@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { usePosts } from '../../lib/hooks/usePosts.js';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-import { useOutletContext, useNavigate, useLocation } from 'react-router-dom';
+import { useOutletContext, useNavigate, useLocation, Link } from 'react-router-dom';
 import { AddLinksInCreatePostForm } from '../../components/Form/AddLinksInCreatePostForm.jsx';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading.jsx';
 import { Icon } from '../../components/Accessories/Icon.jsx';
@@ -21,7 +21,7 @@ const CreatePost = () => {
     const [name, setName] = useState('');
     const [instaLink, setInstaLink] = useState('');
     const [userNote, setUserNote] = useState('');
-    const [errMsg, setErrMsg] = useState('');
+    const [errMsg, setErrMsg] = useState(null);
     const [sccssMsg, setSccssMsg] = useState('');
     const [links, setLinks] = useState([]);
     const [incorrectlyFormattedLinks, setIncorrectlyFormattedLinks] = useState([]);
@@ -78,6 +78,16 @@ const CreatePost = () => {
             const formattedPersonalityName = capitalizeFirstLetterOfEachWord(name);
 
             const createdPost = await makePost(formattedPersonalityName, links, instaLink, userId, userNote);
+
+            if (createdPost.isDuplicate) {
+                setErrMsg(
+                    <span>
+                        A post with this Instagram link already exists. <Link to={`/post/${createdPost.postId}`}>Click here</Link>
+                    </span>
+                );
+                setSccssMsg('');
+                return;
+            }
 
             if (createdPost) {
                 console.log('Post created successfully!');
