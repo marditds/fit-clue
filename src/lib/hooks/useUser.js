@@ -137,7 +137,7 @@ export const useUser = () => {
                 setUsername('');
                 setEmail('');
 
-                localStorage.removeItem('authUserId');
+                // localStorage.removeItem('authUserId');
 
                 navigate('/sign-in');
             } else {

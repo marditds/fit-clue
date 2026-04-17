@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getUserFromCollectionById } from './dbhandler';
+import { getUserAccount, getUserFromCollectionById } from './dbhandler';
 
 const UserContext = createContext();
 
@@ -38,22 +38,20 @@ export const UserProvider = ({ children }) => {
                     return;
                 }
 
-                const userIdInSession = localStorage.getItem('authUserId');
+                const user = await getUserAccount();
 
-                if (!userIdInSession) {
+                if (!user.$id) {
                     console.log('No session found.');
                     setIsSessionInProgress(false);
                     setIsLoggedIn(false);
                     return;
                 }
 
-                console.log('userIdInSession', userIdInSession);
-
-                const user = await getUserFromCollectionById(userIdInSession);
+                console.log('userIdInSession', user.$id);
 
                 setIsSessionInProgress(true);
                 setUserId(user.$id);
-                setUsername(user.username);
+                setUsername(user.name);
                 setEmail(user.email);
                 setIsLoggedIn(true);
 

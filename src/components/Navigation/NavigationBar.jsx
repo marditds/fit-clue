@@ -137,27 +137,6 @@ const NavigationBar = () => {
         isActive: location.pathname.startsWith(link.to)
     }))
 
-    // const dropdownItems = [
-    //     {
-    //         as: Link,
-    //         to: '/dashboard',
-    //         onClick: () => console.log('Barev'),
-    //         dropdownItemClassName: 'px-2',
-    //         itemSpanClassName: 'd-flex justify-content-between',
-    //         title: 'Dashboard',
-    //         iconClassName: 'bi bi-grid-1x2',
-    //     },
-    //     {
-    //         as: Button,
-    //         to: '#',
-    //         onClick: () => onSignOutClick(),
-    //         dropdownItemClassName: '',
-    //         itemSpanClassName: 'd-flex justify-content-between',
-    //         title: 'Sign out',
-    //         iconClassName: 'bi bi-box-arrow-left',
-    //     },
-    // ];
-
     return (
         <Navbar
             expand='lg'
@@ -336,28 +315,3 @@ const NavigationBar = () => {
 }
 
 export default NavigationBar;
-
-{/* <Dropdown drop='start' className='navbar__dropdown' >
-                                    <Dropdown.Toggle id='dropdown-profile'>
-                                        <Icon className='bi bi-person-circle fs-4 d-flex justify-content-center align-align-items-center' />
-                                    </Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
-                                        {
-                                            dropdownItems.map((item, idx) => (
-                                                <Dropdown.Item
-                                                    key={idx}
-                                                    as={item.as}
-                                                    to={item.to}
-                                                    className={item.dropdownItemClassName}
-                                                    onClick={item.onClick}
-                                                >
-                                                    <span className={item.itemSpanClassName}>
-                                                        {item.title}<Icon className={item.iconClassName} />
-                                                    </span>
-                                                </Dropdown.Item>
-                                            ))
-                                        }
-                                    </Dropdown.Menu>
-
-                                </Dropdown> */}

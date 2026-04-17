@@ -266,6 +266,8 @@ export const getUserSession = async () => {
 
         console.log('sessionDets:', sessionDets);
 
+        return sessionDets;
+
     } catch (error) {
         console.error('Error getting session details:', error);
     }

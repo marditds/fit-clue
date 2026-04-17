@@ -112,7 +112,7 @@ export const AccountSettings = () => {
                 setEmail('');
                 setDeleteModalTxt(<>Sad <Icon className='bi bi-emoji-frown' /> to see you go. Good bye.</>)
 
-                localStorage.removeItem('authUserId');
+                // localStorage.removeItem('authUserId');
 
                 navigate('/');
             }

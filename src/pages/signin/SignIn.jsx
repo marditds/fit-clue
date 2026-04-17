@@ -11,7 +11,7 @@ const SignIn = () => {
     const navigate = useNavigate();
 
     const {
-        userId, setUserId,
+        setUserId,
         setUsername, setEmail,
         setIsLoggedIn, setIsSessionInProgress
     } = useOutletContext();
@@ -51,15 +51,15 @@ const SignIn = () => {
 
             console.log('user in SignIn.jsx:', user);
 
-            const userPerfs = await getUserPreferences();
+            // const userPerfs = await getUserPreferences();
 
-            const userInColl = await getUserFromCollectionById(userPerfs.profile_id);
+            // const userInColl = await getUserFromCollectionById(userPerfs.profile_id);
 
-            localStorage.setItem('authUserId', userInColl.$id);
+            // localStorage.setItem('authUserId', userInColl.$id);
 
-            setUserId(userInColl.$id);
-            setUsername(userInColl.username);
-            setEmail(userInColl.email);
+            setUserId(user.userId);
+            // setUsername(user.);
+            setEmail(user.providerUid);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);
 
@@ -71,10 +71,6 @@ const SignIn = () => {
             setIsSigningInInProgress(false);
         }
     }
-
-    useEffect(() => {
-        console.log('userId:', userId);
-    }, [userId])
 
     const fields = [
         {
