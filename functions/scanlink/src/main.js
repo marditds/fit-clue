@@ -250,8 +250,8 @@ export default async ({ req, res, log, error }) => {
 
   const tablesDB = new TablesDB(client);
 
-  const dbEnv = import.meta.env.DATABASE_ID;
-  const linksCollEnv = import.meta.env.LINKS_COLLECTION;
+  const dbEnv = process.env.DATABASE_ID;
+  const linksCollEnv = process.env.LINKS_COLLECTION;
 
   try {
 
@@ -263,6 +263,13 @@ export default async ({ req, res, log, error }) => {
         message: 'not_a_valid_user'
       });
     }
+
+    // const test = {
+    //   "href":"https://www.amazon.com",
+    //   "brandName":"Hakop",
+    //   "item":"bag",
+    //   "similarityLevel":"identical"
+    // }
 
     const body = typeof req.body === 'string'
       ? JSON.parse(req.body)
