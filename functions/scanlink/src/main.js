@@ -264,13 +264,6 @@ export default async ({ req, res, log, error }) => {
       });
     }
 
-    // const test = {
-    //   "href":"https://www.amazon.com",
-    //   "brandName":"Hakop",
-    //   "item":"bag",
-    //   "similarityLevel":"identical"
-    // }
-
     const body = typeof req.body === 'string'
       ? JSON.parse(req.body)
       : req.body;
