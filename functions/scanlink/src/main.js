@@ -1,4 +1,5 @@
 import dns from 'dns/promises';
+import { Client, Account, Users, TablesDB, ID } from 'node-appwrite';
 
 // ======================================================
 // 🧠 CONFIGURATION (EDIT ONLY THIS TO TUNE BEHAVIOR)
@@ -238,12 +239,38 @@ const isAdultContent = (domain, path) => {
 // ======================================================
 
 export default async ({ req, res, log, error }) => {
+
+  const client = new Client()
+    .setEndpoint(process.env.API_ENDPOINT)
+    .setProject(process.env.PROJECT_ID)
+    .setKey(process.env.SCAN_LINK_APPWRITE_API_KEY)
+  // .setKey(req.headers['x-appwrite-key']);
+
+  const account = new Account(client);
+
+  const tablesDB = new TablesDB(client);
+
+  const dbEnv = import.meta.env.DATABASE_ID;
+  const linksCollEnv = import.meta.env.LINKS_COLLECTION;
+
   try {
+
+    const user = await account.get();
+
+    if (!user) {
+      return res.json({
+        saccess: false,
+        message: 'not_a_valid_user'
+      });
+    }
+
     const body = typeof req.body === 'string'
       ? JSON.parse(req.body)
       : req.body;
 
-    const rawLink = body?.link;
+    const rawLink = body?.href;
+
+    const assessmentRes = '';
 
     if (!rawLink) {
       log('missing_link');
@@ -473,6 +500,25 @@ export default async ({ req, res, log, error }) => {
     const verdict = score >= CONFIG.thresholds.allow
       ? 'ok'
       : 'not_valid_shopping_link';
+
+    // ======================================================
+    // ✍ WRITE TO THE DATABASE
+    // ======================================================
+
+    if (verdict === 'ok') {
+      const res = await tablesDB.createRow({
+        databaseId: dbEnv,
+        tableId: linksCollEnv,
+        rowId: ID.unique(),
+        data: {
+          href: body.href,
+          brand_name: body.brandName,
+          item: body.item,
+          user_id: user.$id,
+          similarity_level: body.similarityLevel
+        }
+      })
+    }
 
     log(JSON.stringify({ domain, score, verdict }, null, 2));
 
