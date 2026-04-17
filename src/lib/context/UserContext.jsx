@@ -40,7 +40,7 @@ export const UserProvider = ({ children }) => {
 
                 const user = await getUserAccount();
 
-                if (!user.$id) {
+                if (!user) {
                     console.log('No session found.');
                     setIsSessionInProgress(false);
                     setIsLoggedIn(false);
