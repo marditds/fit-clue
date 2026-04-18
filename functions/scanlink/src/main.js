@@ -532,7 +532,8 @@ export default async ({ req, res, log, error }) => {
         href: newLink.href,
         brand_name: newLink.brandName,
         item: newLink.item,
-        similarity_level: newLink.similarityLevel
+        similarity_level: newLink.similarityLevel,
+        hello: 'barev'
       });
     } else {
       return res.json({
