@@ -505,8 +505,10 @@ export default async ({ req, res, log, error }) => {
     // ✍ WRITE TO THE DATABASE
     // ======================================================
 
+    let newLink = '';
+
     if (verdict === 'ok') {
-      const res = await tablesDB.createRow({
+      newLink = await tablesDB.createRow({
         databaseId: dbEnv,
         tableId: linksCollEnv,
         rowId: ID.unique(),
@@ -525,7 +527,8 @@ export default async ({ req, res, log, error }) => {
     return res.json({
       success: true,
       domain: domain,
-      message: verdict
+      message: verdict,
+      newLinkId: newLink.$id
     });
 
   } catch (err) {
