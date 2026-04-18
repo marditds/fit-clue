@@ -530,10 +530,9 @@ export default async ({ req, res, log, error }) => {
         message: verdict,
         newLinkId: newLink.$id,
         href: newLink.href,
-        brand_name: newLink.brandName,
+        brand_name: newLink.brand_name,
         item: newLink.item,
-        similarity_level: newLink.similarityLevel,
-        hello: 'barev'
+        similarity_level: newLink.similarity_level
       });
     } else {
       return res.json({
