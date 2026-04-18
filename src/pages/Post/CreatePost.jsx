@@ -143,6 +143,7 @@ const CreatePost = () => {
                                         placeholder='Enter personality name'
                                         value={name}
                                         onChange={e => setName(e.target.value)}
+                                        disabled={isPostGettingCreated}
                                         required
                                     />
                                 </Form.Group>
@@ -158,6 +159,7 @@ const CreatePost = () => {
                                         type='text'
                                         placeholder='https://www.instagram.com/...'
                                         value={instaLink}
+                                        disabled={isPostGettingCreated}
                                         className={`border ${!isInstaLinkFormatIncorrect ? '' : 'border-danger'}`}
                                         onChange={onInstagramLinkChange}
                                     />
@@ -172,6 +174,7 @@ const CreatePost = () => {
                                     userNote={userNote}
                                     setUserNote={setUserNote}
                                     locationPathname={location.pathname}
+                                    disabled={isPostGettingCreated}
                                 />
                             </Col>
                         </Row>
@@ -184,6 +187,7 @@ const CreatePost = () => {
                                     label='Add Item Links'
                                     checked={showLinks}
                                     onChange={handleCheckboxChange}
+                                    disabled={isPostGettingCreated}
                                     className='mb-0'
                                 />
                             </Form.Group>
@@ -196,6 +200,7 @@ const CreatePost = () => {
                                 setLinks={setLinks}
                                 addLinkField={addLinkField}
                                 incorrectlyFormattedLinks={incorrectlyFormattedLinks}
+                                disabled={isPostGettingCreated}
                             />
                         )}
 

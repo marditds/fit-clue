@@ -385,9 +385,7 @@ export const deleteUserFromCollection = async (userId) => {
 };
 
 export const makePost = async (personalityName, productLinksData, instaUrl, userId, user_note) => {
-
     try {
-
         const duplicateInstaUrl = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: postsCollEnv,
@@ -403,24 +401,14 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
         if (productLinksData.length > 0) {
             const results = await Promise.all(
                 productLinksData.map(async (link) => {
-                    const result = await assessLinkSafety(link.href);
-
-                    if (result?.message === 'ok') {
-                        return await createLink(
-                            link.href,
-                            link.brandName.toLowerCase(),
-                            link.item.toLowerCase(),
-                            userId,
-                            link.similarityLevel
-                        );
-                    }
-
-                    return null;
+                    const result = await createLink(link.href, link.brandName, link.item, link.similarityLevel);
+                    return result;
                 })
             );
-
             product_links = results.filter(Boolean);
         }
+
+        product_links = product_links.filter(link => link.message === 'ok');
 
         const post = await tablesDB.createRow({
             databaseId: dbEnv,
@@ -435,9 +423,6 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
                 user_note: user_note
             }
         });
-
-        console.log('Post created successfully:', post);
-
         return post ? post : null;
 
     } catch (error) {

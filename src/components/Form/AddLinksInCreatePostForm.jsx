@@ -8,7 +8,8 @@ export const AddLinksInCreatePostForm = ({
     links,
     setLinks,
     addLinkField,
-    incorrectlyFormattedLinks
+    incorrectlyFormattedLinks,
+    disabled
 }) => {
 
     const handleLinkChange = (index, e) => {
@@ -35,6 +36,7 @@ export const AddLinksInCreatePostForm = ({
                             </h5>
                             <Button
                                 onClick={() => removeLinkField(index)}
+                                disabled={disabled}
                             // className='ms-auto'
                             >
                                 <Icon className='bi bi-trash3'
@@ -58,7 +60,7 @@ export const AddLinksInCreatePostForm = ({
                                 onChange={(e) => {
                                     handleLinkChange(index, e);
                                 }}
-
+                                disabled={disabled}
                                 className={`border ${incorrectlyFormattedLinks[index] ? 'border-danger' : 'lezu'}`}
 
                                 required
@@ -74,6 +76,7 @@ export const AddLinksInCreatePostForm = ({
                                 name='brandName'
                                 placeholder='Enter brand name'
                                 value={link.brandName}
+                                disabled={disabled}
                                 onChange={e => handleLinkChange(index, e)}
                                 required
                             />
@@ -91,6 +94,7 @@ export const AddLinksInCreatePostForm = ({
                                 name='item'
                                 placeholder='Enter item name'
                                 value={link.item}
+                                disabled={disabled}
                                 onChange={e => handleLinkChange(index, e)}
                                 required
                             />
@@ -115,6 +119,7 @@ export const AddLinksInCreatePostForm = ({
                                 id={`similarityLevelSelect-${index}`}
                                 value={link.similarityLevel}
                                 onChange={e => handleLinkChange(index, e)}
+                                disabled={disabled}
                                 required
                             >
                                 <option value='' disabled>
@@ -137,7 +142,9 @@ export const AddLinksInCreatePostForm = ({
                 <Button
                     type='button'
                     className='w-100 d-flex justify-content-center align-items-center'
-                    onClick={addLinkField}>
+                    onClick={addLinkField}
+                    disabled={disabled}
+                >
                     {/* <Icon className='bi bi-plus-square'
                         marginEndSize={'2'}
                     /> */}

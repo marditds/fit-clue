@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap'
 import { Icon } from '../Accessories/Icon';
 
-export const UserNoteForm = ({ userNote, setUserNote, locationPathname }) => {
+export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled }) => {
 
     const userNoteCharCount = 150;
 
@@ -20,6 +20,7 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname }) => {
                 rows={3}
                 placeholder='I would like to know the brand of the shoes in the third slide.'
                 value={userNote === 'Not provided' ? '' : userNote}
+                disabled={disabled}
                 onChange={e => setUserNote(e.target.value)}
                 maxLength={userNoteCharCount}
             />
