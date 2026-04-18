@@ -94,6 +94,50 @@ const CONFIG = {
   ]),
 
   // -------------------------
+  // ⚪ Platform suppression
+  // -------------------------
+  // Domain-specific path overrides for retailers with non-standard URL structures
+  domainPathOverrides: {
+    'nordstrom.com': /\/s\//,
+    'nordstromrack.com': /\/s\//,
+  },
+
+  // -------------------------
+  // 🟢 Platform suppression
+  // -------------------------
+  trustedBoostDomains = new Set([
+    'amazon.com',
+    'ebay.com',
+    'etsy.com',
+    'walmart.com',
+    'target.com',
+    'macys.com',
+    'jcpenney.com',
+    'bloomingdales.com',
+    'neimanmarcus.com',
+    'saksfifthavenue.com',
+    'poshmark.com',
+    'farfetch.com',
+    'editorialist.com',
+    'ssense.com',
+    'nike.com',
+    'asos.com',
+    'zara.com',
+    'hm.com',
+    'anthropologie.com',
+    'urbanoutfitters.com',
+    'freepeople.com',
+    'ralphlauren.com',
+    'coach.com',
+    'nordstrom.com',
+    'zappos.com',
+    'gap.com',
+    'uniqlo.com',
+    'adidas.com',
+    'newbalance.com'
+  ]),
+
+  // -------------------------
   // 🟢 Commerce signal weights
   // -------------------------
   signals: {
@@ -391,6 +435,13 @@ export default async ({ req, res, log, error }) => {
       score += CONFIG.signals.strong.priceInUrl;
     }
 
+    const matchingOverride = Object.entries(CONFIG.domainPathOverrides).find(
+      ([d]) => domain === d || domain.endsWith(`.${d}`)
+    );
+    if (matchingOverride && matchingOverride[1].test(path)) {
+      score += CONFIG.signals.strong.productPath;
+    }
+
     // -------------------------
     // 🟡 Medium signals
     // -------------------------
@@ -451,39 +502,7 @@ export default async ({ req, res, log, error }) => {
     // -------------------------
     // 🟢 Trusted domain boost
     // -------------------------
-    const trustedBoostDomains = new Set([
-      'amazon.com',
-      'ebay.com',
-      'etsy.com',
-      'walmart.com',
-      'target.com',
-      'macys.com',
-      'jcpenney.com',
-      'bloomingdales.com',
-      'neimanmarcus.com',
-      'saksfifthavenue.com',
-      'poshmark.com',
-      'farfetch.com',
-      'editorialist.com',
-      'ssense.com',
-      'nike.com',
-      'asos.com',
-      'zara.com',
-      'hm.com',
-      'anthropologie.com',
-      'urbanoutfitters.com',
-      'freepeople.com',
-      'ralphlauren.com',
-      'coach.com',
-      'nordstrom.com',
-      'zappos.com',
-      'gap.com',
-      'uniqlo.com',
-      'adidas.com',
-      'newbalance.com'
-    ]);
-
-    if ([...trustedBoostDomains].some(d =>
+    if ([...CONFIG.trustedBoostDomains].some(d =>
       domain === d || domain.endsWith(`.${d}`)
     )) {
       score += CONFIG.signals.boosts.trustedRetailer;
