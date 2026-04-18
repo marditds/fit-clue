@@ -243,8 +243,16 @@ export default async ({ req, res, log, error }) => {
   const client = new Client()
     .setEndpoint(process.env.API_ENDPOINT)
     .setProject(process.env.PROJECT_ID)
+    .setJWT(req.headers['x-appwrite-user-jwt']);
 
   const account = new Account(client);
+
+  try {
+    const user = await account.get();
+    log('Logged in user:', user);
+  } catch (e) {
+    log('NOT LOGGED IN');
+  }
 
   const tablesDB = new TablesDB(client);
 
