@@ -79,7 +79,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                 return;
             }
 
-            const updatedPost = await updatePost(postId, newLink.newLinkId, normalizedItemName);
+            const updatedPost = await updatePost(postId, newLink.$id, normalizedItemName);
 
             if (typeof updatedPost === 'string') {
                 setErrMsg(updatedPost);
