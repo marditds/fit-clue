@@ -521,6 +521,9 @@ export default async ({ req, res, log, error }) => {
           similarity_level: body.similarityLevel
         }
       })
+
+      log(newLink.$id, newLink.href, newLink.brandName, newLink.item, newLink.similarityLevel);
+
       return res.json({
         success: true,
         domain: domain,
