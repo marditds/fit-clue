@@ -243,8 +243,6 @@ export default async ({ req, res, log, error }) => {
   const client = new Client()
     .setEndpoint(process.env.API_ENDPOINT)
     .setProject(process.env.PROJECT_ID)
-    .setKey(process.env.SCAN_LINK_APPWRITE_API_KEY)
-  // .setKey(req.headers['x-appwrite-key']);
 
   const account = new Account(client);
 
@@ -538,6 +536,7 @@ export default async ({ req, res, log, error }) => {
 
   } catch (err) {
     error(`Unhandled error: ${err.message}`);
+    error(({ success, message }, null, 2));
 
     return res.json({
       success: false,
