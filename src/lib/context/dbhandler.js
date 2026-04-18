@@ -761,22 +761,25 @@ export const createLink = async (href, brandName, item, userId, similarityLevel)
     }
 
     try {
-        const res = await tablesDB.createRow({
-            databaseId: dbEnv,
-            tableId: linksCollEnv,
-            rowId: ID.unique(),
-            data: {
-                href,
-                brand_name: brandName,
-                item,
-                user_id: userId,
-                similarity_level: similarityLevel
-            }
-        })
+
+        const res = await assessLinkSafety(href, brandName, item, similarityLevel);
 
         if (res) {
             return res;
         }
+
+        // const res = await tablesDB.createRow({
+        //     databaseId: dbEnv,
+        //     tableId: linksCollEnv,
+        //     rowId: ID.unique(),
+        //     data: {
+        //         href,
+        //         brand_name: brandName,
+        //         item,
+        //         user_id: userId,
+        //         similarity_level: similarityLevel
+        //     }
+        // })
 
         return null;
     } catch (error) {
@@ -1055,7 +1058,7 @@ export const reCaptchaVerification = async (token) => {
     }
 }
 
-export const assessLinkSafety = async (link) => {
+export const assessLinkSafety = async (href, brandName, item, similarityLevel) => {
     try {
         const scanlink_function_id = await dbFunctionKeysProvider('scanLink_function');
 
@@ -1063,7 +1066,7 @@ export const assessLinkSafety = async (link) => {
             throw new Error('Failed to load function ID');
         }
 
-        const payload = JSON.stringify({ link });
+        const payload = JSON.stringify({ href, brandName, item, similarityLevel });
 
         const res = await functions.createExecution({
             functionId: scanlink_function_id,
