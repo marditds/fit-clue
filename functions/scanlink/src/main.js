@@ -246,6 +246,13 @@ export default async ({ req, res, log, error }) => {
 
   const account = new Account(client);
 
+  try {
+    const user = await account.get();
+    console.log('Logged in user:', user);
+  } catch (e) {
+    console.log('NOT LOGGED IN');
+  }
+
   const tablesDB = new TablesDB(client);
 
   const dbEnv = process.env.DATABASE_ID;
