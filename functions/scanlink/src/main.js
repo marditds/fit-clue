@@ -525,7 +525,11 @@ export default async ({ req, res, log, error }) => {
         success: true,
         domain: domain,
         message: verdict,
-        newLinkId: newLink.$id
+        newLinkId: newLink.$id,
+        href: newLink.href,
+        brand_name: newLink.brandName,
+        item: newLink.item,
+        similarity_level: newLink.similarityLevel
       });
     } else {
       return res.json({
