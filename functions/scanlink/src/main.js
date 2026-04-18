@@ -248,9 +248,9 @@ export default async ({ req, res, log, error }) => {
 
   try {
     const user = await account.get();
-    console.log('Logged in user:', user);
+    log('Logged in user:', user);
   } catch (e) {
-    console.log('NOT LOGGED IN');
+    log('NOT LOGGED IN');
   }
 
   const tablesDB = new TablesDB(client);
