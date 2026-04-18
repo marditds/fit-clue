@@ -521,19 +521,15 @@ export default async ({ req, res, log, error }) => {
           similarity_level: body.similarityLevel
         }
       })
-
-      log(newLink.$id, newLink.href, newLink.brandName, newLink.item, newLink.similarityLevel);
-
       return res.json({
         success: true,
         domain: domain,
         message: verdict,
         newLinkId: newLink.$id,
         href: newLink.href,
-        brand_name: newLink.brandName,
+        brand_name: newLink.brand_name,
         item: newLink.item,
-        similarity_level: newLink.similarityLevel,
-        hello: 'barev'
+        similarity_level: newLink.similarity_level
       });
     } else {
       return res.json({
