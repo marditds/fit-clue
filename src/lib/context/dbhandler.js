@@ -758,35 +758,17 @@ export const createLink = async (href, brandName, item, similarityLevel) => {
 
     console.log({ href, brandName, item, similarityLevel });
 
-
     if (!href) {
         console.log('no href');
         return;
     }
-
     try {
-
         const res = await assessLinkSafety(href, brandName, item, similarityLevel);
 
         if (res) {
             console.log(res);
-
             return res;
         }
-
-        // const res = await tablesDB.createRow({
-        //     databaseId: dbEnv,
-        //     tableId: linksCollEnv,
-        //     rowId: ID.unique(),
-        //     data: {
-        //         href,
-        //         brand_name: brandName,
-        //         item,
-        //         user_id: userId,
-        //         similarity_level: similarityLevel
-        //     }
-        // })
-
         return null;
     } catch (error) {
         console.error('Error creating link:', error);
