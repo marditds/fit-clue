@@ -525,7 +525,7 @@ export default async ({ req, res, log, error }) => {
         success: true,
         domain: domain,
         message: verdict,
-        newLinkId: newLink.$id,
+        $id: newLink.$id,
         href: newLink.href,
         brand_name: newLink.brand_name,
         item: newLink.item,
