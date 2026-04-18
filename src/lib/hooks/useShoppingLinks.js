@@ -3,9 +3,9 @@ import { assessLinkSafety } from '../context/dbhandler';
 
 export const useShoppingLinks = () => {
 
-  const createLink = async (href, brandName, item, userId, similarityLevel) => {
+  const createLink = async (href, brandName, item, similarityLevel) => {
 
-    console.log(href, brandName, item, userId, similarityLevel);
+    console.log({ href, brandName, item, similarityLevel });
 
     try {
       const MESSAGE_MAP = {
@@ -14,15 +14,15 @@ export const useShoppingLinks = () => {
         invalid_url: 'The submitted link is not valid.'
       }
 
-      const res = await makeLink(href, brandName, item, userId, similarityLevel);
+      const res = await makeLink(href, brandName, item, similarityLevel);
 
       if (res.message !== 'ok') {
-        return (MESSAGE_MAP[assessmentRes.message] ||
-          'Error adding link. Please try again later.');
+        return (MESSAGE_MAP[res.message] ||
+          'Error adding link. Please try again later. 11');
       }
 
       if (!res || !res.message) {
-        console.error('Invalid assessment response:', assessmentRes);
+        console.error('Invalid assessment response:', res);
         return 'Error adding link. Please try again later.';
       }
 

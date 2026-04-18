@@ -754,9 +754,13 @@ export const createPostReport = async (postId, reason) => {
 }
 
 // Links
-export const createLink = async (href, brandName, item, userId, similarityLevel) => {
+export const createLink = async (href, brandName, item, similarityLevel) => {
+
+    console.log({ href, brandName, item, similarityLevel });
+
 
     if (!href) {
+        console.log('no href');
         return;
     }
 
@@ -765,6 +769,8 @@ export const createLink = async (href, brandName, item, userId, similarityLevel)
         const res = await assessLinkSafety(href, brandName, item, similarityLevel);
 
         if (res) {
+            console.log(res);
+
             return res;
         }
 

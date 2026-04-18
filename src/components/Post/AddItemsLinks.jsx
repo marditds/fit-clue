@@ -68,7 +68,10 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
             const normalizedBrandName = brandName.toLocaleLowerCase();
             const normalizedItemName = itemName.toLocaleLowerCase();
 
-            const newLink = await createLink(itemLink, normalizedBrandName, normalizedItemName, userId, similarityLevel);
+            console.log({ itemLink, normalizedBrandName, normalizedItemName, similarityLevel });
+
+
+            const newLink = await createLink(itemLink, normalizedBrandName, normalizedItemName, similarityLevel);
 
             if (typeof newLink === 'string') {
                 setErrMsg(newLink);
