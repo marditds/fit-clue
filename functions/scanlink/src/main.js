@@ -243,6 +243,7 @@ export default async ({ req, res, log, error }) => {
   const client = new Client()
     .setEndpoint(process.env.API_ENDPOINT)
     .setProject(process.env.PROJECT_ID)
+    .setJWT(req.headers['x-appwrite-user-jwt']);
 
   const account = new Account(client);
 
