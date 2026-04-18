@@ -501,14 +501,16 @@ export default async ({ req, res, log, error }) => {
       ? 'ok'
       : 'not_valid_shopping_link';
 
+    log(JSON.stringify({ domain, score, verdict }, null, 2));
+
     // ======================================================
     // ✍ WRITE TO THE DATABASE
     // ======================================================
 
-    let newLink = '';
+    // let newLink = {};
 
     if (verdict === 'ok') {
-      newLink = await tablesDB.createRow({
+      const newLink = await tablesDB.createRow({
         databaseId: dbEnv,
         tableId: linksCollEnv,
         rowId: ID.unique(),
@@ -520,16 +522,19 @@ export default async ({ req, res, log, error }) => {
           similarity_level: body.similarityLevel
         }
       })
+      return res.json({
+        success: true,
+        domain: domain,
+        message: verdict,
+        newLinkId: newLink.$id
+      });
+    } else {
+      return res.json({
+        success: true,
+        domain: domain,
+        message: verdict,
+      });
     }
-
-    log(JSON.stringify({ domain, score, verdict }, null, 2));
-
-    return res.json({
-      success: true,
-      domain: domain,
-      message: verdict,
-      newLinkId: newLink.$id
-    });
 
   } catch (err) {
     error(`Unhandled error: ${err.message}`);
