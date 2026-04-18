@@ -536,7 +536,6 @@ export default async ({ req, res, log, error }) => {
 
   } catch (err) {
     error(`Unhandled error: ${err.message}`);
-    error(({ success, message }, null, 2));
 
     return res.json({
       success: false,
