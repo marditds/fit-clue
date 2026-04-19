@@ -553,7 +553,7 @@ export default async ({ req, res, log, error }) => {
     } else {
       return res.json({
         success: true,
-        domain: domain,
+        // domain: domain,
         message: verdict,
       });
     }
