@@ -9,8 +9,6 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
     const { isXs, isSm, isMd } = useBreakpoints();
 
-    const { isRunningGemini, runGemini } = useGemini();
-
     const { createComment } = usePosts();
 
     // Leaving a comment
@@ -28,15 +26,6 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
         try {
             setIsAddingComment(true);
-
-            const geminiRes = await runGemini(commentText);
-
-            if (geminiRes.trim().toLowerCase() !== 'ok') {
-                setGeminiResult(geminiRes);
-                setCommentText('');
-                setCommentSuccessMessage('');
-                return;
-            };
 
             const newComment = await createComment(postId, commentText, userId);
 
@@ -59,7 +48,6 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
             setCommentErrorMessage('');
             setCommentSuccessMessage('Comment posted successfully.');
-            setGeminiResult('');
 
         } catch (error) {
             console.error('Error onCreateCommentSubmit:', error);
@@ -98,6 +86,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
                             setCommentText(value);
                         }
                     }}
+                    disabled={isAddningComment}
                 />
                 <Form.Text id='commentHelpText' className='text-muted'>
                     FitClue utilizes AI to ensure a safe and respectful environment for all users and visitors.
@@ -131,10 +120,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
                 {
                     !isAddningComment ?
                         'Post Comment' :
-                        <LoadingComponent loadingText={
-                            !isRunningGemini ?
-                                'Posting Comment' :
-                                'Scanning comment with AI'}
+                        <LoadingComponent loadingText={'Scanning comment'}
                         />
                 }
             </Button>

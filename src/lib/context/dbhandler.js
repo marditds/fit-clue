@@ -735,75 +735,6 @@ export const createPostReport = async (postId, reason) => {
     }
 }
 
-// Links
-export const createLink = async (href, brandName, item, similarityLevel) => {
-
-    console.log({ href, brandName, item, similarityLevel });
-
-    if (!href) {
-        console.log('no href');
-        return;
-    }
-    try {
-        const res = await assessLinkSafety(href, brandName, item, similarityLevel);
-
-        if (res) {
-            console.log(res);
-            return res;
-        }
-        return null;
-    } catch (error) {
-        console.error('Error creating link:', error);
-        return 'Error adding link. Please try again later.';
-    }
-}
-
-export const createReportLink = async (linkId, reason) => {
-    try {
-        const reportDoc = await tablesDB.createRow({
-            databaseId: dbEnv,
-            tableId: reportsLinksCollEnv,
-            rowId: ID.unique(),
-            data: {
-                link_id: linkId,
-                reason
-            }
-        })
-
-        if (reportDoc) {
-            console.log('Link report created successfully.');
-            return reportDoc;
-        }
-        return null;
-    } catch (error) {
-        console.error('Error creating link report:', error);
-    }
-}
-
-export const fetchProductLinksByIds = async (productLinkId) => {
-
-    if (productLinkId.length === 0) {
-        return [];
-    }
-
-    try {
-        const res = await tablesDB.listRows({
-            databaseId: dbEnv,
-            tableId: linksCollEnv,
-            queries: [Query.equal('$id', productLinkId)],
-            total: false
-        })
-
-        if (res.rows.length > 0) {
-            return res;
-        }
-
-        return [];
-    } catch (error) {
-        console.error('Error fetching links:', error);
-    }
-}
-
 // Saves 
 export const createSave = async (postId, userId) => {
     try {
@@ -914,6 +845,75 @@ export const deleteSave = async (docId) => {
     }
 }
 
+// Links
+export const createLink = async (href, brandName, item, similarityLevel) => {
+
+    console.log({ href, brandName, item, similarityLevel });
+
+    if (!href) {
+        console.log('no href');
+        return;
+    }
+    try {
+        const res = await assessLinkSafety(href, brandName, item, similarityLevel);
+
+        if (res) {
+            console.log(res);
+            return res;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error creating link:', error);
+        return 'Error adding link. Please try again later.';
+    }
+}
+
+export const createReportLink = async (linkId, reason) => {
+    try {
+        const reportDoc = await tablesDB.createRow({
+            databaseId: dbEnv,
+            tableId: reportsLinksCollEnv,
+            rowId: ID.unique(),
+            data: {
+                link_id: linkId,
+                reason
+            }
+        })
+
+        if (reportDoc) {
+            console.log('Link report created successfully.');
+            return reportDoc;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error creating link report:', error);
+    }
+}
+
+export const fetchProductLinksByIds = async (productLinkId) => {
+
+    if (productLinkId.length === 0) {
+        return [];
+    }
+
+    try {
+        const res = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: linksCollEnv,
+            queries: [Query.equal('$id', productLinkId)],
+            total: false
+        })
+
+        if (res.rows.length > 0) {
+            return res;
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error fetching links:', error);
+    }
+}
+
 // Comments 
 export const createReportComment = async (commentId, reason) => {
     try {
@@ -938,17 +938,16 @@ export const createReportComment = async (commentId, reason) => {
 }
 
 export const createComment = async (postId, commentText, userId) => {
+
+    console.log({ postId, commentText, userId });
+
+    if (!postId) {
+        console.log('no post id');
+        return;
+    }
+
     try {
-        const doc = await tablesDB.createRow({
-            databaseId: dbEnv,
-            tableId: commentsCollEnv,
-            rowId: ID.unique(),
-            data: {
-                post_id: postId,
-                comment_text: commentText,
-                user_id: userId
-            }
-        })
+        const doc = await assessCommentSafety(postId, commentText, userId);
 
         if (doc) {
             console.log('Comment created successfully:', doc);
@@ -1060,7 +1059,7 @@ export const assessLinkSafety = async (href, brandName, item, similarityLevel) =
     }
 }
 
-export const assessCommentWithGemini = async (commentText) => {
+export const assessCommentSafety = async (postId, commentText) => {
     try {
         const gemini_function_id = await dbFunctionKeysProvider('gemini_function');
 
@@ -1068,7 +1067,7 @@ export const assessCommentWithGemini = async (commentText) => {
             throw new Error('Failed to load function ID');
         }
 
-        const payload = JSON.stringify({ commentText });
+        const payload = JSON.stringify({ postId, commentText });
 
         const res = await functions.createExecution({
             functionId: gemini_function_id,

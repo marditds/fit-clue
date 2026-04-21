@@ -154,8 +154,9 @@ export default async ({ req, res, log, error }) => {
     // ✅ Passed all checks
     log('Comment passed moderation.');
     // return res.json('ok'); 
+    verdict === 'ok'
 
-    if (verdict !== 'fail') {
+    if (verdict === 'ok') {
       const newComment = await tablesDB.createRow({
         databaseId: dbEnv,
         tableId: commentsCollEnv,
@@ -167,14 +168,18 @@ export default async ({ req, res, log, error }) => {
         }
       })
       return res.json({
-        message: verdict,
+        result: verdict,
         $id: newComment.$id,
         comment_text: newComment.comment_text,
+      });
+    } else {
+      return res.json({
+        result: verdict,
       });
     }
 
   } catch (err) {
     error('Error: ' + err.message);
-    return res.json({ success: false, message: 'Server error', error: err.message });
+    return res.json({ result: 'Server error', error: err.message });
   }
 };
