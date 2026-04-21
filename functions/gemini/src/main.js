@@ -1,48 +1,177 @@
-import { GoogleGenAI } from '@google/genai';
+import { Filter } from 'bad-words';
+import { Client, Account, TablesDB, ID } from 'node-appwrite';
+
+// ── Blocklists ──────────────────────────────────────────────────────────────
+const HARASSMENT_TERMS = [
+  'kill yourself', 'kys', 'go die', 'i hope you die', 'you should die',
+  'nobody likes you', 'worthless', 'you are pathetic', 'ur pathetic',
+  'loser', 'idiot', 'moron', 'imbecile', 'retard', 'retarded',
+  'shut up', 'stfu', 'get lost', 'drop dead',
+];
+
+const HATE_SPEECH_TERMS = [
+  'nazi', 'white power', 'white supremacy', 'racial slur examples here'
+];
+
+const SPAM_PHRASES = [
+  'click here', 'buy now', 'limited offer', 'act now', 'free money',
+  'make money fast', 'work from home', 'earn per day', 'dm me', 'dm for',
+  'follow me', 'check my profile', 'check my bio', 'subscribe to',
+  'visit my', 'check out my', 'link in bio', 'link in my bio',
+  'whatsapp me', 'telegram me', 'contact me at', 'reach me at',
+];
+
+// ── Regex Patterns ──────────────────────────────────────────────────────────
+
+// Catches: http(s)://, www., and disguised variants like "www dot x dot com"
+const URL_PATTERNS = [
+  /https?:\/\/[^\s]+/i,
+  /www\.[a-z0-9\-]+\.[a-z]{2,}/i,
+  /\bwww\s*(dot|\[\.?\]|\.)\s*[a-z0-9\-]+\s*(dot|\[\.?\]|\.)\s*[a-z]{2,}\b/i,
+  /[a-z0-9\-]+\.(com|net|org|io|co|gg|me|tv|xyz|info|biz|app|dev)\b/i,
+];
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+function containsAny(text, terms) {
+  const lower = text.toLowerCase();
+  return terms.find(term => lower.includes(term.toLowerCase())) ?? null;
+}
+
+function checkUrls(text) {
+  return URL_PATTERNS.find(p => p.test(text)) ? true : false;
+}
+
+const variations = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/\b(\w[.\s_-]){2,}\w\b/g, match => match.replace(/[.\s_-]/g, ''))
+    .replace(/[@4]/g, 'a')
+    .replace(/3/g, 'e')
+    .replace(/[1!|]/g, 'i')
+    .replace(/0/g, 'o')
+    .replace(/[$5]/g, 's')
+    .replace(/7/g, 't')
+    .replace(/[*]/g, '')
+    .replace(/[-–—_]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+// ── Main export ─────────────────────────────────────────────────────────────
 
 export default async ({ req, res, log, error }) => {
 
-  const GeminiApiKey = process.env.GEMINI_API_KEY;
+  const client = new Client()
+    .setEndpoint(process.env.API_ENDPOINT)
+    .setProject(process.env.PROJECT_ID)
+    .setJWT(req.headers['x-appwrite-user-jwt']);
+
+  const account = new Account(client);
+
+  const tablesDB = new TablesDB(client);
+
+  const dbEnv = process.env.DATABASE_ID;
+  const commentsCollEnv = process.env.COMMENTS_COLLECTION;
 
   try {
-    let data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-    log('data.commentText:', data.commentText);
+    const user = await account.get();
 
-    const ai = new GoogleGenAI({ apiKey: GeminiApiKey });
+    if (!user) {
+      return res.json({ result: 'Not a valid user.' });
+    }
 
-    const systemInstruction = `
-    Read the following text and assess whether it violates any of these points:
-    
-  - Spam or Scam: Unrelated promotional content, scams, or deceptive links;
-  - Harassment or Bullying: Targeted abuse, threats, or personal attacks;
-  - Hate Speech: Content promoting violence or discrimination against individuals or groups;
-  - Rude or Condescending: The text can be interpreted as intentionally disrespectful, impolite, or demeaning. This category specifically excludes non-offensive subjective opinions about aesthetics or personal preference (e.g., "Ugly dress," "The shoes are not looking good," "I don't like this," "This is not my style").
-  - Sexually Explicit Content: Inappropriate sexual language;
-  - False Information: Spreading misleading or false claims.
+    const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const commentText = (data.commentText ?? '').trim();
 
-  As a response, return the category of violation, and politely ask the user to reword their comment.
+    log('Screening comment:', commentText);
 
-  Also, comments containing any form of link are prohibited. This includes direct URLs (e.g., www.example.com) and disguised attempts (e.g., www dot example dot com or www [.] example [.] com). If a link is detected, the comment will be rejected with a message stating that links are not allowed.
+    let verdict = '';
 
-  If the comment text does not violate any of the rules, only response with one word: ok. Do not respond with variation of ok.
-  `
+    if (!commentText) {
+      verdict = 'fail';
+      return res.json({ result: 'Comment cannot be empty.' });
+    }
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-001',
-      contents: `${systemInstruction}\n\n${data.commentText}`,
-      config: {
-        temperature: 0.0,
-        topP: 0.7,
-        topK: 1,
-        maxOutputTokens: 52,
-        responseMimeType: 'text/plain'
-      }
-    });
+    // 1. Link detection
+    if (checkUrls(commentText)) {
+      verdict = 'fail';
+      return res.json({
+        result: 'Your comment contains a link, which is not allowed. Please remove any URLs and try again.',
+      });
+    }
 
-    log(response.text);
+    // 2. Sexually explicit content & general profanity (bad-words library)
+    const filter = new Filter();
 
-    return res.json(response.text);
+    const newBadWords = ['r3tard', 'kunt', 'kunts', 'kuntz', 'puto', 'put0', 'puta', 'put@', 'nigga', 'n*gga', 'n*gger', 'ni**er', 'nigg*r'];
+
+    filter.addWords(...newBadWords)
+
+    if (filter.isProfane(commentText) || filter.isProfane(variations(commentText))) {
+      verdict = 'fail';
+      return res.json({
+        result:
+          'Your comment contains sexually explicit or profane language. ' +
+          'Please reword it to keep the conversation respectful.',
+      });
+    }
+
+    // 3. Hate speech
+    const hateMatch = containsAny(commentText, HATE_SPEECH_TERMS);
+    if (hateMatch) {
+      verdict = 'fail';
+      return res.json({
+        result:
+          'Your comment appears to contain hate speech or discriminatory language. ' +
+          'Please reword your comment to be respectful of all people.',
+      });
+    }
+
+    // 4. Harassment / bullying
+    const harassMatch = containsAny(commentText, HARASSMENT_TERMS);
+    if (harassMatch) {
+      verdict = 'fail';
+      return res.json({
+        result:
+          'Your comment contains language that may be considered harassment or bullying. ' +
+          'Please reword it in a more constructive and respectful way.',
+      });
+    }
+
+    // 5. Spam / scam phrases
+    const spamMatch = containsAny(commentText, SPAM_PHRASES);
+    if (spamMatch) {
+      verdict = 'fail';
+      return res.json({
+        result:
+          'Your comment appears to contain promotional or spam content. ' +
+          'Please keep comments relevant and avoid advertising.',
+      });
+    }
+
+    // ✅ Passed all checks
+    log('Comment passed moderation.');
+    // return res.json('ok'); 
+
+    if (verdict !== 'fail') {
+      const newComment = await tablesDB.createRow({
+        databaseId: dbEnv,
+        tableId: commentsCollEnv,
+        rowId: ID.unique(),
+        data: {
+          post_id: data.postId,
+          comment_text: data.commentText,
+          user_id: user.$id,
+        }
+      })
+      return res.json({
+        message: verdict,
+        $id: newComment.$id,
+        comment_text: newComment.comment_text,
+      });
+    }
 
   } catch (err) {
     error('Error: ' + err.message);
