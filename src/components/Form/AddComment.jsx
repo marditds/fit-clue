@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useGemini } from '../../lib/hooks/useGemini';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Button, Col, Form, Row } from 'react-bootstrap';

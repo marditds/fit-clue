@@ -9,11 +9,11 @@ export const useGemini = () => {
         setIsRunningGemini(true);
 
         try {
-            const chatSession = await assessCommentWithGemini(commentText);
+            // const chatSession = await assessCommentWithGemini(commentText);
 
             // console.log('chatSession', chatSession);
 
-            return chatSession;
+            return 'barev';
         } catch (error) {
             console.error('Error running Gemini:', error);
         } finally {
