@@ -154,7 +154,7 @@ export default async ({ req, res, log, error }) => {
     // ✅ Passed all checks
     log('Comment passed moderation.');
 
-    if (verdict == ! 'fail') {
+    if (verdict !== 'fail') {
       const newComment = await tablesDB.createRow({
         databaseId: dbEnv,
         tableId: commentsCollEnv,
