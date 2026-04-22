@@ -65,7 +65,7 @@ export default async ({ req, res, log, error }) => {
       userId: usrAccnt.$id
     });
 
-    return res.json({ success: true, deletedProfileId: verfiedUserId });
+    return res.json({ success: true, message: 'Account deletion successful.' });
   } catch (err) {
     error('Failed to delete user: ' + err.message);
     return res.json({ success: false, error: err.message });
