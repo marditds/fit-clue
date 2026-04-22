@@ -217,7 +217,7 @@ export const fetchUsersByIds = async (userIds) => {
         const users = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
-            queries: [Query.equal('$id', userIds)]
+            queries: [Query.equal('user_id', userIds)]
         })
 
         if (users) {

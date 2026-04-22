@@ -16,9 +16,6 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
     const [commentErrorMessage, setCommentErrorMessage] = useState('');
     const [isAddningComment, setIsAddingComment] = useState(false);
 
-    // Gemini Results
-    const [geminiResult, setGeminiResult] = useState('');
-
     const onCreateCommentSubmit = async (e) => {
 
         e.preventDefault();
@@ -28,11 +25,10 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
             const newComment = await createComment(postId, commentText, userId);
 
-            console.log('comment in Post.jsx:', newComment);
-
-            if (typeof newComment === 'string') {
-                setCommentErrorMessage(newComment);
+            if (newComment.message !== 'ok') {
+                setCommentErrorMessage(newComment.message);
                 setCommentSuccessMessage('');
+                return;
             }
 
             const fullNewComment = {
@@ -47,12 +43,12 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
             setCommentErrorMessage('');
             setCommentSuccessMessage('Comment posted successfully.');
+            setCommentText('');
 
         } catch (error) {
             console.error('Error onCreateCommentSubmit:', error);
         } finally {
             setIsAddingComment(false);
-            setCommentText('');
         }
     }
 
@@ -62,7 +58,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
             style={{ maxWidth: (!isXs && !isSm && !isMd) ? '503px' : '100%' }}
             className='mx-auto'>
 
-            <Form.Group className={!geminiResult ? 'mb-3' : 'mb-2'} controlId='userCommentEntryField'>
+            <Form.Group className='mb-3' controlId='userCommentEntryField'>
                 <span className='d-flex justify-content-between align-items-center mb-2'>
                     <Form.Label className='mb-0'>
                         Comment
@@ -99,17 +95,6 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
                     </li>
                 </ul>
             </Form.Group>
-
-            {
-                geminiResult &&
-                <Row>
-                    <Col className='mb-3'>
-                        <Form.Text className='text-danger'>
-                            {geminiResult}
-                        </Form.Text>
-                    </Col>
-                </Row>
-            }
 
             <Button
                 type='submit'

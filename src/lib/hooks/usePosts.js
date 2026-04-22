@@ -86,8 +86,6 @@ export const usePosts = () => {
         try {
             const commentsRes = await fetchCommentsTextByPostId(postId, lastCursor);
 
-            console.log('commentsRes', commentsRes);
-
             if (commentsRes?.length === 0) {
                 return [];
             }
@@ -95,22 +93,18 @@ export const usePosts = () => {
             const commentsTexts = commentsRes.rows;
             const commentsTotal = commentsRes.total;
 
-            console.log('commentsTexts', commentsTexts);
-
             const userIds = [...new Set(commentsTexts.map(comment => comment.user_id).filter(Boolean))];
 
             const [allUsersData] = await Promise.all([
                 fetchUsersByIds(userIds)
             ]);
 
-            const userMap = new Map(allUsersData.rows.map(user => [user.$id, user]));
+            const userMap = new Map(allUsersData.rows.map(user => [user.user_id, user]));
 
             const fullComments = commentsTexts.map(comment => ({
                 ...comment,
                 username: userMap.get(comment.user_id)?.username || 'Deleted user',
             }));
-
-            console.log('fullComments:', fullComments);
 
             return {
                 rows: fullComments,

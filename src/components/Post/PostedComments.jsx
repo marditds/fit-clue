@@ -44,8 +44,6 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
 
             setComments((prevComments) => [...(prevComments || []), ...(commentsDocs || [])].flat());
 
-            console.log('reseseses:', commentsDocs);
-
             if (res?.length === 0) {
                 setCommentsTotal(0);
             }
