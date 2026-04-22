@@ -1,5 +1,5 @@
 import dns from 'dns/promises';
-import { Client, Account, Users, TablesDB, ID } from 'node-appwrite';
+import { Client, Account, TablesDB, ID } from 'node-appwrite';
 
 // ======================================================
 // 🧠 CONFIGURATION (EDIT ONLY THIS TO TUNE BEHAVIOR)
