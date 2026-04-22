@@ -1,16 +1,21 @@
 import { Client, Users, Account, Query, TablesDB } from 'node-appwrite';
 
 export default async ({ req, res, log, error }) => {
-  const client = new Client()
+
+  const jwtClient = new Client()
     .setEndpoint(process.env.ENDPOINT)
     .setProject(process.env.PROJECT_ID)
     .setJWT(req.headers['x-appwrite-user-jwt']);
 
-  const users = new Users(client);
+  const adminClient = new Client()
+    .setEndpoint(process.env.ENDPOINT)
+    .setProject(process.env.PROJECT_ID)
+    .setKey(req.headers['x-appwrite-key']);
 
-  const account = new Account(client);
+  const account = new Account(jwtClient);
 
-  const tablesDB = new TablesDB(client);
+  const tablesDB = new TablesDB(adminClient);
+  const users = new Users(adminClient);
 
   try {
 
@@ -20,7 +25,7 @@ export default async ({ req, res, log, error }) => {
 
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-    // incoming user id from the client-side
+    // incoming user id from the jwtClient-side
     const userId = data?.user_id;
 
     log('id from client side:', userId);
@@ -36,14 +41,11 @@ export default async ({ req, res, log, error }) => {
 
     const user = await users.get(usrAccnt.$id);
 
-    log('user:', user);
-
     const verfiedUserId = user.$id;
-
-    log('verfiedUserId:', verfiedUserId);
-
     const prefUID = user.prefs?.profile_id;
 
+    log('user:', user);
+    log('verfiedUserId:', verfiedUserId);
     log('prefUID:', prefUID);
 
     if (verfiedUserId) {
@@ -57,7 +59,7 @@ export default async ({ req, res, log, error }) => {
         tablesDB.deleteRow({
           databaseId: process.env.DATABASE_ID,
           tableId: process.env.USERNAMES_COLLECTION,
-          rowId: prefUID
+          rowId: verfiedUserId
         })
       ]);
     }
@@ -66,7 +68,7 @@ export default async ({ req, res, log, error }) => {
       userId: usrAccnt.$id
     });
 
-    return res.json({ success: true, deletedProfileId: profileId });
+    return res.json({ success: true, deletedProfileId: prefUID });
   } catch (err) {
     error('Failed to delete user: ' + err.message);
     return res.json({ success: false, error: err.message });
