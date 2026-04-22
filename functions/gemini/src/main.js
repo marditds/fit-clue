@@ -79,7 +79,7 @@ export default async ({ req, res, log, error }) => {
     const user = await account.get();
 
     if (!user) {
-      return res.json({ result: 'Not a valid user.' });
+      return res.json({ message: 'Not a valid user.' });
     }
 
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -91,14 +91,14 @@ export default async ({ req, res, log, error }) => {
 
     if (!commentText) {
       verdict = 'fail';
-      return res.json({ result: 'Comment cannot be empty.' });
+      return res.json({ message: 'Comment cannot be empty.' });
     }
 
     // 1. Link detection
     if (checkUrls(commentText)) {
       verdict = 'fail';
       return res.json({
-        result: 'Your comment contains a link, which is not allowed. Please remove any URLs and try again.',
+        message: 'Your comment contains a link, which is not allowed. Please remove any URLs and try again.',
       });
     }
 
@@ -112,7 +112,7 @@ export default async ({ req, res, log, error }) => {
     if (filter.isProfane(commentText) || filter.isProfane(variations(commentText))) {
       verdict = 'fail';
       return res.json({
-        result:
+        message:
           'Your comment contains sexually explicit or profane language. ' +
           'Please reword it to keep the conversation respectful.',
       });
@@ -123,7 +123,7 @@ export default async ({ req, res, log, error }) => {
     if (hateMatch) {
       verdict = 'fail';
       return res.json({
-        result:
+        message:
           'Your comment appears to contain hate speech or discriminatory language. ' +
           'Please reword your comment to be respectful of all people.',
       });
@@ -134,7 +134,7 @@ export default async ({ req, res, log, error }) => {
     if (harassMatch) {
       verdict = 'fail';
       return res.json({
-        result:
+        message:
           'Your comment contains language that may be considered harassment or bullying. ' +
           'Please reword it in a more constructive and respectful way.',
       });
@@ -145,7 +145,7 @@ export default async ({ req, res, log, error }) => {
     if (spamMatch) {
       verdict = 'fail';
       return res.json({
-        result:
+        message:
           'Your comment appears to contain promotional or spam content. ' +
           'Please keep comments relevant and avoid advertising.',
       });
