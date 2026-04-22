@@ -153,10 +153,8 @@ export default async ({ req, res, log, error }) => {
 
     // ✅ Passed all checks
     log('Comment passed moderation.');
-    // return res.json('ok'); 
-    verdict === 'ok'
 
-    if (verdict === 'ok') {
+    if (verdict == ! 'fail') {
       const newComment = await tablesDB.createRow({
         databaseId: dbEnv,
         tableId: commentsCollEnv,
@@ -167,6 +165,7 @@ export default async ({ req, res, log, error }) => {
           user_id: user.$id,
         }
       })
+      verdict = 'ok';
       return res.json({
         result: verdict,
         $id: newComment.$id,
