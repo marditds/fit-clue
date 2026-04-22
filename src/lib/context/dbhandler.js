@@ -66,7 +66,7 @@ export const createUser = async (email, password, name) => {
             let userInColl = {};
 
             if (session) {
-                userInColl = await createUserInCollection(name, email);
+                userInColl = await createUserInCollection(name);
 
                 await account.updatePrefs({
                     prefs: {
@@ -95,15 +95,14 @@ export const createUser = async (email, password, name) => {
     }
 }
 
-export const createUserInCollection = async (username, email) => {
+export const createUserInCollection = async (username) => {
     try {
         const user = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
             rowId: ID.unique(),
             data: {
-                username,
-                email
+                username
             }
         })
 
