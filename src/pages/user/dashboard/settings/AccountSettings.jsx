@@ -118,7 +118,7 @@ export const AccountSettings = () => {
             }
 
             if (res.success === false) {
-                setDeleteModalTxt('Failed deleting account. Please try again later.')
+                setDeleteModalTxt('Failed deleting account. Please try again later or contact support.')
             }
         } catch (error) {
             console.error('Error removing user from platform:', error);

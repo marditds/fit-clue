@@ -99,7 +99,7 @@ export const usePosts = () => {
                 fetchUsersByIds(userIds)
             ]);
 
-            const userMap = new Map(allUsersData.rows.map(user => [user.user_id, user]));
+            const userMap = new Map(allUsersData.rows.map(user => [user.$id, user]));
 
             const fullComments = commentsTexts.map(comment => ({
                 ...comment,
