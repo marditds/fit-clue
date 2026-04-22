@@ -1094,7 +1094,7 @@ export const deleteUserFromPlatform = async () => {
     try {
         const user = await account.get();
 
-        const payload = JSON.stringify({ $id: user.$id });
+        const payload = JSON.stringify({ user_id: user.$id });
 
         const delete_function_id = await dbFunctionKeysProvider('user_delete_function');
 
