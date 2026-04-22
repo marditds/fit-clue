@@ -66,13 +66,13 @@ export const createUser = async (email, password, name) => {
             let userInColl = {};
 
             if (session) {
-                userInColl = await createUserInCollection(name);
+                userInColl = await createUserInCollection(name, user.$id);
 
-                await account.updatePrefs({
-                    prefs: {
-                        profile_id: userInColl.$id,
-                    }
-                });
+                // await account.updatePrefs({
+                //     prefs: {
+                //         profile_id: userInColl.$id,
+                //     }
+                // });
             }
             return userInColl;
         }
@@ -95,12 +95,12 @@ export const createUser = async (email, password, name) => {
     }
 }
 
-export const createUserInCollection = async (username) => {
+export const createUserInCollection = async (username, userId) => {
     try {
         const user = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: usernamesCollEnv,
-            rowId: ID.unique(),
+            rowId: userId,
             data: {
                 username
             }
