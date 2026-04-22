@@ -38,22 +38,26 @@ export default async ({ req, res, log, error }) => {
 
     log('user:', user);
 
-    const profileId = user.$id;
+    const verfiedUserId = user.$id;
 
-    log('profileId:', profileId);
+    log('verfiedUserId:', verfiedUserId);
 
-    if (profileId) {
+    const prefUID = user.prefs?.profile_id;
+
+    log('prefUID:', prefUID);
+
+    if (verfiedUserId) {
       await Promise.all([
         tablesDB.deleteRows({
           databaseId: process.env.DATABASE_ID,
           tableId: process.env.SAVES_COLLECTION,
-          queries: [Query.equal('user_id', profileId)]
+          queries: [Query.equal('user_id', verfiedUserId)]
         }),
 
         tablesDB.deleteRow({
           databaseId: process.env.DATABASE_ID,
           tableId: process.env.USERNAMES_COLLECTION,
-          rowId: profileId
+          rowId: prefUID
         })
       ]);
     }
