@@ -42,11 +42,8 @@ export default async ({ req, res, log, error }) => {
     const user = await users.get(usrAccnt.$id);
 
     const verfiedUserId = user.$id;
-    const prefUID = user.prefs?.profile_id;
 
-    log('user:', user);
     log('verfiedUserId:', verfiedUserId);
-    log('prefUID:', prefUID);
 
     if (verfiedUserId) {
       await Promise.all([
@@ -68,7 +65,7 @@ export default async ({ req, res, log, error }) => {
       userId: usrAccnt.$id
     });
 
-    return res.json({ success: true, deletedProfileId: prefUID });
+    return res.json({ success: true, message: 'Account deletion successful.' });
   } catch (err) {
     error('Failed to delete user: ' + err.message);
     return res.json({ success: false, error: err.message });
