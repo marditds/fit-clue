@@ -13,7 +13,7 @@ const TOSData = () => {
             title: 'Privacy',
             description: (
                 <p>
-                    Your use of FitClue is also governed by our <Link to='/privacy'>Privacy Policy</Link>, which explains how we collect, use, and store your data, including cookies, local storage, embedded third-party content and services, and AI-based processing.
+                    Your use of FitClue is also governed by our <Link to='/privacy'>Privacy Policy</Link>, which explains how we collect, use, and store your data, including cookies, and embedded third-party content and services.
                 </p>
             )
         },
@@ -88,7 +88,7 @@ const TOSData = () => {
                         FitClue reserves the right to remove content or suspend accounts at its sole discretion if it deems the content inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
                     </p>
                     <p>
-                        Users may report specific comments, links, or embedded Instagram posts that violate our policies by using the report button associated with that content. Reports include the content ID and the reason for the report. Please note that while we provide tools to report individual pieces of content, we do not currently provide a feature to report user accounts directly.
+                        You may report specific comments, links, or embedded Instagram posts that violate our policies by using the report button associated with that content. Reports include the content ID and the reason for the report. Please note that while we provide tools to report individual pieces of content, we do not currently provide a feature to report user accounts directly.
                     </p>
                     <p>
                         As a platform host, we act expeditiously to remove content that is found to be illegal or in violation of our terms. However, FitClue is a personal project and does not guarantee specific response times for every report.
@@ -119,7 +119,7 @@ const TOSData = () => {
                     </p>
                     <ul>
                         <li>Instagram and Meta (embedded content)</li>
-                        <li>Google (reCAPTCHA for spam and abuse prevention, Gemini API for content moderation)</li>
+                        <li>Google (reCAPTCHA for spam and abuse prevention)</li>
                         <li>Appwrite (backend infrastructure, authentication, and data storage)</li>
                     </ul>
                     <p>
@@ -128,6 +128,12 @@ const TOSData = () => {
                     <p>
                         Embedded Instagram content may be subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
                     </p>
+
+                    {/* ////////////////////////////////////////////////////////////////////// */}
+                    {/* ////////////////////////////////////////////////////////////////////// */}
+                    {/* ////////////////////////// TO BE EDITED 👇//////////////////////////// */}
+                    {/* ////////////////////////////////////////////////////////////////////// */}
+                    {/* ////////////////////////////////////////////////////////////////////// */}
                     <p>
                         Google Gemini may be used to review user-submitted content (including links and comments) for compliance with platform policies. When you submit content, may be sent to the Google Gemini API for analysis before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. You remain solely responsible for the content you submit. Any use of Google services may be subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a>, <a href='https://policies.google.com/privacy' target='_blank'>Google Privacy Policy</a>, and their <a href='https://policies.google.com/terms/generative-ai/use-policy' target='_blank'>Generative AI Prohibited Use Policy</a>.
                     </p>
@@ -146,7 +152,7 @@ const TOSData = () => {
                 <>
                     <p>
                         FitClue is provided on an 'as is' and 'as available' basis without warranties of any kind, either express or implied.
-                        To the fullest extent permitted by law, FitClue and its creator(s) disclaim all liability for any damages, losses, or claims arising from your access to or use of the platform; any content posted by you or other users; third-party services or integrations (e.g., Appwrite, Google Gemini, Instagram); downtime, data loss, or service interruptions; and unauthorized access to your account due to weak credentials or negligence.
+                        To the fullest extent permitted by law, FitClue and its creator(s) disclaim all liability for any damages, losses, or claims arising from your access to or use of the platform; any content posted by you or other users; third-party services or integrations (e.g., Appwrite, Google reCaptcha, Instagram); downtime, data loss, or service interruptions; and unauthorized access to your account due to weak credentials or negligence.
                     </p>
                     <p>
                         By using FitClue, you acknowledge and agree that you assume full responsibility for your use of the platform. Under no circumstances shall FitClue or its creator(s) be liable for any indirect, incidental, consequential, special, or punitive damages, even if advised of the possibility of such damages.
