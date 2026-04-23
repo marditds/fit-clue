@@ -14,24 +14,22 @@ const PrivacyData = () => {
                     <p>FitClue collects the following categories of data:</p>
                     <ul className='list-unstyled'>
                         <li>
-                            - Email Account Information: The email address you provide during account registration may be stored in the platform's database (Appwrite).
-                        </li>
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        {/* ////////////////////////// Mention Appwrite's account.get() //////////////////////////// */}
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        <li>
-                            - Username: The username you choose may be stored and may be visible to other users on the platform.
+                            - <strong>Email Account Information:</strong> The email address you provide during account registration may be stored in the platform's database (Appwrite).
                         </li>
                         <li>
-                            - Content Shared: This includes any text, comments, or links you post on the platform. Such content may remain visible to other users even after account deletion, unless it is removed or required to be deleted by law.
+                            - <strong>Username:</strong> The username you choose may be stored and may be visible to other users on the platform.
                         </li>
                         <li>
-                            - Reporting Data: When you report content (comments, links, or embedded posts), we collect the unique ID of the reported item and the reason provided for the report. This information is used solely to investigate potential violations of our policies and to maintain platform safety.
+                            - <strong>Comments:</strong> The text of any comment you submit is processed by our automated moderation system before publication. Comments that pass validation are stored in the platform database and may be visible to other users. Comments that fail validation are not stored in the database but may appear temporarily in system logs generated during processing.
                         </li>
                         <li>
-                            - Technical Data: IP addresses and usage logs are collected by Appwrite on our behalf and are used for security, debugging, and maintaining platform performance.
+                            - <strong>Links:</strong> When you submit a link that passes validation, the following data associated with that submission is stored in the platform database: the URL itself, the brand name you provide, the item description you provide, and the similarity level you indicate. Links that fail validation are not stored in the database but may appear temporarily in system logs generated during processing.
+                        </li>
+                        <li>
+                            - <strong>Reporting Data:</strong> When you report content (comments, links, or embedded posts), we collect the unique ID of the reported item and the reason provided for the report. This information is used solely to investigate potential violations of our policies and to maintain platform safety.
+                        </li>
+                        <li>
+                            - <strong>Technical Data:</strong> IP addresses and usage logs are collected by Appwrite on our behalf and are used for security, debugging, and maintaining platform performance.
                         </li>
                     </ul>
                     <p>
@@ -42,14 +40,14 @@ const PrivacyData = () => {
         },
         {
             title: "Data Usage",
-            description:
+            description: (
                 <div>
                     <p>The data we collect is used to:</p>
                     <ul className='list-unstyled'>
                         <li>- Facilitate account creation.</li>
                         <li>- Display content and enable interactions within the platform.</li>
                         <li>
-                            - Validate user-submitted content (including comments and links) using automated rule-based systems to ensure compliance with our <Link to='/tos' target='_blank'>Terms of Service</Link> and <Link to='/community-guidelines' target='_blank'>Community Guidelines</Link>.
+                            - Validate user-submitted content (including comments and links) using automated rule-based systems to ensure compliance with our <Link to='/tos' target='_blank'>Terms of Service</Link> and <Link to='/community-guidelines' target='_blank'>Community Guidelines</Link>. For comments, this includes screening for URLs, profanity, hate speech, harassment, and spam. For links, this includes safety screening and an evaluation of commerce relevance to determine whether the link qualifies as a valid shopping or product link.
                         </li>
                         <li>- Improve platform functionality and user experience.</li>
                     </ul>
@@ -57,6 +55,7 @@ const PrivacyData = () => {
                         Content that does not pass validation is not published or made visible on the platform. Such content may be temporarily processed and included in system logs during validation but is not stored in the platform database.
                     </p>
                 </div>
+            )
         },
         {
             title: "Data Sharing",
@@ -67,16 +66,19 @@ const PrivacyData = () => {
                     </p>
                     <ul className='list-unstyled'>
                         <li>
-                            - Service Providers: We use Appwrite to provide backend infrastructure and database services. Appwrite processes and stores data (including IP addresses) on our behalf as part of providing the platform.
+                            - <strong>Service Providers:</strong> We use Appwrite to provide backend infrastructure and database services. Appwrite processes and stores data (including IP addresses) on our behalf as part of providing the platform.
                         </li>
                         <li>
-                            - Automated Content Validation: FitClue uses backend functions to automatically review user-submitted content (including links) for compliance with platform policies. This validation is performed using rule-based systems, including domain checks, pattern matching, and security filtering. Submitted content may be temporarily processed and included in system logs generated by our infrastructure provider (Appwrite) for execution, debugging, and abuse prevention purposes. Only content that passes validation is stored in the platform database and made visible to users.
+                            - <strong>Automated Comment Validation:</strong> Comments you submit are processed server-side by a rule-based moderation system before publication. This system screens for URLs, profane or sexually explicit language (including obfuscated variants), hate speech, harassment, and spam phrases. Comment text is processed entirely within FitClue's backend infrastructure and is not transmitted to any external service or third-party API as part of this process. Only comments that pass all checks are stored in the platform database.
                         </li>
                         <li>
-                            - Legal Requirements: We may disclose data if required to do so by law or in response to valid legal requests.
+                            - <strong>Automated Link Validation:</strong> Links you submit are processed through a two-stage server-side validation pipeline. In the first stage, the submitted URL is screened for safety: it is checked against blocked domain and banned top-level domain lists, scanned for adult or harmful content patterns (including obfuscated variants), and its hostname is resolved via DNS to verify that it does not point to a private, reserved, or internal network address. This DNS resolution involves transmitting the domain name of the submitted URL to DNS resolution infrastructure as part of a security check; no other user data is transmitted in this process. In the second stage, URLs that pass safety screening are evaluated by a scoring engine that analyzes URL structure, path patterns, and domain characteristics to determine commerce relevance. Only links that pass both stages are stored in the platform database.
                         </li>
                         <li>
-                            - Platform Integrity: We may review data internally to investigate violations of our Terms of Service or to maintain the safety and integrity of the platform.
+                            - <strong>Legal Requirements:</strong> We may disclose data if required to do so by law or in response to valid legal requests.
+                        </li>
+                        <li>
+                            - <strong>Platform Integrity:</strong> We may review data internally to investigate violations of our Terms of Service or to maintain the safety and integrity of the platform.
                         </li>
                     </ul>
                     <p>
@@ -87,7 +89,7 @@ const PrivacyData = () => {
         },
         {
             title: "Data Storage and Security",
-            description:
+            description: (
                 <div>
                     <p>
                         Your data may be stored on servers managed by our backend provider (Appwrite), which may be located in the EU or other regions depending on infrastructure configuration. By using FitClue, you acknowledge that your information may be transferred to, accessed, and processed in the United States or other regions where our administrative operations or service providers operate. While we take reasonable steps to protect your information, FitClue is a personal project and may not include certain enterprise-grade security features such as end-to-end encryption or mandatory multi-factor authentication. No method of transmission over the internet or electronic storage is completely secure. Therefore, we cannot guarantee absolute security of your data. You agree to:
@@ -97,21 +99,24 @@ const PrivacyData = () => {
                         <li>- Avoid sharing sensitive personal information (such as financial information, government identification numbers, or private contact details) on the platform, as content may be visible to others and is not protected by advanced security measures.</li>
                     </ul>
                 </div>
+            )
         },
         {
             title: "Data Retention",
-            description: <div>
-                <p>
-                    We retain personal data only for as long as necessary to provide the service or comply with legal obligations.
-                </p>
-                <p>
-                    System logs generated during backend processing may be retained for a limited period for security, debugging, and abuse prevention purposes and are not used for content publication or user-facing features.
-                </p>
-            </div>
+            description: (
+                <div>
+                    <p>
+                        We retain personal data only for as long as necessary to provide the service or comply with legal obligations.
+                    </p>
+                    <p>
+                        System logs generated during backend processing — including logs produced during comment and link validation — may be retained for a limited period for security, debugging, and abuse prevention purposes. These logs are not used for content publication or user-facing features.
+                    </p>
+                </div>
+            )
         },
         {
             title: "User Rights",
-            description:
+            description: (
                 <div>
                     <p>
                         You have the right to:
@@ -128,61 +133,47 @@ const PrivacyData = () => {
                         Depending on your location, you may have additional rights under applicable data protection laws, including the right to request access to or deletion of your personal data. We will make reasonable efforts to honor such requests where technically feasible and legally required.
                     </p>
                 </div>
+            )
         },
         {
             title: "Cookies and Tracking",
-            description:
+            description: (
                 <div>
                     <p>
                         FitClue uses cookies and similar technologies to support core functionality and improve user experience.
                     </p>
                     <ul className='list-unstyled'>
                         <li>
-                            - Authentication Cookies: Cookies set by Appwrite are used to manage user login sessions and keep you authenticated while using the platform.
-                        </li>
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        {/* ////////////////////////// TO BE EDITED 👇//////////////////////////// */}
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        {/* ////////////////////////////////////////////////////////////////////// */}
-                        <li>
-                            - Local Storage: FitClue stores a unique user identifier (generated by Appwrite) in your browser's local storage to maintain session persistence. This data remains on your device and is used only within the platform.
+                            - <strong>Authentication Cookies:</strong> Cookies set by Appwrite are used to manage user login sessions and keep you authenticated while using the platform. Their use may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
                         </li>
                         <li>
-                            - Security & Anti-Abuse: We use Google reCAPTCHA to protect the platform from spam and automated abuse. This service may collect hardware and software information, such as device and browser data, and send it to Google for analysis. Its use is subject to Google's Privacy Policy and Terms of Service.
+                            - <strong>Security & Anti-Abuse:</strong> We use Google reCAPTCHA to protect the platform from spam and automated abuse. This service may collect hardware and software information, such as device and browser data, and send it to Google for analysis. Its use may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a>, and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
                         </li>
                         <li>
-                            - Third-Party Content: FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with Instagram's and Meta's privacy policies which we do not control or access. FitClue does not control these cookies and does not access the data collected by them.
+                            - <strong>Third-Party Content:</strong> FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with <a href='https://www.facebook.com/terms.php' target='_blank' rel="noopener noreferrer">Meta's Terms of Service</a> and <a href='https://privacycenter.instagram.com/policy' target='_blank' rel="noopener noreferrer">Meta's Privacy Policy</a>, which we do not control or access.
                         </li>
                     </ul>
                     <p>
                         FitClue does not use cookies or similar technologies for advertising or tracking you across other websites.
                     </p>
                 </div>
+            )
         },
         {
             title: "Monetization",
-            description: `
-      We reserve the right to introduce paid features or advertisements in the future, and this policy will be updated to reflect any new data practices.
-    `
+            description: `We reserve the right to introduce paid features or advertisements in the future, and this policy will be updated to reflect any new data practices.`
         },
         {
             title: "Children's Privacy",
-            description: `
-      FitClue is not intended for individuals under 18 years of age, in accordance with platform eligibility requirements. We do not knowingly collect personal data from children. If we become aware that such data has been collected, it will be deleted promptly.
-    `
+            description: `FitClue is not intended for individuals under 18 years of age, in accordance with platform eligibility requirements. We do not knowingly collect personal data from children. If we become aware that such data has been collected, it will be deleted promptly.`
         },
         {
             title: "Updates to This Policy",
-            description: `
-      This Privacy Policy may be updated periodically. You will be notified of changes through platform announcements. Continued use of FitClue after updates constitutes acceptance of the revised policy.
-    `
+            description: `This Privacy Policy may be updated periodically. You will be notified of changes through platform announcements. Continued use of FitClue after updates constitutes acceptance of the revised policy.`
         },
         {
             title: "Contact Information",
-            description: `
-      For questions or concerns about this Privacy Policy, please contact us at: FitClue@altmails.com.
-    `
+            description: `For questions or concerns about this Privacy Policy, please contact us at: FitClue@altmails.com.`
         }
     ];
 

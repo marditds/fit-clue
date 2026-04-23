@@ -13,7 +13,7 @@ const TOSData = () => {
             title: 'Privacy',
             description: (
                 <p>
-                    Your use of FitClue is also governed by our <Link to='/privacy'>Privacy Policy</Link>, which explains how we collect, use, and store your data, including cookies, and embedded third-party content and services.
+                    Your use of FitClue is also governed by our <Link to='/privacy' target='_blank'>Privacy Policy</Link>, which explains how we collect, use, and store your data, including cookies, and embedded third-party content and services.
                 </p>
             )
         },
@@ -88,16 +88,62 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        FitClue uses automated systems to review user-submitted content, including links and comments, for compliance with platform policies. These systems rely on rule-based validation methods, including domain filtering, pattern recognition, and security checks.
+                        FitClue uses automated, rule-based systems to review all user-submitted content — including links and comments — before it is published. These systems run server-side and apply validation logic, including keyword filtering, pattern matching, domain analysis, and network security checks. Content that does not pass validation is rejected and will not be published on the platform.
                     </p>
                     <p>
-                        User-submitted content may be processed by backend systems during validation and may be temporarily included in system logs for execution, security, and debugging purposes. These logs are not used for publishing content and are not part of the platform's persistent content storage.
+                        <strong>Comments</strong>
                     </p>
                     <p>
-                        Content that does not meet platform requirements may be rejected and will not be published. FitClue does not guarantee that all invalid or harmful content will be detected, and users remain solely responsible for the content they submit.
+                        All comments are screened automatically prior to submission. The following categories of content are prohibited and will result in automatic rejection:
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>URLs and links</strong> — Comments may not contain any URLs or hyperlinks, including obfuscated or disguised variants. If your comment includes a link in any form, it will be rejected.
+                        </li>
+                        <li>
+                            <strong>Profanity and sexually explicit language</strong> — Comments are screened for profane, vulgar, or sexually explicit language, including common character substitutions and leet-speak variants of prohibited terms.
+                        </li>
+                        <li>
+                            <strong>Hate speech and discriminatory language</strong> — Comments that contain hate speech or language promoting discrimination based on race, ethnicity, religion, or similar characteristics are prohibited.
+                        </li>
+                        <li>
+                            <strong>Harassment and bullying</strong> — Comments containing language that threatens, demeans, or targets individuals are prohibited. This includes direct insults, threats of harm, and language intended to humiliate.
+                        </li>
+                        <li>
+                            <strong>Spam and promotional content</strong> — Comments that contain solicitation, self-promotion, referral phrases, or other promotional language are prohibited.
+                        </li>
+                    </ul>
+                    <p>
+                        These checks are applied against both the original comment text and normalized variants designed to detect obfuscated or disguised prohibited content.
                     </p>
                     <p>
-                        FitClue reserves the right to remove content or suspend accounts at its sole discretion if it deems the content inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
+                        <strong>Links</strong>
+                    </p>
+                    <p>
+                        All submitted links are evaluated in two stages before being published:
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Safety screening</strong> — Every submitted link is checked against a list of blocked domains and banned top-level domains, screened for adult, explicit, or harmful content in both the raw URL and normalized variants (including leet-speak), and resolved via DNS to confirm that the domain does not point to a private, reserved, or internal network address. Links that fail any safety check are unconditionally rejected.
+                        </li>
+                        <li>
+                            <strong>Commerce relevance scoring</strong> — Links that pass safety screening are then evaluated for commerce intent using an automated scoring engine. This engine analyzes URL structure, path patterns, query parameters, and domain characteristics to determine whether a link points to a shoppable or product-related destination. Links must meet a minimum commerce relevance threshold to be accepted. Links that are safe but do not meet this threshold — including links to social media platforms, general websites, or non-product pages — will be rejected as not qualifying as valid shopping links.
+                        </li>
+                    </ul>
+                    <p>
+                        These two stages are fully automated. There is no human review queue. Rejections from either stage are final unless you resubmit a different link.
+                    </p>
+                    <p>
+                        <strong>General</strong>
+                    </p>
+                    <p>
+                        User-submitted content may be temporarily processed and included in system logs during validation for execution, security, and debugging purposes. These logs are not used for publishing content and are not part of the platform's persistent content storage. Only content that passes all validation stages is stored in the platform database.
+                    </p>
+                    <p>
+                        FitClue's validation systems are designed to reduce harmful, irrelevant, or non-compliant content but are not exhaustive or infallible. We do not guarantee that all invalid or harmful content will be detected, and users remain solely responsible for the content they submit.
+                    </p>
+                    <p>
+                        FitClue reserves the right to remove content or suspend accounts at its sole discretion if content is deemed inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
                     </p>
                     <p>
                         You may report specific comments, links, or embedded Instagram posts that violate our policies by using the report button associated with that content. Reports include the content ID and the reason for the report. Please note that while we provide tools to report individual pieces of content, we do not currently provide a feature to report user accounts directly.
@@ -121,7 +167,7 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        FitClue relies on various third-party services to provide core functionality, including backend infrastructure, security features, and embedded media.
+                        FitClue relies on various third-party services to provide core functionality, including backend infrastructure, security features, and embedded media. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services.
                     </p>
                     <p>
                         By using FitClue, you acknowledge that your data may be processed by these third-party providers on our behalf. Such processing is subject to the respective terms, privacy policies, and acceptable use policies of those providers, which are independent of and not controlled by FitClue.
@@ -138,13 +184,13 @@ const TOSData = () => {
                         FitClue is not affiliated with or endorsed by Instagram, Meta, Google, or Appwrite.
                     </p>
                     <p>
-                        Embedded Instagram content may be subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
+                        Embedded Instagram content may be subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a>, <a href='https://www.facebook.com/terms.php' target='_blank' rel="noopener noreferrer">Meta's Terms of Service</a>, and <a href='https://privacycenter.instagram.com/policy' target='_blank' rel="noopener noreferrer">Meta's Privacy Policy</a>.
                     </p>
                     <p>
-                        FitClue uses Google reCAPTCHA to protect against spam and automated abuse. Use of this service is subject to Google's Terms of Service and Privacy Policy. Use of Google services may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a>, and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
+                        FitClue uses Google reCAPTCHA to protect against spam and automated abuse. Use of Google services may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a>, and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
                     </p>
                     <p>
-                        Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a>.
+                        Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
                     </p>
                     <p>
                         These third-party terms and policies may change from time to time, and FitClue is not responsible for those changes.
@@ -161,7 +207,7 @@ const TOSData = () => {
                         To the fullest extent permitted by law, FitClue and its creator(s) disclaim all liability for any damages, losses, or claims arising from your access to or use of the platform; any content posted by you or other users; third-party services or integrations (e.g., Appwrite, Google reCaptcha, Instagram); downtime, data loss, or service interruptions; and unauthorized access to your account due to weak credentials or negligence.
                     </p>
                     <p>
-                        FitClue's content validation systems are designed to reduce harmful or non-compliant content but are not exhaustive. We do not guarantee the accuracy or completeness of these systems, and their limitations may result in content being incorrectly accepted or rejected.
+                        FitClue's content validation systems are designed to reduce harmful or non-compliant content but are not exhaustive. We do not guarantee the accuracy or completeness of these systems, and their limitations may result in content being incorrectly accepted or rejected. In particular, the commerce relevance scoring system used to evaluate link submissions is a best-effort estimation and may not correctly classify all URLs.
                     </p>
                     <p>
                         By using FitClue, you acknowledge and agree that you assume full responsibility for your use of the platform. Under no circumstances shall FitClue or its creator(s) be liable for any indirect, incidental, consequential, special, or punitive damages, even if advised of the possibility of such damages.
