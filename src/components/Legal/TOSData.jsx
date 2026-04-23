@@ -40,6 +40,9 @@ const TOSData = () => {
                     <p>
                         While every reasonable effort is made to ensure the reliability of the platform, FitClue cannot guarantee advanced security features or comprehensive protections against potential risks. You are encouraged to use strong passwords and exercise caution when sharing sensitive information.
                     </p>
+                    <p>
+                        FitClue does not guarantee uninterrupted availability of the platform and may experience downtime, maintenance periods, or service disruptions.
+                    </p>
                 </>
             )
         },
@@ -54,7 +57,7 @@ const TOSData = () => {
             title: 'Security and Account Access',
             description:
                 <p>
-                    FitClue uses Google reCAPTCHA to prevent automated sign-ups during account creation. The platform does not provide additional security measures such as multi-factor authentication. You are solely responsible for securing your account and are advised to use strong, unique passwords. FitClue is not liable for unauthorized access resulting from weak or compromised credentials.
+                    FitClue uses Google reCAPTCHA to protect against spam and automated abuse, including account creation and other interactions. The platform does not provide additional security measures such as multi-factor authentication. You are solely responsible for securing your account and are advised to use strong, unique passwords. FitClue is not liable for unauthorized access resulting from weak or compromised credentials.
                 </p>
         },
         {
@@ -85,6 +88,15 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
+                        FitClue uses automated systems to review user-submitted content, including links and comments, for compliance with platform policies. These systems rely on rule-based validation methods, including domain filtering, pattern recognition, and security checks.
+                    </p>
+                    <p>
+                        User-submitted content may be processed by backend systems during validation and may be temporarily included in system logs for execution, security, and debugging purposes. These logs are not used for publishing content and are not part of the platform's persistent content storage.
+                    </p>
+                    <p>
+                        Content that does not meet platform requirements may be rejected and will not be published. FitClue does not guarantee that all invalid or harmful content will be detected, and users remain solely responsible for the content they submit.
+                    </p>
+                    <p>
                         FitClue reserves the right to remove content or suspend accounts at its sole discretion if it deems the content inappropriate, harmful, or in violation of these terms. We are under no obligation to provide prior notice or justification for such actions.
                     </p>
                     <p>
@@ -109,7 +121,7 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        FitClue relies on various third-party services to provide core functionality, including backend infrastructure, security features, content moderation, and embedded media.
+                        FitClue relies on various third-party services to provide core functionality, including backend infrastructure, security features, and embedded media.
                     </p>
                     <p>
                         By using FitClue, you acknowledge that your data may be processed by these third-party providers on our behalf. Such processing is subject to the respective terms, privacy policies, and acceptable use policies of those providers, which are independent of and not controlled by FitClue.
@@ -128,14 +140,8 @@ const TOSData = () => {
                     <p>
                         Embedded Instagram content may be subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a> and <a href='https://www.facebook.com/terms.php' target='_blank'>Meta's Terms of Service</a>.
                     </p>
-
-                    {/* ////////////////////////////////////////////////////////////////////// */}
-                    {/* ////////////////////////////////////////////////////////////////////// */}
-                    {/* ////////////////////////// TO BE EDITED 👇//////////////////////////// */}
-                    {/* ////////////////////////////////////////////////////////////////////// */}
-                    {/* ////////////////////////////////////////////////////////////////////// */}
                     <p>
-                        Google Gemini may be used to review user-submitted content (including links and comments) for compliance with platform policies. When you submit content, may be sent to the Google Gemini API for analysis before publication. However, FitClue does not guarantee the accuracy, appropriateness, or legality of this automated screening. You remain solely responsible for the content you submit. Any use of Google services may be subject to <a href='https://policies.google.com/terms' target='_blank'>Google's Terms of Service</a>, <a href='https://policies.google.com/privacy' target='_blank'>Google Privacy Policy</a>, and their <a href='https://policies.google.com/terms/generative-ai/use-policy' target='_blank'>Generative AI Prohibited Use Policy</a>.
+                        FitClue uses Google reCAPTCHA to protect against spam and automated abuse. Use of this service is subject to Google's Terms of Service and Privacy Policy. Use of Google services may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a>, and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
                     </p>
                     <p>
                         Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a>.
@@ -155,6 +161,9 @@ const TOSData = () => {
                         To the fullest extent permitted by law, FitClue and its creator(s) disclaim all liability for any damages, losses, or claims arising from your access to or use of the platform; any content posted by you or other users; third-party services or integrations (e.g., Appwrite, Google reCaptcha, Instagram); downtime, data loss, or service interruptions; and unauthorized access to your account due to weak credentials or negligence.
                     </p>
                     <p>
+                        FitClue's content validation systems are designed to reduce harmful or non-compliant content but are not exhaustive. We do not guarantee the accuracy or completeness of these systems, and their limitations may result in content being incorrectly accepted or rejected.
+                    </p>
+                    <p>
                         By using FitClue, you acknowledge and agree that you assume full responsibility for your use of the platform. Under no circumstances shall FitClue or its creator(s) be liable for any indirect, incidental, consequential, special, or punitive damages, even if advised of the possibility of such damages.
                     </p>
                 </>
@@ -165,7 +174,7 @@ const TOSData = () => {
             description: (
                 <>
                     <p>
-                        FitClue reserves the right to suspend or terminate your accounts at any time, with or without notice, for conduct that violates these Terms of Service, disrupts the platform, or is otherwise deemed harmful or inappropriate.
+                        FitClue reserves the right to suspend or terminate your account at any time, with or without notice, for conduct that violates these Terms of Service, disrupts the platform, or is otherwise deemed harmful or inappropriate.
                     </p>
                     <p>
                         You may also choose to stop using the platform at any time. Termination may result in the deletion of all associated user data, including account credentials.
