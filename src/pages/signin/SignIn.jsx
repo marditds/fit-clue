@@ -49,16 +49,7 @@ const SignIn = () => {
                 return;
             }
 
-            console.log('user in SignIn.jsx:', user);
-
-            // const userPerfs = await getUserPreferences();
-
-            // const userInColl = await getUserFromCollectionById(userPerfs.profile_id);
-
-            // localStorage.setItem('authUserId', userInColl.$id);
-
             setUserId(user.userId);
-            // setUsername(user.);
             setEmail(user.providerUid);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);

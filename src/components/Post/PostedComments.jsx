@@ -7,7 +7,6 @@ import { ReportModal } from '../Modals/Modals';
 import { commentReportCategories } from '../../lib/data/reportCategories';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { LoadMoreButton } from '../RelatedPosts/RelatedPosts';
-import { onePostComments } from '../../lib/data/testData';
 import { Icon } from '../Accessories/Icon';
 
 export const PostedComments = ({ postId, comments, setComments, commentsTotal, setCommentsTotal, isViewCommentsClicked, setIsViewCommentsClicked, isLoggedIn }) => {
@@ -31,9 +30,6 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
         }
         try {
             setIsCommentsLoading(true);
-
-            // To be commented out when testing real data
-            // setComments(onePostComments);
 
             const res = await fetchComments(postId, lastComment?.$id || null);
 

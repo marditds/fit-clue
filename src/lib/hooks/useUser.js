@@ -137,8 +137,6 @@ export const useUser = () => {
                 setUsername('');
                 setEmail('');
 
-                // localStorage.removeItem('authUserId');
-
                 navigate('/sign-in');
             } else {
                 setSignOutSucessMsg('Failed to sign out. Please try again later.')

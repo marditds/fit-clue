@@ -64,8 +64,6 @@ const SignUp = () => {
                 return;
             }
 
-            // localStorage.setItem('authUserId', user.$id);
-
             setUserId(user.$id);
             setIsLoggedIn(true);
             setIsSessionInProgress(true);

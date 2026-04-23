@@ -112,8 +112,6 @@ export const AccountSettings = () => {
                 setEmail('');
                 setDeleteModalTxt(<>Sad <Icon className='bi bi-emoji-frown' /> to see you go. Good bye.</>)
 
-                // localStorage.removeItem('authUserId');
-
                 navigate('/');
             }
 
@@ -286,7 +284,6 @@ export const AccountSettings = () => {
                     <Button
                         onClick={async () => {
                             setShowModal(true);
-                            // await removeUserFromPlatform();
                         }}
                         className='w-100'
                     >

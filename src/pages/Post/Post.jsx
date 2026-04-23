@@ -45,9 +45,6 @@ const Post = () => {
 
             try {
                 const post = await fetchPostById(params.postId);
-                // const post = onePostData;
-
-                console.log('post in Post.jsx:', post);
 
                 setPersonalityName(post?.content.personality_name);
                 setItemsLinks(post?.links);
@@ -60,12 +57,8 @@ const Post = () => {
                         const url = new URL(rawUrl);
                         const parts = url.pathname.split('/').filter(Boolean);
 
-                        console.log('parts', parts);
-
                         if (parts[0] === 'p') {
                             const postIndex = parts.indexOf('p');
-
-                            console.log('postIndex', postIndex);
 
                             if (postIndex !== -1 && parts[postIndex + 1]) {
                                 const postId = parts[postIndex + 1];
@@ -76,8 +69,6 @@ const Post = () => {
 
                         if (parts[0] === 'reel') {
                             const postIndex = parts.indexOf('reel');
-
-                            console.log('postIndex', postIndex);
 
                             if (postIndex !== -1 && parts[postIndex + 1]) {
                                 const postId = parts[postIndex + 1];

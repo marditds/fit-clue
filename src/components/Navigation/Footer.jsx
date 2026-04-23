@@ -57,7 +57,6 @@ const Footer = () => {
 
     const copyright = <>© {new Date().getFullYear()} FitClue. All rights reserved.</>
 
-    // if (authPages.includes(location.pathname)) {
     return (
         <FooterLayout>
             <Row className='align-items-center'>
@@ -102,54 +101,10 @@ const Footer = () => {
                     </div>
                 </Col>
 
-                {/* <Col className='mb-0 d-flex flex-column flex-md-row align-items-center' style={{ maxWidth: 'max-content' }}>
-                    {!isXs && !isSm &&
-                        <span className=''>
-                            {copyright}
-                        </span>}
-                </Col>
-                */}
             </Row>
         </FooterLayout>
     )
-    // }
 
-    // return (
-    //     <FooterLayout>
-    //         <Row className='justify-content-center align-items-center'>
-    //             <Col xs={12} lg={10} className='mb-2 mb-md-0 d-flex flex-column flex-md-row align-items-center'>
-    //                 {!isXs && !isSm && <>
-    //                     {copyright} <Icon className='ms-2 bi bi-dot' />
-    //                 </>}
-    //                 {
-    //                     footerLinks.map((item, idx) => (
-    //                         <span key={idx}>
-    //                             <Link to={item.link} className='mx-2 text-decoration-none'>
-    //                                 {item.title}
-    //                             </Link>
-    //                             {
-    //                                 (!isXs && !isSm) &&
-    //                                 item.decoration
-    //                             }
-    //                         </span>
-    //                     ))
-    //                 }
-    //                 {(isXs || isSm) && copyright}
-    //             </Col>
-    //             <Col xs={12} lg={2} className='d-flex justify-content-between'>
-    //                 {
-    //                     footerSocials.map((item, idx) => (
-    //                         <span key={idx}>
-    //                             <a href={item.link} target='_blank'>
-    //                                 <Icon className={`${item.icon} fs-5`} />
-    //                             </a>
-    //                         </span>
-    //                     ))
-    //                 }
-    //             </Col> 
-    //         </Row> 
-    //     </FooterLayout>
-    // );
 };
 
 export default Footer;
