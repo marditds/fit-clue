@@ -81,7 +81,6 @@ const Footer = () => {
                             ))
                             }
                         </div>
-
                     </Col>
                 }
 
@@ -89,7 +88,9 @@ const Footer = () => {
                     <hr className='my-md-3 my-2' />
                 }
 
-                <Col className='d-flex flex-column flex-md-row align-items-center justify-content-md-between'>
+                <Col className='d-flex flex-column flex-md-row align-items-center justify-content-md-between'
+                    style={{ marginBottom: isXs && location.pathname.startsWith('/dashboard') ? '51.39px' : '0px' }}
+                >
                     {footerLinks.map((item, idx) => (
                         <Link to={item.link} key={idx} className='text-decoration-none my-md-0 my-1'>
                             {item.title}
