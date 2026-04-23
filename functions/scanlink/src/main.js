@@ -2,7 +2,7 @@ import dns from 'dns/promises';
 import { Client, Account, TablesDB, ID } from 'node-appwrite';
 
 // ======================================================
-// 🧠 CONFIGURATION (EDIT ONLY THIS TO TUNE BEHAVIOR)
+// 🧠 CONFIGURATION
 // ======================================================
 
 const CONFIG = {
