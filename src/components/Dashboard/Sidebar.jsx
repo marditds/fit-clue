@@ -21,6 +21,12 @@ export const Sidebar = ({ username }) => {
             to: 'settings',
         },
         {
+            label: 'My Posts',
+            icon: 'bi bi-file-earmark-post',
+            activeIcon: 'bi bi-file-earmark-post-fill',
+            to: 'my-posts',
+        },
+        {
             label: 'Saved Posts',
             icon: 'bi bi-floppy',
             activeIcon: 'bi bi-floppy-fill',

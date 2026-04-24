@@ -130,6 +130,10 @@ const router = createBrowserRouter([
             element: <AccountSettings />
           },
           {
+            path: 'my-posts',
+            element: <SavedPosts />
+          },
+          {
             path: 'saved-posts',
             element: <SavedPosts />
           },

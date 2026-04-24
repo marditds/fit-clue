@@ -130,7 +130,7 @@ const PrivacyData = () => {
                         <li>- Request deletion of your account and associated personal data, subject to technical limitations and legal obligations.</li>
                     </ul>
                     <p>
-                        Depending on your location, you may have additional rights under applicable data protection laws, including the right to request access to or deletion of your personal data. We will make reasonable efforts to honor such requests where technically feasible and legally required.
+                        Depending on your location, you may have additional rights under applicable data protection laws, such as the right to access, correct, or delete your personal data. We will make reasonable efforts to comply with such requests where required by law and where technically feasible.
                     </p>
                 </div>
             )

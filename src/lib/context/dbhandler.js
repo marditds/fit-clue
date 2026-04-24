@@ -620,6 +620,33 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
     }
 }
 
+export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor = null) => {
+    try {
+        const queries = [
+            Query.equal('user_id', userId),
+            Query.orderDesc('$createdAt'),
+            Query.limit(myPostsLoadLimit)
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        };
+
+        const postsByCreatorId = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: queries
+        });
+
+        if (postsByCreatorId.total > 0) {
+            return postsByCreatorId;
+        }
+        return null;
+    } catch (error) {
+        console.error('dbhandler - Error fetching posts by creator id', error);
+    }
+}
+
 export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, lastCursor = null) => {
 
     console.log('itemName:', itemName);
