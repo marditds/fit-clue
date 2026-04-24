@@ -105,7 +105,7 @@ const CONFIG = {
   // -------------------------
   // 🟢 Platform suppression
   // -------------------------
-  trustedBoostDomains = new Set([
+  trustedBoostDomains: new Set([
     'amazon.com',
     'ebay.com',
     'etsy.com',
@@ -285,7 +285,7 @@ const isAdultContent = (domain, path) => {
 export default async ({ req, res, log, error }) => {
 
   const client = new Client()
-    .setEndpoint(process.env.API_ENDPOINT)
+    .setEndpoint(process.env.ENDPOINT)
     .setProject(process.env.PROJECT_ID)
     .setJWT(req.headers['x-appwrite-user-jwt']);
 
