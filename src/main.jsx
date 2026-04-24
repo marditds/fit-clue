@@ -17,6 +17,7 @@ import ResetPassword from './pages/reset-password/ResetPassword';
 import Footer from './components/Navigation/Footer.jsx';
 import Results from './pages/search/Results.jsx';
 import { AccountSettings } from './pages/user/dashboard/settings/AccountSettings.jsx';
+import { MyPosts } from './pages/user/dashboard/my-posts/MyPosts.jsx';
 import { SavedPosts } from './pages/user/dashboard/saved-posts/SavedPosts.jsx';
 import TOS from './pages/tos/TOS.jsx';
 import Privacy from './pages/privacy/Privacy.jsx';
@@ -131,7 +132,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'my-posts',
-            element: <SavedPosts />
+            element: <MyPosts />
           },
           {
             path: 'saved-posts',

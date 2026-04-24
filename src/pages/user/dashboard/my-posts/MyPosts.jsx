@@ -22,9 +22,6 @@ export const MyPosts = () => {
     const [myPostsTotal, setMyPostsTotal] = useState(0);
     const [isMyPostsLoading, setIsMyPostsLoading] = useState(false);
 
-    //Toast
-    const [showToast, setShowToast] = useState(false);
-
     const getMyPosts = async () => {
 
         console.log({ userId: userId, lastMyPost: lastMyPost });
@@ -37,7 +34,7 @@ export const MyPosts = () => {
         setIsMyPostsLoading(true);
 
         try {
-            const myPostsDocs = await fetchPostsByCreatorId(userId, lastSave || null);
+            const myPostsDocs = await fetchPostsByCreatorId(userId, lastMyPost || null);
 
             if (!myPostsDocs || !myPostsDocs.rows?.length) {
                 console.log('No posts found.');
@@ -120,32 +117,29 @@ export const MyPosts = () => {
                 <Col className='px-0'>
                     <h3 className='fw-bold'>
                         <Icon
-                            className='bi bi-floppy'
+                            className='bi bi-file-earmark-post'
                             marginEndSize={'3'}
-                        />Your Saves ({userSavesTotal})
+                        />Your Posts ({myPostsTotal})
                     </h3>
                     <p>
-                        Here is where your saved posts live.
+                        Here is where your posts live.
                     </p>
                 </Col>
             </Row>
 
             <Row className='px-4 pb-0 px-lg-5 pb-lg-0' xs={1}>
-                {userSaves?.length > 0 ?
+                {myPosts?.length > 0 ?
                     (
-                        userSaves.map((savedPost) => {
+                        myPosts.map((myPost) => {
                             return (
                                 <InstagramEmbedCards
-                                    key={savedPost.saveDocId}
-                                    posts={[savedPost.post]}
-                                    saveDocId={savedPost.saveDocId}
-                                    onDeleteSaveClick={onDeleteSaveClick}
-                                    isDeleteSaveLoading={loadingSaveDocId === savedPost.saveDocId}
+                                    key={myPost.$id}
+                                    posts={[myPost]}
                                 />
                             );
                         })
                     ) : (
-                        <p className='px-0'>You saved posts will appear here.</p>
+                        <p className='px-0'>You posts will appear here.</p>
                     )
                 }
             </Row>
@@ -153,23 +147,16 @@ export const MyPosts = () => {
             <Row>
                 <Col>
                     <LoadMoreButton
-                        isLoading={isSavesLoading}
+                        isLoading={isMyPostsLoading}
                         hasMore={hasMore}
                         onClick={onLoadMoreMyPostsClick}
-                        loadMoreText='Load more saves'
-                        loadingText='Loading more saves'
-                        noMoreText='No more saves'
+                        loadMoreText='Load more posts'
+                        loadingText='Loading more posts'
+                        noMoreText='No more posts'
                         className='w-100 mt-2'
                     />
                 </Col>
             </Row>
-
-            {/* Toast */}
-            <ToastForDashboard
-                showToast={showToast}
-                setShowToast={setShowToast}
-                toastTitle='Save Removed Successfully.'
-            />
         </>
     )
 }
