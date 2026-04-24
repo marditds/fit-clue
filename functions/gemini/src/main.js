@@ -6,11 +6,11 @@ const HARASSMENT_TERMS = [
   'kill yourself', 'kys', 'go die', 'i hope you die', 'you should die',
   'nobody likes you', 'worthless', 'you are pathetic', 'ur pathetic',
   'loser', 'idiot', 'moron', 'imbecile', 'retard', 'retarded',
-  'shut up', 'stfu', 'get lost', 'drop dead',
+  'shut up', 'stfu', 'get lost', 'drop dead', 'fuckface'
 ];
 
 const HATE_SPEECH_TERMS = [
-  'nazi', 'white power', 'white supremacy', 'racial slur examples here'
+  'nazi', 'white power', 'white supremacy',
 ];
 
 const SPAM_PHRASES = [
@@ -35,7 +35,10 @@ const URL_PATTERNS = [
 
 function containsAny(text, terms) {
   const lower = text.toLowerCase();
-  return terms.find(term => lower.includes(term.toLowerCase())) ?? null;
+  return terms.find(term => {
+    const regex = new RegExp(`\\b${term.toLowerCase()}\\b`);
+    return regex.test(lower);
+  }) ?? null;
 }
 
 function checkUrls(text) {
@@ -45,7 +48,7 @@ function checkUrls(text) {
 const variations = (text) => {
   return text
     .toLowerCase()
-    .replace(/\b(\w[.\s_-]){2,}\w\b/g, match => match.replace(/[.\s_-]/g, ''))
+    .replace(/\b(\w[.\s_-])+\w+\b/g, match => match.replace(/[.\s_-]/g, ''))
     .replace(/[@4]/g, 'a')
     .replace(/3/g, 'e')
     .replace(/[1!|]/g, 'i')
@@ -105,7 +108,7 @@ export default async ({ req, res, log, error }) => {
     // 2. Sexually explicit content & general profanity (bad-words library)
     const filter = new Filter();
 
-    const newBadWords = ['r3tard', 'kunt', 'kunts', 'kuntz', 'puto', 'put0', 'puta', 'put@', 'nigga', 'n*gga', 'n*gger', 'ni**er', 'nigg*r'];
+    const newBadWords = ['fuckface', 'r3tard', 'kunt', 'kunts', 'kuntz', 'puto', 'put0', 'puta', 'put@', 'nigga', 'n*gga', 'n*gger', 'ni**er', 'nigg*r'];
 
     filter.addWords(...newBadWords)
 
