@@ -111,6 +111,9 @@ const PrivacyData = () => {
                     <p>
                         System logs generated during backend processing — including logs produced during comment and link validation — may be retained for a limited period for security, debugging, and abuse prevention purposes. These logs are not used for content publication or user-facing features.
                     </p>
+                    <p>
+                        When an account is deleted, your email address and username are permanently removed from the platform. Your posts and added links remain visible on the platform as part of the community's public record, and were never attributed to your username publicly. Any comments you left will continue to appear anonymized (e.g., replaced with "Deleted User"). Your internal account identifier is retained in the database alongside your content solely for data integrity purposes and is never displayed to other users.
+                    </p>
                 </div>
             )
         },
@@ -127,9 +130,6 @@ const PrivacyData = () => {
                         <li>- Request deletion of your account and associated personal data, subject to technical limitations and legal obligations.</li>
                     </ul>
                     <p>
-                        When an account is deleted, personal identifiers are removed from posts, but the substantive content of the post remains as part of the community's public record.
-                    </p>
-                    <p>
                         Depending on your location, you may have additional rights under applicable data protection laws, including the right to request access to or deletion of your personal data. We will make reasonable efforts to honor such requests where technically feasible and legally required.
                     </p>
                 </div>
@@ -144,7 +144,7 @@ const PrivacyData = () => {
                     </p>
                     <ul className='list-unstyled'>
                         <li>
-                            - <strong>Authentication Cookies:</strong> Cookies set by Appwrite are used to manage user login sessions and keep you authenticated while using the platform. Their use may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
+                            - <strong>Authentication Cookies:</strong> Cookies set by Appwrite may be used to manage user login sessions and keep you authenticated while using the platform. Their use may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
                         </li>
                         <li>
                             - <strong>Security & Anti-Abuse:</strong> We use Google reCAPTCHA to protect the platform from spam and automated abuse. This service may collect hardware and software information, such as device and browser data, and send it to Google for analysis. Its use may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a>, and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.

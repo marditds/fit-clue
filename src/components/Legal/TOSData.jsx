@@ -223,10 +223,10 @@ const TOSData = () => {
                         FitClue reserves the right to suspend or terminate your account at any time, with or without notice, for conduct that violates these Terms of Service, disrupts the platform, or is otherwise deemed harmful or inappropriate.
                     </p>
                     <p>
-                        You may also choose to stop using the platform at any time. Termination may result in the deletion of all associated user data, including account credentials.
+                        You may also choose to stop using the platform at any time. Termination will result in the deletion of your account credentials, including your email address and username.
                     </p>
                     <p>
-                        However, user-generated content, such as comments and posted links, may remain visible on the platform after account deletion, and the associated account identifiers may be removed or may be anonymized (e.g., replaced with "Deleted User"). FitClue is under no obligation to remove such content unless required by law.
+                        However, user-generated content, such as comments and posted links, may remain visible on the platform after account deletion. Posts, comments, and links were never publicly attributed to your username. Any comments you left will continue to appear anonymized (e.g., replaced with "Deleted User"). FitClue is under no obligation to remove such content unless required by law.
                     </p>
                 </>
             )
