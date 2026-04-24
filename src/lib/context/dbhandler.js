@@ -393,11 +393,12 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
 
         if (productLinksData.length > 0) {
             const results = await Promise.allSettled(
-                productLinksData.map((link) => {
-                    createLink(link.href, link.brandName, link.item, link.similarityLevel);
-                })
+                productLinksData.map((link) =>
+                    createLink(link.href, link.brandName, link.item, link.similarityLevel)
+                )
             );
-            product_links = results.filter(link => link?.message === 'ok');
+
+            product_links = results.filter(link => link.status === 'fulfilled' && link.value?.message === 'ok').map(link => link.value);
         }
 
         const post = await tablesDB.createRow({
