@@ -105,7 +105,7 @@ const CONFIG = {
   // -------------------------
   // 🟢 Platform suppression
   // -------------------------
-  trustedBoostDomains = new Set([
+  trustedBoostDomains: new Set([
     'amazon.com',
     'ebay.com',
     'etsy.com',
