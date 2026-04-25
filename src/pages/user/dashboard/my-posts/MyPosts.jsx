@@ -1,113 +1,60 @@
-import { Col, Row } from 'react-bootstrap'
+import { useEffect } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { usePosts } from '../../../../lib/hooks/usePosts';
-import { useEffect, useState } from 'react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { LoadingPage } from '../../../../components/Loading/Loading';
 import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedCards ';
 import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
 import { Icon } from '../../../../components/Accessories/Icon';
 import { ToastForDashboard } from '../../../../components/Accessories/ToastComponent';
-import { savesDashboardData } from '../../../../lib/data/testData';
 
 export const MyPosts = () => {
 
     const { userId } = useOutletContext();
 
-    const { fetchPostsByCreatorId, fetchInstaPostById, myPostsLoadLimit } = usePosts();
+    const queryClient = useQueryClient();
 
-    const [lastMyPost, setLastMyPost] = useState(null);
-    const [hasMore, setHasMore] = useState(false);
-    const [isMyPostsFirstBatchLoading, setIsMyPostsFirstBatchLoading] = useState(false);
-    const [myPosts, setMyPosts] = useState([]);
-    const [myPostsTotal, setMyPostsTotal] = useState(0);
-    const [isMyPostsLoading, setIsMyPostsLoading] = useState(false);
-
-    const getMyPosts = async () => {
-
-        console.log({ userId: userId, lastMyPost: lastMyPost });
-
-        if (!userId) {
-            console.log('User is not found. Stop fetching my posts.');
-            return;
-        }
-
-        setIsMyPostsLoading(true);
-
-        try {
-            const myPostsDocs = await fetchPostsByCreatorId(userId, lastMyPost || null);
-
-            if (!myPostsDocs || !myPostsDocs.rows?.length) {
-                console.log('No posts found.');
-                setHasMore(false);
-                return;
-            }
-
-            setMyPostsTotal(myPostsDocs.total);
-
-            const myPstsDcs = myPostsDocs.rows;
-
-            console.log(`myPstsDcs:`, myPstsDcs);
-
-            // const fetchedInstaPosts = await Promise.all(
-            //     myPstsDcs.map(async (usrSv) => {
-            //         const post = await fetchInstaPostById(usrSv.user_id);
-            //         return {
-            //             post,
-            //             saveDocId: usrSv.$id,
-            //         };
-            //     })
-            // );
-
-            if (lastMyPost === null) {
-                setMyPosts(myPstsDcs);
-            } else {
-                setMyPosts(prevRes => [...prevRes, ...myPstsDcs]);
-            }
-
-            setLastMyPost(myPstsDcs[myPstsDcs.length - 1].$id || null);
-
-            setHasMore(myPstsDcs.length === myPostsLoadLimit);
-
-            if (myPstsDcs.length < myPostsLoadLimit) {
-                setHasMore(false);
-            }
-
-        } catch (error) {
-            console.error('Error getting my posts:', error);
-        } finally {
-            setIsMyPostsLoading(false);
-        }
-    }
+    const { fetchPostsByCreatorId, myPostsLoadLimit } = usePosts();
 
     useEffect(() => {
-        console.log('myPosts:', myPosts);
-    }, [myPosts])
-
-    useEffect(() => {
-        const loadingMyPostsFirstBatch = async () => {
-            console.log('Loading first batch of my posts.');
-
-            setIsMyPostsFirstBatchLoading(true);
-            try {
-                await getMyPosts();
-            } catch (error) {
-                console.error('Error loading my posts.', error);
-            } finally {
-                setIsMyPostsFirstBatchLoading(false);
-            }
+        if (!userId) return;
+        const state = queryClient.getQueryState(['myPosts', userId]);
+        const isStale = state && Date.now() - (state.dataUpdatedAt ?? 0) > 120_000;
+        if (isStale) {
+            queryClient.resetQueries({ queryKey: ['myPosts', userId] });
         }
-        setMyPosts([]);
-        setLastMyPost(null);
-        loadingMyPostsFirstBatch();
-    }, [userId])
+    }, [userId]);
 
-    const onLoadMoreMyPostsClick = async () => {
-        await getMyPosts();
-    }
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetching,
+        isLoading: isMyPostsFirstBatchLoading,
+    } = useInfiniteQuery({
+        queryKey: ['myPosts', userId],
+        queryFn: ({ pageParam = null }) => fetchPostsByCreatorId(userId, pageParam),
+        getNextPageParam: (lastPage) => {
+            if (!lastPage?.rows?.length || lastPage.rows.length < myPostsLoadLimit) {
+                return undefined;
+            }
+            return lastPage.rows[lastPage.rows.length - 1].$id;
+        },
+        enabled: !!userId,
+        staleTime: 120_000,
+    });
+
+    const myPosts = data?.pages.flatMap(page => page.rows) ?? [];
+    const myPostsTotal = data?.pages[0]?.total ?? 0;
+    const isMyPostsLoading = isFetching;
+    const hasMore = hasNextPage ?? false;
+
+    const onLoadMoreMyPostsClick = () => fetchNextPage();
 
     if (isMyPostsFirstBatchLoading) {
         return (
-            <LoadingPage loadingText='Loading my posts' />
+            <LoadingPage loadingText='Loading your saves' />
         )
     }
 
@@ -119,7 +66,8 @@ export const MyPosts = () => {
                         <Icon
                             className='bi bi-file-earmark-post'
                             marginEndSize={'3'}
-                        />Your Posts ({myPostsTotal})
+                        />
+                        Your Posts ({myPostsTotal})
                     </h3>
                     <p>
                         Here is where your posts live.
@@ -128,27 +76,23 @@ export const MyPosts = () => {
             </Row>
 
             <Row className='px-4 pb-0 px-lg-5 pb-lg-0' xs={1}>
-                {myPosts?.length > 0 ?
-                    (
-                        myPosts.map((myPost) => {
-                            return (
-                                <InstagramEmbedCards
-                                    key={myPost.$id}
-                                    posts={[myPost]}
-                                />
-                            );
-                        })
-                    ) : (
-                        <p className='px-0'>You posts will appear here.</p>
-                    )
-                }
+                {myPosts.length > 0 ? (
+                    myPosts.map((myPost) => (
+                        <InstagramEmbedCards
+                            key={myPost.$id}
+                            posts={[myPost]}
+                        />
+                    ))
+                ) : (
+                    <p className='px-0'>Your posts will appear here.</p>
+                )}
             </Row>
 
             <Row>
                 <Col>
                     <LoadMoreButton
                         isLoading={isMyPostsLoading}
-                        hasMore={hasMore}
+                        hasMore={!!hasNextPage}
                         onClick={onLoadMoreMyPostsClick}
                         loadMoreText='Load more posts'
                         loadingText='Loading more posts'
@@ -157,6 +101,11 @@ export const MyPosts = () => {
                     />
                 </Col>
             </Row>
+
+            <ToastForDashboard
+                disabled={true}
+                showToast={false}
+            />
         </>
-    )
-}
+    );
+};

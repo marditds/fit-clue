@@ -199,6 +199,7 @@ export const SavedPosts = () => {
 
             {/* Toast */}
             <ToastForDashboard
+                disabled={false}
                 showToast={showToast}
                 setShowToast={setShowToast}
                 toastTitle='Save Removed Successfully.'

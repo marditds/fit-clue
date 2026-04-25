@@ -4,51 +4,50 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { useEffect, useState } from 'react';
 import { Icon } from './Icon';
 
-export const ToastForDashboard = ({ showToast, setShowToast, toastTitle, toastText }) => {
+export const ToastForDashboard = ({ showToast, setShowToast, toastTitle, toastText, disabled }) => {
 
     const { isXs, isSm } = useBreakpoints();
 
-    setTimeout(() => setShowToast(false), 5000);
-
     const isSmallScreen = isXs || isSm;
+
+    if (!disabled) {
+        setTimeout(() => setShowToast(false), 5000);
+    }
 
     return (
         <DashboardLayout
             rowStyle={{ maxWidth: '1320px' }}
             colTwoClassName={`mt-5 ${isSmallScreen ? 'd-flex justify-content-start' : ''}`}
         >
-            <Toast
-                show={showToast}
-                onClose={() => setShowToast(false)}
-                style={{
-                    position: 'fixed',
-                    top: isSmallScreen ? '2rem' : undefined,
-                    bottom: !isSmallScreen ? '1.9rem' : undefined,
-                    right: !isSmallScreen ? '5rem' : undefined,
-                    left: isSmallScreen ? '50%' : undefined,
-                    transform: isSmallScreen ? 'translateX(-50%)' : undefined,
-                    cursor: 'pointer',
-                    zIndex: 1500,
-                    maxWidth: isSmallScreen ? '90%' : '500px',
-                }}
-                className='toast__full'
-            >
-                {/* <Toast.Header className='border-0' style={{ maxHeight: '42px' }}>
-                    <strong className='me-auto'>
-                        
-                    </strong>
-                </Toast.Header> */}
-                <Toast.Body className='w-100 d-flex justify-content-between align-items-center'>
-                    {toastTitle}
-                    <Button
-                        type='button'
-                        className='d-flex justify-content-center align-items-center'
-                        onClick={() => setShowToast(false)}
-                    >
-                        <Icon className='bi bi-x-lg d-flex justify-content-center align-items-center' />
-                    </Button>
-                </Toast.Body>
-            </Toast>
+            {!disabled &&
+                <Toast
+                    show={showToast}
+                    onClose={() => setShowToast(false)}
+                    style={{
+                        position: 'fixed',
+                        top: isSmallScreen ? '2rem' : undefined,
+                        bottom: !isSmallScreen ? '1.9rem' : undefined,
+                        right: !isSmallScreen ? '5rem' : undefined,
+                        left: isSmallScreen ? '50%' : undefined,
+                        transform: isSmallScreen ? 'translateX(-50%)' : undefined,
+                        cursor: 'pointer',
+                        zIndex: 1500,
+                        maxWidth: isSmallScreen ? '90%' : '500px',
+                    }}
+                    className='toast__full'
+                >
+                    <Toast.Body className='w-100 d-flex justify-content-between align-items-center'>
+                        {toastTitle}
+                        <Button
+                            type='button'
+                            className='d-flex justify-content-center align-items-center'
+                            onClick={() => setShowToast(false)}
+                        >
+                            <Icon className='bi bi-x-lg d-flex justify-content-center align-items-center' />
+                        </Button>
+                    </Toast.Body>
+                </Toast>
+            }
         </DashboardLayout>
     );
 };

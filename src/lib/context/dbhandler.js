@@ -398,7 +398,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
                 )
             );
 
-            product_links = results.filter(link => link.status === 'fulfilled' && link.value?.message === 'ok').map(link => link.value);
+            product_links = results.filter(result => result.status === 'fulfilled' && result.value?.message === 'ok').map(result => result.value);
         }
 
         const post = await tablesDB.createRow({
@@ -622,6 +622,9 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
 }
 
 export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor = null) => {
+
+    console.log({ userId: userId });
+
     try {
         const queries = [
             Query.equal('user_id', userId),
@@ -636,8 +639,11 @@ export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor
         const postsByCreatorId = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: postsCollEnv,
-            queries: queries
+            queries: queries,
+            ttl: 120
         });
+
+        console.log('postsByCreatorId:', postsByCreatorId);
 
         if (postsByCreatorId.total > 0) {
             return postsByCreatorId;

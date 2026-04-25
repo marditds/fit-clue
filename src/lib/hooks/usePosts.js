@@ -10,9 +10,9 @@ export const usePosts = () => {
 
     const commentsLoadLimit = 5;
 
-    const myPostsLoadLimit = 5;
+    const myPostsLoadLimit = 4;
 
-    const userSavesLoadLimit = 5;
+    const userSavesLoadLimit = 4;
 
     useEffect(() => {
         console.log('user id in usePosts.jsx:', userId);
