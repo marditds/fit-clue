@@ -45,9 +45,9 @@ export const PasswordForm = ({
                         </Button>
 
                         {successMsg && (
-                            <div className='text-center mb-3 success-text'>
-                                {successMsg}
-                                <Link to='/sign-in' className={`text-decoration-none fw-medium ms-2 ${useLocation().pathname === '/reset-password' ? 'd-block' : 'd-none'}`}>
+                            <div className='text-center mb-3 success-text d-flex justify-content-evenly'>
+                                <span className='text-start'>{successMsg}</span>
+                                <Link to='/sign-in' className={`text-decoration-none fw-medium ms-2 text-nowrap ${useLocation().pathname === '/reset-password' ? 'd-block' : 'd-none'}`}>
                                     Sign in
                                 </Link>
                             </div>
