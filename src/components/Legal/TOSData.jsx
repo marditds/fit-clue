@@ -170,7 +170,7 @@ const TOSData = () => {
                         FitClue relies on various third-party services to provide core functionality, including backend infrastructure, security features, and embedded media. By using FitClue, you acknowledge that the platform's reliability partly depends on the performance of these third-party services.
                     </p>
                     <p>
-                        By using FitClue, you acknowledge that your data may be processed by these third-party providers on our behalf. Such processing is subject to the respective terms, privacy policies, and acceptable use policies of those providers, which are independent of and not controlled by FitClue.
+                        By using FitClue, you acknowledge that your data may be processed by these third-party providers on our behalf. For most third-party providers, such processing is subject to their respective terms, privacy policies, and acceptable use policies, which are independent of and not controlled by FitClue. Where FitClue acts as a data controller and a third-party acts solely as a data processor on our behalf, that provider's consumer-facing terms and privacy policies may not apply directly to your use.
                     </p>
                     <p>
                         We encourage you to review the terms and privacy policies of the third-party services used by FitClue:
@@ -187,7 +187,7 @@ const TOSData = () => {
                         Embedded Instagram content may be subject to <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a>, <a href='https://www.facebook.com/terms.php' target='_blank' rel="noopener noreferrer">Meta's Terms of Service</a>, and <a href='https://privacycenter.instagram.com/policy' target='_blank' rel="noopener noreferrer">Meta's Privacy Policy</a>.
                     </p>
                     <p>
-                        FitClue uses Google reCAPTCHA to protect against spam and automated abuse. Use of Google services may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a>, and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
+                        FitClue uses Google reCAPTCHA to protect against spam and automated abuse. Google processes reCAPTCHA data on our behalf as a data processor, solely for providing the reCAPTCHA service. Google's consumer-facing Terms of Service and Privacy Policy do not govern end users' reCAPTCHA data under this arrangement.
                     </p>
                     <p>
                         Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
