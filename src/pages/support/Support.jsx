@@ -26,36 +26,38 @@ const Support = () => {
                         <h2 className='mb-3 text-left'>Support</h2>
 
                         <p className='mb-3'>
-                            Need help? You may find an answer on our{' '}
+                            Have a question? Browse our{' '}
                             <Link to='/faq'>FAQ page</Link>.
                         </p>
 
-                        <h4>Contact us</h4>
+                        <hr />
 
-                        <p>For the fastest response, please send us a direct message on either platform:</p>
+                        <h4>Contact Us</h4>
 
-                        <ul className='list-unstyled'>
+                        <p>For the fastest response, please send us a direct message on social:</p>
+
+                        <ul className='list-unstyled d-flex gap-4'>
                             {
                                 socials.map((social, idx) => {
                                     return (
-                                        <li>
+                                        <li key={idx}>
                                             <a href={social.link} target='_blank'>
-                                                <Icon className={social.icon} />
+                                                <Icon className={`${social.icon} fs-4`} />
                                             </a>
                                         </li>
                                     )
-                                })
+                                }).slice(0, 2)
                             }
                         </ul>
 
-                        <p>
-                            Don't use social media? You can submit an inquiry or data privacy request via our{' '}
-                            <a href="YOUR_GOOGLE_FORM_LINK" style={{ color: '#666666', textDecoration: 'underline' }}>Contact Form</a>.
-                        </p>
-
-                        <div className='tip-box mb-3 bg-body-secondary px-2 py-1'>
-                            <strong>How to get faster help:</strong> Please include a brief description of your issue and any relevant screenshots so we can assist you more efficiently.
+                        <div className='tip-box mb-3 bg-body-secondary px-3 py-3 border border-start border-bottom-0 border-end-0 border-top-0 border-5'>
+                            <strong>Tip:</strong> Please include a detailed description of your issue so we can assist you more efficiently.
                         </div>
+
+                        <p>
+                            Don't use social media? Submit via our{' '}
+                            <a href='https://docs.google.com/forms/d/e/1FAIpQLSdYYNikc75n1WYBTI_zzWeDB5j_WfGCMV16GEasjtCqjphoeA/viewform?usp=publish-editor' target='_blank' style={{ color: '#666666', textDecoration: 'underline' }} className='fw-bolder'>Contact Form</a>.
+                        </p>
 
                         <p className='fst-italic text-muted'>We typically respond within 24-48 hours.</p>
 

@@ -31,6 +31,9 @@ const PrivacyData = () => {
                         <li>
                             - <strong>Technical Data:</strong> IP addresses and usage logs are collected by Appwrite on our behalf and are used for security, debugging, and maintaining platform performance.
                         </li>
+                        <li>
+                            - <strong>Contact Form Submissions:</strong> If you contact us via our contact form, the following information is collected: your email address, name, reason for contact, and message, along with a timestamp automatically recorded at the time of submission. This data is submitted through Google Forms and stored in Google Sheets, both services operated by Google LLC. It is accessible to FitClue administrators and is used solely to respond to your inquiry.
+                        </li>
                     </ul>
                     <p>
                         FitClue does not sell personal information to third parties.
@@ -73,6 +76,9 @@ const PrivacyData = () => {
                         </li>
                         <li>
                             - <strong>Automated Link Validation:</strong> Links you submit are processed through a two-stage server-side validation pipeline. In the first stage, the submitted URL is screened for safety: it is checked against blocked domain and banned top-level domain lists, scanned for adult or harmful content patterns (including obfuscated variants), and its hostname is resolved via DNS to verify that it does not point to a private, reserved, or internal network address. This DNS resolution involves transmitting the domain name of the submitted URL to DNS resolution infrastructure as part of a security check; no other user data is transmitted in this process. In the second stage, URLs that pass safety screening are evaluated by a scoring engine that analyzes URL structure, path patterns, and domain characteristics to determine commerce relevance. Only links that pass both stages are stored in the platform database.
+                        </li>
+                        <li>
+                            - <strong>Contact Form Provider:</strong> If you use our contact form, your submission is processed by Google Forms and stored in Google Sheets, both operated by Google LLC. This is subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a> and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
                         </li>
                         <li>
                             - <strong>Legal Requirements:</strong> We may disclose data if required to do so by law or in response to valid legal requests.

@@ -177,7 +177,7 @@ const TOSData = () => {
                     </p>
                     <ul>
                         <li>Instagram and Meta (embedded content)</li>
-                        <li>Google (reCAPTCHA for spam and abuse prevention)</li>
+                        <li>Google (reCAPTCHA for spam and abuse prevention; Google Forms and Google Sheets for contact submissions)</li>
                         <li>Appwrite (backend infrastructure, authentication, and data storage)</li>
                     </ul>
                     <p>
@@ -188,6 +188,9 @@ const TOSData = () => {
                     </p>
                     <p>
                         FitClue uses Google reCAPTCHA to protect against spam and automated abuse. Google processes reCAPTCHA data on our behalf as a data processor, solely for providing the reCAPTCHA service. Google's consumer-facing Terms of Service and Privacy Policy do not govern end users' reCAPTCHA data under this arrangement.
+                    </p>
+                    <p>
+                        FitClue also uses Google Forms to receive contact submissions from users who prefer not to use social media. Submissions are stored in Google Sheets. Both services are operated by Google LLC and may be subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a> and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
                     </p>
                     <p>
                         Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
