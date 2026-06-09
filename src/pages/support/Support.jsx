@@ -2,6 +2,8 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import support from '../../assets/support.jpg'
+import { socials } from '../../lib/data/socials'
+import { Icon } from '../../components/Accessories/Icon'
 
 const Support = () => {
 
@@ -21,35 +23,41 @@ const Support = () => {
                          d-flex justify-content-center align-items-center w-100 `}
                 >
                     <div style={{ zIndex: '2', maxWidth: '450px' }}>
-                        <h2 className='mb-3 text-center'>Support</h2>
+                        <h2 className='mb-3 text-left'>Support</h2>
 
                         <p className='mb-3'>
                             Need help? You may find an answer on our{' '}
-                            <Link to='/faq'>FAQ</Link> page.
+                            <Link to='/faq'>FAQ page</Link>.
                         </p>
 
-                        <div className='mb-3'>
-                            <p className='mb-1 fw-semibold'>Contact us</p>
-                            <p className='mb-0'>
-                                <i className='bi bi-envelope me-2 fs-5'></i>
-                                <a
-                                    href='mailto:fitclue@altmails.com'
-                                    className='text-decoration-none'
-                                    style={{ fontSize: '1.25rem' }}
-                                >
-                                    fitclue@altmails.com
-                                </a>
-                            </p>
+                        <h4>Contact us</h4>
+
+                        <p>For the fastest response, please send us a direct message on either platform:</p>
+
+                        <ul className='list-unstyled'>
+                            {
+                                socials.map((social, idx) => {
+                                    return (
+                                        <li>
+                                            <a href={social.link} target='_blank'>
+                                                <Icon className={social.icon} />
+                                            </a>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+
+                        <p>
+                            Don't use social media? You can submit an inquiry or data privacy request via our{' '}
+                            <a href="YOUR_GOOGLE_FORM_LINK" style={{ color: '#666666', textDecoration: 'underline' }}>Contact Form</a>.
+                        </p>
+
+                        <div className='tip-box mb-3 bg-body-secondary px-2 py-1'>
+                            <strong>How to get faster help:</strong> Please include a brief description of your issue and any relevant screenshots so we can assist you more efficiently.
                         </div>
 
-                        <p className='mb-3'>
-                            Please include a brief description of your issue and any relevant
-                            screenshots so we can assist you more efficiently.
-                        </p>
-
-                        <p className='mb-0 small'>
-                            We typically respond within 24–48 hours.
-                        </p>
+                        <p className='fst-italic text-muted'>We typically respond within 24-48 hours.</p>
 
                     </div>
                 </Col>
@@ -64,15 +72,6 @@ const Support = () => {
 
             </Row>
         </Container>
-        // <Container className='py-4'>
-        //     <Row className='justify-content-center'>
-        //         <Col md={8} lg={6}>
-
-
-
-        //         </Col>
-        //     </Row>
-        // </Container>
     )
 }
 

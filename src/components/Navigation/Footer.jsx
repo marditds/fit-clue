@@ -3,6 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Icon } from '../Accessories/Icon';
 import { FooterLayout } from './FooterLayout';
+import { socials } from '../../lib/data/socials';
 
 const Footer = () => {
 
@@ -40,21 +41,6 @@ const Footer = () => {
         }
     ]
 
-    const footerSocials = [
-        {
-            icon: 'bi bi-instagram',
-            link: 'https://www.instagram.com/fitclueapp/',
-        },
-        {
-            icon: 'bi bi-facebook',
-            link: 'https://www.facebook.com/fitclueapp',
-        },
-        {
-            icon: 'bi bi-youtube',
-            link: 'http://www.youtube.com/@FitClueApp',
-        },
-    ]
-
     const copyright = <>© {new Date().getFullYear()} FitClue. All rights reserved.</>
 
     return (
@@ -71,7 +57,7 @@ const Footer = () => {
 
 
                         <div>
-                            {footerSocials.map((item, idx) => (
+                            {socials.map((item, idx) => (
                                 <span key={idx}>
                                     <a href={item.link} target='_blank'>
                                         <Icon className={`${item.icon} ms-md-4 ms-3 me-md-0 me-3 fs-5`} />
