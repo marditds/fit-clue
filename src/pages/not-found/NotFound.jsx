@@ -5,8 +5,11 @@ import { Link } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconLinkOff } from '@tabler/icons-react';
 import '../../components/NotFound/NotFound.css';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const NotFound = () => {
+
+    useDocumentTitle('Not Found | FitClue');
 
     const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 

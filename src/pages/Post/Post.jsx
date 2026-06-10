@@ -16,6 +16,7 @@ import { Interaction } from '../../components/Post/Interaction';
 import { onePostData } from '../../lib/data/testData';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Note } from '../../components/Post/Note';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const Post = () => {
 
@@ -47,6 +48,7 @@ const Post = () => {
                 const post = await fetchPostById(params.postId);
 
                 setPersonalityName(post?.content.personality_name);
+
                 setItemsLinks(post?.links);
                 setPostUserId(post?.content.user_id)
                 setUserNote(post?.content.user_note);

@@ -7,8 +7,11 @@ import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading.
 import { Icon } from '../../components/Accessories/Icon.jsx';
 import { capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters.js';
 import { UserNoteForm } from '../../components/Form/UserNoteForm.jsx';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle.js';
 
 const CreatePost = () => {
+
+    useDocumentTitle(`Create Post | FitClue`);
 
     const { userId, isAppLoading } = useOutletContext();
 

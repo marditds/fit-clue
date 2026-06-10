@@ -5,8 +5,11 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { SignForm } from '../../components/Form/SignForm';
 import signInImg from '../../assets/sign-in.jpg'
 import { authText } from '../../config/formText';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const SignIn = () => {
+
+    useDocumentTitle(`Sign in | FitClue`);
 
     const navigate = useNavigate();
 

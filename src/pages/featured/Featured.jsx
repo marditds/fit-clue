@@ -5,8 +5,11 @@ import '../../components/Grid/Grid.css';
 import '../../components/Card/Card.css';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { theLatestData } from '../../lib/data/testData';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const Featured = () => {
+
+    useDocumentTitle('Home | FitClue');
 
     const { fetchTheLatestPosts } = usePosts();
 

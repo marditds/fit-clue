@@ -1,10 +1,14 @@
 import { Col } from 'react-bootstrap'
 import { LegalTemplate } from '../../components/Legal/LegalTemplate'
 import PrivacyData from '../../components/Legal/PrivacyData'
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const Privacy = () => {
 
+    useDocumentTitle('Privacy Policy | FitClue');
+
     const { privacyPolicyData } = PrivacyData();
+
     return (
         <LegalTemplate
             title={'Privacy Policy'}

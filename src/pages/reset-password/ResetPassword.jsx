@@ -6,8 +6,11 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import resetImg from '../../assets/reset-password.jpg';
 import { LoadingPage } from '../../components/Loading/Loading';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const ResetPassword = () => {
+
+    useDocumentTitle('Reset Password | FitClue');
 
     const navigate = useNavigate();
 

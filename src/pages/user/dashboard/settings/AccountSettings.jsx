@@ -6,8 +6,11 @@ import { useState } from 'react';
 import { Icon } from '../../../../components/Accessories/Icon';
 import { PlainModal } from '../../../../components/Modals/Modals';
 import { LoadingComponent } from '../../../../components/Loading/Loading';
+import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
 
 export const AccountSettings = () => {
+
+    useDocumentTitle(`Dashboard | FitClue`);
 
     const navigate = useNavigate();
 

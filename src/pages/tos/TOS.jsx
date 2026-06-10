@@ -2,8 +2,11 @@ import { Col } from 'react-bootstrap';
 import { LegalTemplate } from '../../components/Legal/LegalTemplate';
 import TOSData from '../../components/Legal/TOSData';
 import { ToastGeneral } from '../../components/Accessories/ToastComponent';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const TOS = () => {
+
+    useDocumentTitle('Terms of Use | FitClue');
 
     const { tosData } = TOSData();
 

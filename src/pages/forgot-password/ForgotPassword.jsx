@@ -5,8 +5,11 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Form } from 'react-bootstrap';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import forgotImg from '../../assets/forgot-password.jpg';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const ForgotPassword = () => {
+
+    useDocumentTitle('Forgot Password? | FitClue');
 
     const { createPasswordRecoveryEmail } = useUser();
 

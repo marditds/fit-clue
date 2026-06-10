@@ -4,8 +4,11 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import support from '../../assets/support.jpg'
 import { socials } from '../../lib/data/socials'
 import { Icon } from '../../components/Accessories/Icon'
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle'
 
 const Support = () => {
+
+    useDocumentTitle(`Support | FitClue`);
 
     const { isXs, isSm } = useBreakpoints();
 

@@ -7,8 +7,11 @@ import { SignForm } from '../../components/Form/SignForm';
 import { keysProvider } from '../../lib/context/keysProvider';
 import { reCaptchaVerification } from '../../lib/context/dbhandler';
 import { authText } from '../../config/formText';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const SignUp = () => {
+
+    useDocumentTitle(`Sign up | FitClue`);
 
     const { setUserId, setIsLoggedIn, setIsSessionInProgress } = useOutletContext();
 

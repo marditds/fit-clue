@@ -7,6 +7,7 @@ import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading'
 import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { SearchComponent } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const Results = () => {
 
@@ -15,6 +16,8 @@ const Results = () => {
     const navigate = useNavigate();
 
     const location = useLocation();
+
+    useDocumentTitle(`Results for ${params.term} | FitClue`);
 
     const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName } = usePosts();
 

@@ -4,8 +4,11 @@ import { useOutletContext } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import aboutImg from '../../assets/about.jpg';
 import aboutColBg from '../../assets/aboutBg.jpg';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const About = () => {
+
+    useDocumentTitle('About | FitClue');
 
     const { isLoggedIn } = useOutletContext();
 

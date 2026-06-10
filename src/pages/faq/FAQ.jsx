@@ -3,8 +3,11 @@ import { AccordionFAQ } from '../../components/Accessories/AccordionComponent';
 import { faq } from '../../lib/data/faq';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Link } from 'react-router-dom';
+import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 
 const FAQ = () => {
+
+    useDocumentTitle('FAQ | FitClue');
 
     const { isXs } = useBreakpoints();
 

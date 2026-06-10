@@ -8,8 +8,11 @@ import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedC
 import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
 import { Icon } from '../../../../components/Accessories/Icon';
 import { ToastForDashboard } from '../../../../components/Accessories/ToastComponent';
+import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
 
 export const MyPosts = () => {
+
+    useDocumentTitle('My Posts | FitClue');
 
     const { userId } = useOutletContext();
 
