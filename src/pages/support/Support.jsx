@@ -56,10 +56,10 @@ const Support = () => {
 
                         <p>
                             Don't use social media? Submit via our{' '}
-                            <a href='https://docs.google.com/forms/d/e/1FAIpQLSdYYNikc75n1WYBTI_zzWeDB5j_WfGCMV16GEasjtCqjphoeA/viewform?usp=publish-editor' target='_blank' style={{ color: '#666666', textDecoration: 'underline' }} className='fw-bolder'>Contact Form</a>.
+                            <a href='https://docs.google.com/forms/d/e/1FAIpQLSdYYNikc75n1WYBTI_zzWeDB5j_WfGCMV16GEasjtCqjphoeA/viewform' target='_blank' style={{ color: '#666666', textDecoration: 'underline' }} className='fw-bolder'>Contact Form</a>.
                         </p>
 
-                        <p className='fst-italic text-muted'>We typically respond within 24-48 hours.</p>
+                        <p className='fst-italic text-muted'>We typically respond within 1-2 business days.</p>
 
                     </div>
                 </Col>

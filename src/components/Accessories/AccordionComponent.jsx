@@ -59,4 +59,57 @@ export const AccordionComponent = ({ className, itemsList }) => {
     )
 }
 
+export const AccordionFAQ = ({ arrList, className }) => {
 
+    const [activeKey, setActiveKey] = useState("0-0");
+
+    const handleToggle = (key) => {
+        setActiveKey(activeKey === key ? null : key);
+    };
+
+    return (
+        <>
+            {arrList?.map((item, categoryIdx) => {
+                return (
+                    <Accordion
+                        activeKey={activeKey}
+                        className={className}
+                        key={categoryIdx}
+                    >
+                        <h4 className='text-uppercase fs-5 mt-4'>{item.category}</h4>
+                        {
+                            item.questions.map((question, questionIdx) => {
+
+                                const uniqueKey = `${categoryIdx}-${questionIdx}`;
+
+                                return (
+                                    <Accordion.Item
+                                        eventKey={uniqueKey}
+                                        key={questionIdx}
+                                        className='mb-2'
+                                    >
+                                        <Accordion.Header
+                                            onClick={() => handleToggle(uniqueKey)}
+                                        >
+                                            {question.title}
+                                            <span style={{ marginLeft: 'auto' }}>
+                                                {
+                                                    activeKey === uniqueKey ?
+                                                        <Icon className={'bi bi-caret-up-square ms-auto d-flex align-items-center'} /> :
+                                                        <Icon className='bi bi-caret-down-square ms-auto d-flex align-items-center' />
+                                                }
+                                            </span>
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            {question.desc}
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                )
+                            })
+                        }
+                    </Accordion>
+                )
+            })}
+        </>
+    );
+};

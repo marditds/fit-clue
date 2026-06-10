@@ -133,7 +133,8 @@ export const allReportCategories = [
         arr: postReportCategories
     },
     {
-        title: 'Links Categories', arr: reportCategories
+        title: 'Links Categories',
+        arr: reportCategories
     },
     {
         title: 'Comments Categories',
