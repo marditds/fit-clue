@@ -49,14 +49,14 @@ export const dbFunctionKeysProvider = async (key) => {
         }
     }
 
-    try {
-        const res = await fetch(`/.netlify/functions/get-tokens?key=${key}`);
-        const data = await res.json();
-        return data.value;
-    } catch (err) {
-        console.error(`Error fetching hakobos ${key} token:`, err);
-        return null;
-    }
+    // try {
+    //     const res = await fetch(`/.netlify/functions/get-tokens?key=${key}`);
+    //     const data = await res.json();
+    //     return data.value;
+    // } catch (err) {
+    //     console.error(`Error fetching hakobos ${key} token:`, err);
+    //     return null;
+    // }
 
 };
 
