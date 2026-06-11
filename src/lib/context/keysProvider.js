@@ -1,23 +1,34 @@
 // for components use only
 export const keysProvider = (key, setFunction) => {
 
-    if (import.meta.env.DEV) {
-        const localKeyMap = {
-            recaptcha: "VITE_RECAPTCHA_SITE_KEY",
-        };
+    const keyMap = {
+        recaptcha: {
+            dev: "VITE_RECAPTCHA_SITE_KEY",
+            prod: "VITE_RECAPTCHA_SITE_KEY",
+        },
+    };
 
-        const localKey = import.meta.env[localKeyMap[key]];
-        if (localKey) {
-            setFunction(localKey);
-            return;
-        }
+    const config = keyMap[key];
+
+    if (!config) {
+        console.warn(`Unknown key: ${key} `);
+        return;
+    }
+
+    const envVar = import.meta.env.DEV ? config.dev : config.prod;
+    const value = import.meta.env[envVar];
+
+    if (value) {
+        setFunction(value);
     }
 
     fetch(`/.netlify/functions/get-tokens?key=${key}`)
         .then((res) => res.json())
         .then((data) => setFunction(data.value))
         .catch((err) => console.error(`Error fetching ${key} tokens:`, err));
+
 };
+
 
 // for dbhandler use only
 export const dbFunctionKeysProvider = async (key) => {
