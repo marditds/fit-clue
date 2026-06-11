@@ -54,7 +54,7 @@ export const dbFunctionKeysProvider = async (key) => {
         const data = await res.json();
         return data.value;
     } catch (err) {
-        console.error(`Error fetching ${key} token:`, err);
+        console.error(`Error fetching hakobos ${key} token:`, err);
         return null;
     }
 
