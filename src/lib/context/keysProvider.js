@@ -1,32 +1,34 @@
 // for components use only
 export const keysProvider = (key, setFunction) => {
-
     const keyMap = {
         recaptcha: {
-            dev: "VITE_RECAPTCHA_SITE_KEY",
-            prod: "VITE_RECAPTCHA_SITE_KEY",
-        },
+            development: "VITE_RECAPTCHA_SITE_KEY",
+            staging: "VITE_RECAPTCHA_SITE_KEY",
+            production: "VITE_RECAPTCHA_SITE_KEY",
+        }
     };
 
-    const config = keyMap[key];
+    const mode = import.meta.env.MODE;
+    const envVar = keyMap[key]?.[mode];
 
-    if (!config) {
-        console.warn(`Unknown key: ${key} `);
+    if (!envVar) {
+        console.warn(`No environment variable configured for key "${key}" in mode "${mode}"`);
         return;
     }
 
-    const envVar = import.meta.env.DEV ? config.dev : config.prod;
     const value = import.meta.env[envVar];
 
-    if (value) {
-        setFunction(value);
+    if (!value) {
+        console.warn(`Environment variable "${envVar}" is not defined`);
+        return;
     }
+
+    setFunction(value);
 
     fetch(`/.netlify/functions/get-tokens?key=${key}`)
         .then((res) => res.json())
         .then((data) => setFunction(data.value))
         .catch((err) => console.error(`Error fetching ${key} tokens:`, err));
-
 };
 
 
