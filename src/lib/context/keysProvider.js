@@ -35,19 +35,19 @@ export const keysProvider = (key, setFunction) => {
 // for dbhandler use only
 export const dbFunctionKeysProvider = async (key) => {
 
-    if (import.meta.env.DEV) {
-        const localKeyMap = {
-            user_delete_function: "VITE_USER_DELETE_FUNCTION_ID",
-            recaptcha_function: "VITE_RECAPTCHA_FUNCTION_ID",
-            gemini_function: "VITE_GEMINI_FUNCTION_ID",
-            scanLink_function: "VITE_SCANLINK_FUNCTION_ID"
-        };
+    // if (import.meta.env.DEV) {
+    const keyMap = {
+        user_delete_function: "VITE_USER_DELETE_FUNCTION_ID",
+        recaptcha_function: "VITE_RECAPTCHA_FUNCTION_ID",
+        gemini_function: "VITE_GEMINI_FUNCTION_ID",
+        scanLink_function: "VITE_SCANLINK_FUNCTION_ID"
+    };
 
-        const localKey = import.meta.env[localKeyMap[key]];
-        if (localKey) {
-            return localKey;
-        }
+    const envVar = import.meta.env[keyMap[key]];
+    if (envVar) {
+        return envVar;
     }
+    // }
 
     // try {
     //     const res = await fetch(`/.netlify/functions/get-tokens?key=${key}`);
@@ -56,7 +56,6 @@ export const dbFunctionKeysProvider = async (key) => {
     // } catch (err) {
     //     console.error(`Error fetching hakobos ${key} token:`, err);
     //     return null;
-    // }
-
+    // } 
 };
 
