@@ -7,6 +7,7 @@ import { PasswordForm } from '../../components/Form/PasswordForm';
 import resetImg from '../../assets/reset-password.jpg';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
+import { devLog } from '../../lib/utils/devLog';
 
 const ResetPassword = () => {
 
@@ -39,19 +40,19 @@ const ResetPassword = () => {
         setUserId(params.get('userId'));
         setSecret(params.get('secret'));
 
-        console.log('THESE ARE THE PARAMS:', params);
-        console.log('PARAMS SIZE:', params.size);
+        devLog('THESE ARE THE PARAMS:', params);
+        devLog('PARAMS SIZE:', params.size);
 
         const functionInResetPasswrodComponent = async () => {
             try {
-                console.log('Starting FunctionInResetPasswrodComponent in <ResetPassword/>.');
+                devLog('Starting FunctionInResetPasswrodComponent in <ResetPassword/>.');
 
-                console.log('FunctionInResetPasswrodComponent in process.');
+                devLog('FunctionInResetPasswrodComponent in process.');
 
             } catch (err) {
                 console.error('Authentication failed. Please try again.', err);
             } finally {
-                console.log('Finishing FunctionInResetPasswrodComponent in <ResetPassword/>.');
+                devLog('Finishing FunctionInResetPasswrodComponent in <ResetPassword/>.');
             }
         };
 
@@ -74,7 +75,7 @@ const ResetPassword = () => {
         try {
             setIsResetPasswordLoading(true);
 
-            console.log('Password change clicked.');
+            devLog('Password change clicked.');
 
             const res = await updatePasswordFromRecoveryEmail(userId, secret, newPassword);
 

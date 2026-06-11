@@ -8,6 +8,7 @@ import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { SearchComponent } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
+import { devLog } from '../../lib/utils/devLog';
 
 const Results = () => {
 
@@ -44,8 +45,8 @@ const Results = () => {
         }
 
         try {
-            console.log('isNewSearch:', isNewSearch);
-            console.log('searchTerm:', searchTerm);
+            devLog('isNewSearch:', isNewSearch);
+            devLog('searchTerm:', searchTerm);
 
             const cursor = isNewSearch ? null : lastResult;
 
@@ -73,12 +74,12 @@ const Results = () => {
                 searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor);
             }
 
-            console.log('searchResults', searchResults);
+            devLog('searchResults', searchResults);
 
             const total = searchResults.total;
             const newDocuments = searchResults.rows;
 
-            console.log('newDocuments', newDocuments);
+            devLog('newDocuments', newDocuments);
 
             setResultsTotal(total);
 
@@ -116,7 +117,7 @@ const Results = () => {
         const loadingResultsFirstBatch = async () => {
             setIsResultsFirstBatchLoading(true);
             try {
-                console.log('loadingResultsFirstBatch');
+                devLog('loadingResultsFirstBatch');
                 await fetchAllPostsBySearchTerm(true);
             } catch (error) {
                 console.error('Error loading search results.');
@@ -134,7 +135,7 @@ const Results = () => {
         e.preventDefault();
         setIsNewTermSearched(true);
         try {
-            console.log('onSearchTermSubmit');
+            devLog('onSearchTermSubmit');
             if (searchCategory.trim() && searchTerm.trim()) {
                 navigate(
                     `/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`

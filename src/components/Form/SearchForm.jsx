@@ -5,6 +5,7 @@ import { LoadingComponent } from '../Loading/Loading';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconAdjustments, IconAdjustmentsFilled, IconHanger } from '@tabler/icons-react';
+import { devLog } from '../../lib/utils/devLog';
 
 export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, className, isLoading, placeholder }) => {
     return (
@@ -17,7 +18,7 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
                 aria-label='Search'
                 value={searchTerm || ''}
                 onChange={(e) => {
-                    console.log('Search term in navbar:', e.target.value);
+                    devLog('Search term in navbar:', e.target.value);
                     setSearchTerm(e.target.value)
                 }}
                 autoFocus

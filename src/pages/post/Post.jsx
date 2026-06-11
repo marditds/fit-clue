@@ -13,7 +13,6 @@ import { authText } from '../../config/formText';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { SharePost } from '../../components/Post/SharePost';
 import { Interaction } from '../../components/Post/Interaction';
-import { onePostData } from '../../lib/data/testData';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Note } from '../../components/Post/Note';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';

@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import forgotImg from '../../assets/forgot-password.jpg';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
+import { devLog } from '../../lib/utils/devLog';
 
 const ForgotPassword = () => {
 
@@ -33,7 +34,7 @@ const ForgotPassword = () => {
         try {
             setIsForgotPasswordLoading(true);
 
-            console.log('onForgotPassword clicked.');
+            devLog('onForgotPassword clicked.');
 
             const res = await createPasswordRecoveryEmail(email);
 

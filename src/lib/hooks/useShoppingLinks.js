@@ -1,11 +1,12 @@
 import { createLink as makeLink } from '../context/dbhandler';
 import { assessLinkSafety } from '../context/dbhandler';
+import { devLog } from '../utils/devLog';
 
 export const useShoppingLinks = () => {
 
   const createLink = async (href, brandName, item, similarityLevel) => {
 
-    console.log({ href, brandName, item, similarityLevel });
+    devLog({ href, brandName, item, similarityLevel });
 
     try {
       const MESSAGE_MAP = {
@@ -26,7 +27,7 @@ export const useShoppingLinks = () => {
         return 'Error adding link. Please try again later.';
       }
 
-      console.log('Link created successfully:', res);
+      devLog('Link created successfully:', res);
 
       return res;
     } catch (error) {

@@ -8,6 +8,7 @@ import { LoadingComponent } from '../Loading/Loading';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { IconHanger, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
+import { devLog } from '../../lib/utils/devLog';
 
 export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
 
@@ -68,8 +69,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
             const normalizedBrandName = brandName.toLocaleLowerCase();
             const normalizedItemName = itemName.toLocaleLowerCase();
 
-            console.log({ itemLink, normalizedBrandName, normalizedItemName, similarityLevel });
-
+            devLog({ itemLink, normalizedBrandName, normalizedItemName, similarityLevel });
 
             const newLink = await createLink(itemLink, normalizedBrandName, normalizedItemName, similarityLevel);
 
@@ -95,7 +95,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                 setIsItemLinkFormatIncorrect(false);
                 setSccssMsg('Item link added successfully.');
 
-                console.log('updatedPost in Post.jsx:', updatedPost);
+                devLog('updatedPost in Post.jsx:', updatedPost);
             }
         } catch (error) {
             console.error('Error onAddSubmitLink:', error);

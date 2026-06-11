@@ -1,6 +1,7 @@
 import { Client, ID, Query, Functions, Account, TablesDB, Operator } from 'appwrite';
 import { dbFunctionKeysProvider } from './keysProvider';
 import { ROUTES } from '../../routes/routes';
+import { devLog } from '../utils/devLog';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -56,7 +57,7 @@ export const createUser = async (email, password, name) => {
         );
 
         if (user) {
-            console.log('User was created successfully:', user);
+            devLog('User was created successfully:', user);
 
             const session = await account.createEmailPasswordSession({
                 email: email,
@@ -101,7 +102,7 @@ export const createUserInCollection = async (userId, username) => {
         })
 
         if (user) {
-            console.log('User in collection created successfully.');
+            devLog('User in collection created successfully.');
             return user;
         }
 
@@ -118,7 +119,7 @@ export const updateUsername = async (username) => {
         });
 
         if (res) {
-            console.log('Username updated successfully.');
+            devLog('Username updated successfully.');
             return res;
         }
         return null;
@@ -146,7 +147,7 @@ export const updateUsernameInCollection = async (userId, username) => {
         })
         if (res) {
             await updateUsername(username);
-            console.log('Username in collection updated successfully.');
+            devLog('Username in collection updated successfully.');
             return res;
         }
     } catch (error) {
@@ -158,7 +159,7 @@ export const getUserPreferences = async () => {
     try {
         const userPreferences = await account.getPrefs();
 
-        console.log('perfs:', userPreferences);
+        devLog('perfs:', userPreferences);
 
         return userPreferences;
 
@@ -231,7 +232,7 @@ export const signInUser = async (email, password) => {
         })
 
         if (user) {
-            console.log('User signed in successfully:', user);
+            devLog('User signed in successfully:', user);
             return user;
         }
 
@@ -257,7 +258,7 @@ export const getUserSession = async () => {
             sessionId: 'current',
         });
 
-        console.log('sessionDets:', sessionDets);
+        devLog('sessionDets:', sessionDets);
 
         return sessionDets;
 
@@ -288,7 +289,7 @@ export const updateUserPassword = async (newPassword, oldPassword) => {
             oldPassword: oldPassword
         })
 
-        console.log(res);
+        devLog(res);
         return res;
     } catch (error) {
         console.error('Error updating user password:', error);
@@ -308,7 +309,7 @@ export const createPasswordRecoveryEmail = async (email) => {
             email: email,
             url: ROUTES.RESET_PASSWORD
         })
-        console.log('Success creating recovery.');
+        devLog('Success creating recovery.');
 
         return res;
     } catch (error) {
@@ -332,7 +333,7 @@ export const updatePasswordFromRecoveryEmail = async (userId, secret, newPasswor
             password: newPassword
         });
 
-        console.log('Sccess updating passsword via recovery email.');
+        devLog('Sccess updating passsword via recovery email.');
 
         return result;
 
@@ -448,7 +449,7 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
             }
         })
 
-        console.log('Post updated successfully:', res);
+        devLog('Post updated successfully:', res);
 
         return res;
     } catch (error) {
@@ -468,7 +469,7 @@ export const updateUserNote = async (docId, oldNote, newNote) => {
             }
         })
 
-        console.log('this is updated note:', res);
+        devLog('this is updated note:', res);
 
         if (res) {
             return 'success';
@@ -494,7 +495,7 @@ export const fetchTheLatestPosts = async () => {
         });
 
         if (postsRes.total === 0) {
-            console.log('No posts yet.');
+            devLog('No posts yet.');
             return null
         };
 
@@ -517,7 +518,7 @@ export const fetchPostById = async (postId) => {
         });
 
         if (!postRes) {
-            console.log('No posts yet.');
+            devLog('No posts yet.');
             return null
         };
 
@@ -559,7 +560,7 @@ export const fetchInstaPostById = async (postId) => {
         });
 
         if (!postRes) {
-            console.log('No posts yet.');
+            devLog('No posts yet.');
             return null
         };
 
@@ -595,7 +596,7 @@ export const fetchPostsByPersonalityId = async (personalityId) => {
 
 export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor = null) => {
 
-    console.log({ personality_name: str });
+    devLog({ personality_name: str });
 
     try {
         const queries = [
@@ -623,7 +624,7 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
 
 export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor = null) => {
 
-    console.log({ userId: userId });
+    devLog({ userId: userId });
 
     try {
         const queries = [
@@ -643,7 +644,7 @@ export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor
             ttl: 120
         });
 
-        console.log('postsByCreatorId:', postsByCreatorId);
+        devLog('postsByCreatorId:', postsByCreatorId);
 
         if (postsByCreatorId.total > 0) {
             return postsByCreatorId;
@@ -656,7 +657,7 @@ export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor
 
 export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, lastCursor = null) => {
 
-    console.log('itemName:', itemName);
+    devLog('itemName:', itemName);
 
     try {
         const queries = [
@@ -675,7 +676,7 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
             queries: queries
         });
 
-        console.log('postsByItemName:', postsByItemName);
+        devLog('postsByItemName:', postsByItemName);
 
 
         return postsByItemName;
@@ -692,7 +693,7 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
 
         if (!linksIds) {
 
-            console.log('NEW LOOK-UP');
+            devLog('NEW LOOK-UP');
 
             const queries = [
                 Query.contains('brand_name', brandName),
@@ -753,7 +754,7 @@ export const createPostReport = async (postId, reason) => {
         })
 
         if (reportDoc) {
-            console.log('Post report created successfully.');
+            devLog('Post report created successfully.');
             return reportDoc;
         }
         return null;
@@ -797,7 +798,7 @@ export const fetchSavesByPostId = async (postId) => {
         });
 
         if (savesByPostId.total > 0) {
-            console.log('savesByPostId:', savesByPostId);
+            devLog('savesByPostId:', savesByPostId);
             return savesByPostId.total;
         }
 
@@ -850,7 +851,7 @@ export const fetchUserSaveForPost = async (postId, userId) => {
         });
 
         if (userSaveForPost.total > 0) {
-            console.log('userSaveForPost:', userSaveForPost);
+            devLog('userSaveForPost:', userSaveForPost);
             return userSaveForPost;
         }
 
@@ -875,17 +876,17 @@ export const deleteSave = async (docId) => {
 // Links
 export const createLink = async (href, brandName, item, similarityLevel) => {
 
-    console.log({ href, brandName, item, similarityLevel });
+    devLog({ href, brandName, item, similarityLevel });
 
     if (!href) {
-        console.log('no href');
+        devLog('no href');
         return;
     }
     try {
         const res = await assessLinkSafety(href, brandName, item, similarityLevel);
 
         if (res) {
-            console.log(res);
+            devLog(res);
             return res;
         }
         return null;
@@ -908,7 +909,7 @@ export const createReportLink = async (linkId, reason) => {
         })
 
         if (reportDoc) {
-            console.log('Link report created successfully.');
+            devLog('Link report created successfully.');
             return reportDoc;
         }
         return null;
@@ -955,7 +956,7 @@ export const createReportComment = async (commentId, reason) => {
         })
 
         if (reportDoc) {
-            console.log('Comment report created successfully.');
+            devLog('Comment report created successfully.');
             return reportDoc;
         }
         return null;
@@ -966,10 +967,10 @@ export const createReportComment = async (commentId, reason) => {
 
 export const createComment = async (postId, commentText, userId) => {
 
-    console.log({ postId, commentText, userId });
+    devLog({ postId, commentText, userId });
 
     if (!postId) {
-        console.log('no post id');
+        devLog('no post id');
         return;
     }
 
@@ -977,7 +978,7 @@ export const createComment = async (postId, commentText, userId) => {
         const doc = await assessCommentSafety(postId, commentText, userId);
 
         if (doc) {
-            console.log('Comment created successfully:', doc);
+            devLog('Comment created successfully:', doc);
             return doc;
         }
         return null;
@@ -1006,7 +1007,7 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
         })
 
         if (doc.total > 0) {
-            console.log('Comments fetched successfully:', doc);
+            devLog('Comments fetched successfully:', doc);
             return doc;
         }
 
@@ -1039,7 +1040,7 @@ export const reCaptchaVerification = async (token) => {
         if (res.status === 'completed') {
             try {
                 const result = JSON.parse(res.responseBody);
-                console.log(result);
+                devLog(result);
                 return result;
             } catch (parseError) {
                 console.error('Error parsing response:', parseError);
@@ -1082,7 +1083,7 @@ export const assessLinkSafety = async (href, brandName, item, similarityLevel) =
         }
 
     } catch (error) {
-        console.log('Error assessing comment with Gemini:', error);
+        devLog('Error assessing comment with Gemini:', error);
     }
 }
 
@@ -1114,7 +1115,7 @@ export const assessCommentSafety = async (postId, commentText) => {
         }
 
     } catch (error) {
-        console.log('Error assessing comment with Gemini:', error);
+        devLog('Error assessing comment with Gemini:', error);
     }
 }
 

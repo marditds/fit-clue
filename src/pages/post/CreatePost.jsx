@@ -8,6 +8,7 @@ import { Icon } from '../../components/Accessories/Icon.jsx';
 import { capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters.js';
 import { UserNoteForm } from '../../components/Form/UserNoteForm.jsx';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle.js';
+import { devLog } from '../../lib/utils/devLog.js';
 
 const CreatePost = () => {
 
@@ -58,7 +59,7 @@ const CreatePost = () => {
 
             const itemLinkInIncorrectFormat = links?.some((link) => !link.href.startsWith('https://'));
 
-            console.log('itemLinkInIncorrectFormat', itemLinkInIncorrectFormat);
+            devLog('itemLinkInIncorrectFormat', itemLinkInIncorrectFormat);
 
             const wronglyFormattedLinks = links.map(link => !link.href.startsWith('https://'));
 
@@ -93,7 +94,7 @@ const CreatePost = () => {
             }
 
             if (createdPost) {
-                console.log('Post created successfully!');
+                devLog('Post created successfully!');
                 setErrMsg('');
                 setSccssMsg('Post created successfully!');
                 navigate(`/post/${createdPost.$id}`);

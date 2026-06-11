@@ -6,6 +6,7 @@ import { ReportModal } from '../Modals/Modals';
 import { TextTooltip, TextTooltipOnClick } from '../Accessories/CustomTooltip';
 import { postReportCategories } from '../../lib/data/reportCategories';
 import { Icon } from '../Accessories/Icon';
+import { devLog } from '../../lib/utils/devLog';
 
 export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 
@@ -62,7 +63,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 
             try {
                 const res = await fetchUserSaveForPost(postId, userId);
-                console.log('status for save is fetched.');
+                devLog('status for save is fetched.');
 
                 if (res) {
                     setSavedDocId(res.rows[0].$id);

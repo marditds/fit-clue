@@ -23,7 +23,6 @@ export const RecaptchaForm = () => {
         setIsSubmitting(true);
 
         try {
-            // For invisible reCAPTCHA, execute the challenge
             const token = await recaptchaRef.current.executeAsync();
 
             if (!token) {
@@ -31,7 +30,7 @@ export const RecaptchaForm = () => {
                 setIsSubmitting(false);
                 return;
             }
-            // Send form data along with reCAPTCHA token to your backend
+            // Send form data along with reCAPTCHA token to  backend
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
@@ -44,8 +43,7 @@ export const RecaptchaForm = () => {
             });
 
             if (response.ok) {
-                console.log('Form submitted successfully');
-                // Handle success - redirect, show success message, etc.
+                // Handle success
                 alert('Login successful!');
 
                 // Reset form

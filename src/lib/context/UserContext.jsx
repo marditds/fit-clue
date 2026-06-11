@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getUserAccount, getUserFromCollectionById } from './dbhandler';
+import { devLog } from '../utils/devLog';
 
 const UserContext = createContext();
 
@@ -24,30 +25,30 @@ export const UserProvider = ({ children }) => {
         const checkingSessionStatus = async () => {
 
             if (isSignOutInProgress) {
-                console.log('Sign out in progress. Not checking session status.');
+                devLog('Sign out in progress. Not checking session status.');
                 return;
             }
 
             try {
-                console.log('START - Checking session status...');
+                devLog('START - Checking session status...');
 
                 setIsAppLoading(true);
 
                 if (location.pathname === '/' && isSignOutInProgress) {
-                    console.log('On root path during sign-out. Skipping session check.');
+                    devLog('On root path during sign-out. Skipping session check.');
                     return;
                 }
 
                 const user = await getUserAccount();
 
                 if (!user) {
-                    console.log('No session found.');
+                    devLog('No session found.');
                     setIsSessionInProgress(false);
                     setIsLoggedIn(false);
                     return;
                 }
 
-                console.log('userIdInSession', user.$id);
+                devLog('userIdInSession', user.$id);
 
                 setIsSessionInProgress(true);
                 setUserId(user.$id);
@@ -58,7 +59,7 @@ export const UserProvider = ({ children }) => {
             } catch (error) {
                 console.error('Error checking session status:', error);
             } finally {
-                console.log('FINISH - Checking session status...');
+                devLog('FINISH - Checking session status...');
                 setIsAppLoading(false);
             }
         };

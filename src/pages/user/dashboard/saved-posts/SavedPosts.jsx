@@ -7,8 +7,8 @@ import { InstagramEmbedCards } from '../../../../components/Post/InstagramEmbedC
 import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts';
 import { Icon } from '../../../../components/Accessories/Icon';
 import { ToastForDashboard } from '../../../../components/Accessories/ToastComponent';
-import { savesDashboardData } from '../../../../lib/data/testData';
 import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
+import { devLog } from '../../../../lib/utils/devLog';
 
 export const SavedPosts = () => {
 
@@ -33,10 +33,10 @@ export const SavedPosts = () => {
 
     const getSavesByUserId = async () => {
 
-        console.log({ userId: userId, lastSave: lastSave });
+        devLog({ userId: userId, lastSave: lastSave });
 
         if (!userId) {
-            console.log('User is not found. Stop fetching saves.');
+            devLog('User is not found. Stop fetching saves.');
             return;
         }
 
@@ -46,7 +46,7 @@ export const SavedPosts = () => {
             const userSavesDocs = await fetchSavesByUserId(userId, lastSave || null);
 
             if (!userSavesDocs || !userSavesDocs.rows?.length) {
-                console.log('No saves found.');
+                devLog('No saves found.');
                 setHasMore(false);
                 return;
             }
@@ -55,7 +55,7 @@ export const SavedPosts = () => {
 
             const usrSvsDcs = userSavesDocs.rows;
 
-            console.log(`usrSvsDcs:`, usrSvsDcs);
+            devLog(`usrSvsDcs:`, usrSvsDcs);
 
             const fetchedInstaPosts = await Promise.all(
                 usrSvsDcs.map(async (usrSv) => {
@@ -67,7 +67,7 @@ export const SavedPosts = () => {
                 })
             );
 
-            console.log(`fetchedInstaPosts:`, fetchedInstaPosts);
+            devLog(`fetchedInstaPosts:`, fetchedInstaPosts);
 
             if (lastSave === null) {
                 setUserSaves(fetchedInstaPosts);
@@ -97,12 +97,12 @@ export const SavedPosts = () => {
     }
 
     useEffect(() => {
-        console.log('userSaves:', userSaves);
+        devLog('userSaves:', userSaves);
     }, [userSaves])
 
     useEffect(() => {
         const loadingSavesFirstBatch = async () => {
-            console.log('Loading first batch of saves.');
+            devLog('Loading first batch of saves.');
 
             setIsSavesFirstBatchLoading(true);
             try {

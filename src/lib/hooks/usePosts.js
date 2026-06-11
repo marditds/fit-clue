@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchPostsByBrandName as getPostsByBrandName, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName, fetchPostsByCreatorId as getPostsByCreatorId } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
+import { devLog } from '../utils/devLog';
 
 export const usePosts = () => {
 
@@ -15,7 +16,7 @@ export const usePosts = () => {
     const userSavesLoadLimit = 4;
 
     useEffect(() => {
-        console.log('user id in usePosts.jsx:', userId);
+        devLog('user id in usePosts.jsx:', userId);
     }, [userId])
 
     const makePost = async (name, productLinksData, instaUrl, userId, user_note) => {
@@ -60,12 +61,12 @@ export const usePosts = () => {
 
     const fetchCommentsTextByPostId = async (postId, lastCursor) => {
 
-        console.log({ postId: postId, lastCursor: lastCursor });
+        devLog({ postId: postId, lastCursor: lastCursor });
 
         try {
             const cmmnts = await getCommentsTextByPostId(postId, commentsLoadLimit, lastCursor);
 
-            console.log('fetchCommentsTextByPostId;', cmmnts);
+            devLog('fetchCommentsTextByPostId;', cmmnts);
 
             if (cmmnts.length === 0) {
                 return [];
@@ -79,7 +80,7 @@ export const usePosts = () => {
 
     const fetchComments = async (postId, lastCursor) => {
 
-        console.log({ postId: postId, lastCursor: lastCursor });
+        devLog({ postId: postId, lastCursor: lastCursor });
 
         if (!postId) {
             return;

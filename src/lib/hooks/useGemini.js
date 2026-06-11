@@ -11,8 +11,6 @@ export const useGemini = () => {
         try {
             // const chatSession = await assessCommentWithGemini(commentText);
 
-            // console.log('chatSession', chatSession);
-
             return 'barev';
         } catch (error) {
             console.error('Error running Gemini:', error);

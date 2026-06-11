@@ -7,6 +7,7 @@ import { Icon } from '../../../../components/Accessories/Icon';
 import { PlainModal } from '../../../../components/Modals/Modals';
 import { LoadingComponent } from '../../../../components/Loading/Loading';
 import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
+import { devLog } from '../../../../lib/utils/devLog';
 
 export const AccountSettings = () => {
 
@@ -47,7 +48,7 @@ export const AccountSettings = () => {
 
             const res = await updateUsernameInCollection(userId, newUsername);
 
-            console.log(res);
+            devLog(res);
 
             if (typeof res === 'string') {
                 setUsrnmErrorMsg(res);
@@ -104,7 +105,7 @@ export const AccountSettings = () => {
 
             const res = await deleteUserFromPlatform();
 
-            console.log('res.success:', res.success);
+            devLog('res.success:', res.success);
 
             if (res.success === true) {
 

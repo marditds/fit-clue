@@ -7,6 +7,7 @@ import { usePosts } from '../../lib/hooks/usePosts'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import { Icon } from '../Accessories/Icon'
 import { capitalizeAllLetters, capitalizeFirstLetter } from '../../lib/utils/capitalizeLetters'
+import { devLog } from '../../lib/utils/devLog'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
@@ -19,7 +20,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
     const [selectedItem, setSelectedItem] = useState(null);
 
     const handleReportClick = (item) => {
-        console.log("item:", item);
+        devLog('item:', item);
         setSelectedItem(item);
         setShowModal(true);
     };
