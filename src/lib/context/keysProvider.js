@@ -25,10 +25,10 @@ export const keysProvider = (key, setFunction) => {
 
     setFunction(value);
 
-    fetch(`/.netlify/functions/get-tokens?key=${key}`)
-        .then((res) => res.json())
-        .then((data) => setFunction(data.value))
-        .catch((err) => console.error(`Error fetching ${key} tokens:`, err));
+    // fetch(`/.netlify/functions/get-tokens?key=${key}`)
+    //     .then((res) => res.json())
+    //     .then((data) => setFunction(data.value))
+    //     .catch((err) => console.error(`Error fetching ${key} tokens:`, err));
 };
 
 
