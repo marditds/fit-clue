@@ -8,7 +8,7 @@ import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { SearchComponent } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 const Results = () => {
 

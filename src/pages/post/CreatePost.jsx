@@ -8,7 +8,7 @@ import { Icon } from '../../components/Accessories/Icon.jsx';
 import { capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters.js';
 import { UserNoteForm } from '../../components/Form/UserNoteForm.jsx';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle.js';
-import { devLog } from '../../lib/utils/devLog.js';
+import { devLog } from '../../lib/utils/devConsole.js';
 
 const CreatePost = () => {
 

@@ -8,7 +8,7 @@ import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts
 import { Icon } from '../../../../components/Accessories/Icon';
 import { ToastForDashboard } from '../../../../components/Accessories/ToastComponent';
 import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../../../lib/utils/devLog';
+import { devLog } from '../../../../lib/utils/devConsole';
 
 export const SavedPosts = () => {
 

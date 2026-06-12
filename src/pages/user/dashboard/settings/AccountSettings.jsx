@@ -7,7 +7,7 @@ import { Icon } from '../../../../components/Accessories/Icon';
 import { PlainModal } from '../../../../components/Modals/Modals';
 import { LoadingComponent } from '../../../../components/Loading/Loading';
 import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../../../lib/utils/devLog';
+import { devLog } from '../../../../lib/utils/devConsole';
 
 export const AccountSettings = () => {
 

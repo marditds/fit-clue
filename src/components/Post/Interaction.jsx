@@ -6,7 +6,7 @@ import { ReportModal } from '../Modals/Modals';
 import { TextTooltip, TextTooltipOnClick } from '../Accessories/CustomTooltip';
 import { postReportCategories } from '../../lib/data/reportCategories';
 import { Icon } from '../Accessories/Icon';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 

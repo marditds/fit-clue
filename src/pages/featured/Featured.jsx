@@ -5,7 +5,7 @@ import '../../components/Grid/Grid.css';
 import '../../components/Card/Card.css';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 const Featured = () => {
 

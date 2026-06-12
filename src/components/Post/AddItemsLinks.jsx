@@ -8,7 +8,7 @@ import { LoadingComponent } from '../Loading/Loading';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { IconHanger, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
 
@@ -196,7 +196,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                         <Button
                             variant='primary'
                             type='submit'
-                            disabled={!brandName || !itemName || !itemLink || !isLoggedIn}
+                            disabled={!brandName || !itemName || !itemLink || !isLoggedIn || isAddningLink}
                             className='mt-1 mb-2 d-flex'
                         >
                             {isAddningLink ?

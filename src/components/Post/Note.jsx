@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Icon } from '../Accessories/Icon'
 import { UserNoteForm } from '../Form/UserNoteForm';
 import { LoadingComponent } from '../Loading/Loading';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locationPathname, userId, updateUserNote }) => {
 

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getUserAccount, getUserFromCollectionById } from './dbhandler';
-import { devLog } from '../utils/devLog';
+import { devLog } from '../utils/devConsole';
 
 const UserContext = createContext();
 

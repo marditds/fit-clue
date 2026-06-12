@@ -1,6 +1,6 @@
 import { createLink as makeLink } from '../context/dbhandler';
 import { assessLinkSafety } from '../context/dbhandler';
-import { devLog } from '../utils/devLog';
+import { devLog } from '../utils/devConsole';
 
 export const useShoppingLinks = () => {
 

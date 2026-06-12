@@ -6,7 +6,7 @@ import { Form } from 'react-bootstrap';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import forgotImg from '../../assets/forgot-password.jpg';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 const ForgotPassword = () => {
 

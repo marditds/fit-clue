@@ -7,7 +7,7 @@ import { PasswordForm } from '../../components/Form/PasswordForm';
 import resetImg from '../../assets/reset-password.jpg';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devLog';
+import { devLog } from '../../lib/utils/devConsole';
 
 const ResetPassword = () => {
 

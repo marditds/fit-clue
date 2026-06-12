@@ -7,7 +7,7 @@ import { usePosts } from '../../lib/hooks/usePosts'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import { Icon } from '../Accessories/Icon'
 import { capitalizeAllLetters, capitalizeFirstLetter } from '../../lib/utils/capitalizeLetters'
-import { devLog } from '../../lib/utils/devLog'
+import { devLog } from '../../lib/utils/devConsole'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
 
