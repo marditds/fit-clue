@@ -1,4 +1,4 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Icon } from '../Accessories/Icon';
@@ -49,18 +49,17 @@ const Footer = () => {
 
                 {!authPages.includes(location.pathname) &&
                     <Col
-                        className='w-100 d-flex flex-md-row flex-column align-items-center justify-content-between'>
+                        className='w-100 d-flex flex-column flex-md-row align-items-center justify-content-between'>
 
-                        <Link to='/' className='text-decoration-none mb-1 mb-md-0' style={{ fontSize: '1.25rem' }}>
-                            FitClue
+                        <Link to='/' className='text-decoration-none' style={{ fontSize: '1.25rem' }}>
+                            <Image src='/src/assets/fcLogoNavbar.png' style={{ maxHeight: '25px' }} className='d-flex align-items-center my-2 my-md-0' fluid />
                         </Link>
 
-
-                        <div>
+                        <div className='d-flex'>
                             {socials.map((item, idx) => (
-                                <span key={idx}>
-                                    <a href={item.link} target='_blank'>
-                                        <Icon className={`${item.icon} ms-md-4 ms-3 me-md-0 me-3 fs-5`} />
+                                <span key={idx} className=''>
+                                    <a href={item.link} className=' text-decoration-none' target='_blank'>
+                                        <Icon className={`${item.icon} ms-md-4  me-md-0 mx-3 fs-5 d-flex my-2`} />
                                     </a>
                                 </span>
                             ))

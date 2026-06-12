@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Button, Container, Nav, Navbar, Offcanvas } from 'react-bootstrap';
+import { Button, Container, Image, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
 import { SearchComponent } from '../Form/SearchForm';
@@ -37,6 +37,12 @@ const NavigationBar = () => {
     useEffect(() => {
         setShowOffcanvas(false);
     }, [location.pathname]);
+
+    useEffect(() => {
+        if (isScreenWidthLargerThanMedium) {
+            setShowOffcanvas(false);
+        }
+    }, [isScreenWidthLargerThanMedium])
 
     useEffect(() => {
         setSearchTerm('');
@@ -145,8 +151,9 @@ const NavigationBar = () => {
             style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '5' }}
         >
             <Container>
-                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5'>
-                    FitClue
+                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5 d-flex'>
+                    <Image src='/src/assets/fcLogoNavbar.png' style={{ maxHeight: '20px' }} className='my-2' fluid />
+                    {/* FitClue */}
                 </Navbar.Brand>
 
                 {!isScreenWidthLargerThanMedium &&
@@ -168,7 +175,10 @@ const NavigationBar = () => {
                 >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
-                            FitClue
+                            <Image src='/src/assets/fcLogoNavbar.png' style={{
+                                width: '100%',
+                                maxHeight: '30px'
+                            }} fluid />
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body className='pb-0' style={{ height: !isScreenWidthLargerThanMedium ? '100vh' : 'auto' }}
