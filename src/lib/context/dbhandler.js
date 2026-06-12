@@ -649,7 +649,7 @@ export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor
         if (postsByCreatorId.total > 0) {
             return postsByCreatorId;
         }
-        return null;
+        return { total: 0, rows: [] };
     } catch (error) {
         console.error('dbhandler - Error fetching posts by creator id', error);
     }

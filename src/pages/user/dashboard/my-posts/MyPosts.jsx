@@ -48,7 +48,7 @@ export const MyPosts = () => {
         staleTime: 120_000,
     });
 
-    const myPosts = data?.pages.flatMap(page => page.rows) ?? [];
+    const myPosts = data?.pages?.flatMap(page => page?.rows ?? []) ?? [];
     const myPostsTotal = data?.pages[0]?.total ?? 0;
     const isMyPostsLoading = isFetching;
     const hasMore = hasNextPage ?? false;
