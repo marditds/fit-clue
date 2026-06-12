@@ -1089,16 +1089,16 @@ export const assessLinkSafety = async (href, brandName, item, similarityLevel) =
 
 export const assessCommentSafety = async (postId, commentText) => {
     try {
-        const gemini_function_id = await dbFunctionKeysProvider('gemini_function');
+        const comments_function_id = await dbFunctionKeysProvider('comments_function');
 
-        if (!gemini_function_id) {
+        if (!comments_function_id) {
             throw new Error('Failed to load function ID');
         }
 
         const payload = JSON.stringify({ postId, commentText });
 
         const res = await functions.createExecution({
-            functionId: gemini_function_id,
+            functionId: comments_function_id,
             body: payload
         })
 
