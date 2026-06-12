@@ -6,7 +6,7 @@ import { Form } from 'react-bootstrap';
 import { PasswordForm } from '../../components/Form/PasswordForm';
 import forgotImg from '../../assets/forgot-password.jpg';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 const ForgotPassword = () => {
 
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
             setForgotPsswdSuccessMsg('A recovery link from Appwrite has been sent to your email. Please check your inbox.');
             setForgotPsswdErrorMsg('');
         } catch (error) {
-            console.error('Error onForgotPassword:', error);
+            devError('Error onForgotPassword:', error);
             setForgotPsswdErrorMsg('Something went wrong. Please try again later.');
         } finally {
             setIsForgotPasswordLoading(false);

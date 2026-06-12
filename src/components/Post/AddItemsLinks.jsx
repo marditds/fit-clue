@@ -8,7 +8,7 @@ import { LoadingComponent } from '../Loading/Loading';
 import { CustomTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { IconHanger, IconMetronome, IconShoppingBag } from '@tabler/icons-react';
-import { devLog } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => {
 
@@ -98,7 +98,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                 devLog('updatedPost in Post.jsx:', updatedPost);
             }
         } catch (error) {
-            console.error('Error onAddSubmitLink:', error);
+            devError('Error onAddSubmitLink:', error);
         } finally {
             setIsAddingLink(false);
         }

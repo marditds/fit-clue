@@ -16,6 +16,7 @@ import { Interaction } from '../../components/Post/Interaction';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Note } from '../../components/Post/Note';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
+import { devError } from '../../lib/utils/devConsole';
 
 const Post = () => {
 
@@ -79,11 +80,11 @@ const Post = () => {
                         }
 
                     } catch (error) {
-                        console.error('Invalid URL', error);
+                        devError('Invalid URL', error);
                     }
                 }
             } catch (error) {
-                console.error('Error getting posts:', error);
+                devError('Error getting posts:', error);
             } finally {
                 setIsPostLoading(false);
             }
@@ -113,7 +114,7 @@ const Post = () => {
             const res = await updateNote(params.postId, userNote, newUserNote);
             return res;
         } catch (error) {
-            console.error('Error updating user note.');
+            devError('Error updating user note.');
         }
     }
 

@@ -7,7 +7,7 @@ import { Icon } from '../../../../components/Accessories/Icon';
 import { PlainModal } from '../../../../components/Modals/Modals';
 import { LoadingComponent } from '../../../../components/Loading/Loading';
 import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../../../lib/utils/devConsole';
+import { devError, devLog } from '../../../../lib/utils/devConsole';
 
 export const AccountSettings = () => {
 
@@ -61,7 +61,7 @@ export const AccountSettings = () => {
             setUsrnmSuccessMsg('Username updated successfully.');
 
         } catch (error) {
-            console.error('Error updating username:', error);
+            devError('Error updating username:', error);
         } finally {
             setIsUpdatingUsername(false);
         }
@@ -93,7 +93,7 @@ export const AccountSettings = () => {
             setConfirmNewPassword('');
 
         } catch (error) {
-            console.error('Error updating user password:', error);
+            devError('Error updating user password:', error);
         } finally {
             setIsUpdatingPassword(false);
         }
@@ -123,7 +123,7 @@ export const AccountSettings = () => {
                 setDeleteModalTxt('Failed deleting account. Please try again later or contact support.')
             }
         } catch (error) {
-            console.error('Error removing user from platform:', error);
+            devError('Error removing user from platform:', error);
         } finally {
             setIsDeleteInProgress(false);
         }

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchPostsByBrandName as getPostsByBrandName, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName, fetchPostsByCreatorId as getPostsByCreatorId } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
-import { devLog } from '../utils/devConsole';
+import { devError, devLog } from '../utils/devConsole';
 
 export const usePosts = () => {
 
@@ -24,7 +24,7 @@ export const usePosts = () => {
             const res = await composePost(name, productLinksData, instaUrl, userId, user_note);
             return res;
         } catch (error) {
-            console.error('Error making post:', error);
+            devError('Error making post:', error);
             return null;
         }
     }
@@ -34,7 +34,7 @@ export const usePosts = () => {
             const res = await composeComment(postId, commentText, userId);
             return res;
         } catch (error) {
-            console.error('Error making comment:', error);
+            devError('Error making comment:', error);
         }
     }
 
@@ -45,7 +45,7 @@ export const usePosts = () => {
             return res;
 
         } catch (error) {
-            console.error('Error updating post:', error);
+            devError('Error updating post:', error);
             return 'Error adding link. Please try again later.'
         }
     }
@@ -55,7 +55,7 @@ export const usePosts = () => {
             const res = await updateNote(docId, oldNote, newNote);
             return res;
         } catch (error) {
-            console.error('Erro updating user note:', error);
+            devError('Erro updating user note:', error);
         }
     }
 
@@ -74,7 +74,7 @@ export const usePosts = () => {
 
             return cmmnts;
         } catch (error) {
-            console.error('Error fetching posts:', error);
+            devError('Error fetching posts:', error);
         }
     }
 
@@ -114,7 +114,7 @@ export const usePosts = () => {
                 total: commentsTotal,
             };
         } catch (error) {
-            console.error('Error fetching comments by id:', error);
+            devError('Error fetching comments by id:', error);
         }
     }
 
@@ -123,7 +123,7 @@ export const usePosts = () => {
             const res = await getTheLatestPosts();
             return res;
         } catch (error) {
-            console.error('Error fetching posts:', error);
+            devError('Error fetching posts:', error);
         }
     }
 
@@ -132,7 +132,7 @@ export const usePosts = () => {
             const res = await getPostById(postId);
             return res;
         } catch (error) {
-            console.error('Error fetching post by id:', error);
+            devError('Error fetching post by id:', error);
         }
     }
 
@@ -141,7 +141,7 @@ export const usePosts = () => {
             const res = await getInstaPostById(postId);
             return res;
         } catch (error) {
-            console.error('Error fetching insta post by id:', error);
+            devError('Error fetching insta post by id:', error);
         }
     }
 
@@ -150,7 +150,7 @@ export const usePosts = () => {
             const res = await getPostsByPersonalityId(personalityId);
             return res;
         } catch (error) {
-            console.error('Error fetching post by id:', error);
+            devError('Error fetching post by id:', error);
         }
     }
 
@@ -159,7 +159,7 @@ export const usePosts = () => {
             const res = await getPostsByString(str, searchResultLoadLimit, lastCursor);
             return res;
         } catch (error) {
-            console.error('Error fetching post by id:', error);
+            devError('Error fetching post by id:', error);
         }
     }
 
@@ -168,7 +168,7 @@ export const usePosts = () => {
             const res = await getPostsByItemName(itemName, searchResultLoadLimit, lastCursor);
             return res;
         } catch (error) {
-            console.error('Error fetching post by id:', error);
+            devError('Error fetching post by id:', error);
         }
     }
 
@@ -177,7 +177,7 @@ export const usePosts = () => {
             const res = await getPostsByBrandName(brandName, searchResultLoadLimit, lastCursor);
             return res;
         } catch (error) {
-            console.error('Error fetching post by brand name:', error);
+            devError('Error fetching post by brand name:', error);
         }
     }
 
@@ -186,7 +186,7 @@ export const usePosts = () => {
             const myPosts = await getPostsByCreatorId(userId, myPostsLoadLimit, lastCursor);
             return myPosts;
         } catch (error) {
-            console.error('Error fetching my posts:', error);
+            devError('Error fetching my posts:', error);
         }
     }
 
@@ -196,7 +196,7 @@ export const usePosts = () => {
 
             return reportDoc;
         } catch (error) {
-            console.error('Error creating report:', error);
+            devError('Error creating report:', error);
         }
     }
 
@@ -206,7 +206,7 @@ export const usePosts = () => {
 
             return reportDoc;
         } catch (error) {
-            console.error('Error creating report:', error);
+            devError('Error creating report:', error);
         }
     }
 
@@ -215,7 +215,7 @@ export const usePosts = () => {
             const reportDoc = await makePostReport(commentId, reason);
             return reportDoc;
         } catch (error) {
-            console.error('Error creating report:', error);
+            devError('Error creating report:', error);
         }
     }
 
@@ -225,7 +225,7 @@ export const usePosts = () => {
             const res = await makeSave(postId, userId);
             return res;
         } catch (error) {
-            console.error('Error creating save:', error);
+            devError('Error creating save:', error);
         }
     }
 
@@ -234,7 +234,7 @@ export const usePosts = () => {
             const savesRes = await getSavesByPostId(postId);
             return savesRes;
         } catch (error) {
-            console.error('Error creating save:', error);
+            devError('Error creating save:', error);
         }
     }
 
@@ -243,7 +243,7 @@ export const usePosts = () => {
             const savesRes = await getSavesByUserId(userId, userSavesLoadLimit, lastCursor);
             return savesRes;
         } catch (error) {
-            console.error('Error creating save:', error);
+            devError('Error creating save:', error);
         }
     }
 
@@ -252,7 +252,7 @@ export const usePosts = () => {
             const userSaveforPost = await getUserSaveForPost(postId, userId);
             return userSaveforPost;
         } catch (error) {
-            console.error('Error creating save:', error);
+            devError('Error creating save:', error);
         }
     }
 
@@ -260,7 +260,7 @@ export const usePosts = () => {
         try {
             await removeSave(docId);
         } catch (error) {
-            console.error('Error deleting save:', error);
+            devError('Error deleting save:', error);
         }
     }
 

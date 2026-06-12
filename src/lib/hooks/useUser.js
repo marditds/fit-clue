@@ -1,6 +1,7 @@
 import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { devError } from '../utils/devConsole';
 
 export const useUser = () => {
 
@@ -19,7 +20,7 @@ export const useUser = () => {
             const user = await makeUser(email, password, name);
             return user;
         } catch (error) {
-            console.error('Error creating user:', error);
+            devError('Error creating user:', error);
         }
     }
 
@@ -28,7 +29,7 @@ export const useUser = () => {
             const res = await renewUsernameInCollection(userId, username);
             return res;
         } catch (error) {
-            console.error('Error updating username in collection:', error);
+            devError('Error updating username in collection:', error);
         }
     }
 
@@ -39,7 +40,7 @@ export const useUser = () => {
             return userPreferences;
 
         } catch (error) {
-            console.error('Error fetching user prferences:', error);
+            devError('Error fetching user prferences:', error);
         }
     }
 
@@ -48,7 +49,7 @@ export const useUser = () => {
             const user = await loginUser(email, password);
             return user;
         } catch (error) {
-            console.error('Error signing in user:', error);
+            devError('Error signing in user:', error);
         }
     }
 
@@ -58,7 +59,7 @@ export const useUser = () => {
 
             return user;
         } catch (error) {
-            console.error('Error getting user from collection:', error);
+            devError('Error getting user from collection:', error);
         }
     }
 
@@ -67,7 +68,7 @@ export const useUser = () => {
             const session = await fetchUserSession();
             return session;
         } catch (error) {
-            console.error('Error getting user session details:', error);
+            devError('Error getting user session details:', error);
         }
     }
 
@@ -77,7 +78,7 @@ export const useUser = () => {
 
             return res;
         } catch (error) {
-            console.error('Error creating passowrd recovery email:', error);
+            devError('Error creating passowrd recovery email:', error);
         }
     }
 
@@ -87,7 +88,7 @@ export const useUser = () => {
 
             return res;
         } catch (error) {
-            console.error('Error updating user password via recovery email:', error);
+            devError('Error updating user password via recovery email:', error);
         }
     }
 
@@ -96,7 +97,7 @@ export const useUser = () => {
             const user = await changeUserPassword(newPassword, oldPassword);
             return user;
         } catch (error) {
-            console.error('Error updating user password:', error);
+            devError('Error updating user password:', error);
         }
     }
 
@@ -105,7 +106,7 @@ export const useUser = () => {
             const user = await fetchUserAccount();
             return user;
         } catch (error) {
-            console.error('Error getting user session details:', error);
+            devError('Error getting user session details:', error);
         }
     }
 
@@ -114,7 +115,7 @@ export const useUser = () => {
             const removeSessionRes = await removeUserSession();
             return removeSessionRes;
         } catch (error) {
-            console.error('Error getting user session details:', error);
+            devError('Error getting user session details:', error);
         }
     }
 
@@ -144,7 +145,7 @@ export const useUser = () => {
             }
 
         } catch (error) {
-            console.error('Error signing out:', error);
+            devError('Error signing out:', error);
         }
     }
 
@@ -154,7 +155,7 @@ export const useUser = () => {
             const res = await removeUserFromPlatform();
             return res;
         } catch (error) {
-            console.error('Error deleting user from platform.', error);
+            devError('Error deleting user from platform.', error);
         }
     }
 

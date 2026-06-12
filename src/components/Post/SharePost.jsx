@@ -3,6 +3,7 @@ import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { TextTooltipOnClick } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
+import { devError } from '../../lib/utils/devConsole';
 
 export const SharePost = () => {
 
@@ -19,7 +20,7 @@ export const SharePost = () => {
                 setTimeout(() => setIsUrlCopied(false), 800)
             })
             .catch((err) => {
-                console.error('Failed to copy: ', err);
+                devError('Failed to copy: ', err);
                 setIsUrlCopied(false);
             });
     };

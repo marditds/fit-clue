@@ -3,6 +3,7 @@ import { usePosts } from '../../lib/hooks/usePosts';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
+import { devError } from '../../lib/utils/devConsole';
 
 export const AddComment = ({ postId, userId, username, isLoggedIn, isViewCommentsClicked, setComments, setCommentsTotal }) => {
 
@@ -46,7 +47,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
             setCommentText('');
 
         } catch (error) {
-            console.error('Error onCreateCommentSubmit:', error);
+            devError('Error onCreateCommentSubmit:', error);
         } finally {
             setIsAddingComment(false);
         }

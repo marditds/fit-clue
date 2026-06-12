@@ -5,7 +5,7 @@ import '../../components/Grid/Grid.css';
 import '../../components/Card/Card.css';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 const Featured = () => {
 
@@ -26,7 +26,7 @@ const Featured = () => {
 
                 setPosts(p);
             } catch (error) {
-                console.error('Error getting posts:', error);
+                devError('Error getting posts:', error);
             } finally {
                 setIsGridLoading(false);
             }

@@ -8,6 +8,7 @@ import { commentReportCategories } from '../../lib/data/reportCategories';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { LoadMoreButton } from '../RelatedPosts/RelatedPosts';
 import { Icon } from '../Accessories/Icon';
+import { devError } from '../../lib/utils/devConsole';
 
 export const PostedComments = ({ postId, comments, setComments, commentsTotal, setCommentsTotal, isViewCommentsClicked, setIsViewCommentsClicked, isLoggedIn }) => {
 
@@ -57,7 +58,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
             }
 
         } catch (error) {
-            console.error('Error getting comments:', error);
+            devError('Error getting comments:', error);
         } finally {
             setIsCommentsLoading(false);
         }
@@ -70,7 +71,7 @@ export const PostedComments = ({ postId, comments, setComments, commentsTotal, s
             try {
                 await getCommentsByPostId();
             } catch (error) {
-                console.error('Error loading comments.');
+                devError('Error loading comments.');
             } finally {
                 setIsCommentsFirstBatchLoading(false);
             }

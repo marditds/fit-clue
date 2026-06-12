@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { devError } from '../../lib/utils/devConsole';
 
 export const RecaptchaForm = () => {
     const [formData, setFormData] = useState({
@@ -52,11 +53,11 @@ export const RecaptchaForm = () => {
                 recaptchaRef.current?.reset();
             } else {
                 const errorData = await response.json();
-                console.error('Form submission failed:', errorData);
+                devError('Form submission failed:', errorData);
                 alert('Login failed. Please try again.');
             }
         } catch (error) {
-            console.error('Error submitting form:', error);
+            devError('Error submitting form:', error);
             alert('An error occurred. Please try again.');
         } finally {
             setIsSubmitting(false);

@@ -8,6 +8,7 @@ import { keysProvider } from '../../lib/context/keysProvider';
 import { reCaptchaVerification } from '../../lib/context/dbhandler';
 import { authText } from '../../config/formText';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
+import { devError } from '../../lib/utils/devConsole';
 
 const SignUp = () => {
 
@@ -74,7 +75,7 @@ const SignUp = () => {
             navigate('/');
 
         } catch (error) {
-            console.error('Error creating user:', error);
+            devError('Error creating user:', error);
         } finally {
             setIsAccountBeingCreated(false);
         }

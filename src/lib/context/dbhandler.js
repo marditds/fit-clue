@@ -1,7 +1,7 @@
 import { Client, ID, Query, Functions, Account, TablesDB, Operator } from 'appwrite';
 import { dbFunctionKeysProvider } from './keysProvider';
 import { ROUTES } from '../../routes/routes';
-import { devLog } from '../utils/devLog';
+import { devLog, devError } from '../utils/devConsole';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -41,7 +41,7 @@ export const testTbalesDBCreateRow = async () => {
         })
         return res;
     } catch (error) {
-        console.error('Error creating row:', error);
+        devError('Error creating row:', error);
     }
 }
 
@@ -74,7 +74,7 @@ export const createUser = async (email, password, name) => {
 
         return null;
     } catch (error) {
-        console.error('Error creating user:', error);
+        devError('Error creating user:', error);
         if (error.code === 400) {
             if (error.toString().startsWith('AppwriteException: Invalid `email` param:')) {
                 return 'Please enter a valid email address.'
@@ -108,7 +108,7 @@ export const createUserInCollection = async (userId, username) => {
 
         return null;
     } catch (error) {
-        console.error('Error creating user in collection:', error);
+        devError('Error creating user in collection:', error);
     }
 }
 
@@ -124,7 +124,7 @@ export const updateUsername = async (username) => {
         }
         return null;
     } catch (error) {
-        console.error('Error updating username:', error);
+        devError('Error updating username:', error);
     }
 }
 
@@ -151,7 +151,7 @@ export const updateUsernameInCollection = async (userId, username) => {
             return res;
         }
     } catch (error) {
-        console.error('Error updating username in collection:', error);
+        devError('Error updating username in collection:', error);
     }
 }
 
@@ -164,7 +164,7 @@ export const getUserPreferences = async () => {
         return userPreferences;
 
     } catch (error) {
-        console.error('Error getting user prferences:', error);
+        devError('Error getting user prferences:', error);
     }
 }
 
@@ -182,7 +182,7 @@ export const getUserFromCollectionById = async (userId) => {
 
         return null;
     } catch (error) {
-        console.error('Error getting user from collection:', error);
+        devError('Error getting user from collection:', error);
     }
 }
 
@@ -202,7 +202,7 @@ export const getUserFromCollectionByUsername = async (username) => {
 
         return null;
     } catch (error) {
-        console.error('Error getting user from collection:', error);
+        devError('Error getting user from collection:', error);
     }
 }
 
@@ -220,7 +220,7 @@ export const fetchUsersByIds = async (userIds) => {
 
         return null;
     } catch (error) {
-        console.error('Error fetching users:', error);
+        devError('Error fetching users:', error);
     }
 }
 
@@ -239,7 +239,7 @@ export const signInUser = async (email, password) => {
         return null;
     } catch (error) {
 
-        console.error('Error signing in user:', error);
+        devError('Error signing in user:', error);
         if (error.code === 400) {
             if (error.toString().startsWith('Error signing in user: AppwriteException: Invalid `email` param:')) {
                 return 'Please enter a valid email address.'
@@ -263,7 +263,7 @@ export const getUserSession = async () => {
         return sessionDets;
 
     } catch (error) {
-        console.error('Error getting session details:', error);
+        devError('Error getting session details:', error);
     }
 }
 
@@ -277,7 +277,7 @@ export const getUserAccount = async () => {
         if (error.code === 401) {
             return null;
         }
-        console.error('Error getting user account:', error);
+        devError('Error getting user account:', error);
         return null;
     }
 }
@@ -292,7 +292,7 @@ export const updateUserPassword = async (newPassword, oldPassword) => {
         devLog(res);
         return res;
     } catch (error) {
-        console.error('Error updating user password:', error);
+        devError('Error updating user password:', error);
         if (error.code === 400) {
             return 'Password must be between 8 and 265 characters long.'
         } else if (error.code === 401) {
@@ -313,7 +313,7 @@ export const createPasswordRecoveryEmail = async (email) => {
 
         return res;
     } catch (error) {
-        console.error('Error creating password recovery email:', error);
+        devError('Error creating password recovery email:', error);
         if (error.code === 400) {
             return 'Invalid email address.';
         } else if (error.code === 404) {
@@ -338,7 +338,7 @@ export const updatePasswordFromRecoveryEmail = async (userId, secret, newPasswor
         return result;
 
     } catch (error) {
-        console.error('Error updating user password via recovery email:', error);
+        devError('Error updating user password via recovery email:', error);
         if (error.code === 400) {
             // return 'Your password must be between 8 and 265 characters.';
             return 400;
@@ -360,7 +360,7 @@ export const deleteUserSession = async () => {
         return { success: resRemoveSession.message === '' }
 
     } catch (error) {
-        console.error('Error removing session:', error);
+        devError('Error removing session:', error);
         return { success: false }
     }
 }
@@ -374,7 +374,7 @@ export const deleteUserFromCollection = async (userId) => {
         });
         return 'User successfully deleted from the collection.';
     } catch (error) {
-        console.error('Error deleting user form collection:', error);
+        devError('Error deleting user form collection:', error);
     }
 };
 
@@ -418,7 +418,7 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
         return post ? post : null;
 
     } catch (error) {
-        console.error('Error creating post:', error);
+        devError('Error creating post:', error);
         return null;
     }
 }
@@ -453,7 +453,7 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
 
         return res;
     } catch (error) {
-        console.error('Error updating post:', error);
+        devError('Error updating post:', error);
         return 'Error adding link. Please try again later.';
     }
 }
@@ -478,7 +478,7 @@ export const updateUserNote = async (docId, oldNote, newNote) => {
         }
 
     } catch (error) {
-        console.error('Error updating user\'s note:', error);
+        devError('Error updating user\'s note:', error);
         return 'error'
     }
 }
@@ -504,7 +504,7 @@ export const fetchTheLatestPosts = async () => {
         return content;
 
     } catch (error) {
-        console.error('Error fetching posts:', error);
+        devError('Error fetching posts:', error);
         return null;
     }
 };
@@ -546,7 +546,7 @@ export const fetchPostById = async (postId) => {
         return result;
 
     } catch (error) {
-        console.error('Error fetching posts:', error);
+        devError('Error fetching posts:', error);
         return null;
     }
 };
@@ -567,7 +567,7 @@ export const fetchInstaPostById = async (postId) => {
         return postRes;
 
     } catch (error) {
-        console.error('Error fetching insta post:', error);
+        devError('Error fetching insta post:', error);
         return null;
     }
 };
@@ -590,7 +590,7 @@ export const fetchPostsByPersonalityId = async (personalityId) => {
         return content;
 
     } catch (error) {
-        console.error('Error fetching posts by personality id:', error);
+        devError('Error fetching posts by personality id:', error);
     }
 }
 
@@ -618,7 +618,7 @@ export const fetchPostsByString = async (str, searchResultLoadLimit, lastCursor 
         return postsByStr;
 
     } catch (error) {
-        console.error('Error fetching posts by personality id:', error);
+        devError('Error fetching posts by personality id:', error);
     }
 }
 
@@ -651,7 +651,7 @@ export const fetchPostsByCreatorId = async (userId, myPostsLoadLimit, lastCursor
         }
         return { total: 0, rows: [] };
     } catch (error) {
-        console.error('dbhandler - Error fetching posts by creator id', error);
+        devError('dbhandler - Error fetching posts by creator id', error);
     }
 }
 
@@ -682,7 +682,7 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
         return postsByItemName;
 
     } catch (error) {
-        console.error('Error fetching posts by item name:', error);
+        devError('Error fetching posts by item name:', error);
     }
 }
 
@@ -737,7 +737,7 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
         return { ...postsByBrandName, linksIds };
 
     } catch (error) {
-        console.error('Error fetching posts by brand name:', error);
+        devError('Error fetching posts by brand name:', error);
     }
 }
 
@@ -759,7 +759,7 @@ export const createPostReport = async (postId, reason) => {
         }
         return null;
     } catch (error) {
-        console.error('Error creating post report:', error);
+        devError('Error creating post report:', error);
     }
 }
 
@@ -782,7 +782,7 @@ export const createSave = async (postId, userId) => {
 
         return null;
     } catch (error) {
-        console.error('Error creating save:', error);
+        devError('Error creating save:', error);
     }
 }
 
@@ -804,7 +804,7 @@ export const fetchSavesByPostId = async (postId) => {
 
         return null;
     } catch (error) {
-        console.error('Error fetching saves by post id:', error);
+        devError('Error fetching saves by post id:', error);
     }
 }
 
@@ -832,7 +832,7 @@ export const fetchSavesByUserId = async (userId, userSavesLoadLimit, lastCursor 
 
         return null;
     } catch (error) {
-        console.error('Error fetching saves by user id:', error);
+        devError('Error fetching saves by user id:', error);
     }
 }
 
@@ -857,7 +857,7 @@ export const fetchUserSaveForPost = async (postId, userId) => {
 
         return null;
     } catch (error) {
-        console.error('Error fetching saves by user for this post:', error);
+        devError('Error fetching saves by user for this post:', error);
     }
 }
 
@@ -869,7 +869,7 @@ export const deleteSave = async (docId) => {
             rowId: docId
         })
     } catch (error) {
-        console.error('Error deleting save:', error);
+        devError('Error deleting save:', error);
     }
 }
 
@@ -891,7 +891,7 @@ export const createLink = async (href, brandName, item, similarityLevel) => {
         }
         return null;
     } catch (error) {
-        console.error('Error creating link:', error);
+        devError('Error creating link:', error);
         return 'Error adding link. Please try again later.';
     }
 }
@@ -914,7 +914,7 @@ export const createReportLink = async (linkId, reason) => {
         }
         return null;
     } catch (error) {
-        console.error('Error creating link report:', error);
+        devError('Error creating link report:', error);
     }
 }
 
@@ -938,7 +938,7 @@ export const fetchProductLinksByIds = async (productLinkId) => {
 
         return [];
     } catch (error) {
-        console.error('Error fetching links:', error);
+        devError('Error fetching links:', error);
     }
 }
 
@@ -961,7 +961,7 @@ export const createReportComment = async (commentId, reason) => {
         }
         return null;
     } catch (error) {
-        console.error('Error creating report:', error);
+        devError('Error creating report:', error);
     }
 }
 
@@ -983,7 +983,7 @@ export const createComment = async (postId, commentText, userId) => {
         }
         return null;
     } catch (error) {
-        console.error('Error creating comment:', error);
+        devError('Error creating comment:', error);
         return 'Something went wrong. Please try again later.'
     }
 }
@@ -1017,7 +1017,7 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
 
         return null;
     } catch (error) {
-        console.error('Error fetching comment:', error);
+        devError('Error fetching comment:', error);
     }
 }
 
@@ -1043,7 +1043,7 @@ export const reCaptchaVerification = async (token) => {
                 devLog(result);
                 return result;
             } catch (parseError) {
-                console.error('Error parsing response:', parseError);
+                devError('Error parsing response:', parseError);
                 return false;
             }
         } else {
@@ -1051,7 +1051,7 @@ export const reCaptchaVerification = async (token) => {
         }
 
     } catch (error) {
-        console.error('Error running reCaptcha verification process:', error);
+        devError('Error running reCaptcha verification process:', error);
     }
 }
 
@@ -1075,7 +1075,7 @@ export const assessLinkSafety = async (href, brandName, item, similarityLevel) =
                 const result = JSON.parse(res.responseBody);
                 return result;
             } catch (parseError) {
-                console.error('Error parsing response:', parseError);
+                devError('Error parsing response:', parseError);
                 return false;
             }
         } else {
@@ -1083,7 +1083,7 @@ export const assessLinkSafety = async (href, brandName, item, similarityLevel) =
         }
 
     } catch (error) {
-        devLog('Error assessing comment with Gemini:', error);
+        devError('Error assessing comment with Gemini:', error);
     }
 }
 
@@ -1107,7 +1107,7 @@ export const assessCommentSafety = async (postId, commentText) => {
                 const result = JSON.parse(res.responseBody);
                 return result;
             } catch (parseError) {
-                console.error('Error parsing response:', parseError);
+                devError('Error parsing response:', parseError);
                 return false;
             }
         } else {
@@ -1115,7 +1115,7 @@ export const assessCommentSafety = async (postId, commentText) => {
         }
 
     } catch (error) {
-        devLog('Error assessing comment with Gemini:', error);
+        devError('Error assessing comment with Gemini:', error);
     }
 }
 
@@ -1136,11 +1136,11 @@ export const deleteUserFromPlatform = async () => {
             const response = JSON.parse(res.responseBody);
             return response;
         } else {
-            console.error('Function execution failed:', res);
+            devError('Function execution failed:', res);
             return false;
         }
     } catch (err) {
-        console.error('Error in deleteUserFromPlatform:', err);
+        devError('Error in deleteUserFromPlatform:', err);
         return false;
     }
 };

@@ -6,7 +6,7 @@ import { ReportModal } from '../Modals/Modals';
 import { TextTooltip, TextTooltipOnClick } from '../Accessories/CustomTooltip';
 import { postReportCategories } from '../../lib/data/reportCategories';
 import { Icon } from '../Accessories/Icon';
-import { devLog } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
 
@@ -43,7 +43,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                     setSavesCount(saves)
                 }
             } catch (error) {
-                console.error('Error getting saves by post id:', error);
+                devError('Error getting saves by post id:', error);
             } finally {
                 setIsGettingSaveStatus(false);
             }
@@ -70,7 +70,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                     setIsPostSaved(true);
                 }
             } catch (error) {
-                console.error('Error getting user save for post:', error);
+                devError('Error getting user save for post:', error);
             }
         };
         getUserSaveForPost();
@@ -84,7 +84,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
             setSavesCount(preVal => preVal - 1);
             setSavedDocId(null);
         } catch (error) {
-            console.error('Error deleting save:', error);
+            devError('Error deleting save:', error);
         } finally {
             setIsUpdatingSaveStatus(false);
         }
@@ -100,7 +100,7 @@ export const Interaction = ({ children, postId, userId, isLoggedIn }) => {
                 setSavesCount(preVal => preVal + 1);
             }
         } catch (error) {
-            console.error('Error creating save:', error);
+            devError('Error creating save:', error);
         } finally {
             setIsUpdatingSaveStatus(false);
         }

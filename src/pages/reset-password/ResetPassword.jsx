@@ -7,7 +7,7 @@ import { PasswordForm } from '../../components/Form/PasswordForm';
 import resetImg from '../../assets/reset-password.jpg';
 import { LoadingPage } from '../../components/Loading/Loading';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 const ResetPassword = () => {
 
@@ -50,7 +50,7 @@ const ResetPassword = () => {
                 devLog('FunctionInResetPasswrodComponent in process.');
 
             } catch (err) {
-                console.error('Authentication failed. Please try again.', err);
+                devError('Authentication failed. Please try again.', err);
             } finally {
                 devLog('Finishing FunctionInResetPasswrodComponent in <ResetPassword/>.');
             }
@@ -101,7 +101,7 @@ const ResetPassword = () => {
             setConfirmNewPassword('');
 
         } catch (error) {
-            console.error('Error resetting passowrd:', error);
+            devError('Error resetting passowrd:', error);
             setResetPsswdErrorMsg('Something went wrong. Please try again later.');
         } finally {
             setIsResetPasswordLoading(false);

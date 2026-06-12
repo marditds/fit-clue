@@ -8,7 +8,7 @@ import { ScrollToTop } from '../../components/ScrollToTop/ScrollToTop';
 import { SearchComponent } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 const Results = () => {
 
@@ -102,7 +102,7 @@ const Results = () => {
                 }
             }
         } catch (error) {
-            console.error('Error loading more results:', error);
+            devError('Error loading more results:', error);
         } finally {
             setIsMoreResultsLoading(false);
         }
@@ -120,7 +120,7 @@ const Results = () => {
                 devLog('loadingResultsFirstBatch');
                 await fetchAllPostsBySearchTerm(true);
             } catch (error) {
-                console.error('Error loading search results.');
+                devError('Error loading search results.');
             } finally {
                 setIsResultsFirstBatchLoading(false);
             }
@@ -143,7 +143,7 @@ const Results = () => {
             };
             await fetchAllPostsBySearchTerm(true);
         } catch (error) {
-            console.error('Error onSearchTermSubmit', error);
+            devError('Error onSearchTermSubmit', error);
         } finally {
             setIsNewTermSearched(false);
         }
@@ -154,7 +154,7 @@ const Results = () => {
         try {
             await fetchAllPostsBySearchTerm(false);
         } catch (error) {
-            console.error('Error onSearchTermSubmit', error);
+            devError('Error onSearchTermSubmit', error);
         } finally {
             setIsOnLoadMoreResultsClicked(false);
         }

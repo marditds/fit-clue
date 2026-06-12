@@ -8,7 +8,7 @@ import { Icon } from '../../components/Accessories/Icon.jsx';
 import { capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters.js';
 import { UserNoteForm } from '../../components/Form/UserNoteForm.jsx';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle.js';
-import { devLog } from '../../lib/utils/devConsole.js';
+import { devError, devLog } from '../../lib/utils/devConsole.js';
 
 const CreatePost = () => {
 
@@ -102,12 +102,12 @@ const CreatePost = () => {
                 setInstaLink('');
                 setLinks([]);
             } else {
-                console.error('Post creation failed.');
+                devError('Post creation failed.');
                 setErrMsg('Something went wrong. Please try again later.');
                 setSccssMsg('');
             }
         } catch (err) {
-            console.error(err);
+            devError(err);
         } finally {
             setIsPostGettingCreated(false);
         }

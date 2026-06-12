@@ -1,6 +1,6 @@
 import { createLink as makeLink } from '../context/dbhandler';
 import { assessLinkSafety } from '../context/dbhandler';
-import { devLog } from '../utils/devConsole';
+import { devError, devLog } from '../utils/devConsole';
 
 export const useShoppingLinks = () => {
 
@@ -23,7 +23,7 @@ export const useShoppingLinks = () => {
       }
 
       if (!res || !res.message) {
-        console.error('Invalid assessment response:', res);
+        devError('Invalid assessment response:', res);
         return 'Error adding link. Please try again later.';
       }
 
@@ -31,7 +31,7 @@ export const useShoppingLinks = () => {
 
       return res;
     } catch (error) {
-      console.error('Error fetching links:', error);
+      devError('Error fetching links:', error);
       return 'Error adding link. Please try again later.'
     }
   }

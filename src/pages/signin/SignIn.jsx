@@ -6,6 +6,7 @@ import { SignForm } from '../../components/Form/SignForm';
 import signInImg from '../../assets/sign-in.jpg'
 import { authText } from '../../config/formText';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
+import { devError } from '../../lib/utils/devConsole';
 
 const SignIn = () => {
 
@@ -60,7 +61,7 @@ const SignIn = () => {
             navigate('/');
 
         } catch (error) {
-            console.error('Error signing in user:', error);
+            devError('Error signing in user:', error);
         } finally {
             setIsSigningInInProgress(false);
         }

@@ -3,6 +3,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import './Modals.css';
 import { LoadingComponent } from '../Loading/Loading';
 import { Icon } from '../Accessories/Icon';
+import { devError } from '../../lib/utils/devConsole';
 
 export const ReportModal = ({
     show,
@@ -33,7 +34,7 @@ export const ReportModal = ({
             setIsReportSubmitted(true);
             setTimeout(onClose, 2000);
         } catch (error) {
-            console.error('Error submitting report:', error);
+            devError('Error submitting report:', error);
         } finally {
             setIsSubmitting(false);
         }

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getUserAccount, getUserFromCollectionById } from './dbhandler';
-import { devLog } from '../utils/devConsole';
+import { devError, devLog } from '../utils/devConsole';
 
 const UserContext = createContext();
 
@@ -57,7 +57,7 @@ export const UserProvider = ({ children }) => {
                 setIsLoggedIn(true);
 
             } catch (error) {
-                console.error('Error checking session status:', error);
+                devError('Error checking session status:', error);
             } finally {
                 devLog('FINISH - Checking session status...');
                 setIsAppLoading(false);

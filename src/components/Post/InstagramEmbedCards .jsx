@@ -1,4 +1,5 @@
 import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader';
+import { devError } from '../../lib/utils/devConsole';
 import { Card } from '../Card/Card';
 
 export const InstagramEmbedCards = ({ posts, saveDocId, onDeleteSaveClick, isDeleteSaveLoading }) => {
@@ -24,7 +25,7 @@ export const InstagramEmbedCards = ({ posts, saveDocId, onDeleteSaveClick, isDel
                             iUrl = `https://www.instagram.com/${parts[postIndex]}/${postId}/`;
                         }
                     } catch (e) {
-                        console.error('Invalid URL:', rawUrl);
+                        devError('Invalid URL:', rawUrl);
                     }
                     return (
                         <Card

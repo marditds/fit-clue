@@ -8,7 +8,7 @@ import { LoadMoreButton } from '../../../../components/RelatedPosts/RelatedPosts
 import { Icon } from '../../../../components/Accessories/Icon';
 import { ToastForDashboard } from '../../../../components/Accessories/ToastComponent';
 import { useDocumentTitle } from '../../../../lib/hooks/useDocumentTitle';
-import { devLog } from '../../../../lib/utils/devConsole';
+import { devError, devLog } from '../../../../lib/utils/devConsole';
 
 export const SavedPosts = () => {
 
@@ -90,7 +90,7 @@ export const SavedPosts = () => {
             // setUserSavesTotal(0);
 
         } catch (error) {
-            console.error('Error getting saves:', error);
+            devError('Error getting saves:', error);
         } finally {
             setIsSavesLoading(false);
         }
@@ -108,7 +108,7 @@ export const SavedPosts = () => {
             try {
                 await getSavesByUserId();
             } catch (error) {
-                console.error('Error loading saves.', error);
+                devError('Error loading saves.', error);
             } finally {
                 setIsSavesFirstBatchLoading(false);
             }
@@ -137,7 +137,7 @@ export const SavedPosts = () => {
 
             setShowToast(true);
         } catch (error) {
-            console.error('Failed to delete save:', error);
+            devError('Failed to delete save:', error);
         } finally {
             setLoadingSaveDocId(null);
         }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { assessCommentWithGemini } from "../context/dbhandler";
+import { devError } from "../utils/devConsole";
 
 export const useGemini = () => {
 
@@ -13,7 +14,7 @@ export const useGemini = () => {
 
             return 'barev';
         } catch (error) {
-            console.error('Error running Gemini:', error);
+            devError('Error running Gemini:', error);
         } finally {
             setIsRunningGemini(false);
         }
