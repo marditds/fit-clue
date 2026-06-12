@@ -205,7 +205,6 @@ export default async ({ req, res, log, error }) => {
     return res.json({
       success: false,
       message: 'Server error',
-      error: err.message
     });
   }
 };
