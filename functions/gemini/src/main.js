@@ -75,6 +75,7 @@ export default async ({ req, res, log, error }) => {
   const tablesDB = new TablesDB(client);
 
   const dbEnv = process.env.DATABASE_ID;
+  const postsCollEnv = process.env.POSTS_COLLECTION;
   const commentsCollEnv = process.env.COMMENTS_COLLECTION;
 
   try {
@@ -86,15 +87,38 @@ export default async ({ req, res, log, error }) => {
     }
 
     const data = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
+    const postId = (data.postId ?? '').trim();
     const commentText = (data.commentText ?? '').trim();
 
-    log('Screening comment:', commentText);
-
     let verdict = '';
+
+    if (!/^[A-Za-z0-9._-]{1,36}$/.test(postId)) {
+      return res.json({ message: 'Invalid post.' });
+    }
 
     if (!commentText) {
       verdict = 'fail';
       return res.json({ message: 'Comment cannot be empty.' });
+    }
+
+    if (commentText.length > 300) {
+      verdict = 'fail';
+      return res.json({
+        message: 'Comments cannot exceed 300 characters.'
+      });
+    }
+
+    try {
+      await tablesDB.getRow({
+        databaseId: dbEnv,
+        tableId: postsCollEnv,
+        rowId: postId
+      });
+    } catch {
+      return res.json({
+        message: 'The post you are trying to comment on does not exist.'
+      });
     }
 
     // 1. Link detection
@@ -163,8 +187,8 @@ export default async ({ req, res, log, error }) => {
         tableId: commentsCollEnv,
         rowId: ID.unique(),
         data: {
-          post_id: data.postId,
-          comment_text: data.commentText,
+          post_id: postId,
+          comment_text: commentText,
           user_id: user.$id,
         }
       })
@@ -178,6 +202,10 @@ export default async ({ req, res, log, error }) => {
 
   } catch (err) {
     error('Error: ' + err.message);
-    return res.json({ success: false, message: 'Server error', error: err.message });
+    return res.json({
+      success: false,
+      message: 'Server error',
+      error: err.message
+    });
   }
 };
