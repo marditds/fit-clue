@@ -155,11 +155,10 @@ const NavigationBar = () => {
             style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '5' }}
         >
             <Container>
-                <div style={{ width: '75.17px' }} className='me-0 me-lg-4 me-xl-5 my-2'>
-                    <Navbar.Brand href='/' className=''>
-                        <Image src={logo} className='' fluid />
-                    </Navbar.Brand>
-                </div>
+
+                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5 my-0 my-md-2' >
+                    <Image src={logo} style={{ maxWidth: '65px', height: 'auto' }} fluid />
+                </Navbar.Brand>
 
                 {!isScreenWidthLargerThanMedium &&
                     !location.pathname.startsWith('/search') &&
@@ -181,10 +180,8 @@ const NavigationBar = () => {
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
                             <Link to='/'>
-                                <Image src='/src/assets/fcLogoNavbar.png' style={{
-                                    maxWidth: 'auto',
-                                    maxHeight: '20px'
-                                }} fluid
+                                <Image src={logo} style={{ maxWidth: '65px', height: 'auto' }}
+                                    fluid
                                 />
                             </Link>
 
