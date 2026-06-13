@@ -1,9 +1,10 @@
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
+import { footerLinks, copyright } from '../../lib/data/footerData';
 import { Icon } from '../Accessories/Icon';
 import { FooterLayout } from './FooterLayout';
-import { socials } from '../../lib/data/socials';
+import { Socials } from '../Socials/Socials';
 
 const Footer = () => {
 
@@ -12,36 +13,6 @@ const Footer = () => {
     const { isXs, isSm } = useBreakpoints();
 
     const authPages = ['/sign-up', '/sign-in', '/forgot-password', '/forgot-password'];
-
-    const footerLinks = [
-        {
-            title: 'Terms of Service',
-            link: '/tos',
-            decoration: <Icon className='bi bi-dot' />
-        },
-        {
-            title: 'Privacy Policy',
-            link: '/privacy',
-            decoration: <Icon className='bi bi-dot' />
-        },
-        {
-            title: 'Community Guidelines',
-            link: '/community-guidelines',
-            decoration: <Icon className='bi bi-dot' />
-        },
-        {
-            title: 'FAQ',
-            link: '/faq',
-            decoration: <Icon className='bi bi-dot' />
-        },
-        {
-            title: 'Support',
-            link: '/support',
-            decoration: <Icon className='bi bi-dot' />
-        }
-    ]
-
-    const copyright = <>© {new Date().getFullYear()} FitClue. All rights reserved.</>
 
     return (
         <FooterLayout>
@@ -56,15 +27,9 @@ const Footer = () => {
                         </Link>
 
                         <div className='d-flex'>
-                            {socials.map((item, idx) => (
-                                <span key={idx} className=''>
-                                    <a href={item.link} className=' text-decoration-none' target='_blank'>
-                                        <Icon className={`${item.icon} ms-md-4  me-md-0 mx-3 fs-5 d-flex my-2`} />
-                                    </a>
-                                </span>
-                            ))
-                            }
+                            <Socials className='ms-md-4 me-md-0 mx-3 fs-5 d-flex my-2' />
                         </div>
+
                     </Col>
                 }
 

@@ -3,12 +3,14 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button, Container, Image, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { useUserContext } from '../../lib/context/UserContext';
 import { useUser } from '../../lib/hooks/useUser';
+import { footerLinks, copyright } from '../../lib/data/footerData';
 import { SearchComponent } from '../Form/SearchForm';
 import './Navigation.css';
 import { Icon } from '../Accessories/Icon';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconMenu2 } from '@tabler/icons-react';
 import { PlainModal } from '../Modals/Modals';
+import { Socials } from '../Socials/Socials';
 
 const NavigationBar = () => {
 
@@ -143,6 +145,7 @@ const NavigationBar = () => {
         isActive: location.pathname.startsWith(link.to)
     }))
 
+
     return (
         <Navbar
             expand='lg'
@@ -175,10 +178,14 @@ const NavigationBar = () => {
                 >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
-                            <Image src='/src/assets/fcLogoNavbar.png' style={{
-                                width: '100%',
-                                maxHeight: '30px'
-                            }} fluid />
+                            <Link to='/'>
+                                <Image src='/src/assets/fcLogoNavbar.png' style={{
+                                    // width: '100%',
+                                    maxHeight: '20px'
+                                }} fluid
+                                />
+                            </Link>
+
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body className='pb-0' style={{ height: !isScreenWidthLargerThanMedium ? '100vh' : 'auto' }}
@@ -296,10 +303,35 @@ const NavigationBar = () => {
                                         </Nav.Link>
                                     </>
                                 }
+
+
                             </div>
 
-                        </Nav>
+                            {/* Offcanva footer */}
+                            {!isScreenWidthLargerThanMedium &&
+                                <div>
+                                    <hr className='' />
+                                    <div className='d-flex'>
+                                        <Socials className='fs-5 d-flex mb-3 me-4' />
+                                    </div>
+                                    <ul className='list-unstyled d-flex flex-wrap mb-3'>
+                                        {
+                                            footerLinks.map((link, idx) => (
+                                                <li key={idx} className=''>
+                                                    <Link to={link.link} className='text-decoration-none'>
+                                                        {link.title}
+                                                    </Link>
+                                                    <Icon className={link.decoration} />
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                    <div className='mb-3'>
+                                        {copyright}
+                                    </div>
+                                </div>}
 
+                        </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
 
