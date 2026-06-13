@@ -11,6 +11,7 @@ import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconMenu2 } from '@tabler/icons-react';
 import { PlainModal } from '../Modals/Modals';
 import { Socials } from '../Socials/Socials';
+import logo from '../../assets/fcLogoNavbar.png';
 
 const NavigationBar = () => {
 
@@ -154,10 +155,11 @@ const NavigationBar = () => {
             style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '5' }}
         >
             <Container>
-                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5 d-flex'>
-                    <Image src='/src/assets/fcLogoNavbar.png' style={{ maxHeight: '20px' }} className='my-2' fluid />
-                    {/* FitClue */}
-                </Navbar.Brand>
+                <div style={{ width: '75.17px' }} className='me-0 me-lg-4 me-xl-5 my-2'>
+                    <Navbar.Brand href='/' className=''>
+                        <Image src={logo} className='' fluid />
+                    </Navbar.Brand>
+                </div>
 
                 {!isScreenWidthLargerThanMedium &&
                     !location.pathname.startsWith('/search') &&
@@ -180,7 +182,7 @@ const NavigationBar = () => {
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
                             <Link to='/'>
                                 <Image src='/src/assets/fcLogoNavbar.png' style={{
-                                    // width: '100%',
+                                    maxWidth: 'auto',
                                     maxHeight: '20px'
                                 }} fluid
                                 />
