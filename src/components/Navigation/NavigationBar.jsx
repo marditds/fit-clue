@@ -132,15 +132,15 @@ const NavigationBar = () => {
             onClick: () => console.log('dashboard'),
 
         },
-        {
-            as: Button,
-            to: '#',
-            title: 'Sign out',
-            iconClassName: 'bi bi-box-arrow-right',
-            activeIconClassName: 'bi bi-box-arrow-right',
-            iconMarginEndSize: '2',
-            onClick: onSignOutClick,
-        },
+        // {
+        //     as: Button,
+        //     to: '#',
+        //     title: 'Sign out',
+        //     iconClassName: 'bi bi-box-arrow-right',
+        //     activeIconClassName: 'bi bi-box-arrow-right',
+        //     iconMarginEndSize: '2',
+        //     onClick: onSignOutClick,
+        // },
     ].map(link => ({
         ...link,
         isActive: location.pathname.startsWith(link.to)
@@ -165,7 +165,7 @@ const NavigationBar = () => {
                     <Button
                         onClick={() => setShowSearchModal(true)}
                         className='text-start bg-light border'
-                        style={{ width: isScreenWidthLargerThanMedium ? '0px' : '65%' }}
+                        style={{ width: isScreenWidthLargerThanMedium ? '0px' : '60%' }}
                     >
                         <Icon className='bi bi-search' marginEndSize='2' />
                         Search FitClue...
@@ -210,7 +210,7 @@ const NavigationBar = () => {
                                                         key={idx}
                                                         as={navLink.as}
                                                         to={navLink.to}
-                                                        className={`p-0 mb-3 mb-lg-0 
+                                                        className={`p-0 mb-4 mb-lg-0 
                                                             ${isLg ? navLink.className : ''}
                                                         `}
                                                     >
@@ -282,25 +282,32 @@ const NavigationBar = () => {
                                     ))
                                 }
 
-                                {/* Sign up/in */}
+                                <hr className='m-0 mb-2 d-lg-none' />
+
+                                {/* Sign up/in/out */}
                                 {
-                                    !isLoggedIn &&
-                                    <>
-                                        <Nav.Link
-                                            as={Link}
-                                            to='/sign-up'
-                                            className='navbar__btn sign-up border mb-3 mb-lg-0'
-                                        >
-                                            Create Free Account
-                                        </Nav.Link>
-                                        <Nav.Link
-                                            as={Link}
-                                            to='/sign-in'
-                                            className='navbar__btn sign-in border mb-3 mb-lg-0'
-                                        >
-                                            Sign in
-                                        </Nav.Link>
-                                    </>
+                                    !isLoggedIn ?
+                                        <>
+                                            <Nav.Link
+                                                as={Link}
+                                                to='/sign-up'
+                                                className='navbar__btn sign-up border mt-3 mt-lg-0 mb-4 mb-lg-0'
+                                            >
+                                                Create Free Account
+                                            </Nav.Link>
+                                            <Nav.Link
+                                                as={Link}
+                                                to='/sign-in'
+                                                className='navbar__btn sign-in border mb-3 mb-lg-0'
+                                            >
+                                                Sign in
+                                            </Nav.Link>
+                                        </>
+                                        :
+                                        <Button onClick={onSignOutClick} className='d-flex justify-content-start mt-4 mt-lg-0'>
+                                            <Icon className='bi bi-box-arrow-right' marginEndSize={2} />
+                                            Sign out
+                                        </Button>
                                 }
 
 
@@ -309,9 +316,9 @@ const NavigationBar = () => {
                             {/* Offcanva footer */}
                             {!isScreenWidthLargerThanMedium &&
                                 <div>
-                                    <hr className='' />
-                                    <div className='d-flex'>
-                                        <Socials className='fs-5 d-flex mb-3 me-4' />
+                                    <hr />
+                                    <div className='d-flex mb-3'>
+                                        <Socials className='fs-5 me-4' />
                                     </div>
                                     <ul className='list-unstyled d-flex flex-wrap mb-3'>
                                         {
@@ -325,7 +332,7 @@ const NavigationBar = () => {
                                             ))
                                         }
                                     </ul>
-                                    <div className='mb-3'>
+                                    <div className='mb-3 text-muted'>
                                         {copyright}
                                     </div>
                                 </div>}

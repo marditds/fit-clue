@@ -7,7 +7,7 @@ export const Socials = ({ className }) => {
         <>
             {socials.map((item, idx) => (
                 <span key={idx}>
-                    <a href={item.link} className=' text-decoration-none' target='_blank'>
+                    <a href={item.link} className='text-decoration-none' target='_blank'>
                         <Icon className={`${item.icon} ${className}`} />
                     </a>
                 </span>
