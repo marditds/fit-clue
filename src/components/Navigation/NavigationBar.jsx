@@ -156,7 +156,7 @@ const NavigationBar = () => {
         >
             <Container>
 
-                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5 my-0 my-md-2' >
+                <Navbar.Brand href='/' className='me-0 me-lg-4 me-xl-5 d-flex align-items-center' >
                     <Image src={logo} style={{ maxWidth: '65px', height: 'auto' }} fluid />
                 </Navbar.Brand>
 
@@ -195,7 +195,7 @@ const NavigationBar = () => {
                                 maxHeight: '100vh', overflowY: 'auto'
                             }}
                         >
-                            <div className='w-100 d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center'
+                            <div className='w-100 my-lg-2 d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center'
                                 style={{
                                     minHeight: !isScreenWidthLargerThanMedium ? '180px' : 'auto'
                                 }}

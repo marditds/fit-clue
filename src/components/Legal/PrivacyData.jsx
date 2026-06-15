@@ -32,6 +32,9 @@ const PrivacyData = () => {
                             - <strong>Technical Data:</strong> IP addresses and usage logs are collected by Appwrite on our behalf and are used for security, debugging, and maintaining platform performance.
                         </li>
                         <li>
+                            - <strong>Email Communications:</strong> If you contact us via our email address, your message is routed through an email alias service operated by altmails.com before being delivered to FitClue administrators. altmails.com does not log or store emails — they are forwarded directly to our mailbox.
+                        </li>
+                        <li>
                             - <strong>Contact Form Submissions:</strong> If you contact us via our contact form, the following information is collected: your email address, name, reason for contact, and message, along with a timestamp automatically recorded at the time of submission. This data is submitted through Google Forms and stored in Google Sheets, both services operated by Google LLC. It is accessible to FitClue administrators and is used solely to respond to your inquiry.
                         </li>
                     </ul>
@@ -76,6 +79,9 @@ const PrivacyData = () => {
                         </li>
                         <li>
                             - <strong>Automated Link Validation:</strong> Links you submit are processed through a two-stage server-side validation pipeline. In the first stage, the submitted URL is screened for safety: it is checked against blocked domain and banned top-level domain lists, scanned for adult or harmful content patterns (including obfuscated variants), and its hostname is resolved via DNS to verify that it does not point to a private, reserved, or internal network address. This DNS resolution involves transmitting the domain name of the submitted URL to DNS resolution infrastructure as part of a security check; no other user data is transmitted in this process. In the second stage, URLs that pass safety screening are evaluated by a scoring engine that analyzes URL structure, path patterns, and domain characteristics to determine commerce relevance. Only links that pass both stages are stored in the platform database.
+                        </li>
+                        <li>
+                            - <strong>Email Alias Provider:</strong> Emails sent to our contact address are routed through altmails.com, an email alias service. altmails.com does not log or store emails and forwards them directly to FitClue administrators. For more information, see altmails.com's <a href='https://altmails.com/privacy.pdf' target='_blank' rel='noopener noreferrer'>Privacy Policy</a>.
                         </li>
                         <li>
                             - <strong>Contact Form Provider:</strong> If you use our contact form, your submission is processed by Google Forms and stored in Google Sheets, both operated by Google LLC. This is subject to Google's <a href='https://policies.google.com/terms' target='_blank'>Terms of Service</a> and <a href='https://policies.google.com/privacy' target='_blank'>Privacy Policy</a>.
@@ -156,7 +162,7 @@ const PrivacyData = () => {
                             - <strong>Security & Anti-Abuse:</strong> We use Google reCAPTCHA to protect the platform from spam and automated abuse. This service may collect hardware and software information, such as device and browser data, and send it to Google for analysis. Google processes this data on our behalf as a data processor, solely for providing the reCAPTCHA service.
                         </li>
                         <li>
-                            - <strong>Third-Party Content:</strong> FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with <a href='https://help.instagram.com/581066165581870' target='_blank' rel="noopener noreferrer">Instagram's Terms of Use</a>, <a href='https://www.facebook.com/terms.php' target='_blank' rel="noopener noreferrer">Meta's Terms of Service</a>, and <a href='https://privacycenter.instagram.com/policy' target='_blank' rel="noopener noreferrer">Meta's Privacy Policy</a>, which we do not control or access.
+                            - <strong>Third-Party Content:</strong> FitClue embeds content from Instagram. These embedded posts may set cookies or collect data in accordance with <a href='https://help.instagram.com/581066165581870' target='_blank' rel='noopener noreferrer'>Instagram's Terms of Use</a>, <a href='https://www.facebook.com/terms.php' target='_blank' rel="noopener noreferrer">Meta's Terms of Service</a>, and <a href='https://privacycenter.instagram.com/policy' target='_blank' rel="noopener noreferrer">Meta's Privacy Policy</a>, which we do not control or access.
                         </li>
                     </ul>
                     <p>
@@ -179,7 +185,10 @@ const PrivacyData = () => {
         },
         {
             title: "Contact Information",
-            description: `For questions or concerns about this Privacy Policy, please contact us at: FitClue@altmails.com.`
+            description: <>
+                For questions or concerns about this Privacy Policy, please contact us at{" "}
+                <a href='mailto:fitclue@altmails.com'>fitclue@altmails.com</a>.
+            </>
         }
     ];
 

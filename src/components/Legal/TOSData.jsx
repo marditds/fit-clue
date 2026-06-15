@@ -178,6 +178,7 @@ const TOSData = () => {
                     <ul>
                         <li>Instagram and Meta (embedded content)</li>
                         <li>Google (reCAPTCHA for spam and abuse prevention; Google Forms and Google Sheets for contact submissions)</li>
+                        <li>altmails.com (email alias service for contact email routing)</li>
                         <li>Appwrite (backend infrastructure, authentication, and data storage)</li>
                     </ul>
                     <p>
@@ -194,6 +195,9 @@ const TOSData = () => {
                     </p>
                     <p>
                         Additionally, FitClue uses Appwrite Cloud to provide backend infrastructure, including user account creation, authentication, and data storage/management. These services are operated by the Appwrite Team and may also rely on Appwrite's own integrated third-party providers. As a result, any issues related to availability, performance, or data loss stemming from Appwrite or its integrated providers are beyond FitClue's control. Any use of Appwrite's services may be subject to <a href='https://appwrite.io/terms' target='_blank' rel="noopener noreferrer">Appwrite's Terms and Conditions</a> and <a href='https://appwrite.io/privacy' target='_blank' rel="noopener noreferrer">Appwrite's Privacy Policy</a>.
+                    </p>
+                    <p>
+                        FitClue uses altmails.com as an email alias service for our contact address. altmails.com does not log or store emails — messages sent to our contact address are forwarded directly to FitClue administrators. For more information, see altmails.com's <a href='https://altmails.com/privacy.pdf' target='_blank' rel='noopener noreferrer'>Privacy Policy</a>.
                     </p>
                     <p>
                         These third-party terms and policies may change from time to time, and FitClue is not responsible for those changes.
