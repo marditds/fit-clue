@@ -459,13 +459,15 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
 }
 
 export const updateUserNote = async (docId, oldNote, newNote) => {
+
     try {
         const res = await tablesDB.updateRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             rowId: docId,
             data: {
-                user_note: oldNote === null ? Operator.stringConcat(newNote) : Operator.stringReplace(oldNote, newNote)
+                user_note: newNote
+                // user_note: oldNote === null ? Operator.stringConcat(newNote) : Operator.stringReplace(oldNote, newNote)
             }
         })
 

@@ -6,6 +6,7 @@ import '../../components/Card/Card.css';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 import { devError, devLog } from '../../lib/utils/devConsole';
+import { LoadingComponent } from '../../components/Loading/Loading';
 
 const Featured = () => {
 
@@ -25,6 +26,7 @@ const Featured = () => {
                 devLog('posts', p);
 
                 setPosts(p);
+
             } catch (error) {
                 devError('Error getting posts:', error);
             } finally {
@@ -34,7 +36,14 @@ const Featured = () => {
         getPosts();
     }, []);
 
-    if (isGridLoading) return <div>Loading the latest…</div>;
+    if (isGridLoading) return (
+        <Container>
+            <Row>
+                <Col>
+                    <LoadingComponent className={'mt-5'} loadingText={'Loading the featured posts'} />
+                </Col>
+            </Row>
+        </Container>);
 
     return (
         <Container
@@ -48,9 +57,15 @@ const Featured = () => {
                 </Col>
             </Row>
             <Row>
-                <InstagramEmbedCards
-                    posts={posts}
-                />
+                {
+                    posts ? <InstagramEmbedCards
+                        posts={posts}
+                    /> :
+                        <Col>
+                            Nothing to show here, yet...
+                        </Col>
+                }
+
             </Row>
 
         </Container>
