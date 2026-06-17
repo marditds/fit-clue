@@ -13,6 +13,14 @@ export const faq = [
     {
         category: 'Accounts & sign-in',
         questions: [{
+            title: 'Do I need an Instagram account to use FitClue?',
+            desc: 'No. You do not need an Instagram account to use FitClue. Instagram content may appear within FitClue, but it can be viewed directly without signing in to Instagram.'
+        },
+        {
+            title: 'Do I need a FitClue account?',
+            desc: 'No account is required to browse most FitClue content. However, some content and certain actions (such as saving, interacting, or accessing restricted features) require a FitClue account.'
+        },
+        {
             title: 'Can I sign in using Instagram or other social media accounts?',
             desc: 'No, you cannot. To register with FitClue, you need a valid email address, which will be used to sign up, sign in, and recover your password if needed.'
         }]
