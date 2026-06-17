@@ -134,7 +134,8 @@ const CONFIG = {
     'gap.com',
     'uniqlo.com',
     'adidas.com',
-    'newbalance.com'
+    'newbalance.com',
+    'aliceandolivia.com'
   ]),
 
   // -------------------------
