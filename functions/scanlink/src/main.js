@@ -100,6 +100,9 @@ const CONFIG = {
   domainPathOverrides: {
     'nordstrom.com': /\/s\//,
     'nordstromrack.com': /\/s\//,
+    'ebay.com': /\/itm\//,
+    'etsy.com': /\/listing\//,
+    'aliceandolivia.com': /\/(?=[a-z0-9]*\d)[a-z0-9]{8,}\.html$/i
   },
 
   // -------------------------
@@ -135,7 +138,8 @@ const CONFIG = {
     'uniqlo.com',
     'adidas.com',
     'newbalance.com',
-    'aliceandolivia.com'
+    'aliceandolivia.com',
+    'zimmermann.com'
   ]),
 
   // -------------------------
