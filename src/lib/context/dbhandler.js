@@ -980,7 +980,7 @@ export const createComment = async (postId, commentText, userId) => {
         const doc = await assessCommentSafety(postId, commentText, userId);
 
         if (doc) {
-            devLog('Comment created successfully:', doc);
+            devLog('Comments result:', doc);
             return doc;
         }
         return null;

@@ -152,7 +152,8 @@ const NavigationBar = () => {
             expand='lg'
             className='navbar__body border border-1 border-top-0'
             sticky={isXs || isSm ? 'top' : ''}
-            style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '5' }}
+            // style={{ zIndex: location.pathname.startsWith('/post') ? '1021' : '1021' }}
+            style={{ zIndex: '1021' }}
         >
             <Container>
 

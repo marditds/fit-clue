@@ -98,6 +98,8 @@ export const Sidebar = ({ username }) => {
                             </li>
                         ))}
 
+                        <hr />
+
                         <li className='px-0 px-xl-3 py-0 d-flex justify-content-center align-items-center d-none d-sm-flex'
                             style={{
                                 height: isXs ? 'auto' : '80.39px'

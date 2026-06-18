@@ -78,6 +78,7 @@ export const AddLinksInCreatePostForm = ({
                                 value={link.brandName}
                                 disabled={disabled}
                                 onChange={e => handleLinkChange(index, e)}
+                                maxLength={50}
                                 required
                             />
                         </Form.Group>
@@ -96,6 +97,7 @@ export const AddLinksInCreatePostForm = ({
                                 value={link.item}
                                 disabled={disabled}
                                 onChange={e => handleLinkChange(index, e)}
+                                maxLength={150}
                                 required
                             />
                         </Form.Group>

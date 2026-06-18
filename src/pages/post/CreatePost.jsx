@@ -167,6 +167,7 @@ const CreatePost = () => {
                                         className={`border ${!isInstaLinkFormatIncorrect ? '' : 'border-danger'}`}
                                         onChange={onInstagramLinkChange}
                                     />
+                                    <Form.Text>The Instagram post must be public. Posts from private accounts cannot be viewed by other users.</Form.Text>
                                 </Form.Group>
                             </Col>
                         </Row>

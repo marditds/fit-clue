@@ -19,7 +19,7 @@ export const useShoppingLinks = () => {
 
       if (res.message !== 'ok') {
         return (MESSAGE_MAP[res.message] ||
-          'Error adding link. Please try again later. 11');
+          'Error adding link. Please try again later.');
       }
 
       if (!res || !res.message) {
