@@ -5,6 +5,7 @@ import { footerLinks, copyright } from '../../lib/data/footerData';
 import { Icon } from '../Accessories/Icon';
 import { FooterLayout } from './FooterLayout';
 import { Socials } from '../Socials/Socials';
+import logo from '../../assets/fcLogoNavbar.png';
 
 const Footer = () => {
 
@@ -23,7 +24,7 @@ const Footer = () => {
                         className='w-100 d-flex flex-column flex-md-row align-items-center justify-content-between'>
 
                         <Link to='/' className='text-decoration-none' style={{ fontSize: '1.25rem' }}>
-                            <Image src='/src/assets/fcLogoNavbar.png' style={{ maxHeight: '25px' }} className='d-flex align-items-center my-2 my-md-0' fluid />
+                            <Image src={logo} style={{ maxHeight: '25px' }} className='d-flex align-items-center my-2 my-md-0' fluid />
                         </Link>
 
                         <div className='d-flex'>
