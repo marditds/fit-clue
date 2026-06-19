@@ -57,7 +57,7 @@ export const MyPosts = () => {
 
     if (isMyPostsFirstBatchLoading) {
         return (
-            <LoadingPage loadingText='Loading your saves' />
+            <LoadingPage loadingText='Loading your posts' />
         )
     }
 

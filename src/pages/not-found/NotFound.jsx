@@ -2,7 +2,6 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Icon } from '../../components/Accessories/Icon';
 import { BackButton } from '../../components/Navigation/BackButton';
 import { Link } from 'react-router-dom';
-import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { IconLinkOff } from '@tabler/icons-react';
 import '../../components/NotFound/NotFound.css';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
@@ -10,8 +9,6 @@ import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 const NotFound = () => {
 
     useDocumentTitle('Not Found | FitClue');
-
-    const { isXs, isSm, isMd, isLg, isXl, isXxl } = useBreakpoints();
 
     return (
         <Container>
@@ -38,7 +35,7 @@ const NotFound = () => {
                         <BackButton className='mb-3 mb-sm-0' />
 
                         <Button as={Link} to='/' >
-                            Featured
+                            Home
                         </Button>
                     </p>
 
