@@ -19,6 +19,10 @@ export const PasswordForm = ({
     buttonDisabled,
     extraLinks
 }) => {
+
+    const location = useLocation();
+    const showSignInLink = location.pathname === '/reset-password';
+
     return (
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='form__row w-100'>
@@ -45,11 +49,16 @@ export const PasswordForm = ({
                         </Button>
 
                         {successMsg && (
-                            <div className='text-center mb-3 success-text d-flex justify-content-evenly'>
-                                <span className='text-start'>{successMsg}</span>
-                                <Link to='/sign-in' className={`text-decoration-none fw-medium ms-2 text-nowrap ${useLocation().pathname === '/reset-password' ? 'd-block' : 'd-none'}`}>
-                                    Sign in
-                                </Link>
+                            <div className='text-center mb-3 success-text text-break'>
+                                {successMsg}
+                                {showSignInLink && (
+                                    <Link
+                                        to='/sign-in'
+                                        className='ms-2 text-nowrap fw-bold fs-6'
+                                    >
+                                        Sign in
+                                    </Link>
+                                )}
                             </div>
                         )}
 

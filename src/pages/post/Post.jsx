@@ -48,7 +48,6 @@ const Post = () => {
                 const post = await fetchPostById(params.postId);
 
                 setPersonalityName(post?.content.personality_name);
-
                 setItemsLinks(post?.links);
                 setPostUserId(post?.content.user_id)
                 setUserNote(post?.content.user_note);
@@ -94,6 +93,12 @@ const Post = () => {
         getPosts();
     }, []);
 
+    useDocumentTitle(
+        personalityName
+            ? `${personalityName} | FitClue`
+            : 'FitClue'
+    );
+
     // Instagram embed.js
     useEffect(() => {
         if (!iUrl) return;
@@ -125,6 +130,8 @@ const Post = () => {
             </Container>
         );
     }
+
+
 
     return (
         <Container>

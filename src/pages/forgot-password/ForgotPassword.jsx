@@ -66,7 +66,7 @@ const ForgotPassword = () => {
             isSm={isSm}
             imgSrc={forgotImg}
             leftColClassName='form__col-forgot-img'
-            headerTitle='Reset Your Password'
+            headerTitle='Forgot Your Password?'
             headerSubtitle="Enter your email address and we'll send you a link to reset your password."
             onSubmit={onForgotPasswordClick}
             isLoading={isForgotPasswordLoading}
