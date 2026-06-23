@@ -43,12 +43,12 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
             {
                 locationPathname === '/post/create' &&
                 <Form.Label>
-                    <Icon className='bi bi-file-earmark-text fs-5' marginEndSize='1' />
-                    Note <small>(optional)</small>
+                    <Icon className='bi bi-bullseye fs-5' marginEndSize='1' />
+                    Focus <small>(optional)</small>
                 </Form.Label>
             }
             <Row>
-                <Col className='mb-2'>
+                <Col>
                     <Form.Label className='mb-1'>Is this a slide?</Form.Label>
                     <Form.Check
                         type='switch'
@@ -61,7 +61,7 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
                 </Col>
             </Row>
             {isSlide && (
-                <Row>
+                <Row className='mt-2'>
                     <Col>
                         <Form.Label>Slide number</Form.Label>
                         <Form.Control
@@ -97,9 +97,9 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
 
             <Row>
                 <Col>
+                    <Form.Label className='mt-2'>Your focus:</Form.Label>
                     <Form.Control
                         type='text'
-                        className='mt-3'
                         placeholder=''
                         value={userNote === 'Not provided' ? '' : userNote}
                         disabled

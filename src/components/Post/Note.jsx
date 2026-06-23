@@ -50,9 +50,9 @@ export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locat
                         <Col className='d-flex'>
                             <h3 className={`mb-0 ${showEditNoteField ? 'pb-4' : 'pb-0'}`}>
                                 <Icon
-                                    className='bi bi-file-earmark-text'
+                                    className='bi bi-bullseye'
                                     marginEndSize={'2'}
-                                />Note
+                                />Focus
                             </h3>
                             {userId &&
                                 <span className='ms-auto'>
