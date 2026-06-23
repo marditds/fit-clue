@@ -1,6 +1,7 @@
 import { useLocation, Link } from 'react-router-dom';
 import { Button, Col } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
+import { Icon } from '../Accessories/Icon';
 import { LoadingComponent } from '../Loading/Loading';
 // import { useState } from 'react';
 
@@ -83,7 +84,7 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                     !location.pathname.startsWith('/post') &&
                     <Link to={`/post/${id}`} className='w-100 d-flex align-items-center card__div-details-link mt-aut0'>
                         <span className='me-auto'>View details</span>
-                        <i className='bi bi-arrow-right ms-auto fs-4' />
+                        <Icon className={'bi bi-chevron-right ms-auto fs-4'} />
                     </Link>
                 }
 

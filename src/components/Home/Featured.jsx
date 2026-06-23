@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { Container, Row, Col } from 'react-bootstrap';
 import '../../components/Grid/Grid.css';
 import '../../components/Card/Card.css';
-import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
+import { InstagramEmbedCards } from '../Post/InstagramEmbedCards ';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 import { devError, devLog } from '../../lib/utils/devConsole';
-import { LoadingComponent } from '../../components/Loading/Loading';
+import { LoadingComponent } from '../Loading/Loading';
+import { Icon } from '../Accessories/Icon';
 
 const Featured = () => {
 
@@ -51,9 +53,9 @@ const Featured = () => {
         >
             <Row className='justify-content-start'>
                 <Col className=''>
-                    <h2 className='latest__page-title'>
+                    <h5 style={{ color: '#939393' }}>
                         FEATURED
-                    </h2>
+                    </h5>
                 </Col>
             </Row>
             <Row>
@@ -65,9 +67,7 @@ const Featured = () => {
                             Nothing to show here, yet...
                         </Col>
                 }
-
             </Row>
-
         </Container>
 
     );

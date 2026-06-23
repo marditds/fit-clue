@@ -17,11 +17,11 @@ const Footer = () => {
 
     return (
         <FooterLayout>
-            <Row className='align-items-center'>
+            <Row className='align-items-center flex-column'>
 
                 {!authPages.includes(location.pathname) &&
                     <Col
-                        className='w-100 d-flex flex-column flex-md-row align-items-center justify-content-between'>
+                        className='w-100 d-flex flex-column flex-md-row align-items-center justify-content-between mt--md-2 mb-md-3'>
 
                         <Link to='/' className='text-decoration-none' style={{ fontSize: '1.25rem' }}>
                             <Image src={logo} style={{ maxHeight: '25px' }} className='d-flex align-items-center my-2 my-md-0' fluid />
@@ -34,15 +34,15 @@ const Footer = () => {
                     </Col>
                 }
 
-                {!authPages.includes(location.pathname) &&
+                {/* {!authPages.includes(location.pathname) &&
                     <hr className='my-md-3 my-2' />
-                }
+                } */}
 
                 <Col className='d-flex flex-column flex-md-row align-items-center justify-content-md-between'
                     style={{ marginBottom: isXs && location.pathname.startsWith('/dashboard') ? '51.39px' : '0px' }}
                 >
                     {footerLinks.map((item, idx) => (
-                        <Link to={item.link} key={idx} className='text-decoration-none my-md-0 my-1'>
+                        <Link to={item.link} key={idx} className='text-decoration-none my-md-0 my-1 text-muted'>
                             {item.title}
                         </Link>
                     ))

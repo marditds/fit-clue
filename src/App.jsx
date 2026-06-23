@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 import './App.css';
 import { LoadingPage } from './components/Loading/Loading';
-import Featured from './pages/featured/Featured';
+import Home from './pages/home/Home';
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <Featured />
+      <Home />
     </>
 
   )
