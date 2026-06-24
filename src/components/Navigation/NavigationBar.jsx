@@ -37,6 +37,8 @@ const NavigationBar = () => {
 
     const isScreenWidthLargerThanMedium = !isXs && !isSm && !isMd;
 
+    const isScreenWidthSmallOrExtraSmall = isXs || isSm;
+
     useEffect(() => {
         setShowOffcanvas(false);
     }, [location.pathname]);
@@ -161,7 +163,7 @@ const NavigationBar = () => {
                     <Image src={logo} style={{ maxWidth: '65px', height: 'auto' }} fluid />
                 </Navbar.Brand>
 
-                {!isScreenWidthLargerThanMedium &&
+                {!isScreenWidthLargerThanMedium && !isScreenWidthSmallOrExtraSmall &&
                     !location.pathname.startsWith('/search') &&
                     <Button
                         onClick={() => setShowSearchModal(true)}
@@ -170,6 +172,17 @@ const NavigationBar = () => {
                     >
                         <Icon className='bi bi-search' marginEndSize='2' />
                         Search FitClue...
+                    </Button>
+                }
+
+                {isScreenWidthSmallOrExtraSmall &&
+                    !location.pathname.startsWith('/search') &&
+                    <Button
+                        onClick={() => setShowSearchModal(true)}
+                        className='text-start bg-transparent ms-auto me-2'
+                    // style={{ width: isScreenWidthLargerThanMedium ? '0px' : '60%' }}
+                    >
+                        <Icon className='bi bi-search' />
                     </Button>
                 }
 

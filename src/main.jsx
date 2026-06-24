@@ -49,6 +49,15 @@ const MainLayout = () => {
     window.scrollTo(0, 0);
   }, [location]);
 
+  useEffect(() => {
+    const splash = document.getElementById('splash')
+    if (splash) {
+      splash.style.transition = 'opacity 0.3s'
+      splash.style.opacity = '0'
+      setTimeout(() => splash.remove(), 300)
+    }
+  }, [])
+
   return (
     <>
       <NavigationBar />
