@@ -3,14 +3,14 @@ import { Col, Container, Row } from 'react-bootstrap'
 
 export const Quote = () => {
     return (
-        <section className='mt-4 py-5 accent-bg-color'>
+        <blockquote className='mt-5 mb-0 py-5 accent-bg-color'>
             <Container>
                 <Row>
-                    <Col className='fst-italic fs-3 text-center'>
+                    <Col as='p' className='fst-italic fs-3 text-center mb-0'>
                         "Discovery is powered by people, not algorithms."
                     </Col>
                 </Row>
             </Container>
-        </section>
+        </blockquote>
     )
 }

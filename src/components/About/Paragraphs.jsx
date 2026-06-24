@@ -21,27 +21,27 @@ export const Paragraphs = () => {
         },
         {
             tagline: "Why it matters",
-            title: "More than clothes — connection",
+            title: "More than clothes: connection",
             description: "This is not just about clothes; it is about connection. By combining curiosity, expertise, and a passion for style, users help each other explore new trends, learn about different labels, and bring inspiration into their own wardrobes.",
         }
     ];
 
     return (
-        <Container as='section'>
+        <Container as='section' className=''>
             {
                 aboutText.map((text, idx) => {
                     return (
                         <React.Fragment key={idx}>
                             <Row>
                                 <Col xs={12} md={3} lg={2}>
-                                    <h6 className='text-muted' style={{ textTransform: 'uppercase', lineHeight: '24px' }}>
+                                    <p className='h6 text-muted' style={{ textTransform: 'uppercase', lineHeight: '24px' }}>
                                         {text.tagline}
-                                    </h6>
+                                    </p>
                                 </Col>
                                 <Col>
-                                    <h5>
+                                    <h2 className='h5'>
                                         {text.title}
-                                    </h5>
+                                    </h2>
                                     <p className='m-0'>
                                         {text.description}
                                     </p>
