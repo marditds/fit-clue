@@ -6,7 +6,7 @@ export const RelatedPosts = ({ headerText, children }) => {
     return (
         <Row className='sticky-top related-posts__div p-2'>
             <Col>
-                <h3 className='text-left'>
+                <h3 className='text-left text-break'>
                     {headerText}
                 </h3>
                 {children}

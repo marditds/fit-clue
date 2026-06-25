@@ -20,7 +20,7 @@ const Results = () => {
 
     useDocumentTitle(`Results for ${params.term} | FitClue`);
 
-    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName } = usePosts();
+    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName, fetchPostByInstaLink } = usePosts();
 
     const [searchTerm, setSearchTerm] = useState(params.term);
     const [searchedTerm, setSearchedTerm] = useState('');
@@ -72,6 +72,10 @@ const Results = () => {
             if (searchCategory === 'brand') {
                 const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
                 searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor);
+            }
+
+            if (searchCategory === 'Instagram post link') {
+                searchResults = await fetchPostByInstaLink(searchTerm);
             }
 
             devLog('searchResults', searchResults);

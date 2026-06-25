@@ -680,7 +680,6 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
 
         devLog('postsByItemName:', postsByItemName);
 
-
         return postsByItemName;
 
     } catch (error) {
@@ -740,6 +739,30 @@ export const fetchPostsByBrandName = async (brandName, searchResultLoadLimit, la
 
     } catch (error) {
         devError('Error fetching posts by brand name:', error);
+    }
+}
+
+export const fetchPostByInstaLink = async (instaLink) => {
+
+    devLog('instaLink:', instaLink);
+
+    try {
+        const queries = [
+            Query.equal('url', instaLink),
+        ]
+
+        const postsByInstaLink = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: queries
+        });
+
+        devLog('postsByInstaLink:', postsByInstaLink);
+
+        return postsByInstaLink;
+
+    } catch (error) {
+        devError('Error fetching post by Instagram link:', error)
     }
 }
 

@@ -68,6 +68,12 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
             value: 'brand',
             icon: <Icon className='bi bi-tag me-0 me-sm-2' />,
             id: '3'
+        },
+        {
+            name: 'Instagram Post Link',
+            value: 'Instagram post link',
+            icon: <Icon className='bi bi-instagram me-0 me-sm-2' />,
+            id: '4'
         }
     ]
 
@@ -109,7 +115,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
 
             {/* Categories */}
             {showCategories &&
-                <div className='styled-radio mt-2 mt-sm-3 d-flex align-items-center justify-content-end'>
+                <div className='styled-radio mt-sm-3 d-flex align-items-center justify-content-md-end justify-content-end flex-wrap'>
                     <h6 className='mb-0 me-2 me-sm-3'>
                         Search By:
                     </h6>
@@ -125,6 +131,7 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                                     value={category.value}
                                     checked={searchCategory === category.value}
                                     onChange={(e) => setSearchCategory(e.target.value)}
+                                    className='mt-2 mt-md-0'
                                 >
                                     {category.icon}
                                     {category.name}
