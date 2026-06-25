@@ -65,7 +65,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                             <a
                                 href={itemLink.href}
                                 target='_blank'
-                                className={`d-flex align-items-start align-items-lg-center justify-content-center px-0 ${!isLoggedIn ? 'col' : 'col-9'}`}
+                                className={`d-flex align-items-center justify-content-center px-0 ${!isLoggedIn ? 'col' : 'col-9'}`}
                             >
                                 {/* Item */}
                                 <ItemLinkCol
@@ -92,7 +92,7 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                             <Col xs={3}
                                 className={`d-flex justify-content-center align-items-center link__report-btn-col ${!isLoggedIn ? 'd-none' : ''}`}>
                                 <Button
-                                    className='px-2 py-1 link__report-btn d-flex flex-column flex-lg-row'
+                                    className='px-2 py-1 link__report-btn d-flex'
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleReportClick(itemLink);
@@ -100,8 +100,9 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                                 >
                                     <Icon
                                         className='bi bi-flag'
-                                        marginEndSize={isXs || isSm || isMd ? '0' : '2'}
-                                    />Report
+                                        marginEndSize={isXs || isMd ? '0' : '2'}
+                                    />
+                                    {isXs || isMd ? null : 'Report'}
                                 </Button>
                             </Col>
                         </Row>
