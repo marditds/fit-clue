@@ -31,6 +31,7 @@ const Results = () => {
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
 
     const [isMoreResultsLoading, setIsMoreResultsLoading] = useState(false);
+    const [isSearchFunctionTriggered, setIsSearchFunctionTriggered] = useState(false);
     const [isOnLoadMoreResultsClicked, setIsOnLoadMoreResultsClicked] = useState(false);
 
     const [isNewTermSearched, setIsNewTermSearched] = useState(false);
@@ -47,6 +48,8 @@ const Results = () => {
         try {
             devLog('isNewSearch:', isNewSearch);
             devLog('searchTerm:', searchTerm);
+
+            setIsSearchFunctionTriggered(true);
 
             const cursor = isNewSearch ? null : lastResult;
 
@@ -109,6 +112,7 @@ const Results = () => {
             devError('Error loading more results:', error);
         } finally {
             setIsMoreResultsLoading(false);
+            setIsSearchFunctionTriggered(false);
         }
     }
 
@@ -196,30 +200,28 @@ const Results = () => {
             {/* Search results */}
             <Row>
                 {
-                    results.length === 0 ? (
+                    (isNewTermSearched || isSearchFunctionTriggered) ? (
+                        <LoadingComponent loadingText={`Loading results for ${searchTerm}`} className='mt-5' />
+                    ) : results.length === 0 ? (
                         null
                     ) : (
                         <>
-                            {!isNewTermSearched ?
-                                <> <InstagramEmbedCards posts={results} />
-                                    <Col xs={12}>
-                                        <Row className='mx-auto'>
-                                            <Col className='px-0 justify-content-center'>
-                                                <LoadMoreButton
-                                                    hasMore={hasMore}
-                                                    onClick={onLoadMoreResultsClick}
-                                                    isLoading={isOnLoadMoreResultsClicked}
-                                                    loadMoreText={`Load more results for for ${searchTerm}`}
-                                                    loadingText={`Loading more results for ${searchTerm}`}
-                                                    noMoreText='No more results'
-                                                    className='w-100 mb-3 mt-1'
-                                                />
-                                            </Col>
-                                        </Row>
+                            <InstagramEmbedCards posts={results} />
+                            <Col xs={12}>
+                                <Row className='mx-auto'>
+                                    <Col className='px-0 justify-content-center'>
+                                        <LoadMoreButton
+                                            hasMore={hasMore}
+                                            onClick={onLoadMoreResultsClick}
+                                            isLoading={isOnLoadMoreResultsClicked}
+                                            loadMoreText={`Load more results for for ${searchTerm}`}
+                                            loadingText={`Loading more results for ${searchTerm}`}
+                                            noMoreText='No more results'
+                                            className='w-100 mb-3 mt-1'
+                                        />
                                     </Col>
-                                </> :
-                                <LoadingComponent loadingText={`Loading results for ${searchTerm}`} className='mt-5' />
-                            }
+                                </Row>
+                            </Col>
                         </>
                     )
                 }
