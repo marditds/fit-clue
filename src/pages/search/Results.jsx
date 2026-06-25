@@ -74,7 +74,7 @@ const Results = () => {
                 searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor);
             }
 
-            if (searchCategory === 'Instagram post link') {
+            if (searchCategory === 'IG post link') {
                 searchResults = await fetchPostByInstaLink(searchTerm);
             }
 
