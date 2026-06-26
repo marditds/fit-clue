@@ -1,4 +1,4 @@
-import { Form, Row, Col } from 'react-bootstrap'
+import { Form, Row, Col, Button } from 'react-bootstrap'
 import { Icon } from '../Accessories/Icon';
 import { useState, useEffect } from 'react';
 
@@ -11,31 +11,34 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
     // const userNoteCharCount = 150;
 
     const ITEM_POSITION = [
-        { label: 'Select position...', value: '', disabled: true },
+        { label: 'Select position...', value: '', disabled: false },
 
-        { label: 'Left', disabled: true },
+        { label: 'Left', value: '', disabled: true },
         { label: 'Top-Left', value: 'Top-Left', disabled: false },
         { label: 'Center-Left', value: 'Center-Left', disabled: false },
         { label: 'Bottom-Left', value: 'Bottom-Left', disabled: false },
 
-        { label: 'Center', disabled: true },
+        { label: 'Center', value: '', disabled: true },
         { label: 'Top-Center', value: 'Top-Center', disabled: false },
         { label: 'Center-Center', value: 'Center-Center', disabled: false },
         { label: 'Bottom-Center', value: 'Bottom-Center', disabled: false },
 
-        { label: 'Right', disabled: true },
+        { label: 'Right', value: '', disabled: true },
         { label: 'Top-Right', value: 'Top-Right', disabled: false },
         { label: 'Center-Right', value: 'Center-Right', disabled: false },
         { label: 'Bottom-Right', value: 'Bottom-Right', disabled: false }
     ];
 
     useEffect(() => {
-        if (isSlide) {
-            const positionString = position ? `, ${position}` : '';
-            setUserNote(`Looking for an item on Slide ${slideNumber}${positionString}`);
-        } else {
+        if (!isSlide && !position) {
             setUserNote('Not Provided');
+            return;
         }
+        const parts = [];
+        if (isSlide) parts.push(`Slide ${slideNumber}`);
+        if (position) parts.push(position);
+
+        setUserNote(`Looking for an item on ${parts.join(', ')}`);
     }, [isSlide, slideNumber, position, setUserNote]);
 
     return (
@@ -47,9 +50,10 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
                     Focus <small>(optional)</small>
                 </Form.Label>
             }
+
             <Row>
-                <Col>
-                    <Form.Label className='mb-1'>Is this a slide?</Form.Label>
+                <Col xs={12} md={6} className='mb-2 mb-md-0'>
+                    <Form.Label>Is this a slide?</Form.Label>
                     <Form.Check
                         type='switch'
                         id='slide-switch'
@@ -59,41 +63,46 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
                         disabled={disabled}
                     />
                 </Col>
+                {
+                    isSlide && (
+                        <Col>
+                            <Form.Label>Slide number</Form.Label>
+                            <Form.Control
+                                type='number'
+                                width={20}
+                                value={slideNumber}
+                                min={1}
+                                max={20}
+                                onChange={(e) => setSlideNumber(e.target.value)}
+                                disabled={disabled || !isSlide}
+                            />
+                        </Col>
+                    )
+                }
             </Row>
-            {isSlide && (
-                <Row className='mt-2'>
-                    <Col>
-                        <Form.Label>Slide number</Form.Label>
-                        <Form.Control
-                            type='number'
-                            width={20}
-                            value={slideNumber}
-                            min={1}
-                            max={20}
-                            onChange={(e) => setSlideNumber(e.target.value)}
-                            disabled={disabled || !isSlide}
-                        />
-                    </Col>
-                    <Col>
-                        <Form.Label>Item postion</Form.Label>
-                        <Form.Select
-                            value={position}
-                            onChange={(e) => setPosition(e.target.value)}
-                            disabled={disabled || !isSlide}
-                        >
-                            {
-                                ITEM_POSITION.map((item, idx) => {
-                                    return (
-                                        <option key={idx} value={item.value} disabled={item.disabled}>
-                                            {item.label}
-                                        </option>
-                                    )
-                                })
-                            }
-                        </Form.Select>
-                    </Col>
-                </Row>
-            )}
+
+            <hr />
+
+            <Row className='mb-2'>
+                <Col>
+                    <Form.Label>Item postion</Form.Label>
+                    <Form.Select
+                        value={position}
+                        onChange={(e) => setPosition(e.target.value)}
+                    // disabled={disabled || !isSlide}
+                    >
+                        {
+                            ITEM_POSITION.map((item, idx) => {
+                                return (
+                                    <option key={idx} value={item.value} disabled={item.disabled}>
+                                        {item.label}
+                                    </option>
+                                )
+                            })
+                        }
+                    </Form.Select>
+                </Col>
+            </Row>
 
             <Row>
                 <Col>
