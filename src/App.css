@@ -82,6 +82,10 @@ select {
   border-radius: var(--main-border-radius) !important;
 }
 
+hr {
+  color: var(--main-accent-color-hover) !important;
+}
+
 input,
 textarea {
   border-color: var(--main-border-color) !important;
