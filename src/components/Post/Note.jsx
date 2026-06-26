@@ -9,7 +9,8 @@ export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locat
 
     const [showEditNoteField, setShowEditNoteField] = useState(false);
     const [isSavingNewNote, setIsSavingNewNote] = useState(false);
-    const [noteUpdateMsg, setNoteUpdateMsg] = useState(null);
+    const [noteUpdateMsgSccss, setNoteUpdateMsgSccss] = useState(null);
+    const [noteUpdateMsgErr, setNoteUpdateMsgErr] = useState(null);
 
     const onEditNoteBtnClick = () => {
 
@@ -30,9 +31,12 @@ export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locat
 
             if (res === 'success') {
                 setUserNote(newUserNote);
+                setNoteUpdateMsgSccss('Focus updated successfully.');
+                setNoteUpdateMsgErr(null);
                 return;
             } else {
-                setNoteUpdateMsg('Please try again later.')
+                setNoteUpdateMsgErr('Please try again later.');
+                setNoteUpdateMsgSccss(null);
             }
         } catch (error) {
             devError('Error saving note:', error);
@@ -42,28 +46,52 @@ export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locat
 
     }
 
+    const onCancelEditClick = () => {
+        setNewUserNote(userNote);
+        setNoteUpdateMsgSccss(null);
+        setNoteUpdateMsgErr(null);
+        setShowEditNoteField(false);
+    };
+
     return (
         <div>
             <Row className='mx-auto w-100 post__user-note-row'>
-                <Col className='pb-'>
+                <Col>
                     <Row>
                         <Col className='d-flex'>
-                            <h3 className={`mb-0 ${showEditNoteField ? 'pb-4' : 'pb-0'}`}>
+                            <h3 className='mb-0'>
                                 <Icon
                                     className='bi bi-bullseye'
                                     marginEndSize={'2'}
                                 />Focus
                             </h3>
                             {userId &&
-                                <span className='ms-auto'>
-                                    {noteUpdateMsg}
-                                    <Button
-                                        onClick={onEditNoteBtnClick}
-                                        className='ms-2'
-                                    >
-                                        {!showEditNoteField ? (!isSavingNewNote ? 'Edit' : <LoadingComponent loadingText={'Saving'} />) : 'Save'}
-                                    </Button>
-                                </span>
+                                <div className='ms-auto d-flex flex-column align-items-end'>
+                                    <div className='d-flex gap-2'>
+                                        <Button onClick={onEditNoteBtnClick}>
+                                            {!showEditNoteField ? (!isSavingNewNote ? 'Edit' : <LoadingComponent loadingText={'Saving'} />) : 'Save'}
+                                        </Button>
+
+                                        {showEditNoteField &&
+                                            <Button onClick={onCancelEditClick} className='mb-3'>
+                                                Cancel
+                                            </Button>
+                                        }
+                                    </div>
+
+                                    {
+                                        noteUpdateMsgSccss ?
+                                            <small className='mt-1 text-success' >
+                                                {noteUpdateMsgSccss}
+                                            </small>
+                                            : noteUpdateMsgErr ?
+                                                <small className='mt-1' style={{ color: 'var(--main-danger-color)' }}>
+                                                    {noteUpdateMsgErr}
+                                                </small>
+                                                : null
+                                    }
+
+                                </div>
                             }
                         </Col>
                     </Row>
@@ -71,7 +99,7 @@ export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locat
                     {
                         !showEditNoteField ?
                             <p className='py-4 mb-0'>
-                                {userNote && !newUserNote ? userNote : newUserNote}
+                                {userNote}
                             </p> : null
                     }
 
