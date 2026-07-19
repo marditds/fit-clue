@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { usePosts } from '../../lib/hooks/usePosts';
 import { Container, Row, Col } from 'react-bootstrap';
 import '../../components/Grid/Grid.css';
@@ -8,25 +7,32 @@ import { InstagramEmbedCards } from '../Post/InstagramEmbedCards ';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 import { devError, devLog } from '../../lib/utils/devConsole';
 import { LoadingComponent } from '../Loading/Loading';
-import { Icon } from '../Accessories/Icon';
 
 const Featured = () => {
 
     useDocumentTitle('Home | FitClue');
 
-    const { fetchTheLatestPosts } = usePosts();
+    const { fetchTheLatestPosts, fetchInstaPostById } = usePosts();
 
     const [posts, setPosts] = useState([]);
+    const [trendingPosts, setTrendingPosts] = useState([]);
     const [isGridLoading, setIsGridLoading] = useState(false);
+
+    const trendingPostId = '6a554ece002106c2d262';
 
     useEffect(() => {
         const getPosts = async () => {
             setIsGridLoading(true);
             try {
-                const p = await fetchTheLatestPosts();
+                const [tp, p] = await Promise.all([
+                    fetchInstaPostById(trendingPostId),
+                    fetchTheLatestPosts(),
+                ]);
 
+                devLog('trending', tp);
                 devLog('posts', p);
 
+                setTrendingPosts([tp]);
                 setPosts(p);
 
             } catch (error) {
@@ -59,9 +65,22 @@ const Featured = () => {
                 </Col>
             </Row>
             <Row>
+
                 {
-                    posts ? <InstagramEmbedCards
+                    trendingPosts.length > 0 ? <InstagramEmbedCards
+                        posts={trendingPosts}
+                        tag={'Trending'}
+                    /> :
+                        <Col>
+                            Nothing is trending, yet...
+                        </Col>
+
+                }
+
+                {
+                    posts.length > 0 ? <InstagramEmbedCards
                         posts={posts}
+                        tag={'New'}
                     /> :
                         <Col>
                             Nothing to show here, yet...

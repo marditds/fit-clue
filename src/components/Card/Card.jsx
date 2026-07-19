@@ -1,13 +1,15 @@
 import { useLocation, Link } from 'react-router-dom';
-import { Button, Col } from 'react-bootstrap';
+import { Badge, Button, Col } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { LoadingComponent } from '../Loading/Loading';
 // import { useState } from 'react';
 
-export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading }) => {
+export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading, tag }) => {
 
     const location = useLocation();
+
+    const isHomepage = location.pathname === '/';
 
     // const [isDeleteSaveClicked, setIsDeleteSaveClicked] = useState(false);
 
@@ -35,11 +37,31 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                     {!location.pathname.startsWith('/post') &&
                         <div
                             className='d-flex justify-content-between align-items-center mb-2'>
-                            <Link to={`/post/${id}`} className='d-flex justify-content-between'>
+                            <Link to={`/post/${id}`} className='d-flex justify-content-between w-100'>
                                 <h3
-                                    className='text-left latest__card-name mb-0'
+                                    className='text-left d-flex align-items-center justify-content-between w-100 latest__card-name mb-0'
                                 >
                                     {personalityName}
+
+                                    {isHomepage && tag &&
+                                        <Badge
+                                            bg='none'
+
+                                            style={{
+                                                fontSize: '14px',
+                                                fontWeight: 500,
+                                                padding: '3px 9px',
+                                                border: '0.5px solid #000',
+                                                color: '#000',
+                                                backgroundColor: '#fff',
+                                                borderRadius: '3px',
+                                                whiteSpace: 'nowrap',
+                                            }}
+                                        >
+                                            {tag}
+                                        </Badge>
+                                    }
+
                                 </h3>
                             </Link>
 

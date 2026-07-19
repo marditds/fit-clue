@@ -492,7 +492,7 @@ export const fetchTheLatestPosts = async () => {
             tableId: postsCollEnv,
             queries: [
                 Query.orderDesc('$createdAt'),
-                Query.limit(3)
+                Query.limit(2)
             ]
         });
 
@@ -511,6 +511,7 @@ export const fetchTheLatestPosts = async () => {
     }
 };
 
+// This is for Post.jsx
 export const fetchPostById = async (postId) => {
     try {
         const postRes = await tablesDB.getRow({
@@ -553,6 +554,7 @@ export const fetchPostById = async (postId) => {
     }
 };
 
+// This is for fetching one Instagram post by row id
 export const fetchInstaPostById = async (postId) => {
     try {
         const postRes = await tablesDB.getRow({

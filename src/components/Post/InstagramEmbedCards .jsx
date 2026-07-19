@@ -2,7 +2,7 @@ import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader
 import { devError } from '../../lib/utils/devConsole';
 import { Card } from '../Card/Card';
 
-export const InstagramEmbedCards = ({ posts, saveDocId, onDeleteSaveClick, isDeleteSaveLoading }) => {
+export const InstagramEmbedCards = ({ posts, saveDocId, tag, onDeleteSaveClick, isDeleteSaveLoading }) => {
 
     useInstagramEmbedLoader([posts.length]);
 
@@ -34,6 +34,7 @@ export const InstagramEmbedCards = ({ posts, saveDocId, onDeleteSaveClick, isDel
                             personalityName={personalityName}
                             iUrl={iUrl}
                             saveDocId={saveDocId}
+                            tag={tag}
                             onDeleteSaveClick={onDeleteSaveClick}
                             isDeleteSaveLoading={isDeleteSaveLoading}
                         />
