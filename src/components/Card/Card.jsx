@@ -11,6 +11,32 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
 
     const isHomepage = location.pathname === '/';
 
+    const tagStyles = {
+        Trending: {
+            backgroundColor: '#C9748A',
+            color: '#fff',
+        },
+        New: {
+            backgroundColor: '#5B7FA6',
+            color: '#fff',
+        },
+        default: {
+            backgroundColor: '#000',
+            color: '#fff'
+        }
+    };
+
+    const baseTagStyle = {
+        marginLeft: '15px',
+        fontSize: '14px',
+        fontWeight: 500,
+        padding: '3px 9px',
+        border: '0.5px solid var(--main-border-color)',
+        borderRadius: '3px',
+        whiteSpace: 'nowrap',
+        lineHeight: 1,
+    };
+
     // const [isDeleteSaveClicked, setIsDeleteSaveClicked] = useState(false);
 
     return (
@@ -39,23 +65,16 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                             className='d-flex justify-content-between align-items-center mb-2'>
                             <Link to={`/post/${id}`} className='d-flex justify-content-between w-100'>
                                 <h3
-                                    className='text-left d-flex align-items-center justify-content-between w-100 latest__card-name mb-0'
+                                    className='text-left d-flex align-items-center justify-content-start w-100 latest__card-name mb-0'
                                 >
                                     {personalityName}
 
                                     {isHomepage && tag &&
                                         <Badge
                                             bg='none'
-
                                             style={{
-                                                fontSize: '14px',
-                                                fontWeight: 500,
-                                                padding: '3px 9px',
-                                                border: '0.5px solid #000',
-                                                color: '#000',
-                                                backgroundColor: '#fff',
-                                                borderRadius: '3px',
-                                                whiteSpace: 'nowrap',
+                                                ...baseTagStyle,
+                                                ...tagStyles[tag],
                                             }}
                                         >
                                             {tag}
