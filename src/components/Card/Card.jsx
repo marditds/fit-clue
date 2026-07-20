@@ -21,8 +21,8 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
             color: '#fff',
         },
         default: {
-            backgroundColor: '#000',
-            color: '#fff'
+            backgroundColor: '#fff',
+            color: '#000'
         }
     };
 

@@ -89,7 +89,7 @@ export const UserNoteForm = ({ userNote, setUserNote, locationPathname, disabled
                     <Form.Select
                         value={position}
                         onChange={(e) => setPosition(e.target.value)}
-                    // disabled={disabled || !isSlide}
+                        disabled={disabled}
                     >
                         {
                             ITEM_POSITION.map((item, idx) => {

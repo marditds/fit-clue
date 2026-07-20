@@ -4,6 +4,10 @@ export const socials = [
         link: 'https://www.instagram.com/fitclueapp/',
     },
     {
+        icon: 'bi bi-tiktok',
+        link: 'https://www.tiktok.com/@fitclueapp',
+    },
+    {
         icon: 'bi bi-facebook',
         link: 'https://www.facebook.com/fitclueapp',
     },

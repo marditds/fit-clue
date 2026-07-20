@@ -131,7 +131,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                             <Form.Control
                                 type='text'
                                 value={brandName}
-                                disabled={!isLoggedIn}
+                                disabled={!isLoggedIn || isAddningLink}
                                 onChange={onBrandNameCahnge}
                                 placeholder='Enter brand name' />
                         </Form.Group>
@@ -144,7 +144,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                             <Form.Control
                                 type='text'
                                 value={itemName}
-                                disabled={!isLoggedIn}
+                                disabled={!isLoggedIn || isAddningLink}
                                 onChange={onItemNameChange}
                                 placeholder='Enter item name' />
                         </Form.Group>
@@ -157,10 +157,11 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                             <Form.Control
                                 type='text'
                                 value={itemLink}
-                                disabled={!isLoggedIn}
+                                disabled={!isLoggedIn || isAddningLink}
                                 onChange={onUrlCahnge}
                                 className={!isItemLinkFormatIncorrect ? '' : 'border-danger'}
-                                placeholder='https://shop.example.com/item' />
+                                placeholder='https://shop.example.com/item'
+                            />
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='similarityLevelDropdownMenu'>
@@ -178,7 +179,7 @@ export const AddItemsLinks = ({ userId, postId, isLoggedIn, setItemsLinks }) => 
                                 aria-label='Select similarity level'
                                 name='similarityLevel'
                                 value={similarityLevel}
-                                disabled={!isLoggedIn}
+                                disabled={!isLoggedIn || isAddningLink}
                                 onChange={onSimilarityLevelChange}
                                 required
                             >
