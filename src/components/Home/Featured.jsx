@@ -18,7 +18,7 @@ const Featured = () => {
     const [trendingPosts, setTrendingPosts] = useState([]);
     const [isGridLoading, setIsGridLoading] = useState(false);
 
-    const trendingPostId = '6a554ece002106c2d262';
+    const trendingPostId = '6a5fdf220010c8c12922';
 
     useEffect(() => {
         const getPosts = async () => {
