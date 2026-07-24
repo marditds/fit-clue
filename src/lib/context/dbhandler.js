@@ -680,7 +680,7 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
             queries: queries
         });
 
-        devLog('postsByItemName:', postsByItemName);
+        devLog('postsByItemName in dbhandler:', postsByItemName);
 
         return postsByItemName;
 

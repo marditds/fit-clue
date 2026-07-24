@@ -14,6 +14,8 @@ export const InstagramEmbedCards = ({ posts, saveDocId, tag, onDeleteSaveClick, 
                     const id = post?.$id;
                     const rawUrl = post?.url;
                     const personalityName = post?.personality_name;
+                    const productNames = post?.product_names;
+                    const userNote = post?.user_note;
                     let iUrl = null;
 
                     try {
@@ -32,6 +34,8 @@ export const InstagramEmbedCards = ({ posts, saveDocId, tag, onDeleteSaveClick, 
                             key={id}
                             id={id}
                             personalityName={personalityName}
+                            productNames={productNames}
+                            userNote={userNote}
                             iUrl={iUrl}
                             saveDocId={saveDocId}
                             tag={tag}

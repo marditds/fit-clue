@@ -3,13 +3,17 @@ import { Badge, Button, Col } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { LoadingComponent } from '../Loading/Loading';
+import { useEffect } from 'react';
+import { devLog } from '../../lib/utils/devConsole';
 // import { useState } from 'react';
 
-export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading, tag }) => {
+export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading, tag }) => {
 
     const location = useLocation();
 
     const isHomepage = location.pathname === '/';
+
+    const productCount = productNames?.length;
 
     const tagStyles = {
         Trending: {
@@ -63,7 +67,7 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                     {!location.pathname.startsWith('/post') &&
                         <div
                             className='d-flex justify-content-between align-items-center mb-2'>
-                            <Link to={`/post/${id}`} className='d-flex justify-content-between w-100'>
+                            <Link to={`/post/${id}`} className='w-100'>
                                 <h3
                                     className='text-left d-flex align-items-center justify-content-start w-100 latest__card-name mb-0'
                                 >
@@ -82,6 +86,14 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                                     }
 
                                 </h3>
+
+                                {userNote && userNote !== 'Not Provided' && (
+                                    <p className='my-2 text-muted'>
+                                        <Icon className='bi bi-bullseye me-2' />
+                                        {userNote}
+                                    </p>
+                                )}
+
                             </Link>
 
                             {location.pathname === '/dashboard/saved-posts' &&
@@ -124,8 +136,13 @@ export const Card = ({ id, personalityName, iUrl, saveDocId, onDeleteSaveClick, 
                 {
                     !location.pathname.startsWith('/post') &&
                     <Link to={`/post/${id}`} className='w-100 d-flex align-items-center card__div-details-link mt-aut0'>
-                        <span className='me-auto'>View details</span>
-                        <Icon className={'bi bi-chevron-right ms-auto fs-4'} />
+                        <span className='text-muted'>
+                            <Icon className={'bi bi-people me-2 fs-6'} />
+                            {productCount} {productCount === 1 ? 'contribution' : 'contributions'}
+                        </span>
+                        <span className='ms-auto d-flex align-items-center'>View details
+                            <Icon className={'bi bi-chevron-right ms-2 fs-4'} />
+                        </span>
                     </Link>
                 }
 
