@@ -49,7 +49,7 @@ const Results = () => {
             devLog('isNewSearch:', isNewSearch);
             devLog('searchTerm:', searchTerm);
 
-            setIsSearchFunctionTriggered(true);
+            // setIsSearchFunctionTriggered(true);
 
             const cursor = isNewSearch ? null : lastResult;
 
@@ -112,7 +112,7 @@ const Results = () => {
             devError('Error loading more results:', error);
         } finally {
             setIsMoreResultsLoading(false);
-            setIsSearchFunctionTriggered(false);
+            // setIsSearchFunctionTriggered(false);
         }
     }
 
@@ -200,7 +200,7 @@ const Results = () => {
             {/* Search results */}
             <Row>
                 {
-                    (isNewTermSearched || isSearchFunctionTriggered) ? (
+                    (isNewTermSearched) ? (
                         <LoadingComponent loadingText={`Loading results for ${searchTerm}`} className='mt-5' />
                     ) : results.length === 0 ? (
                         null

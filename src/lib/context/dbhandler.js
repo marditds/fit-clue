@@ -2,6 +2,7 @@ import { Client, ID, Query, Functions, Account, TablesDB, Operator } from 'appwr
 import { dbFunctionKeysProvider } from './keysProvider';
 import { ROUTES } from '../../routes/routes';
 import { devLog, devError } from '../utils/devConsole';
+import { tokenizeProductName } from '../utils/tokenizeProductName';
 
 export const endpointEnv = import.meta.env.VITE_ENDPOINT;
 export const projectEnv = import.meta.env.VITE_PROJECT_ID;
@@ -378,7 +379,7 @@ export const deleteUserFromCollection = async (userId) => {
     }
 };
 
-export const makePost = async (personalityName, productLinksData, instaUrl, userId, user_note) => {
+export const makePost = async (personalityName, productLinksData, instaUrl, userId, userNote) => {
     try {
         const duplicateInstaUrl = await tablesDB.listRows({
             databaseId: dbEnv,
@@ -402,6 +403,12 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
             product_links = results.filter(result => result.status === 'fulfilled' && result.value?.message === 'ok').map(result => result.value);
         }
 
+        const productNameWords = [
+            ...new Set(
+                product_links.flatMap(product_link => tokenizeProductName(product_link.item))
+            )
+        ];
+
         const post = await tablesDB.createRow({
             databaseId: dbEnv,
             tableId: postsCollEnv,
@@ -412,7 +419,8 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
                 product_names: product_links.map(product_link => product_link.item),
                 user_id: userId,
                 personality_name: personalityName,
-                user_note: user_note
+                user_note: userNote,
+                product_name_words: productNameWords
             }
         });
         return post ? post : null;
@@ -664,8 +672,14 @@ export const fetchPostsByItemName = async (itemName, searchResultLoadLimit, last
     devLog('itemName:', itemName);
 
     try {
+        const searchWords = tokenizeProductName(itemName);
+
+        if (searchWords.length === 0) {
+            return { rows: [], total: 0 };
+        }
+
         const queries = [
-            Query.contains('product_names', [itemName]),
+            Query.contains('product_name_words', searchWords),
             Query.orderDesc('$createdAt'),
             Query.limit(searchResultLoadLimit)
         ];
