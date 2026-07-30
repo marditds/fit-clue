@@ -100,6 +100,10 @@ const CONFIG = {
   domainPathOverrides: {
     'nordstrom.com': /\/s\//,
     'nordstromrack.com': /\/s\//,
+    'ebay.com': /\/itm\//,
+    'etsy.com': /\/listing\//,
+    'aliceandolivia.com': /\/(?=[a-z0-9]*\d)[a-z0-9]{8,}\.html$/i,
+    'hm.com': /productpage\.\d+/i,
   },
 
   // -------------------------
@@ -135,7 +139,8 @@ const CONFIG = {
     'uniqlo.com',
     'adidas.com',
     'newbalance.com',
-    'aliceandolivia.com'
+    'aliceandolivia.com',
+    'zimmermann.com'
   ]),
 
   // -------------------------
@@ -337,7 +342,7 @@ export default async ({ req, res, log, error }) => {
       });
     }
 
-    const domain = urlObj.hostname.replace(/^www\./, '').toLowerCase();
+    const domain = urlObj.hostname.replace(/^www\d*\./, '').toLowerCase();
 
     // Decode once up front so all signal checks work against
     // the human-readable form (e.g. %24 → $, %2F → /)
