@@ -144,6 +144,23 @@ const CONFIG = {
   ]),
 
   // -------------------------
+  // 🔗 Trusted affiliate platforms
+  // -------------------------
+  trustedAffiliatePlatforms: new Set([
+    'ltk.com',
+    'rstyle.me',
+    'liketoknow.it',
+    'shopmy.us',
+    'shopmy.com',
+    'shareasale.com',
+    'pepperjam.com',
+    'impact.com',
+    'cj.com',
+    'awin.com',
+    'linksynergy.com',
+  ]),
+
+  // -------------------------
   // 🟢 Commerce signal weights
   // -------------------------
   signals: {
@@ -414,6 +431,17 @@ export default async ({ req, res, log, error }) => {
     }
 
     // ======================================================
+    // 🔗 TIER 2.5 — TRUSTED AFFILIATE PLATFORMS (AUTO-PASS)
+    // ======================================================
+    const isAffiliatePlatform = [...CONFIG.trustedAffiliatePlatforms].some(d =>
+      domain === d || domain.endsWith(`.${d}`)
+    );
+
+    if (isAffiliatePlatform) {
+      log(JSON.stringify({ domain, score: 'auto', verdict: 'ok' }, null, 2));
+    }
+
+    // ======================================================
     // 🟣 SCORING ENGINE — COMMERCE INTENT
     // ======================================================
 
@@ -457,7 +485,7 @@ export default async ({ req, res, log, error }) => {
 
     if (/\/shop\//i.test(path)) score += CONFIG.signals.medium.shopKeyword;
 
-    if (/ref=|affiliate|utm_/i.test(link)) {
+    if (/ref=|affiliate|utm_|clickid|aff_id|subid|irclickid|epik=/i.test(link)) {
       score += CONFIG.signals.medium.affiliatePattern;
     }
 
@@ -516,12 +544,9 @@ export default async ({ req, res, log, error }) => {
 
     // ======================================================
     // 🎯 FINAL DECISION ENGINE
-    //
-    // 'review' is treated as a rejection because there is no
-    // moderation queue.
     // ======================================================
 
-    const verdict = score >= CONFIG.thresholds.allow
+    const verdict = (isAffiliatePlatform || score >= CONFIG.thresholds.allow)
       ? 'ok'
       : 'not_valid_shopping_link';
 
