@@ -13,7 +13,7 @@ export const Hero = () => {
                             Spotted something you love? Find out what it is.
                         </h2>
                         <p className='mt-3 mb-2'>
-                            FitClue is a community where fashion lovers.
+                            FitClue is a community for fashion lovers.
 
                             We help each other identify brands, items, and where to buy them.
 
