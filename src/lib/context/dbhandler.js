@@ -442,10 +442,18 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
 
         const existingLinks = doc.product_links || [];
         const existingProducts = doc.product_names || [];
+        const existingProductNameWords = doc.product_name_words || [];
 
         const updatedLinks = [...existingLinks, newLinkId];
 
         const updatedProducts = [...existingProducts, newProductName]
+
+        const updatedProductNameWords = [
+            ...new Set([
+                ...existingProductNameWords,
+                ...tokenizeProductName(newProductName)
+            ])
+        ];
 
         const res = await tablesDB.updateRow({
             databaseId: dbEnv,
@@ -453,7 +461,8 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
             rowId: docId,
             data: {
                 product_links: updatedLinks,
-                product_names: updatedProducts
+                product_names: updatedProducts,
+                product_name_words: updatedProductNameWords,
             }
         })
 
