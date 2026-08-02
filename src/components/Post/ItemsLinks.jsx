@@ -6,7 +6,7 @@ import { reportCategories } from '../../lib/data/reportCategories'
 import { usePosts } from '../../lib/hooks/usePosts'
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints'
 import { Icon } from '../Accessories/Icon'
-import { capitalizeAllLetters, capitalizeFirstLetter } from '../../lib/utils/capitalizeLetters'
+import { capitalizeAllLetters, capitalizeFirstLetter, capitalizeFirstLetterOfEachWord } from '../../lib/utils/capitalizeLetters'
 import { devLog } from '../../lib/utils/devConsole'
 
 export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
@@ -69,12 +69,12 @@ export const ItemsLinks = ({ itemsLinks, isLoggedIn }) => {
                             >
                                 {/* Item */}
                                 <ItemLinkCol
-                                    displayText={capitalizeFirstLetter(itemLink.item)}
-                                    tooltipText={capitalizeFirstLetter(itemLink.item)}
+                                    displayText={capitalizeFirstLetterOfEachWord(itemLink.item)}
+                                    tooltipText={capitalizeFirstLetterOfEachWord(itemLink.item)}
                                     maxLength={11}
                                 />
 
-                                {/* Link */}
+                                {/* Brand */}
                                 <ItemLinkCol
                                     displayText={capitalizeAllLetters(itemLink.brand_name)}
                                     tooltipText={capitalizeAllLetters(itemLink.brand_name)}
