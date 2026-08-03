@@ -420,7 +420,8 @@ export const makePost = async (personalityName, productLinksData, instaUrl, user
                 user_id: userId,
                 personality_name: personalityName,
                 user_note: userNote,
-                product_name_words: productNameWords
+                product_name_words: productNameWords,
+                contribution_count: product_links.length,
             }
         });
         return post ? post : null;
@@ -463,6 +464,7 @@ export const updatePost = async (docId, newLinkId, newProductName) => {
                 product_links: updatedLinks,
                 product_names: updatedProducts,
                 product_name_words: updatedProductNameWords,
+                contribution_count: updatedLinks.length,
             }
         })
 
@@ -788,6 +790,40 @@ export const fetchPostByInstaLink = async (instaLink) => {
 
     } catch (error) {
         devError('Error fetching post by Instagram link:', error)
+    }
+}
+
+export const fetchPostsByContributionNumber = async (contributionNo, searchResultLoadLimit, lastCursor = null) => {
+
+    try {
+        const searchWords = tokenizeProductName(contributionNo);
+
+        if (searchWords.length === 0) {
+            return { rows: [], total: 0 };
+        }
+
+        const queries = [
+            Query.less.contains('product_links', searchWords),
+            Query.orderDesc('$createdAt'),
+            Query.limit(searchResultLoadLimit)
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        };
+
+        const postsByItemName = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: postsCollEnv,
+            queries: queries
+        });
+
+        devLog('postsByItemName in dbhandler:', postsByItemName);
+
+        return postsByItemName;
+
+    } catch (error) {
+        devError('Error fetching posts by item name:', error);
     }
 }
 
