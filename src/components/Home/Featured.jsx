@@ -54,12 +54,10 @@ const Featured = () => {
         </Container>);
 
     return (
-        <Container
-            className='py-5'
-        >
+        <Container className='py-5'>
             <Row className='justify-content-start'>
                 <Col className=''>
-                    <h5 style={{ color: '#939393' }} className='text-uppercase'>
+                    <h5 className='text-uppercase secondary-text-color'>
                         Featured
                     </h5>
                 </Col>

@@ -85,7 +85,7 @@ export const Note = ({ userNote, setUserNote, newUserNote, setNewUserNote, locat
                                                 {noteUpdateMsgSccss}
                                             </small>
                                             : noteUpdateMsgErr ?
-                                                <small className='mt-1' style={{ color: 'var(--main-danger-color)' }}>
+                                                <small className='mt-1 main-danger-color'>
                                                     {noteUpdateMsgErr}
                                                 </small>
                                                 : null

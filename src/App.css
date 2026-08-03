@@ -2,6 +2,7 @@
 
 :root {
   --main-bg-color: #ffffff;
+  --secondary-bg-color: rgb(245, 245, 245);
   --card-border-color: rgb(219, 219, 219);
   --card-title-font-size: 24px;
   --card-title-weight: 400;
@@ -15,6 +16,7 @@
   --main-accent-color-active: rgb(119, 119, 119);
   --main-accent-color-rgb-vals: 219, 219, 219;
   --main-text-color: rgb(0, 0, 0);
+  --secondary-text-color: rgb(136, 136, 136);
   --main-text-color-hover: rgb(219, 219, 219);
   --main-text-color-rgb-vals: 0, 0, 0;
   /* --main-font-size: 14pt; */
@@ -27,7 +29,6 @@
   --main-danger-color-hover: rgb(200, 35, 51);
   --main-danger-color-light: rgb(248, 215, 218);
   --main-danger-color-rgb-vals: 220, 53, 69;
-  --accent-bg-color: rgb(245, 245, 245);
   /*  --primary-font-family: 'Poppins', sans-serif; */
   --titles-font-family: 'Outfit', sans-serif;
   --primary-font-family: 'Inter', sans-serif;
@@ -248,8 +249,16 @@ div, p, button {
   color: var(--main-success-color);
 }
 
-.accent-bg-color {
-  background-color: var(--accent-bg-color);
+.secondary-bg-color {
+  background-color: var(--secondary-bg-color);
+}
+
+.secondary-text-color {
+  color: var(--secondary-text-color);
+}
+
+.main-danger-color {
+  color: var(--main-danger-color);
 }
 
 @keyframes loadingDots {

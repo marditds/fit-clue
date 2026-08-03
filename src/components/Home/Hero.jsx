@@ -5,7 +5,7 @@ import { Icon } from '../Accessories/Icon'
 
 export const Hero = () => {
     return (
-        <section className='py-3 py-md-5 accent-bg-color'>
+        <section className='py-3 py-md-5 secondary-bg-color'>
             <Container>
                 <Row>
                     <Col className='text-start'>

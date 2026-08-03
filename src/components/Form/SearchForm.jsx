@@ -35,7 +35,7 @@ export const SearchField = ({ searchTerm, setSearchTerm, searchFieldPlacement, c
     )
 }
 
-export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResultsLoading, setSearchTerm, params, resultsTotal, searchCategory, setSearchCategory }) => {
+export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResultsLoading, setSearchTerm, resultsTotal, searchCategory, setSearchCategory, searchParams }) => {
 
     const location = useLocation();
 
@@ -46,10 +46,10 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
     const [showCategories, setShowCategories] = useState(false || location.pathname === '/search');
 
     useEffect(() => {
-        if (location.pathname !== '/search') {
-            setShowCategories(false);
-        }
-    }, [location.pathname])
+
+        setShowCategories(false);
+
+    }, [searchParams])
 
     const searchCategories = [
         {
@@ -72,11 +72,21 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
         },
         {
             name: 'IG Link',
-            value: 'IG post link',
+            value: 'ig-link',
             icon: <Icon className='bi bi-instagram me-2' />,
             id: '4'
         }
     ]
+
+    const CATEGORY_LABELS = {
+        'personality': 'Personality',
+        'item': 'Item',
+        'brand': 'Brand',
+        'ig-link': 'Instagram Link',
+        'needs-help': 'Needs Help'
+    };
+
+    const getCategoryLabel = (category) => CATEGORY_LABELS[category] || capitalizeFirstLetter(category);
 
     return (
         <Form
@@ -89,14 +99,14 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
                     searchTerm={searchTerm}
                     isLoading={isResultsLoading}
                     setSearchTerm={setSearchTerm}
-                    placeholder={searchCategory}
+                    placeholder={getCategoryLabel(searchCategory)}
                 />
             </div>
 
             {/*  Results count */}
             <div className='mt-2 w-100 d-flex algin-items-center'>
                 {
-                    !location.pathname.startsWith('/search/') ? null :
+                    !location.pathname.startsWith('/search') ? null :
                         <Form.Text className='d-flex align-items-center mt-0'>
                             Found {resultsTotal} result{resultsTotal > 1 ? 's' : ''}
                         </Form.Text>
@@ -107,8 +117,8 @@ export const SearchComponent = ({ onSubmit, formClassName, searchTerm, isResults
             <div className='d-flex align-items-center mt-2'>
                 <span>
                     {isScreenLargeAndLarger ?
-                        `Searching by ${capitalizeFirstLetter(searchCategory)}` :
-                        `By ${capitalizeFirstLetter(searchCategory)}`}
+                        `Searching by ${getCategoryLabel(searchCategory)}` :
+                        `By ${getCategoryLabel(searchCategory)}`}
                 </span>
                 <Button
                     onClick={() => setShowCategories(preVal => !preVal)}

@@ -116,12 +116,6 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <Results />,
-        children: [
-          {
-            path: ':category/:term',
-            element: <Results />
-          },
-        ]
       },
       {
         path: 'dashboard',

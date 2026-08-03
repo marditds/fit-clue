@@ -64,8 +64,12 @@ const NavigationBar = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchCategory.trim() && searchTerm.trim()) {
-            navigate(`/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`);
+            navigate(
+                `/search?category=${encodeURIComponent(searchCategory)}&term=${encodeURIComponent(searchTerm)}`
+            );
+            // navigate(`/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`);
         }
+        setShowSearchModal(false);
     };
 
     useEffect(() => {
@@ -164,7 +168,10 @@ const NavigationBar = () => {
                 </Navbar.Brand>
 
                 {!isScreenWidthLargerThanMedium && !isScreenWidthSmallOrExtraSmall &&
-                    !location.pathname.startsWith('/search') &&
+                    !(
+                        location.pathname.startsWith('/search') &&
+                        !location.search.includes('category=needs-help')
+                    ) &&
                     <Button
                         onClick={() => setShowSearchModal(true)}
                         className='text-start bg-light border'
@@ -176,7 +183,10 @@ const NavigationBar = () => {
                 }
 
                 {isScreenWidthSmallOrExtraSmall &&
-                    !location.pathname.startsWith('/search') &&
+                    !(
+                        location.pathname.startsWith('/search') &&
+                        !location.search.includes('category=needs-help')
+                    ) &&
                     <Button
                         onClick={() => setShowSearchModal(true)}
                         className='text-start bg-transparent ms-auto me-2'
@@ -264,8 +274,12 @@ const NavigationBar = () => {
                                     </>}
 
                                 {/* Seach */}
-                                {isScreenWidthLargerThanMedium &&
-                                    !location.pathname.startsWith('/search')
+                                {isScreenWidthLargerThanMedium
+                                    &&
+                                    !(
+                                        location.pathname.startsWith('/search') &&
+                                        !location.search.includes('category=needs-help')
+                                    )
                                     ?
                                     <Button
                                         onClick={() => setShowSearchModal(true)}

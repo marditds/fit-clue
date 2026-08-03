@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading';
@@ -9,22 +9,23 @@ import { SearchComponent } from '../../components/Form/SearchForm';
 import { LoadMoreButton, RelatedPosts } from '../../components/RelatedPosts/RelatedPosts';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
 import { devError, devLog } from '../../lib/utils/devConsole';
+import { truncateString } from '../../lib/utils/truncateStrings';
 
 const Results = () => {
 
-    const params = useParams();
-
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    const location = useLocation();
+    useDocumentTitle(`Results for ${searchParams.get('term')} | FitClue`);
 
-    useDocumentTitle(`Results for ${params.term} | FitClue`);
+    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName, fetchPostByInstaLink, fetchPostsByContributionNumber } = usePosts();
 
-    const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName, fetchPostByInstaLink } = usePosts();
+    const categoryFromUrl = searchParams.get('category') || 'personality';
+    const termFromUrl = searchParams.get('term') || '';
 
-    const [searchTerm, setSearchTerm] = useState(params.term);
+    const [searchTerm, setSearchTerm] = useState(termFromUrl);
     const [searchedTerm, setSearchedTerm] = useState('');
-    const [searchCategory, setSearchCategory] = useState(params.category || 'personality');
+    const [searchCategory, setSearchCategory] = useState(categoryFromUrl);
 
     const [results, setResults] = useState([]);
     const [resultsTotal, setResultsTotal] = useState(0);
@@ -39,7 +40,7 @@ const Results = () => {
     const [lastResult, setLastResult] = useState(null);
     const [hasMore, setHasMore] = useState(true);
 
-    const fetchAllPostsBySearchTerm = async (isNewSearch = false) => {
+    const fetchAllPostsBySearchTerm = async (queryTerm, queryCategory, isNewSearch = false) => {
 
         if (isMoreResultsLoading || (!hasMore && !isNewSearch)) {
             return;
@@ -47,38 +48,40 @@ const Results = () => {
 
         try {
             devLog('isNewSearch:', isNewSearch);
-            devLog('searchTerm:', searchTerm);
-
-            // setIsSearchFunctionTriggered(true);
+            devLog('queryTerm:', queryTerm);
 
             const cursor = isNewSearch ? null : lastResult;
 
             let searchResults = null;
 
-            if (searchTerm === undefined) {
+            if (queryTerm === undefined) {
                 return;
             }
 
             if (isNewSearch) {
-                setSearchedTerm(searchTerm);
+                setSearchedTerm(queryTerm);
             }
 
-            if (searchCategory === 'personality') {
-                searchResults = await fetchPostsByString(searchTerm, cursor);
+            if (queryCategory === 'personality') {
+                searchResults = await fetchPostsByString(queryTerm, cursor);
             }
 
-            if (searchCategory === 'item') {
-                const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
+            if (queryCategory === 'item') {
+                const normalizedSearchTerm = queryTerm.toLocaleLowerCase();
                 searchResults = await fetchPostsByItemName(normalizedSearchTerm, cursor);
             }
 
-            if (searchCategory === 'brand') {
-                const normalizedSearchTerm = searchTerm.toLocaleLowerCase();
+            if (queryCategory === 'brand') {
+                const normalizedSearchTerm = queryTerm.toLocaleLowerCase();
                 searchResults = await fetchPostsByBrandName(normalizedSearchTerm, cursor);
             }
 
-            if (searchCategory === 'IG post link') {
-                searchResults = await fetchPostByInstaLink(searchTerm);
+            if (queryCategory === 'ig-link') {
+                searchResults = await fetchPostByInstaLink(queryTerm);
+            }
+
+            if (queryCategory === 'needs-help') {
+                searchResults = await fetchPostsByContributionNumber(0, 6, cursor);
             }
 
             devLog('searchResults', searchResults);
@@ -112,55 +115,48 @@ const Results = () => {
             devError('Error loading more results:', error);
         } finally {
             setIsMoreResultsLoading(false);
-            // setIsSearchFunctionTriggered(false);
         }
     }
 
     useEffect(() => {
+        setSearchCategory(categoryFromUrl);
+        setSearchTerm(termFromUrl);
         window.scrollTo(0, 0);
-    }, [isNewTermSearched]);
 
-    // fetches the results on first navigation to /search
-    useEffect(() => {
-        const loadingResultsFirstBatch = async () => {
+        const executeSearch = async () => {
             setIsResultsFirstBatchLoading(true);
+            setResults([]);
+            setLastResult(null);
             try {
-                devLog('loadingResultsFirstBatch');
-                await fetchAllPostsBySearchTerm(true);
+                await fetchAllPostsBySearchTerm(termFromUrl, categoryFromUrl, true);
             } catch (error) {
-                devError('Error loading search results.');
+                devError('Error fetching search results on URL change', error);
             } finally {
                 setIsResultsFirstBatchLoading(false);
             }
-        }
-        setResults([]);
-        setLastResult(null);
-        loadingResultsFirstBatch();
-    }, []);
+        };
+
+        executeSearch();
+    }, [searchParams]);
 
     // fetches the results when searched in /search
     const onSearchTermSubmit = async (e) => {
         e.preventDefault();
-        setIsNewTermSearched(true);
-        try {
-            devLog('onSearchTermSubmit');
-            if (searchCategory.trim() && searchTerm.trim()) {
-                navigate(
-                    `/search/${encodeURIComponent(searchCategory)}/${encodeURIComponent(searchTerm)}`
-                );
-            };
-            await fetchAllPostsBySearchTerm(true);
-        } catch (error) {
-            devError('Error onSearchTermSubmit', error);
-        } finally {
-            setIsNewTermSearched(false);
+        if (!searchTerm.trim() && searchCategory !== 'needs-help') return;
+
+        if (searchCategory === 'needs-help') {
+            navigate('/search?category=needs-help');
+        } else {
+            navigate(
+                `/search?category=${encodeURIComponent(searchCategory)}&term=${encodeURIComponent(searchTerm)}`
+            );
         }
-    }
+    };
 
     const onLoadMoreResultsClick = async () => {
         setIsOnLoadMoreResultsClicked(true);
         try {
-            await fetchAllPostsBySearchTerm(false);
+            await fetchAllPostsBySearchTerm(termFromUrl, categoryFromUrl, false);
         } catch (error) {
             devError('Error onSearchTermSubmit', error);
         } finally {
@@ -170,7 +166,7 @@ const Results = () => {
 
     if (isResultsFirstBatchLoading) {
         return (
-            <LoadingPage loadingText={`Loading results for ${searchTerm || params.term}`} />
+            <LoadingPage loadingText={`Loading results for ${searchTerm || searchParams.get('term')}`} />
         )
     }
 
@@ -182,20 +178,35 @@ const Results = () => {
         >
 
             {/* Search container */}
-            <RelatedPosts
-                headerText={location.pathname === '/search' ? `Search ${searchCategory.charAt(0).toUpperCase() + searchCategory.slice(1)}` : `Showing results for "${searchedTerm}"`}
-            >
-                <SearchComponent
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    onSubmit={onSearchTermSubmit}
-                    setSearchCategory={setSearchCategory}
-                    searchCategory={searchCategory}
-                    params={params}
-                    resultsTotal={resultsTotal}
-                    setResultsTotal={setResultsTotal}
-                />
-            </RelatedPosts>
+            {
+                searchCategory !== 'needs-help' ?
+                    < RelatedPosts
+                        headerText={
+                            `Results for "${truncateString(searchedTerm, 15)}"`
+                        }
+                    >
+                        <SearchComponent
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            onSubmit={onSearchTermSubmit}
+                            setSearchCategory={setSearchCategory}
+                            searchCategory={searchCategory}
+                            resultsTotal={resultsTotal}
+                            setResultsTotal={setResultsTotal}
+                            searchParams={searchParams}
+                        />
+                    </RelatedPosts> :
+                    <Row>
+                        <Col className='my-4'>
+                            <h5 className='text-uppercase'>
+                                Needs your help
+                            </h5>
+                            <p className='mb-0'>
+                                These posts have <span className=' text-black fw-bold'>no contributions yet</span>. Be the first to identify the item(s).
+                            </p>
+                        </Col>
+                    </Row>
+            }
 
             {/* Search results */}
             <Row>

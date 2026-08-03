@@ -34,13 +34,18 @@ export const NeedsYourHelp = () => {
     }, []);
 
     return (
-        <section className='py-3 py-md-5 accent-bg-color'>
+        <section className='py-4 py-md-5 secondary-bg-color'>
             <Container>
                 <Row className='justify-content-start'>
-                    <Col style={{ color: '#939393' }}>
-                        <h5 className='text-uppercase'>
-                            Needs your help
-                        </h5>
+                    <Col className='secondary-text-color'>
+                        <div className='d-flex justify-content-between align-items-center'>
+                            <h5 className='text-uppercase'>
+                                Needs your help
+                            </h5>
+                            <Link to='/search?category=needs-help'>
+                                See all
+                            </Link>
+                        </div>
                         <p>
                             These posts have <span className=' text-black fw-bold'>no contributions yet</span>. Be the first to identify the item(s).
                         </p>
