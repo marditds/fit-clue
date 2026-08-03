@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchPostsByBrandName as getPostsByBrandName, fetchPostByInstaLink as getPostByInstaLink, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName, fetchPostsByCreatorId as getPostsByCreatorId } from '../context/dbhandler';
+import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchPostsByBrandName as getPostsByBrandName, fetchPostByInstaLink as getPostByInstaLink, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName, fetchPostsByCreatorId as getPostsByCreatorId, fetchPostsByContributionNumber as getPostsByContributionNumber } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 import { devError, devLog } from '../utils/devConsole';
 
@@ -190,6 +190,15 @@ export const usePosts = () => {
         }
     }
 
+    const fetchPostsByContributionNumber = async (contributionNo, loadLimit, lastCursor) => {
+        try {
+            const res = await getPostsByContributionNumber(contributionNo, loadLimit, lastCursor);
+            return res;
+        } catch (error) {
+            devError('Error fetching posts without contributions in usePosts:', error);
+        }
+    }
+
     const fetchPostsByCreatorId = async (userId, lastCursor) => {
         try {
             const myPosts = await getPostsByCreatorId(userId, myPostsLoadLimit, lastCursor);
@@ -273,5 +282,5 @@ export const usePosts = () => {
         }
     }
 
-    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByString, fetchPostsByBrandName, fetchPostByInstaLink, updatePost, updateUserNote, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit, fetchPostsByItemName, fetchPostsByCreatorId, myPostsLoadLimit }
+    return { makePost, createComment, fetchCommentsTextByPostId, fetchTheLatestPosts, fetchPostById, fetchInstaPostById, fetchPostsByPersonalityId, fetchPostsByString, fetchPostsByBrandName, fetchPostByInstaLink, updatePost, updateUserNote, createReportLink, fetchComments, commentsLoadLimit, createReportComment, searchResultLoadLimit, createSave, fetchSavesByPostId, fetchUserSaveForPost, deleteSave, createPostReport, fetchSavesByUserId, userSavesLoadLimit, fetchPostsByItemName, fetchPostsByCreatorId, myPostsLoadLimit, fetchPostsByContributionNumber }
 }

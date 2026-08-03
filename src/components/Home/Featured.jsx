@@ -59,8 +59,8 @@ const Featured = () => {
         >
             <Row className='justify-content-start'>
                 <Col className=''>
-                    <h5 style={{ color: '#939393' }}>
-                        FEATURED
+                    <h5 style={{ color: '#939393' }} className='text-uppercase'>
+                        Featured
                     </h5>
                 </Col>
             </Row>

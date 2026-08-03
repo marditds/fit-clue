@@ -793,37 +793,32 @@ export const fetchPostByInstaLink = async (instaLink) => {
     }
 }
 
-export const fetchPostsByContributionNumber = async (contributionNo, searchResultLoadLimit, lastCursor = null) => {
+export const fetchPostsByContributionNumber = async (contributionNo, loadLimit, lastCursor = null) => {
 
     try {
-        const searchWords = tokenizeProductName(contributionNo);
-
-        if (searchWords.length === 0) {
-            return { rows: [], total: 0 };
-        }
 
         const queries = [
-            Query.less.contains('product_links', searchWords),
+            Query.equal('contribution_count', contributionNo),
             Query.orderDesc('$createdAt'),
-            Query.limit(searchResultLoadLimit)
+            Query.limit(loadLimit)
         ];
 
         if (lastCursor) {
             queries.push(Query.cursorAfter(lastCursor));
         };
 
-        const postsByItemName = await tablesDB.listRows({
+        const postsWithoutContributions = await tablesDB.listRows({
             databaseId: dbEnv,
             tableId: postsCollEnv,
             queries: queries
         });
 
-        devLog('postsByItemName in dbhandler:', postsByItemName);
+        devLog('postsWithoutContributions in dbhandler:', postsWithoutContributions);
 
-        return postsByItemName;
+        return postsWithoutContributions;
 
     } catch (error) {
-        devError('Error fetching posts by item name:', error);
+        devError('Error fetching posts without contributions:', error);
     }
 }
 
