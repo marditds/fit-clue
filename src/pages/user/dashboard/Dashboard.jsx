@@ -44,10 +44,6 @@ const Dashboard = () => {
         }
     }, [userId])
 
-    useEffect(() => {
-        devLog('Contributor Score:', contributorScore)
-    }, [userId])
-
     if (isAppLoading) {
         return <LoadingPage loadingText='Loading your dashboard' />
     }
