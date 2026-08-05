@@ -56,7 +56,7 @@ const Featured = () => {
     return (
         <Container className='py-5'>
             <Row className='justify-content-start'>
-                <Col className=''>
+                <Col>
                     <h5 className='text-uppercase secondary-text-color'>
                         Featured
                     </h5>
