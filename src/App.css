@@ -17,8 +17,10 @@
   --main-accent-color-rgb-vals: 219, 219, 219;
   --main-text-color: rgb(0, 0, 0);
   --secondary-text-color: rgb(136, 136, 136);
+  --tertiary-text-color: rgb(200, 149, 58);
   --main-text-color-hover: rgb(219, 219, 219);
   --main-text-color-rgb-vals: 0, 0, 0;
+  --secondary-font-size: 14px;
   /* --main-font-size: 14pt; */
   --main-transition-speed: 0.3s;
   --main-white-shade: rgb(255, 255, 255);
@@ -75,12 +77,17 @@ a:focus-visible {
   border-radius: var(--main-border-radius) !important;
 }
 
+.main-border-radius,
 input,
 textarea,
 button,
 a[role="button"],
 select {
   border-radius: var(--main-border-radius) !important;
+}
+
+.secondary-font-size {
+  font-size: var(--secondary-font-size);
 }
 
 hr {
@@ -257,6 +264,10 @@ div, p, button {
   color: var(--secondary-text-color);
 }
 
+.tertiary-text-color {
+  color: var(--tertiary-text-color);
+}
+
 .main-danger-color {
   color: var(--main-danger-color);
 }
@@ -272,6 +283,11 @@ div, p, button {
 }
 
 @media (max-width: 991px) {
+
+  h5 {
+    font-size: 1rem !important;
+  }
+
   div, p, button, a[role="button"], input, textarea, select, a, label, h6 {
     font-size: 0.875rem !important;
   }

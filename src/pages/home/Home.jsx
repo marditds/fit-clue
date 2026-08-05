@@ -7,10 +7,10 @@ import TopContributors from '../../components/Home/TopContributors';
 const Home = () => {
     return (
         <>
-            {/* <Hero /> */}
-            {/* <Featured /> */}
+            <Hero />
+            <Featured />
             <TopContributors />
-            {/* <NeedsYourHelp /> */}
+            <NeedsYourHelp />
         </>
     )
 }

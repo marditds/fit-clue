@@ -1111,7 +1111,8 @@ export const fetchContributorsRanking = async (scoresLoadLimit, lastCursor = nul
     try {
         const queries = [
             Query.limit(scoresLoadLimit),
-            Query.orderAsc('score')
+            Query.orderDesc('score'),
+            Query.notEqual('user_id', '6859b9080035b76d0676')
         ];
 
         if (lastCursor) {
