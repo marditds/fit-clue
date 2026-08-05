@@ -1,7 +1,7 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform, fetchContributorsRanking as getContributorsRanking, fetchUsersByIds } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { devError } from '../utils/devConsole';
+import { devError, devLog } from '../utils/devConsole';
 
 export const useUser = () => {
 
@@ -41,6 +41,41 @@ export const useUser = () => {
 
         } catch (error) {
             devError('Error fetching user prferences:', error);
+        }
+    }
+
+    const fetchContributorsRanking = async (scoresLoadLimit) => {
+        try {
+            const scoresRes = await getContributorsRanking(scoresLoadLimit, null);
+
+            const scoresVals = scoresRes.rows;
+            const scoresTotal = scoresRes.total;
+
+            devLog('scoresRes:', scoresRes);
+
+            const userIds = [...new Set(scoresVals.map(score => score.user_id).filter(Boolean))];
+
+            devLog('userIds for scoresRes:', userIds);
+
+            const [allUsersData] = await Promise.all([
+                fetchUsersByIds(userIds)
+            ]);
+
+            const userMap = new Map(allUsersData.rows.map(user => [user.$id, user]));
+
+            const fullRanking = scoresVals.map(score => ({
+                ...score,
+                username: userMap.get(score.user_id)?.username || 'Deleted user'
+            }));
+
+            devLog('fullRanking for scoresRes:', fullRanking);
+
+            return {
+                rows: fullRanking,
+                total: scoresTotal
+            };
+        } catch (error) {
+            devError('Error fetching contributors ranking:', error);
         }
     }
 
@@ -160,5 +195,5 @@ export const useUser = () => {
     }
 
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick, onSignOut };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, fetchContributorsRanking, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick, onSignOut };
 }

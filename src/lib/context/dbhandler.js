@@ -23,6 +23,7 @@ const postsCollEnv = import.meta.env.VITE_POSTS_COLLECTION;
 const linksCollEnv = import.meta.env.VITE_LINKS_COLLECTION;
 const commentsCollEnv = import.meta.env.VITE_COMMENTS_COLLECTION;
 const savesCollEnv = import.meta.env.VITE_SAVES_COLLECTION;
+const contributorsRankingCollEnv = import.meta.env.VITE_CONTRIBUTORS_RANKING_COLLECTION;
 const reportsLinksCollEnv = import.meta.env.VITE_REPORTS_LINKS_COLLECTION;
 const reportsCommentsCollEnv = import.meta.env.VITE_REPORTS_COMMENTS_COLLECTION;
 const reportsPostsCollEnv = import.meta.env.VITE_REPORTS_POSTS_COLLECTION;
@@ -1099,6 +1100,42 @@ export const fetchCommentsTextByPostId = async (postId, commentsLoadLimit, lastC
         return null;
     } catch (error) {
         devError('Error fetching comment:', error);
+    }
+}
+
+// Ranking
+export const fetchContributorsRanking = async (scoresLoadLimit, lastCursor = null) => {
+
+    devLog('Starting fetchContributorsRanking in dbhandler');
+
+    try {
+        const queries = [
+            Query.limit(scoresLoadLimit),
+            Query.orderAsc('score')
+        ];
+
+        if (lastCursor) {
+            queries.push(Query.cursorAfter(lastCursor));
+        }
+
+        const doc = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: contributorsRankingCollEnv,
+            queries: queries
+        })
+
+        if (doc.total > 0) {
+            devLog('Contributors ranking fetched successfully:', doc);
+            return doc;
+        }
+
+        if (doc.total === 0) {
+            return [];
+        }
+
+        return null;
+    } catch (error) {
+        devError('Error fetching contributors ranking:', error);
     }
 }
 
