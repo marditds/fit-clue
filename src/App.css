@@ -256,6 +256,10 @@ div, p, button {
   color: var(--main-success-color);
 }
 
+.main-bg-color {
+  background-color: var(--main-bg-color);
+}
+
 .secondary-bg-color {
   background-color: var(--secondary-bg-color);
 }

@@ -4,6 +4,7 @@ import { Icon } from '../Accessories/Icon';
 import './Sidebar.css';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { useUser } from '../../lib/hooks/useUser';
+import UserInfo from '../UserInfo/UserInfo';
 
 export const Sidebar = ({ username, contributorScore }) => {
 
@@ -62,17 +63,7 @@ export const Sidebar = ({ username, contributorScore }) => {
         <Row
             className='sticky-top px-2 px-lg-4 pt-md-5 flex-column'>
             <Col className='text-center d-none d-md-block'>
-                <h2 className='mt-0 mt-sm-2'>{username}</h2>
-                <div className='w-100 d-flex justify-content-center'>
-                    <div className='border tertiary-text-color py-1 px-3 main-border-radius fw-bolder'>
-                        <Icon className={'bi bi-star'} />
-                        <span className='mx-2 secondary-text-color fw-lighter'>
-                            Contribution score
-                        </span>
-                        {contributorScore}
-                    </div>
-
-                </div>
+                <UserInfo username={username} contributorScore={contributorScore} />
             </Col>
             <Col>
                 <div className={isScreenExtraSmall ? 'fixed-bottom mt-5' : ''}>

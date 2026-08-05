@@ -4,10 +4,16 @@ import { useUser } from '../../lib/hooks/useUser';
 import { Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { LoadingComponent } from '../Loading/Loading';
 import { devError, devLog } from '../../lib/utils/devConsole';
+import { Icon } from '../Accessories/Icon';
+import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 
 const TopContributors = () => {
 
     const { fetchContributorsRanking } = useUser();
+
+    const { isXs, isSm } = useBreakpoints();
+
+    const isScreenSmallOrSmaller = isXs || isSm;
 
     const [topContributors, setTopContributors] = useState([]);
     const [isGridLoading, setIsGridLoading] = useState(false);
@@ -31,10 +37,6 @@ const TopContributors = () => {
         getContributorsRanking();
     }, []);
 
-    useEffect(() => {
-        devLog('topContributors:', topContributors)
-    }, [topContributors])
-
     if (isGridLoading) return (
         <Container>
             <Row>
@@ -48,10 +50,11 @@ const TopContributors = () => {
     return (
         <Container className='mb-5 px-sm-4 py-3 border main-border-radius'>
             <Row className='align-items-center'>
-                <Col>
-                    <h5 className='text-uppercase secondary-text-color text-left mb-3'>
+                <Col className='d-flex align-items-center mb-3 tertiary-text-color'>
+                    <h5 className='text-uppercase secondary-text-color text-left mb-0'>
                         Top contributors
                     </h5>
+                    <Icon className={`bi bi-star ms-2 ${isScreenSmallOrSmaller ? 'fs-6' : 'fs-5'}`} />
                 </Col>
             </Row>
             <Row>

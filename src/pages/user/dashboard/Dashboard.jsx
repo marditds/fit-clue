@@ -8,6 +8,7 @@ import { LoadingComponent, LoadingPage } from '../../../components/Loading/Loadi
 import { useUser } from '../../../lib/hooks/useUser';
 import { devLog } from '../../../lib/utils/devConsole';
 import { Col, Container, Row } from 'react-bootstrap';
+import UserInfo from '../../../components/UserInfo/UserInfo';
 
 const Dashboard = () => {
 
@@ -66,9 +67,8 @@ const Dashboard = () => {
 
     return (
         <DashboardLayout
-            colOneContent={
-                <Sidebar username={username} contributorScore={contributorScore} />
-            }
+            topRowContent={<UserInfo username={username} contributorScore={contributorScore} />}
+            colOneContent={<Sidebar username={username} contributorScore={contributorScore} />}
             colOneClassName={!isXs ? 'border border-end-0' : ''}
             colTwoClassName='border'
             scrollTop={<ScrollToTop />}
