@@ -1,4 +1,4 @@
-import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform, fetchContributorsRanking as getContributorsRanking, fetchUsersByIds } from '../context/dbhandler';
+import { createUser as makeUser, signInUser as loginUser, getUserSession as fetchUserSession, deleteUserSession as removeUserSession, getUserAccount as fetchUserAccount, updateUserPassword as changeUserPassword, createPasswordRecoveryEmail as makePasswordRecoveryEmail, updatePasswordFromRecoveryEmail as restorePasswordFromRecoveryEmail, getUserPreferences as fetchUserPreferences, getUserFromCollectionById as fetchUserFromCollectionById, updateUsernameInCollection as renewUsernameInCollection, deleteUserFromPlatform as removeUserFromPlatform, fetchContributorsRanking as getContributorsRanking, fetchUsersByIds, fetchUserContributionScore as getUserContributionScore } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { devError, devLog } from '../utils/devConsole';
@@ -75,7 +75,16 @@ export const useUser = () => {
                 total: scoresTotal
             };
         } catch (error) {
-            devError('Error fetching contributors ranking:', error);
+            devError('Error fetching contributor score:', error);
+        }
+    }
+
+    const fetchUserContributionScore = async (userId) => {
+        try {
+            const res = await getUserContributionScore(userId);
+            return res;
+        } catch (error) {
+            devError('Error fetching user\'s contributor score:', error);
         }
     }
 
@@ -195,5 +204,5 @@ export const useUser = () => {
     }
 
 
-    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, fetchContributorsRanking, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick, onSignOut };
+    return { createUser, signInUser, getUserSession, deleteUserSession, getUserAccount, updateUserPassword, createPasswordRecoveryEmail, updatePasswordFromRecoveryEmail, getUserPreferences, fetchContributorsRanking, fetchUserContributionScore, getUserFromCollectionById, updateUsernameInCollection, deleteUserFromPlatform, onSignOutClick, onSignOut };
 }

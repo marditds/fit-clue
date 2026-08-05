@@ -1112,6 +1112,7 @@ export const fetchContributorsRanking = async (scoresLoadLimit, lastCursor = nul
         const queries = [
             Query.limit(scoresLoadLimit),
             Query.orderDesc('score'),
+            Query.select(['user_id', 'score']),
             Query.notEqual('user_id', '6859b9080035b76d0676')
         ];
 
@@ -1137,6 +1138,32 @@ export const fetchContributorsRanking = async (scoresLoadLimit, lastCursor = nul
         return null;
     } catch (error) {
         devError('Error fetching contributors ranking:', error);
+    }
+}
+
+export const fetchUserContributionScore = async (userId) => {
+    try {
+        const queries = [
+            Query.select(['score']),
+            Query.equal('user_id', userId),
+            Query.limit(1)
+        ];
+
+        const doc = await tablesDB.listRows({
+            databaseId: dbEnv,
+            tableId: contributorsRankingCollEnv,
+            queries: queries
+        })
+
+        if (doc.total > 0) {
+            devLog('Contributor score fetched successfully:', doc);
+            return doc.rows[0].score;
+        }
+
+        return 0;
+
+    } catch (error) {
+        devError('Error fetching user\'s contributors ranking:', error);
     }
 }
 

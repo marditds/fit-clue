@@ -260,6 +260,10 @@ div, p, button {
   background-color: var(--secondary-bg-color);
 }
 
+.main-text-color {
+  color: var(--main-text-color);
+}
+
 .secondary-text-color {
   color: var(--secondary-text-color);
 }

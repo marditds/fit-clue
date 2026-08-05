@@ -42,7 +42,8 @@ const TopContributors = () => {
                     <LoadingComponent className={'mt-5'} loadingText={'Loading the featured posts'} />
                 </Col>
             </Row>
-        </Container>);
+        </Container>
+    );
 
     return (
         <Container className='mb-5 px-sm-4 py-3 border main-border-radius'>
@@ -59,7 +60,7 @@ const TopContributors = () => {
                         {
                             topContributors.map(((contributor, idx) => {
                                 return (
-                                    <li key={idx} className='px-2 py-1 border main-border-radius fw-bold secondary-bg-color'>
+                                    <li key={idx} className='px-3 py-1 border main-border-radius fw-bold secondary-bg-color'>
                                         <span className='tertiary-text-color secondary-font-size'>{idx + 1}</span>
                                         <span className='px-3'>{contributor.username}</span>
                                         <span className='secondary-text-color'>{contributor.score}</span>
