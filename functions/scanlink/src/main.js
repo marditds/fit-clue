@@ -1,5 +1,5 @@
 import dns from 'dns/promises';
-import { Client, Account, TablesDB, ID } from 'node-appwrite';
+import { Client, Account, TablesDB, ID, Query } from 'node-appwrite';
 
 // ======================================================
 // 🧠 CONFIGURATION
@@ -301,6 +301,69 @@ const isAdultContent = (domain, path) => {
   return false;
 };
 
+// =======================
+//  RANKING CALCULATIONS
+// =======================
+
+const POINTS_PER_OCCURRENCE = 5;
+
+const upsertContributorRanking = async (tablesDB, dbEnv, contributorsRankingCollEnv, userId, log, error) => {
+  const existing = await tablesDB.listRows({
+    databaseId: dbEnv,
+    tableId: contributorsRankingCollEnv,
+    queries: [Query.equal('user_id', userId), Query.limit(1)]
+  });
+
+  if (existing.rows.length > 0) {
+
+    const rowId = existing.rows[0].$id;
+
+    await tablesDB.incrementRowColumn({
+      databaseId: dbEnv,
+      tableId: contributorsRankingCollEnv,
+      rowId: rowId,
+      column: 'score',
+      value: POINTS_PER_OCCURRENCE
+    });
+
+    log(`Contributor ranking incremented: user_id=${userId}, +${POINTS_PER_OCCURRENCE}`);
+    return;
+  }
+
+  try {
+    await tablesDB.createRow({
+      databaseId: dbEnv,
+      tableId: contributorsRankingCollEnv,
+      rowId: ID.unique(),
+      data: { user_id: userId, score: POINTS_PER_OCCURRENCE }
+    });
+
+    log(`Contributor ranking created: user_id=${userId}, score=${POINTS_PER_OCCURRENCE}`);
+  } catch (createErr) {
+
+    error(`Create conflict for ${userId}, falling back to increment: ${createErr.message}`);
+
+    const retryExisting = await tablesDB.listRows({
+      databaseId: dbEnv,
+      tableId: contributorsRankingCollEnv,
+      queries: [Query.equal('user_id', userId), Query.limit(1)]
+    });
+
+    if (retryExisting.rows.length > 0) {
+      await tablesDB.incrementRowColumn({
+        databaseId: dbEnv,
+        tableId: contributorsRankingCollEnv,
+        rowId: retryExisting.rows[0].$id,
+        column: 'score',
+        value: POINTS_PER_OCCURRENCE
+      });
+      log(`Contributor ranking incremented after conflict: user_id=${userId}, +${POINTS_PER_OCCURRENCE}`);
+    } else {
+      throw createErr;
+    }
+  }
+};
+
 // ======================================================
 // 🧠 MAIN FUNCTION
 // ======================================================
@@ -318,6 +381,7 @@ export default async ({ req, res, log, error }) => {
 
   const dbEnv = process.env.DATABASE_ID;
   const linksCollEnv = process.env.LINKS_COLLECTION;
+  const contributorsRankingCollEnv = process.env.CONTRIBUTORS_RANKING_COLLECTION;
 
   try {
 
@@ -571,6 +635,13 @@ export default async ({ req, res, log, error }) => {
           similarity_level: body.similarityLevel
         }
       })
+
+      try {
+        await upsertContributorRanking(tablesDB, dbEnv, contributorsRankingCollEnv, user.$id, log, error);
+      } catch (rankingErr) {
+        error(`Failed to update contributor ranking for ${user.$id}: ${rankingErr.message}`);
+      }
+
       return res.json({
         success: true,
         domain: domain,
