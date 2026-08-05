@@ -62,7 +62,7 @@ const TopContributors = () => {
                                 return (
                                     <li key={idx} className='px-3 py-1 border main-border-radius fw-bold secondary-bg-color'>
                                         <span className='tertiary-text-color secondary-font-size'>{idx + 1}</span>
-                                        <span className='px-3'>{contributor.username}</span>
+                                        <span className='px-3'>{contributor.username || 'Deleted user'}</span>
                                         <span className='secondary-text-color'>{contributor.score}</span>
                                     </li>
                                 )
