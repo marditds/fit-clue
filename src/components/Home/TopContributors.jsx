@@ -41,7 +41,7 @@ const TopContributors = () => {
         <Container>
             <Row>
                 <Col>
-                    <LoadingComponent className={'mt-5'} loadingText={'Loading the featured posts'} />
+                    <LoadingComponent className={'mt-5'} loadingText={'Loading the top contributors'} />
                 </Col>
             </Row>
         </Container>
