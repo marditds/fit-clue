@@ -6,23 +6,23 @@ export const Paragraphs = () => {
     const aboutText = [
         {
             tagline: "The problem",
-            title: "What brand is that?",
-            description: "Fashion is everywhere. It is in the streets, on social media, and in the everyday outfits that catch our eye. But so often, when we see a piece we love, we are left wondering: what brand is that? Where can I find it?",
+            title: "Love an outfit, but don't know where it's from?",
+            description: "Fashion inspiration is everywhere: on Instagram, in the streets, at events, and in everyday life. Yet when you spot an outfit you love, finding the exact item or even something similar can be frustrating. Endless searching rarely leads to the answer.",
         },
         {
             tagline: "The solution",
-            title: "Built to answer that, together",
-            description: "Instead of endless searching, users can upload or browse images of clothing and collaborate to identify the brands behind each item. Whether it is a pair of sneakers spotted in a photo, a jacket from a celebrity post, or a dress from a runway look, the community comes together to uncover the details.",
+            title: "Discover fashion together",
+            description: "FitClue brings fashion lovers together to solve that problem. Share an Instagram post, browse existing discoveries, or help identify outfits for others. Whether it's a celebrity's dress, a creator's jacket, or a pair of sneakers that caught someone's eye, every contribution helps uncover where to find it or something beautifully similar.",
         },
         {
             tagline: "How it works",
-            title: "Shared knowledge, growing every day",
-            description: "Every piece is enriched with shared information such as brand names, item links, and other helpful insights. The more the community contributes, the stronger the collective knowledge grows, making it easier for everyone to discover fashion they love.",
+            title: "Every contribution helps someone else",
+            description: "Every post becomes part of a growing, searchable collection of Instagram fashion. Community members contribute brands, product links, and similar alternatives, making it easier for the next person to discover the outfit they fell in love with.",
         },
         {
             tagline: "Why it matters",
-            title: "More than clothes: connection",
-            description: "This is not just about clothes; it is about connection. By combining curiosity, expertise, and a passion for style, users help each other explore new trends, learn about different labels, and bring inspiration into their own wardrobes.",
+            title: "More than identifying clothes",
+            description: "FitClue isn't just about identifying clothing. It's about sharing inspiration. Every contribution expands a community-built collection that helps fashion lovers discover brands, explore new styles, and find pieces they might never have found otherwise.",
         }
     ];
 
