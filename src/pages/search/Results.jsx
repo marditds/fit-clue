@@ -166,7 +166,7 @@ const Results = () => {
 
     if (isResultsFirstBatchLoading) {
         return (
-            <LoadingPage loadingText={`Loading results for ${searchTerm || searchParams.get('term')}`} />
+            <LoadingPage loadingText={`Loading results`} />
         )
     }
 
