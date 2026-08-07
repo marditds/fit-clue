@@ -5,7 +5,6 @@ import { Icon } from '../Accessories/Icon';
 import { LoadingComponent } from '../Loading/Loading';
 import { useEffect } from 'react';
 import { devLog } from '../../lib/utils/devConsole';
-// import { useState } from 'react';
 
 export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading, tag }) => {
 
@@ -136,9 +135,18 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                 {
                     !location.pathname.startsWith('/post') &&
                     <Link to={`/post/${id}`} className='w-100 d-flex align-items-center card__div-details-link mt-aut0'>
-                        <span className='text-muted'>
-                            <Icon className={'bi bi-people me-2 fs-6'} />
-                            {productCount} {productCount === 1 ? 'contribution' : 'contributions'}
+                        <span>
+                            {productCount === 0 ? (
+                                <span className='main-text-color fst-italic'>
+                                    <Icon className={'bi bi-search me-2'} />
+                                    Help us find this look.
+                                </span>
+                            ) : (
+                                <span className='text-muted'>
+                                    <Icon className={'bi bi-check-circle-fill me-2 main-success-color'} />
+                                    {productCount} {productCount === 1 ? 'match' : 'matches'}
+                                </span>
+                            )}
                         </span>
                         <span className='ms-auto d-flex align-items-center'>View details
                             <Icon className={'bi bi-chevron-right ms-2 fs-4'} />

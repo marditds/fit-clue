@@ -276,6 +276,10 @@ div, p, button {
   color: var(--tertiary-text-color);
 }
 
+.main-success-color {
+  color: var(--main-success-color);
+}
+
 .main-danger-color {
   color: var(--main-danger-color);
 }
