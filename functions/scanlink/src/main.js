@@ -104,6 +104,7 @@ const CONFIG = {
     'etsy.com': /\/listing\//,
     'aliceandolivia.com': /\/(?=[a-z0-9]*\d)[a-z0-9]{8,}\.html$/i,
     'hm.com': /productpage\.\d+/i,
+    'asos.com': /\/prd\//
   },
 
   // -------------------------
