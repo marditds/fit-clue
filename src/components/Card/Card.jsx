@@ -114,22 +114,25 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                         </div>
                     }
 
-                    <blockquote
-                        className='instagram-media'
-                        data-instgrm-permalink={iUrl}
-                        data-instgrm-version='14'
-                        style={{
-                            background: '#FFF',
-                            border: 0,
-                            borderRadius: '3px',
-                            boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
-                            margin: '1rem 0',
-                            maxWidth: '540px',
-                            minWidth: '0',
-                            width: '100%',
-                            padding: '0',
-                        }}
-                    />
+                    {
+                        iUrl ? <blockquote
+                            className='instagram-media'
+                            data-instgrm-permalink={iUrl}
+                            data-instgrm-version='14'
+                            style={{
+                                background: '#FFF',
+                                border: 0,
+                                borderRadius: '3px',
+                                boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
+                                margin: '1rem 0',
+                                maxWidth: '540px',
+                                minWidth: '0',
+                                width: '100%',
+                                padding: '0',
+                            }}
+                        /> : <div className='text-left px-2'>This post is no longer available.</div>
+                    }
+
                 </div>
 
                 {
