@@ -7,7 +7,7 @@ FitClue is a community-powered platform for identifying clothing and outfits see
 ## Features
 
 - **Link-based outfit discovery** — submit an Instagram post link to start a search thread for identifying what's being worn
-- **Contributor ranking** — a reputation/ranking system rewards users who help identify outfits accurately
+- **Contributor ranking** — a reputation/ranking system rewards users who help identify outfits
 - **Search** — browse and search existing identified outfits and posts
 - **Full account system** — sign up, sign in, password reset, and account deletion, backed by Appwrite
 - **Installable PWA** — installable on mobile/desktop with offline-friendly asset caching (vite-plugin-pwa)
@@ -27,7 +27,7 @@ One of the more involved pieces of the backend is the `scanlink` function, which
 - DNS resolution with SSRF protection — rejects links that resolve to private/internal IP ranges
 - Timeout-wrapped lookups to prevent function hangs on unresponsive hosts
 
-This keeps the platform's core loop (submit a link, community identifies it) resistant to abuse without relying on manual moderation for every submission.
+This keeps the platform's core loop resistant to abuse without relying on manual moderation for every submission.
 
 ## Serverless Functions
 
@@ -44,4 +44,4 @@ npm install
 npm run dev
 ```
 
-Requires an Appwrite project with the appropriate database/collections configured, plus environment variables for Appwrite, Gemini, and reCAPTCHA credentials.
+Requires an Appwrite project with the appropriate database/collections configured, plus environment variables for Appwrite, and reCAPTCHA credentials.
