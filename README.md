@@ -1,12 +1,47 @@
-# React + Vite
+# FitClue
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live app:** [fitclue.app](https://fitclue.app) · **Author:** [@marditds](https://github.com/marditds)
 
-Currently, two official plugins are available:
+FitClue is a community-powered platform for identifying clothing and outfits seen in Instagram posts. Users submit a link to a post, and the community helps identify the brands, items, and where to buy them or suggests similar alternatives.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Link-based outfit discovery** — submit an Instagram post link to start a search thread for identifying what's being worn
+- **Contributor ranking** — a reputation/ranking system rewards users who help identify outfits accurately
+- **Search** — browse and search existing identified outfits and posts
+- **Full account system** — sign up, sign in, password reset, and account deletion, backed by Appwrite
+- **Installable PWA** — installable on mobile/desktop with offline-friendly asset caching (vite-plugin-pwa)
+- **Bot & abuse protection** — reCAPTCHA on key actions, plus a hardened link-submission pipeline (see below)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- **Frontend:** React 19, React Router, React Bootstrap, TanStack Query
+- **Backend:** Appwrite (auth, database, storage), Appwrite serverless Functions (Node.js)
+- **Infra:** Vite, PWA support, reCAPTCHA
+
+## Link Submission Safety Pipeline
+
+One of the more involved pieces of the backend is the `scanlink` function, which validates every submitted link before it's accepted:
+
+- Domain and TLD blocklists, plus pattern-based checks for unsafe/explicit content, including detection of leet-speak and obfuscated variants
+- DNS resolution with SSRF protection — rejects links that resolve to private/internal IP ranges
+- Timeout-wrapped lookups to prevent function hangs on unresponsive hosts
+
+This keeps the platform's core loop (submit a link, community identifies it) resistant to abuse without relying on manual moderation for every submission.
+
+## Serverless Functions
+
+| Function | Purpose |
+|---|---|
+| `scanlink` | Validates and safety-checks submitted links before they're accepted |
+| `recaptcha` | Server-side reCAPTCHA verification |
+| `userdelete` | Handles full account deletion |
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Requires an Appwrite project with the appropriate database/collections configured, plus environment variables for Appwrite, Gemini, and reCAPTCHA credentials.
