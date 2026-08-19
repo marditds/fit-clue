@@ -24,7 +24,7 @@ FitClue is a community-powered platform for identifying clothing and outfits see
 One of the more involved pieces of the backend is the `scanlink` function, which validates every submitted link before it's accepted:
 
 - Domain and TLD blocklists, plus pattern-based checks for unsafe/explicit content, including detection of leet-speak and obfuscated variants
-- DNS resolution with SSRF protection — rejects links that resolve to private/internal IP ranges
+- DNS resolution with SSRF protection which rejects links that resolve to private/internal IP ranges
 - Timeout-wrapped lookups to prevent function hangs on unresponsive hosts
 
 This keeps the platform's core loop resistant to abuse without relying on manual moderation for every submission.
