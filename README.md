@@ -44,4 +44,4 @@ npm install
 npm run dev
 ```
 
-Requires an Appwrite project with the appropriate database/collections configured, plus environment variables for Appwrite, and reCAPTCHA credentials.
+Requires an Appwrite project with the appropriate database/tables configured, plus environment variables for Appwrite, and reCAPTCHA credentials.
