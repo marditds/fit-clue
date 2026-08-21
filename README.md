@@ -1,7 +1,12 @@
-# FitClue
-
 **Live app:** [fitclue.app](https://fitclue.app) · **Author:** [@marditds](https://github.com/marditds)
 
+<p align="center">
+  <a href="https://fitclue.app" target="_blank"> 
+    <img width="100%" alt="FitClue Logo" src="https://github.com/user-attachments/assets/81128de5-8ebd-41f0-a137-cfdf8c2b55bd" /> 
+  </a>
+</p>
+
+## Overview
 FitClue is a community-powered platform for identifying clothing and outfits seen in Instagram posts. Users submit a link to a post, and the community helps identify the brands, items, and where to buy them or suggests similar alternatives.
 
 ## Features
