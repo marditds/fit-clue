@@ -43,12 +43,6 @@ const Results = () => {
     const [lastResult, setLastResult] = useState(null);
     const [hasMore, setHasMore] = useState(true);
 
-    useEffect(() => {
-        console.log('path name:', location.pathname);
-        console.log('isInNeedsHelpPath:', isInNeedsHelpPath);
-
-    }, [location])
-
     const fetchAllPostsBySearchTerm = async (queryTerm, queryCategory, isNewSearch = false) => {
 
         if (isMoreResultsLoading || (!hasMore && !isNewSearch)) {
