@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePosts } from '../../lib/hooks/usePosts';
-import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import { InstagramEmbedCards } from '../../components/Post/InstagramEmbedCards ';
 import { LoadingComponent, LoadingPage } from '../../components/Loading/Loading';
@@ -15,8 +15,11 @@ const Results = () => {
 
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    useDocumentTitle(`Results for ${searchParams.get('term')} | FitClue`);
+    const isInNeedsHelpPath = searchParams.get('category') === 'needs-help' ? true : false;
+
+    useDocumentTitle(isInNeedsHelpPath ? 'Needs Your Help | FitClue' : `Results for ${searchParams.get('term')} | FitClue`);
 
     const { searchResultLoadLimit, fetchPostsByString, fetchPostsByItemName, fetchPostsByBrandName, fetchPostByInstaLink, fetchPostsByContributionNumber } = usePosts();
 
@@ -32,13 +35,19 @@ const Results = () => {
     const [isResultsFirstBatchLoading, setIsResultsFirstBatchLoading] = useState(false);
 
     const [isMoreResultsLoading, setIsMoreResultsLoading] = useState(false);
-    const [isSearchFunctionTriggered, setIsSearchFunctionTriggered] = useState(false);
+    // const [isSearchFunctionTriggered, setIsSearchFunctionTriggered] = useState(false);
     const [isOnLoadMoreResultsClicked, setIsOnLoadMoreResultsClicked] = useState(false);
 
     const [isNewTermSearched, setIsNewTermSearched] = useState(false);
 
     const [lastResult, setLastResult] = useState(null);
     const [hasMore, setHasMore] = useState(true);
+
+    useEffect(() => {
+        console.log('path name:', location.pathname);
+        console.log('isInNeedsHelpPath:', isInNeedsHelpPath);
+
+    }, [location])
 
     const fetchAllPostsBySearchTerm = async (queryTerm, queryCategory, isNewSearch = false) => {
 
@@ -225,7 +234,7 @@ const Results = () => {
                                             hasMore={hasMore}
                                             onClick={onLoadMoreResultsClick}
                                             isLoading={isOnLoadMoreResultsClicked}
-                                            loadMoreText={`Load more results for for ${searchTerm}`}
+                                            loadMoreText={isInNeedsHelpPath ? 'Load more' : `Load more results for ${searchTerm}`}
                                             loadingText={`Loading more results for ${searchTerm}`}
                                             noMoreText='No more results'
                                             className='w-100 mb-3 mt-1'
