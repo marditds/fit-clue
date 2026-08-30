@@ -16,7 +16,7 @@ import { Interaction } from '../../components/Post/Interaction';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Note } from '../../components/Post/Note';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devError } from '../../lib/utils/devConsole';
+import { devError, devLog } from '../../lib/utils/devConsole';
 
 const Post = () => {
 
@@ -109,8 +109,13 @@ const Post = () => {
         script.onload = () => {
             if (window.instgrm) {
                 window.instgrm.Embeds.process();
+
+                devError('This is error from Insta:', window.instgrm.Embeds.process())
             }
         };
+
+        devLog('This is script:', script);
+
         document.body.appendChild(script);
     }, [iUrl]);
 

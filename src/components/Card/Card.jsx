@@ -3,10 +3,11 @@ import { Badge, Button, Col } from 'react-bootstrap';
 import { TextTooltip } from '../Accessories/CustomTooltip';
 import { Icon } from '../Accessories/Icon';
 import { LoadingComponent } from '../Loading/Loading';
-import { useEffect } from 'react';
 import { devLog } from '../../lib/utils/devConsole';
 
-export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading, tag }) => {
+export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDocId, onDeleteSaveClick, isDeleteSaveLoading, tag, isInstagramUnavailable }) => {
+
+    devLog('This is iUrl:', iUrl);
 
     const location = useLocation();
 
@@ -61,7 +62,7 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                     'd-flex flex-column justify-content-center align-items-start post__div sticky-top'}`
             }>
 
-                <div className='w-100'>
+                <div className='w-100 h-100'>
 
                     {!location.pathname.startsWith('/post') &&
                         <div
@@ -115,22 +116,36 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                     }
 
                     {
-                        iUrl ? <blockquote
-                            className='instagram-media'
-                            data-instgrm-permalink={iUrl}
-                            data-instgrm-version='14'
-                            style={{
-                                background: '#FFF',
-                                border: 0,
-                                borderRadius: '3px',
-                                boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
-                                margin: '1rem 0',
-                                maxWidth: '540px',
-                                minWidth: '0',
-                                width: '100%',
-                                padding: '0',
-                            }}
-                        /> : <div className='text-left px-2'>This post is no longer available.</div>
+                        iUrl && !isInstagramUnavailable ? (
+                            <blockquote
+                                className='instagram-media'
+                                data-fitclue-post-id={id}
+                                data-instgrm-permalink={iUrl}
+                                data-instgrm-version='14'
+                                style={{
+                                    background: '#FFF',
+                                    border: 0,
+                                    borderRadius: '3px',
+                                    boxShadow:
+                                        '0 0 1px 0 rgba(0,0,0,0.5), 0 1px 10px 0 rgba(0,0,0,0.15)',
+                                    margin: '1rem 0',
+                                    maxWidth: '540px',
+                                    minWidth: '0',
+                                    width: '100%',
+                                    padding: '0',
+                                }}
+                            />
+                        ) : (
+                            <div className='text-center d-block mt-5 px-3'>
+                                <div>
+                                    <Icon className='bi bi-emoji-frown fs-1' />
+                                    <br />
+                                    <p className='text-start'>
+                                        The original post may have been deleted or made unavailable.
+                                    </p>
+                                </div>
+                            </div>
+                        )
                     }
 
                 </div>

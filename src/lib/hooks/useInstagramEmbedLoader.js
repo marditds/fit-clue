@@ -1,17 +1,33 @@
 import { useEffect } from 'react';
-import { loadInstagramEmbedScript, processInstagramEmbeds } from '../utils/instagramEmbed';
+import {
+    loadInstagramEmbedScript,
+    processInstagramEmbeds
+} from '../utils/instagramEmbed';
 
-export const useInstagramEmbedLoader = (dependency = []) => {
+export const useInstagramEmbedLoader = (
+    dependency = [],
+    onInstagramUnavailable
+) => {
     useEffect(() => {
         let isReady = true;
 
         const init = async () => {
-            await loadInstagramEmbedScript();
+            try {
+                await loadInstagramEmbedScript();
 
-            if (isReady) {
-                requestAnimationFrame(() => {
-                    processInstagramEmbeds();
-                });
+                if (isReady) {
+                    requestAnimationFrame(() => {
+                        if (isReady) {
+                            processInstagramEmbeds((postId) => {
+                                if (isReady) {
+                                    onInstagramUnavailable?.(postId);
+                                }
+                            });
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load Instagram embed script:', error);
             }
         };
 
@@ -20,5 +36,5 @@ export const useInstagramEmbedLoader = (dependency = []) => {
         return () => {
             isReady = false;
         };
-    }, dependency);
+    }, [onInstagramUnavailable, ...dependency]);
 };
