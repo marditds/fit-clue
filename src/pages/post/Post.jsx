@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useOutletContext, useLocation } from 'react-router-dom';
+import { useInstagramEmbedLoader } from '../../lib/hooks/useInstagramEmbedLoader';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Card } from '../../components/Card/Card';
 import '../../components/Post/Post.css';
@@ -16,7 +17,7 @@ import { Interaction } from '../../components/Post/Interaction';
 import { useBreakpoints } from '../../lib/hooks/useBreakpoints';
 import { Note } from '../../components/Post/Note';
 import { useDocumentTitle } from '../../lib/hooks/useDocumentTitle';
-import { devError, devLog } from '../../lib/utils/devConsole';
+import { devError } from '../../lib/utils/devConsole';
 
 const Post = () => {
 
@@ -29,6 +30,8 @@ const Post = () => {
     const { fetchPostById, updateUserNote: updateNote } = usePosts();
 
     const { isXs } = useBreakpoints();
+
+    const [isInstagramUnavailable, setIsInstagramUnavailable] = useState(false);
 
     const [iUrl, setIUrl] = useState(null);
     const [personalityName, setPersonalityName] = useState(null);
@@ -99,25 +102,32 @@ const Post = () => {
             : 'FitClue'
     );
 
+    const handleInstagramUnavailable = useCallback(() => {
+        setIsInstagramUnavailable(true);
+    }, []);
+
+    useInstagramEmbedLoader(
+        [iUrl],
+        handleInstagramUnavailable
+    );
+
     // Instagram embed.js
-    useEffect(() => {
-        if (!iUrl) return;
+    // useEffect(() => {
+    //     if (!iUrl) return;
 
-        const script = document.createElement('script');
-        script.src = 'https://www.instagram.com/embed.js';
-        script.async = true;
-        script.onload = () => {
-            if (window.instgrm) {
-                window.instgrm.Embeds.process();
+    //     const script = document.createElement('script');
+    //     script.src = 'https://www.instagram.com/embed.js';
+    //     script.async = true;
+    //     script.onload = () => {
+    //         if (window.instgrm) {
+    //             window.instgrm.Embeds.process();
 
-                devError('This is error from Insta:', window.instgrm.Embeds.process())
-            }
-        };
+    //             devError('This is error from Insta:', window.instgrm.Embeds.process())
+    //         }
+    //     };
 
-        devLog('This is script:', script);
-
-        document.body.appendChild(script);
-    }, [iUrl]);
+    //     document.body.appendChild(script);
+    // }, [iUrl]);
 
     const updateUserNote = async () => {
         try {
@@ -154,8 +164,10 @@ const Post = () => {
 
                 {/* image */}
                 <Card
+                    id={params.postId}
                     personalityName={personalityName}
                     iUrl={iUrl}
+                    isInstagramUnavailable={isInstagramUnavailable}
                 />
 
                 <Col className='post__col d-flex justify-content-center w-100'>

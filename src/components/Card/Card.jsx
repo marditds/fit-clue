@@ -141,7 +141,7 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                                     <Icon className='bi bi-emoji-frown fs-1' />
                                     <br />
                                     <p className='text-start'>
-                                        The original post may have been deleted or made unavailable.
+                                        Instagram couldn't display the original post. It may have been deleted or made unavailable.
                                     </p>
                                 </div>
                             </div>
