@@ -284,6 +284,10 @@ div, p, button {
   color: var(--main-danger-color);
 }
 
+.force-underline {
+  text-decoration: underline !important;
+}
+
 @keyframes loadingDots {
   0%, 100% {
     transform: translateY(0);

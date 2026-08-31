@@ -41,7 +41,15 @@ const checkEmbed = (embed, onUnavailable) => {
         }
 
         if (Date.now() - startTime >= EMBED_CHECK_TIMEOUT) {
+
             const postId = embed.dataset.fitcluePostId;
+            const parent = embed.parentNode;
+
+            if (parent) {
+                Array.from(parent.children)
+                    .filter((child) => child.tagName === 'IFRAME')
+                    .forEach((frame) => frame.remove());
+            }
 
             if (postId) {
                 onUnavailable(postId);

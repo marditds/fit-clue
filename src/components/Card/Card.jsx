@@ -118,7 +118,7 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                     {
                         iUrl && !isInstagramUnavailable ? (
                             <blockquote
-                                className='instagram-media'
+                                className='instagram-media fitclue-instagram-embed'
                                 data-fitclue-post-id={id}
                                 data-instgrm-permalink={iUrl}
                                 data-instgrm-version='14'
@@ -136,12 +136,12 @@ export const Card = ({ id, personalityName, productNames, userNote, iUrl, saveDo
                                 }}
                             />
                         ) : (
-                            <div className='text-center d-block mt-5 px-3'>
+                            <div className='text-center d-block my-3 my-md-5 px-2 px-md-1'>
                                 <div>
                                     <Icon className='bi bi-emoji-frown fs-1' />
                                     <br />
                                     <p className='text-start'>
-                                        Instagram couldn't display the original post. It may have been deleted or made unavailable.
+                                        Instagram couldn't display this post here. It's likely a temporary issue on Instagram's end, though the post may also have been removed. <a href={iUrl} target='_blank' rel='noopener noreferrer' className='fw-bold force-underline'>View it on Instagram</a> to see if it's still up.
                                     </p>
                                 </div>
                             </div>

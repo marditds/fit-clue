@@ -229,7 +229,7 @@ const Results = () => {
                                             onClick={onLoadMoreResultsClick}
                                             isLoading={isOnLoadMoreResultsClicked}
                                             loadMoreText={isInNeedsHelpPath ? 'Load more' : `Load more results for ${searchTerm}`}
-                                            loadingText={`Loading more results for ${searchTerm}`}
+                                            loadingText={isInNeedsHelpPath ? 'Loading more' : `Loading more results for ${searchTerm}`}
                                             noMoreText='No more results'
                                             className='w-100 mb-3 mt-1'
                                         />

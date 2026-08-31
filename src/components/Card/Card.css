@@ -25,6 +25,10 @@
     transition: var(--main-transition-speed);
 }
 
+div a.force-underline {
+    text-decoration: underline !important;
+}
+
 .card__div h3 {
     text-decoration: none !important;
 }
