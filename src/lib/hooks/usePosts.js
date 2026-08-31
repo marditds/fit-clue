@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { makePost as composePost, fetchTheLatestPosts as getTheLatestPosts, fetchPostById as getPostById, fetchInstaPostById as getInstaPostById, fetchPostsByPersonalityId as getPostsByPersonalityId, fetchPostsByString as getPostsByString, updatePost as update, updateUserNote as updateNote, createReportLink as makeReportLink, createComment as composeComment, fetchCommentsTextByPostId as getCommentsTextByPostId, fetchPostsByBrandName as getPostsByBrandName, fetchPostByInstaLink as getPostByInstaLink, fetchUsersByIds, createReportComment as makeReportComment, createSave as makeSave, fetchSavesByPostId as getSavesByPostId, deleteSave as removeSave, fetchUserSaveForPost as getUserSaveForPost, createPostReport as makePostReport, fetchSavesByUserId as getSavesByUserId, fetchPostsByItemName as getPostsByItemName, fetchPostsByCreatorId as getPostsByCreatorId, fetchPostsByContributionNumber as getPostsByContributionNumber } from '../context/dbhandler';
 import { useUserContext } from '../context/UserContext';
 import { devError, devLog } from '../utils/devConsole';
@@ -127,14 +127,14 @@ export const usePosts = () => {
         }
     }
 
-    const fetchPostById = async (postId) => {
+    const fetchPostById = useCallback(async (postId) => {
         try {
             const res = await getPostById(postId);
             return res;
         } catch (error) {
             devError('Error fetching post by id:', error);
         }
-    }
+    }, [])
 
     const fetchInstaPostById = async (postId) => {
         try {

@@ -94,7 +94,7 @@ const Post = () => {
         };
 
         getPosts();
-    }, []);
+    }, [params.postId, fetchPostById]);
 
     useDocumentTitle(
         personalityName
