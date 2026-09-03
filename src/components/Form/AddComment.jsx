@@ -21,10 +21,16 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
         e.preventDefault();
 
+        console.log('A: submit handler fired');
+
         try {
             setIsAddingComment(true);
 
+            console.log('B: before createComment');
+
             const newComment = await createComment(postId, commentText, userId);
+
+            console.log('C: createComment returned', newComment);
 
             if (newComment.message !== 'ok') {
                 setCommentErrorMessage(newComment.message);
@@ -48,6 +54,7 @@ export const AddComment = ({ postId, userId, username, isLoggedIn, isViewComment
 
         } catch (error) {
             devError('Error onCreateCommentSubmit:', error);
+            console.error('D: submit error', error);
         } finally {
             setIsAddingComment(false);
         }

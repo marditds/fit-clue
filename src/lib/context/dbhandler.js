@@ -1050,14 +1050,20 @@ export const createReportComment = async (commentId, reason) => {
 export const createComment = async (postId, commentText, userId) => {
 
     devLog({ postId, commentText, userId });
+    console.log('E: createComment started');
 
     if (!postId) {
         devLog('no post id');
+        console.error('F: NO POST ID');
         return;
     }
 
     try {
+        console.log('G: before assessCommentSafety');
+
         const doc = await assessCommentSafety(postId, commentText, userId);
+
+        console.log('H: assessCommentSafety returned', doc);
 
         if (doc) {
             devLog('Comments result:', doc);
@@ -1066,6 +1072,7 @@ export const createComment = async (postId, commentText, userId) => {
         return null;
     } catch (error) {
         devError('Error creating comment:', error);
+        console.error('I: createComment error', error);
         return 'Something went wrong. Please try again later.'
     }
 }
