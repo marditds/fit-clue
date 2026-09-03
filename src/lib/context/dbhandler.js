@@ -1242,7 +1242,13 @@ export const assessLinkSafety = async (href, brandName, item, similarityLevel) =
 
 export const assessCommentSafety = async (postId, commentText) => {
     try {
+        console.log('1. assessCommentSafety started');
+
+        console.log('2. Getting comments function ID');
+
         const comments_function_id = await dbFunctionKeysProvider('comments_function');
+
+        console.log('3. Function ID:', comments_function_id);
 
         if (!comments_function_id) {
             throw new Error('Failed to load function ID');
@@ -1250,25 +1256,34 @@ export const assessCommentSafety = async (postId, commentText) => {
 
         const payload = JSON.stringify({ postId, commentText });
 
+        console.log('4. Calling Appwrite Function');
+
         const res = await functions.createExecution({
             functionId: comments_function_id,
             body: payload
         })
 
+        console.log('5. Appwrite response:', res);
+
         if (res.status === 'completed') {
             try {
                 const result = JSON.parse(res.responseBody);
+                console.log('6. Parsed result:', result);
                 return result;
             } catch (parseError) {
                 devError('Error parsing response:', parseError);
+                console.error('Error parsing response:', parseError);
                 return false;
             }
         } else {
             console.error("Failed to complete comment assessment.");
+            console.error('Function did not complete:', res.status);
         }
 
     } catch (error) {
         devError('Error assessing comment with Gemini:', error);
+        console.error('ERROR IN assessCommentSafety:', error);
+        return false
     }
 }
 
