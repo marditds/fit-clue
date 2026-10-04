@@ -271,10 +271,10 @@ export const AccountSettings = () => {
                 </Col>
             </Row>
 
-            <hr />
+            {/* <hr /> */}
 
             {/* Account delete */}
-            <Row>
+            {/* <Row>
                 <Col className='p-4 p-lg-5'>
 
                     <h4>
@@ -294,7 +294,7 @@ export const AccountSettings = () => {
                         Delete Account
                     </Button>
                 </Col>
-            </Row>
+            </Row> */}
 
             <PlainModal
                 modalText={

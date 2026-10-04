@@ -69,6 +69,7 @@ const Dashboard = () => {
         <DashboardLayout
             topRowContent={<UserInfo username={username} contributorScore={contributorScore} />}
             colOneContent={<Sidebar username={username} contributorScore={contributorScore} />}
+            rowClassName='mb-sm-0 mb-5'
             colOneClassName={!isXs ? 'border border-end-0' : ''}
             colTwoClassName='border'
             scrollTop={<ScrollToTop />}

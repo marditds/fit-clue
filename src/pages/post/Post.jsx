@@ -160,7 +160,7 @@ const Post = () => {
             </Row>
 
             {/* Image and links */}
-            <Row>
+            <Row className='mb-5'>
 
                 {/* image */}
                 <Card
@@ -229,12 +229,12 @@ const Post = () => {
             </Row>
 
             {/* Comment section */}
-            <CommentSection
+            {/* <CommentSection
                 postId={params.postId}
                 userId={userId}
                 username={username}
                 isLoggedIn={isLoggedIn}
-            />
+            /> */}
 
             <ScrollToTop />
 
